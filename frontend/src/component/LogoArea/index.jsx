@@ -13,9 +13,7 @@ const LogoArea = ({ className, dark }) => {
 
   const getSiteSetting = async () => {
     try {
-      const res = await fetch(
-        "https://api.hindustantvlive.com/api/site-settings",
-      );
+      const res = await fetch("https://api.iotaclasses.in/api/site-settings");
 
       const result = await res.json();
 
@@ -29,9 +27,7 @@ const LogoArea = ({ className, dark }) => {
 
   const getBanner = async () => {
     try {
-      const res = await fetch(
-        "https://api.hindustantvlive.com/api/advertisements",
-      );
+      const res = await fetch("https://api.iotaclasses.in/api/advertisements");
 
       const result = await res.json();
 
@@ -58,7 +54,7 @@ const LogoArea = ({ className, dark }) => {
               <Link to="/">
                 {siteSetting?.headerLogo ? (
                   <img
-                    src={`https://api.hindustantvlive.com/uploads/images/${siteSetting.headerLogo}`}
+                    src={`https://api.iotaclasses.in/uploads/images/${siteSetting.headerLogo}`}
                     alt={siteSetting.siteName}
                     style={{
                       width: "220px",
@@ -67,7 +63,7 @@ const LogoArea = ({ className, dark }) => {
                     }}
                   />
                 ) : (
-                  <h3>Hindustan TV Live</h3>
+                  <h3>Bharat 19 Express</h3>
                 )}
               </Link>
             </div>
@@ -82,7 +78,7 @@ const LogoArea = ({ className, dark }) => {
                   rel="noopener noreferrer"
                 >
                   <img
-                    src={`https://api.hindustantvlive.com/uploads/advertisements/${banner.image}`}
+                    src={`https://api.iotaclasses.in/uploads/advertisements/${banner.image}`}
                     alt={banner.title}
                     style={{
                       width: "728px",

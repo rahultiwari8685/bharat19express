@@ -11,9 +11,7 @@ const BannerSection = ({ className }) => {
 
   const getBanner = async () => {
     try {
-      const res = await fetch(
-        "https://api.hindustantvlive.com/api/advertisements",
-      );
+      const res = await fetch("https://api.iotaclasses.in/api/advertisements");
 
       const result = await res.json();
 
