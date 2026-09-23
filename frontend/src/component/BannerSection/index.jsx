@@ -44,7 +44,7 @@ const BannerSection = ({ className }) => {
                 rel="noopener noreferrer"
               >
                 <img
-                  src={`https://api.hindustantvlive.com/uploads/advertisements/${banner.image}`}
+                  src={`https://api.iotaclasses.in/uploads/advertisements/${banner.image}`}
                   alt={banner.title}
                   className="img-fluid"
                 />

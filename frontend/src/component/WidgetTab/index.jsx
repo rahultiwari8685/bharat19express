@@ -10,7 +10,7 @@ import thumb3 from "../../assets/img/gallery-3.jpg";
 import thumb4 from "../../assets/img/gallery-4.jpg";
 import thumb5 from "../../assets/img/gallery-5.jpg";
 
-const API = "https://api.hindustantvlive.com";
+const API = "https://api.iotaclasses.in";
 
 const getYoutubeId = (url) => {
   if (!url) return "";

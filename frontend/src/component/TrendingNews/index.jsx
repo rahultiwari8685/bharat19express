@@ -6,7 +6,7 @@ import Heading from "../uiStyle/Heading";
 import TrendingNewsSlider from "../TrendingNewsSlider";
 import FontAwesome from "../uiStyle/FontAwesome";
 
-const API = "https://api.hindustantvlive.com";
+const API = "https://api.iotaclasses.in";
 
 const TrendingNews = ({ dark }) => {
   const [trendingNews, setTrendingNews] = useState([]);

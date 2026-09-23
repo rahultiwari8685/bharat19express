@@ -20,7 +20,7 @@ const PostCarousel = ({ className }) => {
   const getTrendingNews = async () => {
     try {
       const res = await fetch(
-        "https://api.hindustantvlive.com/api/news/getAllNews?limit=10",
+        "https://api.iotaclasses.in/api/news/getAllNews?limit=10",
       );
 
       const data = await res.json();
@@ -86,7 +86,7 @@ const PostCarousel = ({ className }) => {
                             to={`/news/${item.categories?.[0]?.slug}/${item.slug}`}
                           >
                             <img
-                              src={`https://api.hindustantvlive.com/uploads/images/${item.thumbnail}`}
+                              src={`https://api.iotaclasses.in/uploads/images/${item.thumbnail}`}
                               alt={item.title}
                               style={{
                                 width: "100%",

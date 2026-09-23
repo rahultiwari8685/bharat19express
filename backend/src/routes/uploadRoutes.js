@@ -13,7 +13,7 @@ router.post("/image", upload.single("file"), (req, res) => {
   }
 
   return res.json({
-    location: `https://api.hindustantvlive.com/uploads/images/${req.file.filename}`,
+    location: `https://api.iotaclasses.in/uploads/images/${req.file.filename}`,
   });
 });
 

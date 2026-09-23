@@ -14,7 +14,7 @@ const TopBar = ({ className, dark }) => {
   const getTrendingNews = async () => {
     try {
       const res = await fetch(
-        "https://api.hindustantvlive.com/api/news/trending?limit=10",
+        "https://api.iotaclasses.in/api/news/trending?limit=10",
       );
 
       const data = await res.json();

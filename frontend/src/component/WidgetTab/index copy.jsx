@@ -69,7 +69,7 @@ WidgetTabPane.propTypes = {
 const WidgetTab = ({ categoryId, className, dark }) => {
   const [activeTab, setActiveTab] = useState("1");
 
-  const API = "https://api.hindustantvlive.com";
+  const API = "https://api.iotaclasses.in";
 
   const [related, setRelated] = useState([]);
   const [latest, setLatest] = useState([]);

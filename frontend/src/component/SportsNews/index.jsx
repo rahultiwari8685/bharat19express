@@ -14,7 +14,7 @@ const SportsNews = ({ dark }) => {
   const getSportsNews = async () => {
     try {
       const res = await fetch(
-        "https://api.hindustantvlive.com/api/news/category/6a634a979f2f6acb1a8b9aa1?limit=10",
+        "https://api.iotaclasses.in/api/news/category/6a634a979f2f6acb1a8b9aa1?limit=10",
       );
 
       const data = await res.json();
@@ -57,7 +57,7 @@ const SportsNews = ({ dark }) => {
                 <div className="post_img">
                   <Link to={`/news/${featured.slug}`}>
                     <img
-                      src={`https://api.hindustantvlive.com/uploads/images/${featured.thumbnail}`}
+                      src={`https://api.iotaclasses.in/uploads/images/${featured.thumbnail}`}
                       alt={featured.title}
                       style={{
                         width: "100%",

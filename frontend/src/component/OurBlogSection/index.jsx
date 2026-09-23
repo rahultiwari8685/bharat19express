@@ -4,7 +4,7 @@ import ProtoTypes from "prop-types";
 import { Link } from "react-router-dom";
 
 const OurBlogSection = ({ dark }) => {
-  const API = "https://api.hindustantvlive.com";
+  const API = "https://api.iotaclasses.in";
 
   const [blogs, setBlogs] = useState([]);
 

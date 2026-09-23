@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
-const API = "https://api.hindustantvlive.com";
+const API = "https://api.iotaclasses.in";
 
 const CategoriesWidget = () => {
   const [categories, setCategories] = useState([]);

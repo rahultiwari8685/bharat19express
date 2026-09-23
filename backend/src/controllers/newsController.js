@@ -872,8 +872,8 @@ export const shareNews = async (req, res) => {
     res.render("share", {
       title: news.title,
       description: news.subtitle || news.metaDescription || "",
-      image: `https://api.hindustantvlive.com/uploads/images/${news.thumbnail}`,
-      url: `https://api.hindustantvlive.com/api/news/share/${news.slug}`,
+      image: `https://api.iotaclasses.in/uploads/images/${news.thumbnail}`,
+      url: `https://api.iotaclasses.in/api/news/share/${news.slug}`,
       frontendUrl: `https://hindustantvlive.com/news/${news.slug}`,
     });
   } catch (err) {
@@ -949,7 +949,7 @@ export const newsMeta = async (req, res) => {
       return res.status(404).send("News not found");
     }
 
-    const image = `https://api.hindustantvlive.com/uploads/images/${news.thumbnail}`;
+    const image = `https://api.iotaclasses.in/uploads/images/${news.thumbnail}`;
     const url = `https://hindustantvlive.com/news/${news.slug}`;
 
     res.send(`

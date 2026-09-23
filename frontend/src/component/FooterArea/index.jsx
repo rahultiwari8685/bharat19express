@@ -23,9 +23,7 @@ const FooterArea = ({ className }) => {
 
   const getSiteSetting = async () => {
     try {
-      const res = await fetch(
-        "https://api.hindustantvlive.com/api/site-settings",
-      );
+      const res = await fetch("https://api.iotaclasses.in/api/site-settings");
 
       const result = await res.json();
 
@@ -47,7 +45,7 @@ const FooterArea = ({ className }) => {
                 <Link to="/">
                   {siteSetting?.footerLogo && (
                     <img
-                      src={`https://api.hindustantvlive.com/uploads/images/${siteSetting.footerLogo}`}
+                      src={`https://api.iotaclasses.in/uploads/images/${siteSetting.footerLogo}`}
                       alt={siteSetting.siteName}
                       style={{
                         width: "220px",

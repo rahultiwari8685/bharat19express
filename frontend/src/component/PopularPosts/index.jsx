@@ -14,7 +14,7 @@ const PopularPosts = () => {
   const getPopularPosts = async () => {
     try {
       const res = await fetch(
-        "https://api.hindustantvlive.com/api/news/popular?limit=8",
+        "https://api.iotaclasses.in/api/news/popular?limit=8",
       );
 
       const data = await res.json();
@@ -57,7 +57,7 @@ const PopularPosts = () => {
                 <div className="img_wrap">
                   <Link to={`/${item.categories?.[0]?.slug}/${item.slug}`}>
                     <img
-                      src={`https://api.hindustantvlive.com/uploads/images/${item.thumbnail}`}
+                      src={`https://api.iotaclasses.in/uploads/images/${item.thumbnail}`}
                       alt={item.title}
                       style={{
                         width: "90px",

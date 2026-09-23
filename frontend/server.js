@@ -46,9 +46,7 @@ app.get("/news/:slug", async (req, res) => {
     // Get news data
     // --------------------------------
     const { data } = await axios.get(
-      `https://api.hindustantvlive.com/api/news/slug/${encodeURIComponent(
-        oldSlug,
-      )}`,
+      `https://api.iotaclasses.in/api/news/slug/${encodeURIComponent(oldSlug)}`,
     );
 
     if (!data.status || !data.data) {
@@ -58,7 +56,7 @@ app.get("/news/:slug", async (req, res) => {
     const news = data.data;
 
     const image = news.thumbnail
-      ? `https://api.hindustantvlive.com/uploads/images/${news.thumbnail}`
+      ? `https://api.iotaclasses.in/uploads/images/${news.thumbnail}`
       : "";
 
     let html = baseHtml;

@@ -3,7 +3,7 @@ import ProtoTypes from "prop-types";
 import FontAwesome from "../uiStyle/FontAwesome";
 import { Link } from "react-router-dom";
 
-const API = "https://api.hindustantvlive.com";
+const API = "https://api.iotaclasses.in";
 
 const getYoutubeId = (url) => {
   if (!url) return "";

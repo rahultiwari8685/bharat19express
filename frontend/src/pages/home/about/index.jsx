@@ -19,7 +19,7 @@ import { entertainments2 } from "../../../data/entertainments";
 function About() {
   const [activeTab, setActiveTab] = useState("1");
 
-  const API = "https://api.hindustantvlive.com";
+  const API = "https://api.iotaclasses.in";
 
   const [latestNews, setLatestNews] = useState([]);
   const [popularNews, setPopularNews] = useState([]);

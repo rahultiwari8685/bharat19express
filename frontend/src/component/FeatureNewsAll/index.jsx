@@ -2,7 +2,7 @@ import React from "react";
 import ProtoTypes from "prop-types";
 import { Link } from "react-router-dom";
 
-const API = "https://api.hindustantvlive.com";
+const API = "https://api.iotaclasses.in";
 
 const getYoutubeId = (url) => {
   if (!url) return "";

@@ -7,7 +7,7 @@ import SearchModal from "../SearchModal";
 import SidebarMenu from "../SidebarMenu";
 
 const MainMenu = ({ className, dark }) => {
-  const API = "https://api.hindustantvlive.com";
+  const API = "https://api.iotaclasses.in";
 
   const [menuItems, setMenuItems] = useState([]);
 
