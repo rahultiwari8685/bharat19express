@@ -10,7 +10,7 @@ import {
   getActivePoll,
   votePoll,
   pollResults,
-} from "../controllers/publicPollController.js";
+} from "../controllers/pollController.js";
 
 const router = express.Router();
 
