@@ -87,12 +87,7 @@ export const adminNav = [
     to: '/Advertisement',
     icon: <CIcon icon={cilBullhorn} customClassName="nav-icon" />,
   },
-  {
-    component: CNavItem,
-    name: 'SiteSetting',
-    to: '/siteSetting',
-    icon: <CIcon icon={cilBullhorn} customClassName="nav-icon" />,
-  },
+
   {
     component: CNavItem,
     name: 'E-Paper',
@@ -104,6 +99,12 @@ export const adminNav = [
     name: 'Poll',
     to: '/polls',
     icon: <CIcon icon={cilNewspaper} customClassName="nav-icon" />,
+  },
+  {
+    component: CNavItem,
+    name: 'SiteSetting',
+    to: '/siteSetting',
+    icon: <CIcon icon={cilBullhorn} customClassName="nav-icon" />,
   },
 ]
 export const editorNav = [
@@ -158,6 +159,18 @@ export const editorNav = [
     name: 'Profile',
     to: '/Profile',
     icon: <CIcon icon={cilUser} customClassName="nav-icon" />,
+  },
+  {
+    component: CNavItem,
+    name: 'E-Paper',
+    to: '/magazine',
+    icon: <CIcon icon={cilNewspaper} customClassName="nav-icon" />,
+  },
+  {
+    component: CNavItem,
+    name: 'Poll',
+    to: '/polls',
+    icon: <CIcon icon={cilNewspaper} customClassName="nav-icon" />,
   },
 ]
 export const correspondenceNav = [

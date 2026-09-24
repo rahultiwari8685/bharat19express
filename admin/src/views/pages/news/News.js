@@ -21,10 +21,8 @@ import {
   CDropdownItem,
 } from '@coreui/react'
 import secureLocalStorage from 'react-secure-storage'
-// import EditorJSComponent from '../../../components/EditorJSComponent'
 import { useNavigate } from 'react-router-dom'
 import toast from 'react-hot-toast'
-// import { CKEditor } from 'ckeditor4-react'
 import { Editor } from '@tinymce/tinymce-react'
 
 const schema = yup.object().shape({
@@ -464,7 +462,7 @@ const News = () => {
                     onChange={(e) => setValue('videoType', e.target.value)}
                   >
                     <option value="">Select Type</option>
-                    <option value="1">Video</option>
+                    <option value="1">Youtube Video</option>
                     <option value="2">Text</option>
                   </CFormSelect>
                   {errors.videoType && (

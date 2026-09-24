@@ -14,19 +14,11 @@ import {
 
 const router = express.Router();
 
-/* =========================
-   ADMIN
-========================= */
-
 router.post("/savePoll", createPoll);
 
 router.get("/admin", getAllPolls);
 
 router.put("/admin/:id", updatePoll);
-
-/* =========================
-   WEBSITE
-========================= */
 
 router.get("/active", getActivePoll);
 

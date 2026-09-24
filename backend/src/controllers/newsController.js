@@ -874,7 +874,7 @@ export const shareNews = async (req, res) => {
       description: news.subtitle || news.metaDescription || "",
       image: `https://api.iotaclasses.in/uploads/images/${news.thumbnail}`,
       url: `https://api.iotaclasses.in/api/news/share/${news.slug}`,
-      frontendUrl: `https://hindustantvlive.com/news/${news.slug}`,
+      frontendUrl: `https://iotaclasses.in/news/${news.slug}`,
     });
   } catch (err) {
     res.status(500).send(err.message);
@@ -950,7 +950,7 @@ export const newsMeta = async (req, res) => {
     }
 
     const image = `https://api.iotaclasses.in/uploads/images/${news.thumbnail}`;
-    const url = `https://hindustantvlive.com/news/${news.slug}`;
+    const url = `https://iotaclasses.in/news/${news.slug}`;
 
     res.send(`
 <!DOCTYPE html>

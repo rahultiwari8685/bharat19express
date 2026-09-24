@@ -3,7 +3,7 @@ import Category from "../models/Category.js";
 
 export const generateSitemap = async (req, res) => {
   try {
-    const baseUrl = "https://hindustantvlive.com";
+    const baseUrl = "https://iotaclasses.in";
 
     // Only published news
     const news = await News.find({

@@ -61,8 +61,6 @@ const allowedOrigins = [
 app.use(
   cors({
     origin: function (origin, callback) {
-      // Allow requests without Origin
-      // such as Postman/server-side requests
       if (!origin) {
         return callback(null, true);
       }
