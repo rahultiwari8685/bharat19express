@@ -35,7 +35,7 @@ const schema = yup.object().shape({
   title: yup.string().required('Title is required'),
   slug: yup.string().required('Slug is required'),
   description: yup.string(),
-  category: yup.string(),
+  category: yup.string().required('Category is required'),
   issueDate: yup.string().required('Issue date is required'),
   featured: yup.string().required('Featured is required'),
   status: yup.string().required('Status is required'),
@@ -536,12 +536,20 @@ const Magazine = () => {
 
             <CRow className="mb-3">
               <CCol md={6}>
-                <CFormInput
-                  type="text"
+                <CFormSelect
                   label="Category"
-                  placeholder="Newspaper"
-                  {...register('category')}
-                />
+                  {...register('category', {
+                    required: 'Category is required',
+                  })}
+                >
+                  <option value="">Select Category</option>
+                  <option value="Magazine">Magazine</option>
+                  <option value="Newspaper">Newspaper</option>
+                </CFormSelect>
+
+                {errors.category && (
+                  <small className="text-danger">{errors.category.message}</small>
+                )}
               </CCol>
 
               <CCol md={6}>
