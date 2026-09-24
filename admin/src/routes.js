@@ -39,5 +39,6 @@ const routes = [
   { path: '/advertisement', name: 'Advertisement', element: Advertisement },
   { path: '/shorts', name: 'Shorts', element: Shorts },
   { path: '/magazine', name: 'Magazine', element: Magazine },
+  { path: '/polls', name: 'Poll', element: Poll },
 ]
 export default routes

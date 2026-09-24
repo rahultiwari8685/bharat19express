@@ -66,12 +66,6 @@ export const adminNav = [
         to: '/ScheduleNews',
         icon: <CIcon icon={cilCalendar} customClassName="nav-icon" />,
       },
-      // {
-      //   component: CNavItem,
-      //   name: 'Deleted News',
-      //   to: '/DeletedNews',
-      //   icon: <CIcon icon={cilTrash} customClassName="nav-icon" />,
-      // },
     ],
   },
 
@@ -101,14 +95,14 @@ export const adminNav = [
   },
   {
     component: CNavItem,
-    name: 'Subscription',
-    to: '/subscription',
-    icon: <CIcon icon={cilBullhorn} customClassName="nav-icon" />,
+    name: 'E-Paper',
+    to: '/magazine',
+    icon: <CIcon icon={cilNewspaper} customClassName="nav-icon" />,
   },
   {
     component: CNavItem,
-    name: 'Magazine',
-    to: '/magazine',
+    name: 'Poll',
+    to: '/polls',
     icon: <CIcon icon={cilNewspaper} customClassName="nav-icon" />,
   },
 ]
@@ -150,12 +144,6 @@ export const editorNav = [
         to: '/ScheduleNews',
         icon: <CIcon icon={cilCalendar} customClassName="nav-icon" />,
       },
-      // {
-      //   component: CNavItem,
-      //   name: 'Deleted News',
-      //   to: '/DeletedNews',
-      //   icon: <CIcon icon={cilTrash} customClassName="nav-icon" />,
-      // },
     ],
   },
 
