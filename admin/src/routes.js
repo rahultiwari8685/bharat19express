@@ -17,7 +17,7 @@ const SiteSetting = React.lazy(() => import('./views/pages/siteSetting/SiteSetti
 const Shorts = React.lazy(() => import('./views/pages/shorts/Shorts'))
 const Magazine = React.lazy(() => import('./views/pages/magazine/Magazine'))
 const Subscriptions = React.lazy(() => import('./views/pages/subscription/Subscriptions'))
-const Plans = React.lazy(() => import('./views/pages/plans/Plans'))
+const Polls = React.lazy(() => import('./views/pages/polls/Polls'))
 
 const routes = [
   { path: '/', exact: true, name: 'Home' },
@@ -30,7 +30,7 @@ const routes = [
   { path: '/DeletedNews', name: 'Deleted News', element: DeletedNews },
   { path: '/ScheduleNews', name: 'Scheduled News', element: ScheduleNews },
   { path: '/siteSetting', name: 'Site Setting', element: SiteSetting },
-  { path: '/plans', name: 'Plans', element: Plans },
+  // { path: '/plans', name: 'Plans', element: Plans },
 
   { path: '/subscription', name: 'Subscription', element: Subscriptions },
   { path: '/ChangePassword', name: 'Change Password', element: ChangePassword },
@@ -39,6 +39,6 @@ const routes = [
   { path: '/advertisement', name: 'Advertisement', element: Advertisement },
   { path: '/shorts', name: 'Shorts', element: Shorts },
   { path: '/magazine', name: 'Magazine', element: Magazine },
-  { path: '/polls', name: 'Poll', element: Poll },
+  { path: '/polls', name: 'Polls', element: Polls },
 ]
 export default routes
