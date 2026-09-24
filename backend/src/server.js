@@ -20,6 +20,7 @@ import shortsRoutes from "./routes/shortsRoutes.js";
 import notificationRoutes from "./routes/notificationRoutes.js";
 import magazineRoutes from "./routes/magazineRoutes.js";
 import sitemapRoutes from "./routes/sitemapRoutes.js";
+import pollRoutes from "./routes/pollRoutes.js";
 const app = express();
 
 const __filename = fileURLToPath(import.meta.url);
@@ -92,6 +93,7 @@ app.use("/api/shorts", shortsRoutes);
 app.use("/api/notification", notificationRoutes);
 app.use("/", sitemapRoutes);
 app.use("/api/magazines", magazineRoutes);
+app.use("/api/polls", pollRoutes);
 const PORT = process.env.PORT || 5001;
 const MONGO_URI = process.env.MONGO_URI;
 
