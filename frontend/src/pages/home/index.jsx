@@ -36,7 +36,7 @@ function Home() {
   const getEntertainmentNews = async () => {
     try {
       const res = await fetch(
-        "https://api.iotaclasses.in/api/news/category/6a1e8d1c54dc2dce809c304b?limit=4",
+        "https://api.iotaclasses.in/api/news/category/6ab5133ae0146bb0a4a80e48?limit=4",
       );
 
       const data = await res.json();
@@ -58,7 +58,7 @@ function Home() {
   const getBusinessNews = async () => {
     try {
       const res = await fetch(
-        "https://api.iotaclasses.in/api/news/category/6a1ea7af54dc2dce809c32db?limit=2",
+        "https://api.iotaclasses.in/api/news/category/6ab3e06740046655dd2db1e5?limit=2",
       );
 
       const data = await res.json();
