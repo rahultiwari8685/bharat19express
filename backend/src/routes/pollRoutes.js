@@ -1,5 +1,5 @@
 import express from "express";
-import { verifyCustomer } from "../middlewares/authMiddleware.js";
+
 import {
   createPoll,
   getAllPolls,
@@ -14,14 +14,24 @@ import {
 
 const router = express.Router();
 
-/* ADMIN */
+/* =========================
+   ADMIN
+========================= */
+
 router.post("/savePoll", createPoll);
+
 router.get("/admin", getAllPolls);
+
 router.put("/admin/:id", updatePoll);
 
-/* WEBSITE */
+/* =========================
+   WEBSITE
+========================= */
+
 router.get("/active", getActivePoll);
-router.post("/:id/vote", verifyCustomer, votePoll);
+
+router.post("/:id/vote", votePoll);
+
 router.get("/:id/results", pollResults);
 
 export default router;
