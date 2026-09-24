@@ -107,9 +107,9 @@ export const adminNav = [
   },
   {
     component: CNavItem,
-    name: 'Plan',
-    to: '/plans',
-    icon: <CIcon icon={cilBullhorn} customClassName="nav-icon" />,
+    name: 'Magazine',
+    to: '/magazine',
+    icon: <CIcon icon={cilNewspaper} customClassName="nav-icon" />,
   },
 ]
 export const editorNav = [
