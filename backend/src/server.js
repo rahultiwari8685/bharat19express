@@ -54,26 +54,33 @@ app.use("/api", limiter);
 
 const allowedOrigins = [
   "https://iotaclasses.in",
+  "https://www.iotaclasses.in",
   "https://admin.iotaclasses.in",
 ];
 
-app.use((req, res, next) => {
-  const origin = req.headers.origin;
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      // Allow requests without Origin
+      // such as Postman/server-side requests
+      if (!origin) {
+        return callback(null, true);
+      }
 
-  if (allowedOrigins.includes(origin)) {
-    res.header("Access-Control-Allow-Origin", origin);
-  }
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      }
 
-  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-  res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
-  res.header("Access-Control-Allow-Credentials", "true");
+      return callback(new Error("Not allowed by CORS"));
+    },
 
-  if (req.method === "OPTIONS") {
-    return res.sendStatus(200);
-  }
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
 
-  next();
-});
+    allowedHeaders: ["Content-Type", "Authorization"],
+
+    credentials: true,
+  }),
+);
 
 app.use(express.json({ limit: "300mb" }));
 app.use(express.urlencoded({ extended: true, limit: "300mb" }));
