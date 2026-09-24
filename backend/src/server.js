@@ -18,6 +18,7 @@ import siteSettingRoutes from "./routes/siteSettingRoutes.js";
 import uploadRoutes from "./routes/uploadRoutes.js";
 import shortsRoutes from "./routes/shortsRoutes.js";
 import notificationRoutes from "./routes/notificationRoutes.js";
+import magazineRoutes from "./routes/magazineRoutes.js";
 import sitemapRoutes from "./routes/sitemapRoutes.js";
 const app = express();
 
@@ -90,6 +91,7 @@ app.use("/api/site-settings", siteSettingRoutes);
 app.use("/api/shorts", shortsRoutes);
 app.use("/api/notification", notificationRoutes);
 app.use("/", sitemapRoutes);
+app.use("/api/magazines", magazineRoutes);
 const PORT = process.env.PORT || 5001;
 const MONGO_URI = process.env.MONGO_URI;
 
