@@ -49,7 +49,7 @@ const LogoAreaTwo = () => {
                   <img src={tempIcon} alt="icon" />
                 </div>
                 <h3 className="temp_count">13</h3>
-                <p>San Francisco</p>
+                <p>Lucknow</p>
               </div>
             </div>
           </div>
