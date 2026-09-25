@@ -89,7 +89,7 @@ import Category from "./pages/home/category";
 const router = createBrowserRouter([
   {
     path: "/",
-    Component: LayoutTheme4,
+    Component: LayoutTheme2,
     children: [
       {
         index: true,
@@ -179,264 +179,264 @@ const router = createBrowserRouter([
       },
     ],
   },
-  {
-    path: "/",
-    Component: LayoutTheme3,
-    children: [
-      {
-        index: true,
-        element: <HomeTwo />,
-      },
-      {
-        path: "business",
-        element: <HomeTwoBusiness />,
-      },
-      {
-        path: "entertainment",
-        element: <HomeTwoEntertainment />,
-      },
-      {
-        path: "features",
-        element: <HomeTwoFeature />,
-      },
-      {
-        path: "trending",
-        element: <HomeTwoTrending />,
-      },
-      {
-        path: "sports",
-        element: <HomeTwoSports />,
-      },
-      {
-        path: "about",
-        element: <HomeTwoAbout />,
-      },
-      {
-        path: "archive",
-        element: <HomeTwoArchive />,
-      },
-      {
-        path: "contact",
-        element: <HomeTwoContact />,
-      },
-      {
-        path: "post1",
-        element: <HomeTwoPost1 />,
-      },
-      {
-        path: "post2",
-        element: <HomeTwoPost2 />,
-      },
-      {
-        path: "post3",
-        element: <HomeTwoPost3 />,
-      },
-      {
-        path: "video_post1",
-        element: <HomeTwoVideoPost1 />,
-      },
-      {
-        path: "video_post2",
-        element: <HomeTwoVideoPost2 />,
-      },
-      {
-        path: "video_post3",
-        element: <HomeTwoVideoPost3 />,
-      },
-      {
-        path: "audio_post1",
-        element: <HomeTwoAudioPost1 />,
-      },
-      {
-        path: "audio_post2",
-        element: <HomeTwoAudioPost2 />,
-      },
-      {
-        path: "audio_post3",
-        element: <HomeTwoAudioPost3 />,
-      },
-      {
-        path: "left_post2",
-        element: <HomeTwoLeftPost2 />,
-      },
-    ],
-  },
-  {
-    path: "/",
-    Component: LayoutTheme3,
-    children: [
-      {
-        index: true,
-        element: <HomeThree />,
-      },
-      {
-        path: "business",
-        element: <HomeThreeBusiness />,
-      },
-      {
-        path: "entertainment",
-        element: <HomeThreeEntertainment />,
-      },
-      {
-        path: "features",
-        element: <HomeThreeFeature />,
-      },
-      {
-        path: "trending",
-        element: <HomeThreeTrending />,
-      },
-      {
-        path: "sports",
-        element: <HomeThreeSports />,
-      },
-      {
-        path: "about",
-        element: <HomeThreeAbout />,
-      },
-      {
-        path: "archive",
-        element: <HomeThreeArchive />,
-      },
-      {
-        path: "contact",
-        element: <HomeThreeContact />,
-      },
-      {
-        path: "404",
-        element: <HomeThreeError />,
-      },
-      {
-        path: "post1",
-        element: <HomeThreePost1 />,
-      },
-      {
-        path: "post2",
-        element: <HomeThreePost2 />,
-      },
-      {
-        path: "post3",
-        element: <HomeThreePost3 />,
-      },
-      {
-        path: "video_post1",
-        element: <HomeThreeVideoPost1 />,
-      },
-      {
-        path: "video_post2",
-        element: <HomeThreeVideoPost2 />,
-      },
-      {
-        path: "video_post3",
-        element: <HomeThreeVideoPost3 />,
-      },
-      {
-        path: "audio_post1",
-        element: <HomeThreeAudioPost1 />,
-      },
-      {
-        path: "audio_post2",
-        element: <HomeThreeAudioPost2 />,
-      },
-      {
-        path: "audio_post3",
-        element: <HomeThreeAudioPost3 />,
-      },
-      {
-        path: "left_post2",
-        element: <HomeThreeLeftPost2 />,
-      },
-    ],
-  },
-  {
-    path: "/",
-    Component: LayoutThemeDark1,
-    children: [
-      {
-        index: true,
-        element: <HomeDark />,
-      },
-      {
-        path: "business",
-        element: <HomeDarkBusiness />,
-      },
-      {
-        path: "entertainment",
-        element: <HomeDarkEntertainment />,
-      },
-      {
-        path: "features",
-        element: <HomeDarkFeature />,
-      },
-      {
-        path: "trending",
-        element: <HomeDarkTrending />,
-      },
-      {
-        path: "sports",
-        element: <HomeDarkSports />,
-      },
-      {
-        path: "about",
-        element: <HomeDarkAbout />,
-      },
-      {
-        path: "archive",
-        element: <HomeDarkArchive />,
-      },
-      {
-        path: "contact",
-        element: <HomeDarkContact />,
-      },
-      {
-        path: "404",
-        element: <HomeDarkError />,
-      },
-      {
-        path: "post1",
-        element: <HomeDarkPost1 />,
-      },
-      {
-        path: "post2",
-        element: <HomeDarkPost2 />,
-      },
-      {
-        path: "post3",
-        element: <HomeDarkPost3 />,
-      },
-      {
-        path: "video_post1",
-        element: <HomeDarkVideoPost1 />,
-      },
-      {
-        path: "video_post2",
-        element: <HomeDarkVideoPost2 />,
-      },
-      {
-        path: "video_post3",
-        element: <HomeDarkVideoPost3 />,
-      },
-      {
-        path: "audio_post1",
-        element: <HomeDarkAudioPost1 />,
-      },
-      {
-        path: "audio_post2",
-        element: <HomeDarkAudioPost2 />,
-      },
-      {
-        path: "audio_post3",
-        element: <HomeDarkAudioPost3 />,
-      },
-      {
-        path: "left_post2",
-        element: <HomeDarkLeftPost2 />,
-      },
-    ],
-  },
-  {
-    path: "*",
-    element: <Error />,
-  },
+  // {
+  //   path: "/",
+  //   Component: LayoutTheme3,
+  //   children: [
+  //     {
+  //       index: true,
+  //       element: <HomeTwo />,
+  //     },
+  //     {
+  //       path: "business",
+  //       element: <HomeTwoBusiness />,
+  //     },
+  //     {
+  //       path: "entertainment",
+  //       element: <HomeTwoEntertainment />,
+  //     },
+  //     {
+  //       path: "features",
+  //       element: <HomeTwoFeature />,
+  //     },
+  //     {
+  //       path: "trending",
+  //       element: <HomeTwoTrending />,
+  //     },
+  //     {
+  //       path: "sports",
+  //       element: <HomeTwoSports />,
+  //     },
+  //     {
+  //       path: "about",
+  //       element: <HomeTwoAbout />,
+  //     },
+  //     {
+  //       path: "archive",
+  //       element: <HomeTwoArchive />,
+  //     },
+  //     {
+  //       path: "contact",
+  //       element: <HomeTwoContact />,
+  //     },
+  //     {
+  //       path: "post1",
+  //       element: <HomeTwoPost1 />,
+  //     },
+  //     {
+  //       path: "post2",
+  //       element: <HomeTwoPost2 />,
+  //     },
+  //     {
+  //       path: "post3",
+  //       element: <HomeTwoPost3 />,
+  //     },
+  //     {
+  //       path: "video_post1",
+  //       element: <HomeTwoVideoPost1 />,
+  //     },
+  //     {
+  //       path: "video_post2",
+  //       element: <HomeTwoVideoPost2 />,
+  //     },
+  //     {
+  //       path: "video_post3",
+  //       element: <HomeTwoVideoPost3 />,
+  //     },
+  //     {
+  //       path: "audio_post1",
+  //       element: <HomeTwoAudioPost1 />,
+  //     },
+  //     {
+  //       path: "audio_post2",
+  //       element: <HomeTwoAudioPost2 />,
+  //     },
+  //     {
+  //       path: "audio_post3",
+  //       element: <HomeTwoAudioPost3 />,
+  //     },
+  //     {
+  //       path: "left_post2",
+  //       element: <HomeTwoLeftPost2 />,
+  //     },
+  //   ],
+  // },
+  // {
+  //   path: "/",
+  //   Component: LayoutTheme3,
+  //   children: [
+  //     {
+  //       index: true,
+  //       element: <HomeThree />,
+  //     },
+  //     {
+  //       path: "business",
+  //       element: <HomeThreeBusiness />,
+  //     },
+  //     {
+  //       path: "entertainment",
+  //       element: <HomeThreeEntertainment />,
+  //     },
+  //     {
+  //       path: "features",
+  //       element: <HomeThreeFeature />,
+  //     },
+  //     {
+  //       path: "trending",
+  //       element: <HomeThreeTrending />,
+  //     },
+  //     {
+  //       path: "sports",
+  //       element: <HomeThreeSports />,
+  //     },
+  //     {
+  //       path: "about",
+  //       element: <HomeThreeAbout />,
+  //     },
+  //     {
+  //       path: "archive",
+  //       element: <HomeThreeArchive />,
+  //     },
+  //     {
+  //       path: "contact",
+  //       element: <HomeThreeContact />,
+  //     },
+  //     {
+  //       path: "404",
+  //       element: <HomeThreeError />,
+  //     },
+  //     {
+  //       path: "post1",
+  //       element: <HomeThreePost1 />,
+  //     },
+  //     {
+  //       path: "post2",
+  //       element: <HomeThreePost2 />,
+  //     },
+  //     {
+  //       path: "post3",
+  //       element: <HomeThreePost3 />,
+  //     },
+  //     {
+  //       path: "video_post1",
+  //       element: <HomeThreeVideoPost1 />,
+  //     },
+  //     {
+  //       path: "video_post2",
+  //       element: <HomeThreeVideoPost2 />,
+  //     },
+  //     {
+  //       path: "video_post3",
+  //       element: <HomeThreeVideoPost3 />,
+  //     },
+  //     {
+  //       path: "audio_post1",
+  //       element: <HomeThreeAudioPost1 />,
+  //     },
+  //     {
+  //       path: "audio_post2",
+  //       element: <HomeThreeAudioPost2 />,
+  //     },
+  //     {
+  //       path: "audio_post3",
+  //       element: <HomeThreeAudioPost3 />,
+  //     },
+  //     {
+  //       path: "left_post2",
+  //       element: <HomeThreeLeftPost2 />,
+  //     },
+  //   ],
+  // },
+  // {
+  //   path: "/",
+  //   Component: LayoutThemeDark1,
+  //   children: [
+  //     {
+  //       index: true,
+  //       element: <HomeDark />,
+  //     },
+  //     {
+  //       path: "business",
+  //       element: <HomeDarkBusiness />,
+  //     },
+  //     {
+  //       path: "entertainment",
+  //       element: <HomeDarkEntertainment />,
+  //     },
+  //     {
+  //       path: "features",
+  //       element: <HomeDarkFeature />,
+  //     },
+  //     {
+  //       path: "trending",
+  //       element: <HomeDarkTrending />,
+  //     },
+  //     {
+  //       path: "sports",
+  //       element: <HomeDarkSports />,
+  //     },
+  //     {
+  //       path: "about",
+  //       element: <HomeDarkAbout />,
+  //     },
+  //     {
+  //       path: "archive",
+  //       element: <HomeDarkArchive />,
+  //     },
+  //     {
+  //       path: "contact",
+  //       element: <HomeDarkContact />,
+  //     },
+  //     {
+  //       path: "404",
+  //       element: <HomeDarkError />,
+  //     },
+  //     {
+  //       path: "post1",
+  //       element: <HomeDarkPost1 />,
+  //     },
+  //     {
+  //       path: "post2",
+  //       element: <HomeDarkPost2 />,
+  //     },
+  //     {
+  //       path: "post3",
+  //       element: <HomeDarkPost3 />,
+  //     },
+  //     {
+  //       path: "video_post1",
+  //       element: <HomeDarkVideoPost1 />,
+  //     },
+  //     {
+  //       path: "video_post2",
+  //       element: <HomeDarkVideoPost2 />,
+  //     },
+  //     {
+  //       path: "video_post3",
+  //       element: <HomeDarkVideoPost3 />,
+  //     },
+  //     {
+  //       path: "audio_post1",
+  //       element: <HomeDarkAudioPost1 />,
+  //     },
+  //     {
+  //       path: "audio_post2",
+  //       element: <HomeDarkAudioPost2 />,
+  //     },
+  //     {
+  //       path: "audio_post3",
+  //       element: <HomeDarkAudioPost3 />,
+  //     },
+  //     {
+  //       path: "left_post2",
+  //       element: <HomeDarkLeftPost2 />,
+  //     },
+  //   ],
+  // },
+  // {
+  //   path: "*",
+  //   element: <Error />,
+  // },
 ]);
 
 function Router() {
