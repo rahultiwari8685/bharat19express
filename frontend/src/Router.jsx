@@ -179,90 +179,90 @@ const router = createBrowserRouter([
   //     },
   //   ],
   // },
+  // {
+  //   path: "/",
+  //   Component: LayoutTheme3,
+  //   children: [
+  //     {
+  //       index: true,
+  //       element: <HomeTwo />,
+  //     },
+  //     {
+  //       path: "business",
+  //       element: <HomeTwoBusiness />,
+  //     },
+  //     {
+  //       path: "entertainment",
+  //       element: <HomeTwoEntertainment />,
+  //     },
+  //     {
+  //       path: "features",
+  //       element: <HomeTwoFeature />,
+  //     },
+  //     {
+  //       path: "trending",
+  //       element: <HomeTwoTrending />,
+  //     },
+  //     {
+  //       path: "sports",
+  //       element: <HomeTwoSports />,
+  //     },
+  //     {
+  //       path: "about",
+  //       element: <HomeTwoAbout />,
+  //     },
+  //     {
+  //       path: "archive",
+  //       element: <HomeTwoArchive />,
+  //     },
+  //     {
+  //       path: "contact",
+  //       element: <HomeTwoContact />,
+  //     },
+  //     {
+  //       path: "post1",
+  //       element: <HomeTwoPost1 />,
+  //     },
+  //     {
+  //       path: "post2",
+  //       element: <HomeTwoPost2 />,
+  //     },
+  //     {
+  //       path: "post3",
+  //       element: <HomeTwoPost3 />,
+  //     },
+  //     {
+  //       path: "video_post1",
+  //       element: <HomeTwoVideoPost1 />,
+  //     },
+  //     {
+  //       path: "video_post2",
+  //       element: <HomeTwoVideoPost2 />,
+  //     },
+  //     {
+  //       path: "video_post3",
+  //       element: <HomeTwoVideoPost3 />,
+  //     },
+  //     {
+  //       path: "audio_post1",
+  //       element: <HomeTwoAudioPost1 />,
+  //     },
+  //     {
+  //       path: "audio_post2",
+  //       element: <HomeTwoAudioPost2 />,
+  //     },
+  //     {
+  //       path: "audio_post3",
+  //       element: <HomeTwoAudioPost3 />,
+  //     },
+  //     {
+  //       path: "left_post2",
+  //       element: <HomeTwoLeftPost2 />,
+  //     },
+  //   ],
+  // },
   {
     path: "/",
-    Component: LayoutTheme4,
-    children: [
-      {
-        index: true,
-        element: <HomeTwo />,
-      },
-      {
-        path: "business",
-        element: <HomeTwoBusiness />,
-      },
-      {
-        path: "entertainment",
-        element: <HomeTwoEntertainment />,
-      },
-      {
-        path: "features",
-        element: <HomeTwoFeature />,
-      },
-      {
-        path: "trending",
-        element: <HomeTwoTrending />,
-      },
-      {
-        path: "sports",
-        element: <HomeTwoSports />,
-      },
-      {
-        path: "about",
-        element: <HomeTwoAbout />,
-      },
-      {
-        path: "archive",
-        element: <HomeTwoArchive />,
-      },
-      {
-        path: "contact",
-        element: <HomeTwoContact />,
-      },
-      {
-        path: "post1",
-        element: <HomeTwoPost1 />,
-      },
-      {
-        path: "post2",
-        element: <HomeTwoPost2 />,
-      },
-      {
-        path: "post3",
-        element: <HomeTwoPost3 />,
-      },
-      {
-        path: "video_post1",
-        element: <HomeTwoVideoPost1 />,
-      },
-      {
-        path: "video_post2",
-        element: <HomeTwoVideoPost2 />,
-      },
-      {
-        path: "video_post3",
-        element: <HomeTwoVideoPost3 />,
-      },
-      {
-        path: "audio_post1",
-        element: <HomeTwoAudioPost1 />,
-      },
-      {
-        path: "audio_post2",
-        element: <HomeTwoAudioPost2 />,
-      },
-      {
-        path: "audio_post3",
-        element: <HomeTwoAudioPost3 />,
-      },
-      {
-        path: "left_post2",
-        element: <HomeTwoLeftPost2 />,
-      },
-    ],
-  },
-  {
-    path: "/home-three",
     Component: LayoutTheme3,
     children: [
       {
