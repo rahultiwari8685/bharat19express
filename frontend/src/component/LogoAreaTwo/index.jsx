@@ -20,7 +20,7 @@ const LogoAreaTwo = () => {
               </Link>
             </div> */}
           </div>
-          <div className="col-lg-6 align-self-center">
+          <div className="col-lg-5 align-self-center">
             {/* <div className="signup_form header_search3">
               <form onSubmit={submitHandler}>
                 <input
