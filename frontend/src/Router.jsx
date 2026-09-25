@@ -181,7 +181,7 @@ const router = createBrowserRouter([
   // },
   {
     path: "/",
-    Component: LayoutTheme1,
+    Component: LayoutTheme3,
     children: [
       {
         index: true,
