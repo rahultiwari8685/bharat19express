@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import logo from "../../assets/img/logo.png";
+import logo from "../../assets/img/Bharat19_Logo.png";
 import tempIcon from "../../assets/img/icon/temp.png";
 
 const LogoAreaTwo = () => {
