@@ -145,11 +145,194 @@
 
 // export default PostGalleryTwo;
 
+// import React, { useEffect, useState } from "react";
+// import { Link } from "react-router-dom";
+
+// import FontAwesome from "../uiStyle/FontAwesome";
+// import big_img from "../../assets/img/gallery-post-2.jpg";
+// import col26 from "../../assets/img/post-news-thumb-1.png";
+// import col21 from "../../assets/img/post-news/1.jpg";
+// import col22 from "../../assets/img/post-news/2.jpg";
+// import col23 from "../../assets/img/post-news/3.jpg";
+// import col24 from "../../assets/img/post-news/4.jpg";
+// import col25 from "../../assets/img/post-news/5.jpg";
+
+// const PostGalleryTwo = () => {
+//   const API = "https://api.iotaclasses.in";
+
+//   const [posts, setPosts] = useState([]);
+
+//   useEffect(() => {
+//     getPosts();
+//   }, []);
+
+//   const getPosts = async () => {
+//     try {
+//       const res = await fetch(`${API}/api/news/getAllNews?limit=5`);
+
+//       const data = await res.json();
+
+//       if (data.status) {
+//         // Only published news
+//         const publishedNews = (data.data || [])
+//           .filter((item) => Number(item.type) === 2)
+//           .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+//           .slice(0, 5);
+
+//         setPosts(publishedNews);
+//       }
+//     } catch (error) {
+//       console.error("Post Gallery Error:", error);
+//     }
+//   };
+
+//   return (
+//     <div className="post_gallary_area theme3_bg mb40 padding-top-30">
+//       <div className="container">
+//         <div className="row">
+//           <div className="col-lg-8 col-xl-6">
+//             <div className="single_post post_type6 border-radious7 xs-mb30">
+//               <div className="post_img gradient1">
+//                 <div className="img_wrap">
+//                   <Link to="/">
+//                     <img src={big_img} alt="big_img" />
+//                   </Link>
+//                 </div>
+//                 <span className="tranding">
+//                   <FontAwesome name="play" />
+//                 </span>
+//               </div>
+//               <div className="single_post_text">
+//                 <h4>
+//                   <Link to="/video_post1">
+//                     Japan’s virus success has puzzled the world. Is its luck
+//                     running out?
+//                   </Link>
+//                 </h4>
+//                 <div className="space-5" />
+
+//                 <p className="post-p">
+//                   The property, complete with 30-seat screening from room, a
+//                   100-seat amphitheater and a swimming pond with sandy shower…
+//                 </p>
+
+//                 <div className="space-20" />
+//                 <div className="meta meta_separator1">
+//                   <Link to="/">TECHNOLOGY</Link>
+//                   <Link to="/">March 26, 2020</Link>
+//                 </div>
+//               </div>
+//             </div>
+//           </div>
+//           <div className="d-none d-xl-block col-xl-3">
+//             <div className="white_bg padding15 border-radious5 sm-mt30">
+//               {posts.map((item, i) => {
+//                 const categorySlug = item.categories?.[0]?.slug;
+
+//                 const newsUrl = `/news/${item.slug}`;
+
+//                 const image = item.thumbnail
+//                   ? `${API}/uploads/images/${item.thumbnail}`
+//                   : "";
+
+//                 return (
+//                   <div
+//                     key={item._id}
+//                     className="single_post type14 widgets_small"
+//                   >
+//                     {/* IMAGE */}
+//                     <div className="post_img">
+//                       <div className="img_wrap">
+//                         <Link to={newsUrl}>
+//                           {image && (
+//                             <img
+//                               src={image}
+//                               alt={item.title}
+//                               style={{
+//                                 width: "100%",
+//                                 height: "120px",
+//                                 objectFit: "cover",
+//                               }}
+//                             />
+//                           )}
+//                         </Link>
+//                       </div>
+//                     </div>
+
+//                     {/* CONTENT */}
+//                     <div className="single_post_text">
+//                       <h4>
+//                         <Link to={newsUrl}>
+//                           {item.title?.length > 70
+//                             ? `${item.title.substring(0, 70)}...`
+//                             : item.title}
+//                         </Link>
+//                       </h4>
+
+//                       <div className="meta4">
+//                         <Link
+//                           to={categorySlug ? `/category/${categorySlug}` : "#"}
+//                         >
+//                           {item.categories?.[0]?.name || "News"}
+//                         </Link>
+//                       </div>
+
+//                       {/* separator */}
+//                       {i + 1 < posts.length && (
+//                         <>
+//                           <div className="space-5" />
+//                           <div className="border_black" />
+//                           <div className="space-15" />
+//                         </>
+//                       )}
+//                     </div>
+//                   </div>
+//                 );
+//               })}
+//             </div>
+//           </div>
+
+//           <div className="d-none d-lg-block col-lg-4 col-xl-3">
+//             <div className="single_post post_type3 post_type15 mb30 border-radious5 sm-mt30">
+//               <div className="post_img">
+//                 <div className="img_wrap">
+//                   <Link to="/">
+//                     <img src={col26} alt="col26" />
+//                   </Link>
+//                 </div>
+//                 {/* <span className="tranding border_tranding">
+//                   <FontAwesome name="bolt" />
+//                 </span> */}
+//               </div>
+//               <div className="single_post_text white_bg padding20">
+//                 <h4>
+//                   <Link to="/post1">
+//                     Japan’s virus puzzled the world luck running out?
+//                   </Link>
+//                 </h4>
+//                 <div className="space-10" />
+//                 <p className="post-p">
+//                   The property, complete with 30-seat screening from room, a
+//                   100-seat amphitheater and a swimming pond with sandy shower…
+//                 </p>
+//                 <div className="space-20" />
+//                 <div className="meta3">
+//                   <Link to="/">TECHNOLOGY</Link>
+//                   <Link to="/">March 26, 2020</Link>
+//                 </div>
+//               </div>
+//             </div>
+//           </div>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default PostGalleryTwo;
+
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-
-// import React from "react";
-// import { Link } from "react-router-dom";
 import FontAwesome from "../uiStyle/FontAwesome";
 import big_img from "../../assets/img/gallery-post-2.jpg";
 import col26 from "../../assets/img/post-news-thumb-1.png";
@@ -160,7 +343,7 @@ import col24 from "../../assets/img/post-news/4.jpg";
 import col25 from "../../assets/img/post-news/5.jpg";
 
 const PostGalleryTwo = () => {
-  const API = "https://api.iotaclasses.in";
+  const API = "https://api.hindustantvlive.com";
 
   const [posts, setPosts] = useState([]);
 
@@ -170,12 +353,13 @@ const PostGalleryTwo = () => {
 
   const getPosts = async () => {
     try {
-      const res = await fetch(`${API}/api/news/getAllNews?limit=5`);
+      const res = await fetch(`${API}/api/news/getAllNews?limit=10`);
 
       const data = await res.json();
 
+      console.log("Post Gallery API:", data);
+
       if (data.status) {
-        // Only published news
         const publishedNews = (data.data || [])
           .filter((item) => Number(item.type) === 2)
           .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
@@ -192,97 +376,105 @@ const PostGalleryTwo = () => {
     <div className="post_gallary_area theme3_bg mb40 padding-top-30">
       <div className="container">
         <div className="row">
-          <div className="row">
-            <div className="col-lg-8 col-xl-6">
-              <div className="single_post post_type6 border-radious7 xs-mb30">
-                <div className="post_img gradient1">
-                  <div className="img_wrap">
-                    <Link to="/">
-                      <img src={big_img} alt="big_img" />
-                    </Link>
-                  </div>
-                  <span className="tranding">
-                    <FontAwesome name="play" />
-                  </span>
+          {/* =========================
+              LEFT - STATIC
+          ========================== */}
+          <div className="col-lg-8 col-xl-6">
+            <div className="single_post post_type6 border-radious7 xs-mb30">
+              <div className="post_img gradient1">
+                <div className="img_wrap">
+                  <Link to="/">
+                    <img src={big_img} alt="big_img" />
+                  </Link>
                 </div>
-                <div className="single_post_text">
-                  <h4>
-                    <Link to="/video_post1">
-                      Japan’s virus success has puzzled the world. Is its luck
-                      running out?
-                    </Link>
-                  </h4>
-                  <div className="space-5" />
 
-                  <p className="post-p">
-                    The property, complete with 30-seat screening from room, a
-                    100-seat amphitheater and a swimming pond with sandy shower…
-                  </p>
+                <span className="tranding">
+                  <FontAwesome name="play" />
+                </span>
+              </div>
 
-                  <div className="space-20" />
-                  <div className="meta meta_separator1">
-                    <Link to="/">TECHNOLOGY</Link>
-                    <Link to="/">March 26, 2020</Link>
-                  </div>
+              <div className="single_post_text">
+                <h4>
+                  <Link to="/video_post1">
+                    Japan’s virus success has puzzled the world. Is its luck
+                    running out?
+                  </Link>
+                </h4>
+
+                <div className="space-5" />
+
+                <p className="post-p">
+                  The property, complete with 30-seat screening from room, a
+                  100-seat amphitheater and a swimming pond with sandy shower…
+                </p>
+
+                <div className="space-20" />
+
+                <div className="meta meta_separator1">
+                  <Link to="/">TECHNOLOGY</Link>
+                  <Link to="/">March 26, 2020</Link>
                 </div>
               </div>
             </div>
-            <div className="d-none d-xl-block col-xl-3">
-              <div className="white_bg padding15 border-radious5 sm-mt30">
-                {posts.map((item, i) => {
-                  const categorySlug = item.categories?.[0]?.slug;
+          </div>
 
+          {/* =========================
+              MIDDLE - DYNAMIC NEWS
+          ========================== */}
+          <div className="d-none d-xl-block col-xl-3">
+            <div className="white_bg padding15 border-radious5 sm-mt30">
+              {posts.length > 0 ? (
+                posts.map((item, i) => {
                   const newsUrl = `/news/${item.slug}`;
+
+                  const category = item.categories?.[0];
+
+                  const categoryUrl = category?.slug
+                    ? `/category/${category.slug}`
+                    : "#";
 
                   const image = item.thumbnail
                     ? `${API}/uploads/images/${item.thumbnail}`
-                    : "";
+                    : col21;
 
                   return (
                     <div
                       key={item._id}
                       className="single_post type14 widgets_small"
                     >
-                      {/* IMAGE */}
+                      {/* NEWS IMAGE */}
                       <div className="post_img">
                         <div className="img_wrap">
                           <Link to={newsUrl}>
-                            {image && (
-                              <img
-                                src={image}
-                                alt={item.title}
-                                style={{
-                                  width: "100%",
-                                  height: "120px",
-                                  objectFit: "cover",
-                                }}
-                              />
-                            )}
+                            <img
+                              src={image}
+                              alt={item.title}
+                              style={{
+                                width: "100%",
+                                height: "100px",
+                                objectFit: "cover",
+                              }}
+                            />
                           </Link>
                         </div>
                       </div>
 
-                      {/* CONTENT */}
+                      {/* NEWS CONTENT */}
                       <div className="single_post_text">
                         <h4>
                           <Link to={newsUrl}>
-                            {item.title?.length > 70
-                              ? `${item.title.substring(0, 70)}...`
+                            {item.title?.length > 65
+                              ? `${item.title.substring(0, 65)}...`
                               : item.title}
                           </Link>
                         </h4>
 
                         <div className="meta4">
-                          <Link
-                            to={
-                              categorySlug ? `/category/${categorySlug}` : "#"
-                            }
-                          >
-                            {item.categories?.[0]?.name || "News"}
+                          <Link to={categoryUrl}>
+                            {category?.name || "News"}
                           </Link>
                         </div>
 
-                        {/* separator */}
                         {i + 1 < posts.length && (
                           <>
                             <div className="space-5" />
@@ -293,38 +485,45 @@ const PostGalleryTwo = () => {
                       </div>
                     </div>
                   );
-                })}
-              </div>
+                })
+              ) : (
+                <p>Loading news...</p>
+              )}
             </div>
+          </div>
 
-            <div className="d-none d-lg-block col-lg-4 col-xl-3">
-              <div className="single_post post_type3 post_type15 mb30 border-radious5 sm-mt30">
-                <div className="post_img">
-                  <div className="img_wrap">
-                    <Link to="/">
-                      <img src={col26} alt="col26" />
-                    </Link>
-                  </div>
-                  {/* <span className="tranding border_tranding">
-                  <FontAwesome name="bolt" />
-                </span> */}
+          {/* =========================
+              RIGHT - STATIC
+          ========================== */}
+          <div className="d-none d-lg-block col-lg-4 col-xl-3">
+            <div className="single_post post_type3 post_type15 mb30 border-radious5 sm-mt30">
+              <div className="post_img">
+                <div className="img_wrap">
+                  <Link to="/">
+                    <img src={col26} alt="col26" />
+                  </Link>
                 </div>
-                <div className="single_post_text white_bg padding20">
-                  <h4>
-                    <Link to="/post1">
-                      Japan’s virus puzzled the world luck running out?
-                    </Link>
-                  </h4>
-                  <div className="space-10" />
-                  <p className="post-p">
-                    The property, complete with 30-seat screening from room, a
-                    100-seat amphitheater and a swimming pond with sandy shower…
-                  </p>
-                  <div className="space-20" />
-                  <div className="meta3">
-                    <Link to="/">TECHNOLOGY</Link>
-                    <Link to="/">March 26, 2020</Link>
-                  </div>
+              </div>
+
+              <div className="single_post_text white_bg padding20">
+                <h4>
+                  <Link to="/post1">
+                    Japan’s virus puzzled the world luck running out?
+                  </Link>
+                </h4>
+
+                <div className="space-10" />
+
+                <p className="post-p">
+                  The property, complete with 30-seat screening from room, a
+                  100-seat amphitheater and a swimming pond with sandy shower…
+                </p>
+
+                <div className="space-20" />
+
+                <div className="meta3">
+                  <Link to="/">TECHNOLOGY</Link>
+                  <Link to="/">March 26, 2020</Link>
                 </div>
               </div>
             </div>
