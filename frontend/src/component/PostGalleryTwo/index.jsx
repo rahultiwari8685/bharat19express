@@ -353,7 +353,7 @@ const PostGalleryTwo = () => {
 
   const getPosts = async () => {
     try {
-      const res = await fetch(`${API}/api/news/getAllNews?limit=10`);
+      const res = await fetch(`${API}/api/news/getAllNews?limit=5`);
 
       const data = await res.json();
 
@@ -361,7 +361,7 @@ const PostGalleryTwo = () => {
 
       if (data.status) {
         const publishedNews = (data.data || [])
-          .filter((item) => Number(item.type) === 2)
+          .filter((item) => Number(item.type) === 1)
           .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
           .slice(0, 5);
 
