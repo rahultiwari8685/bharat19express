@@ -343,7 +343,7 @@ import col24 from "../../assets/img/post-news/4.jpg";
 import col25 from "../../assets/img/post-news/5.jpg";
 
 const PostGalleryTwo = () => {
-  const API = "https://api.hindustantvlive.com";
+  const API = "https://api.iotaclasses.in";
 
   const [posts, setPosts] = useState([]);
 
