@@ -14,14 +14,14 @@ const LogoAreaTwo = () => {
       <div className="container">
         <div className="row">
           <div className="col-lg-3 align-self-center">
-            <div className="logo">
+            {/* <div className="logo">
               <Link to="/">
                 <img src={logo} alt="logo" />
               </Link>
-            </div>
+            </div> */}
           </div>
           <div className="col-lg-6 align-self-center">
-            <div className="signup_form header_search3">
+            {/* <div className="signup_form header_search3">
               <form onSubmit={submitHandler}>
                 <input
                   className="signup"
@@ -34,6 +34,12 @@ const LogoAreaTwo = () => {
                   sign up
                 </button>
               </form>
+            </div> */}
+
+            <div className="logo">
+              <Link to="/">
+                <img src={logo} alt="logo" />
+              </Link>
             </div>
           </div>
           <div className="col-lg-2 align-self-center offset-lg-1">
