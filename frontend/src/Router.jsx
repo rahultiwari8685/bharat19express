@@ -89,7 +89,7 @@ import Category from "./pages/home/category";
 const router = createBrowserRouter([
   {
     path: "/home-two",
-    Component: LayoutTheme1,
+    Component: LayoutTheme2,
     children: [
       {
         index: true,
@@ -181,7 +181,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/",
-    Component: LayoutTheme2,
+    Component: LayoutTheme1,
     children: [
       {
         index: true,
