@@ -87,98 +87,98 @@ import HomeDarkLeftPost2 from "./pages/homeDark/left_post2";
 import Category from "./pages/home/category";
 
 const router = createBrowserRouter([
-  {
-    path: "/home-two",
-    Component: LayoutTheme2,
-    children: [
-      {
-        index: true,
-        element: <Home />,
-      },
-      {
-        path: "/category/:categoryId",
-        element: <Category />,
-      },
+  // {
+  //   path: "/home-two",
+  //   Component: LayoutTheme2,
+  //   children: [
+  //     {
+  //       index: true,
+  //       element: <Home />,
+  //     },
+  //     {
+  //       path: "/category/:categoryId",
+  //       element: <Category />,
+  //     },
 
-      {
-        path: "/trending",
-        element: <Trending />,
-      },
-      {
-        path: "/subscriber",
-        element: <Subscriber />,
-      },
-      {
-        path: "/sports",
-        element: <Sports />,
-      },
-      {
-        path: "/about",
-        element: <About />,
-      },
-      {
-        path: "/archive",
-        element: <Archive />,
-      },
-      {
-        path: "/contact",
-        element: <Contact />,
-      },
-      {
-        path: "/404",
-        element: <Error />,
-      },
-      // {
-      //   path: "/post1",
-      //   element: <Post1 />,
-      // },
-      // {
-      //   path: "/news/:slug",
-      //   element: <Post1 />,
-      // },
+  //     {
+  //       path: "/trending",
+  //       element: <Trending />,
+  //     },
+  //     {
+  //       path: "/subscriber",
+  //       element: <Subscriber />,
+  //     },
+  //     {
+  //       path: "/sports",
+  //       element: <Sports />,
+  //     },
+  //     {
+  //       path: "/about",
+  //       element: <About />,
+  //     },
+  //     {
+  //       path: "/archive",
+  //       element: <Archive />,
+  //     },
+  //     {
+  //       path: "/contact",
+  //       element: <Contact />,
+  //     },
+  //     {
+  //       path: "/404",
+  //       element: <Error />,
+  //     },
+  //     // {
+  //     //   path: "/post1",
+  //     //   element: <Post1 />,
+  //     // },
+  //     // {
+  //     //   path: "/news/:slug",
+  //     //   element: <Post1 />,
+  //     // },
 
-      {
-        path: "/:categorySlug/:slug",
-        element: <Post1 />,
-      },
-      {
-        path: "/post2",
-        element: <Post2 />,
-      },
-      {
-        path: "/post3",
-        element: <Post3 />,
-      },
-      {
-        path: "/video_post1",
-        element: <VideoPost1 />,
-      },
-      {
-        path: "/video_post2",
-        element: <VideoPost2 />,
-      },
-      {
-        path: "/video_post3",
-        element: <VideoPost3 />,
-      },
-      {
-        path: "/audio_post1",
-        element: <AudioPost1 />,
-      },
-      {
-        path: "/audio_post2",
-        element: <AudioPost2 />,
-      },
-      {
-        path: "/audio_post3",
-        element: <AudioPost3 />,
-      },
-      {
-        path: "/left_post2",
-        element: <LeftPost2 />,
-      },
-    ],
-  },
+  //     {
+  //       path: "/:categorySlug/:slug",
+  //       element: <Post1 />,
+  //     },
+  //     {
+  //       path: "/post2",
+  //       element: <Post2 />,
+  //     },
+  //     {
+  //       path: "/post3",
+  //       element: <Post3 />,
+  //     },
+  //     {
+  //       path: "/video_post1",
+  //       element: <VideoPost1 />,
+  //     },
+  //     {
+  //       path: "/video_post2",
+  //       element: <VideoPost2 />,
+  //     },
+  //     {
+  //       path: "/video_post3",
+  //       element: <VideoPost3 />,
+  //     },
+  //     {
+  //       path: "/audio_post1",
+  //       element: <AudioPost1 />,
+  //     },
+  //     {
+  //       path: "/audio_post2",
+  //       element: <AudioPost2 />,
+  //     },
+  //     {
+  //       path: "/audio_post3",
+  //       element: <AudioPost3 />,
+  //     },
+  //     {
+  //       path: "/left_post2",
+  //       element: <LeftPost2 />,
+  //     },
+  //   ],
+  // },
   {
     path: "/",
     Component: LayoutTheme1,
