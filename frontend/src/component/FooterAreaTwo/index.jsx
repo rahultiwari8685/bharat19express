@@ -8,7 +8,7 @@ import WidgetMorenews from "../WidgetMorenews";
 import TwitterfeedTwo from "../TwitterfeedTwo";
 
 // images
-import logo from "../../assets/img/logo.png";
+import logo from "../../assets/img/Bharat19_Logo.png";
 import banner from "../../assets/img/ad/ad-3.png";
 import phone_black from "../../assets/img/icon/phone_black.png";
 import speaker_black from "../../assets/img/icon/speaker_black.png";
