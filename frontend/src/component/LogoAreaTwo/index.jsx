@@ -13,7 +13,7 @@ const LogoAreaTwo = () => {
     <div className="logo_area white_bg">
       <div className="container">
         <div className="row">
-          <div className="col-lg-3 align-self-center">
+          <div className="col-lg-4 align-self-center">
             {/* <div className="logo">
               <Link to="/">
                 <img src={logo} alt="logo" />
