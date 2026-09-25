@@ -349,7 +349,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/",
-    Component: LayoutThemeDark,
+    Component: LayoutThemeDark1,
     children: [
       {
         index: true,
