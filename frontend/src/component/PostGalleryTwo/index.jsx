@@ -353,7 +353,7 @@ const PostGalleryTwo = () => {
 
   const getPosts = async () => {
     try {
-      const res = await fetch(`${API}/api/news/getAllNews?limit=5`);
+      const res = await fetch(`${API}/api/news/getAllNews?limit=4`);
 
       const data = await res.json();
 
