@@ -326,7 +326,7 @@ import { NavLink } from "react-router-dom";
 import SidebarMenu from "../SidebarMenu";
 
 const MainMenuTwo = () => {
-  const API = "https://api.hindustantvlive.com";
+  const API = "https://api.iotaclasses.in";
 
   const [menuItems, setMenuItems] = useState([]);
   const [sideShow, setSideShow] = useState(false);
