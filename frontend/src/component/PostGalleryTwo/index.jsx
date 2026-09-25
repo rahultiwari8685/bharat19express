@@ -148,6 +148,17 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
+// import React from "react";
+// import { Link } from "react-router-dom";
+import FontAwesome from "../uiStyle/FontAwesome";
+import big_img from "../../assets/img/gallery-post-2.jpg";
+import col26 from "../../assets/img/post-news-thumb-1.png";
+import col21 from "../../assets/img/post-news/1.jpg";
+import col22 from "../../assets/img/post-news/2.jpg";
+import col23 from "../../assets/img/post-news/3.jpg";
+import col24 from "../../assets/img/post-news/4.jpg";
+import col25 from "../../assets/img/post-news/5.jpg";
+
 const PostGalleryTwo = () => {
   const API = "https://api.iotaclasses.in";
 
