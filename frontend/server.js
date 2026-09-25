@@ -17,7 +17,6 @@ app.use(express.static(DIST));
 const BOT_REGEX =
   /facebookexternalhit|Facebot|Twitterbot|WhatsApp|TelegramBot|LinkedInBot|Slackbot|Discordbot|Googlebot/i;
 
-// Read React index.html
 const baseHtml = fs.readFileSync(INDEX, "utf8");
 
 // Old slug -> new slug redirects
@@ -34,17 +33,10 @@ const slugRedirects = {
 app.get("/news/:slug", async (req, res) => {
   try {
     const oldSlug = req.params.slug;
-
-    // --------------------------------
-    // 301 redirect old URLs
-    // --------------------------------
     if (slugRedirects[oldSlug]) {
       return res.redirect(301, `/news/${slugRedirects[oldSlug]}`);
     }
 
-    // --------------------------------
-    // Get news data
-    // --------------------------------
     const { data } = await axios.get(
       `https://api.iotaclasses.in/api/news/slug/${encodeURIComponent(oldSlug)}`,
     );
@@ -88,7 +80,6 @@ app.get("/news/:slug", async (req, res) => {
   }
 });
 
-// React routes
 app.use((req, res) => {
   res.sendFile(INDEX);
 });
