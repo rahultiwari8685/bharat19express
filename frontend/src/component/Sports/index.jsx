@@ -114,7 +114,7 @@ import { Link } from "react-router-dom";
 
 const API = "https://api.iotaclasses.in";
 
-const SPORTS_CATEGORY_ID = "6ab8fe27302ad805145ed91f";
+// const SPORTS_CATEGORY_ID = "6ab8fe27302ad805145ed91f";
 
 const Sports = () => {
   const [sports, setSports] = useState([]);
@@ -127,7 +127,7 @@ const Sports = () => {
   const fetchSportsNews = async () => {
     try {
       const res = await fetch(
-        `${API}/api/news/category/${SPORTS_CATEGORY_ID}?limit=10`,
+        `${API}/api/news/category/6ab8fe27302ad805145ed91f?limit=10`,
       );
 
       const data = await res.json();
