@@ -432,7 +432,7 @@ const PostGalleryTwo = () => {
   // =========================
   const getTextNews = async () => {
     try {
-      const res = await fetch(`${API}/api/news/getAllNews?limit=3`);
+      const res = await fetch(`${API}/api/news/getAllNews?limit=15`);
       const data = await res.json();
 
       console.log("Text News API:", data);
@@ -451,7 +451,7 @@ const PostGalleryTwo = () => {
             (a, b) =>
               new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
           )
-          .slice(0, 5);
+          .slice(0, 2);
 
         setTextNews(news);
       }
@@ -555,7 +555,7 @@ const PostGalleryTwo = () => {
                       ? videoNews.description.length > 180
                         ? `${videoNews.description.substring(0, 180)}...`
                         : videoNews.description
-                      : "Watch the latest video news and updates."}
+                      : ""}
                   </p>
 
                   <div className="space-20" />

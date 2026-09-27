@@ -103,6 +103,31 @@ const MostViewThree = () => {
     fetchMostView();
   }, []);
 
+  // const fetchMostView = async () => {
+  //   try {
+  //     const res = await fetch(`${API}/api/news/most-shared?limit=10`);
+  //     const data = await res.json();
+
+  //     if (data.status && Array.isArray(data.data)) {
+  //       const news = data.data
+  //         // Published news
+  //         .filter((item) => Number(item.type) === 1)
+  //         // Latest first
+  //         .sort(
+  //           (a, b) =>
+  //             new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+  //         )
+  //         .slice(0, 3);
+
+  //       setPosts(news);
+  //     }
+  //   } catch (error) {
+  //     console.error("MostViewThree API Error:", error);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
+
   const fetchMostView = async () => {
     try {
       const res = await fetch(`${API}/api/news/most-shared?limit=10`);
@@ -110,8 +135,10 @@ const MostViewThree = () => {
 
       if (data.status && Array.isArray(data.data)) {
         const news = data.data
-          // Published news
-          .filter((item) => Number(item.type) === 1)
+          // Published news + only text news
+          .filter(
+            (item) => Number(item.type) === 1 && Number(item.videoType) === 2,
+          )
           // Latest first
           .sort(
             (a, b) =>
