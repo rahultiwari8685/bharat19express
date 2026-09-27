@@ -432,7 +432,7 @@ const PostGalleryTwo = () => {
   // =========================
   const getTextNews = async () => {
     try {
-      const res = await fetch(`${API}/api/news/getAllNews?limit=15`);
+      const res = await fetch(`${API}/api/news/getAllNews?limit=3`);
       const data = await res.json();
 
       console.log("Text News API:", data);
@@ -505,12 +505,6 @@ const PostGalleryTwo = () => {
       <div className="post_gallary_area theme3_bg mb40 padding-top-30">
         <div className="container">
           <div className="row">
-            {/* ==================================================
-                LEFT - DYNAMIC VIDEO NEWS
-            ================================================== */}
-            {/* ==================================================
-    LEFT - DYNAMIC VIDEO NEWS WITH AUTO PLAY
-================================================== */}
             <div className="col-lg-8 col-xl-6">
               <div className="single_post post_type6 border-radious7 xs-mb30">
                 <div className="post_img gradient1">
@@ -548,7 +542,7 @@ const PostGalleryTwo = () => {
                 <div className="single_post_text">
                   <h4>
                     {videoNews ? (
-                      <Link to={videoNewsUrl}>{videoNews.title}</Link>
+                      <Link to={videoNewsUrl}></Link>
                     ) : (
                       <Link to="/video_post1">Latest Video News</Link>
                     )}
