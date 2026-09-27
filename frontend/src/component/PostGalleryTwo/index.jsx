@@ -334,203 +334,375 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import FontAwesome from "../uiStyle/FontAwesome";
+
+import ModalVideo from "react-modal-video";
+import "react-modal-video/css/modal-video.min.css";
+
 import big_img from "../../assets/img/gallery-post-2.jpg";
 import col26 from "../../assets/img/post-news-thumb-1.png";
 import col21 from "../../assets/img/post-news/1.jpg";
-import col22 from "../../assets/img/post-news/2.jpg";
-import col23 from "../../assets/img/post-news/3.jpg";
-import col24 from "../../assets/img/post-news/4.jpg";
-import col25 from "../../assets/img/post-news/5.jpg";
 
 const PostGalleryTwo = () => {
   const API = "https://api.iotaclasses.in";
 
-  const [posts, setPosts] = useState([]);
+  // =========================
+  // VIDEO NEWS
+  // =========================
+  const [videoNews, setVideoNews] = useState(null);
+  const [isVideoOpen, setIsVideoOpen] = useState(false);
+  const [videoId, setVideoId] = useState("");
 
+  // =========================
+  // TEXT NEWS
+  // =========================
+  const [textNews, setTextNews] = useState([]);
+
+  // =========================
+  // FETCH DATA
+  // =========================
   useEffect(() => {
-    getPosts();
+    getVideoNews();
+    getTextNews();
   }, []);
 
-  const getPosts = async () => {
+  // =========================
+  // GET YOUTUBE ID
+  // =========================
+  const getYoutubeId = (url) => {
+    if (!url) return "";
+
     try {
-      const res = await fetch(`${API}/api/news/getAllNews?limit=4`);
+      const parsedUrl = new URL(url);
 
-      const data = await res.json();
-
-      console.log("Post Gallery API:", data);
-
-      if (data.status) {
-        const publishedNews = (data.data || [])
-          .filter((item) => Number(item.type) === 1)
-          .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
-          .slice(0, 5);
-
-        setPosts(publishedNews);
+      // youtube.com/watch?v=
+      if (parsedUrl.searchParams.get("v")) {
+        return parsedUrl.searchParams.get("v");
       }
+
+      // youtu.be/xxxx
+      if (parsedUrl.hostname.includes("youtu.be")) {
+        return parsedUrl.pathname.replace("/", "");
+      }
+
+      // youtube.com/shorts/xxxx
+      if (parsedUrl.pathname.includes("/shorts/")) {
+        return parsedUrl.pathname.split("/shorts/")[1].split("/")[0];
+      }
+
+      // youtube.com/embed/xxxx
+      if (parsedUrl.pathname.includes("/embed/")) {
+        return parsedUrl.pathname.split("/embed/")[1].split("/")[0];
+      }
+
+      return "";
     } catch (error) {
-      console.error("Post Gallery Error:", error);
+      return "";
     }
   };
 
+  // =========================
+  // GET VIDEO NEWS
+  // =========================
+  const getVideoNews = async () => {
+    try {
+      const res = await fetch(`${API}/api/news/videos?limit=10`);
+      const data = await res.json();
+
+      console.log("Video News API:", data);
+
+      if (data.status) {
+        const videos = (data.data || [])
+          .filter((item) => Number(item.type) === 1)
+          .sort(
+            (a, b) =>
+              new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+          );
+
+        if (videos.length > 0) {
+          setVideoNews(videos[0]);
+        }
+      }
+    } catch (error) {
+      console.error("Video News Error:", error);
+    }
+  };
+
+  // =========================
+  // GET TEXT NEWS
+  // =========================
+  const getTextNews = async () => {
+    try {
+      const res = await fetch(`${API}/api/news/getAllNews?limit=15`);
+      const data = await res.json();
+
+      console.log("Text News API:", data);
+
+      if (data.status) {
+        const news = (data.data || [])
+          .filter((item) => {
+            // Published news
+            if (Number(item.type) !== 1) return false;
+
+            // Only text news
+            // videoType 2 = normal/text news
+            return Number(item.videoType) === 2;
+          })
+          .sort(
+            (a, b) =>
+              new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+          )
+          .slice(0, 5);
+
+        setTextNews(news);
+      }
+    } catch (error) {
+      console.error("Text News Error:", error);
+    }
+  };
+
+  // =========================
+  // VIDEO DATA
+  // =========================
+  const youtubeId = videoNews ? getYoutubeId(videoNews.youtubeUrl) : "";
+
+  const videoImage = videoNews?.thumbnail
+    ? `${API}/uploads/images/${videoNews.thumbnail}`
+    : youtubeId
+      ? `https://img.youtube.com/vi/${youtubeId}/hqdefault.jpg`
+      : big_img;
+
+  const videoCategory = videoNews?.categories?.[0];
+
+  const videoCategoryUrl = videoCategory?.slug
+    ? `/category/${videoCategory.slug}`
+    : "#";
+
+  const videoNewsUrl = videoNews?.slug ? `/news/${videoNews.slug}` : "#";
+
+  // =========================
+  // OPEN VIDEO
+  // =========================
+  const openVideo = () => {
+    if (!youtubeId) return;
+
+    setVideoId(youtubeId);
+    setIsVideoOpen(true);
+  };
+
   return (
-    <div className="post_gallary_area theme3_bg mb40 padding-top-30">
-      <div className="container">
-        <div className="row">
-          {/* =========================
-              LEFT - STATIC
-          ========================== */}
-          <div className="col-lg-8 col-xl-6">
-            <div className="single_post post_type6 border-radious7 xs-mb30">
-              <div className="post_img gradient1">
-                <div className="img_wrap">
-                  <Link to="/">
-                    <img src={big_img} alt="big_img" />
-                  </Link>
+    <>
+      {/* =========================
+          VIDEO MODAL
+      ========================== */}
+      <ModalVideo
+        channel="youtube"
+        youtube={{ autoplay: 1 }}
+        isOpen={isVideoOpen}
+        videoId={videoId}
+        onClose={() => setIsVideoOpen(false)}
+      />
+
+      <div className="post_gallary_area theme3_bg mb40 padding-top-30">
+        <div className="container">
+          <div className="row">
+            {/* ==================================================
+                LEFT - DYNAMIC VIDEO NEWS
+            ================================================== */}
+            {/* ==================================================
+    LEFT - DYNAMIC VIDEO NEWS WITH AUTO PLAY
+================================================== */}
+            <div className="col-lg-8 col-xl-6">
+              <div className="single_post post_type6 border-radious7 xs-mb30">
+                <div className="post_img gradient1">
+                  <div className="img_wrap">
+                    {videoNews && youtubeId ? (
+                      <iframe
+                        width="100%"
+                        height="350"
+                        src={`https://www.youtube.com/embed/${youtubeId}?autoplay=1&mute=1&rel=0&playsinline=1`}
+                        title={videoNews.title}
+                        frameBorder="0"
+                        allow="autoplay; encrypted-media; picture-in-picture"
+                        allowFullScreen
+                        style={{
+                          width: "100%",
+                          height: "350px",
+                          objectFit: "cover",
+                          display: "block",
+                        }}
+                      />
+                    ) : (
+                      <img
+                        src={big_img}
+                        alt="Video News"
+                        style={{
+                          width: "100%",
+                          height: "350px",
+                          objectFit: "cover",
+                        }}
+                      />
+                    )}
+                  </div>
                 </div>
 
-                <span className="tranding">
-                  <FontAwesome name="play" />
-                </span>
-              </div>
+                <div className="single_post_text">
+                  <h4>
+                    {videoNews ? (
+                      <Link to={videoNewsUrl}>{videoNews.title}</Link>
+                    ) : (
+                      <Link to="/video_post1">Latest Video News</Link>
+                    )}
+                  </h4>
 
-              <div className="single_post_text">
-                <h4>
-                  <Link to="/video_post1">
-                    Japan’s virus success has puzzled the world. Is its luck
-                    running out?
-                  </Link>
-                </h4>
+                  <div className="space-5" />
 
-                <div className="space-5" />
+                  <p className="post-p">
+                    {videoNews?.description
+                      ? videoNews.description.length > 180
+                        ? `${videoNews.description.substring(0, 180)}...`
+                        : videoNews.description
+                      : "Watch the latest video news and updates."}
+                  </p>
 
-                <p className="post-p">
-                  The property, complete with 30-seat screening from room, a
-                  100-seat amphitheater and a swimming pond with sandy shower…
-                </p>
+                  <div className="space-20" />
 
-                <div className="space-20" />
+                  <div className="meta meta_separator1">
+                    <Link to={videoCategoryUrl}>
+                      {videoCategory?.name || "News"}
+                    </Link>
 
-                <div className="meta meta_separator1">
-                  <Link to="/">TECHNOLOGY</Link>
-                  <Link to="/">March 26, 2020</Link>
+                    <Link to={videoNewsUrl}>
+                      {videoNews?.createdAt
+                        ? new Date(videoNews.createdAt).toLocaleDateString(
+                            "en-IN",
+                            {
+                              day: "numeric",
+                              month: "short",
+                              year: "numeric",
+                            },
+                          )
+                        : "Latest"}
+                    </Link>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
 
-          {/* =========================
-              MIDDLE - DYNAMIC NEWS
-          ========================== */}
-          <div className="d-none d-xl-block col-xl-3">
-            <div className="white_bg padding15 border-radious5 sm-mt30">
-              {posts.length > 0 ? (
-                posts.map((item, i) => {
-                  const newsUrl = `/news/${item.slug}`;
+            {/* ==================================================
+                MIDDLE - DYNAMIC TEXT NEWS ONLY
+            ================================================== */}
+            <div className="d-none d-xl-block col-xl-3">
+              <div className="white_bg padding15 border-radious5 sm-mt30">
+                {textNews.length > 0 ? (
+                  textNews.map((item, i) => {
+                    const newsUrl = `/news/${item.slug}`;
 
-                  const category = item.categories?.[0];
+                    const category = item.categories?.[0];
 
-                  const categoryUrl = category?.slug
-                    ? `/category/${category.slug}`
-                    : "#";
+                    const categoryUrl = category?.slug
+                      ? `/category/${category.slug}`
+                      : "#";
 
-                  const image = item.thumbnail
-                    ? `${API}/uploads/images/${item.thumbnail}`
-                    : col21;
+                    const image = item.thumbnail
+                      ? `${API}/uploads/images/${item.thumbnail}`
+                      : col21;
 
-                  return (
-                    <div
-                      key={item._id}
-                      className="single_post type14 widgets_small"
-                    >
-                      {/* NEWS IMAGE */}
-                      <div className="post_img">
-                        <div className="img_wrap">
-                          <Link to={newsUrl}>
-                            <img
-                              src={image}
-                              alt={item.title}
-                              style={{
-                                width: "100%",
-                                height: "100px",
-                                objectFit: "cover",
-                              }}
-                            />
-                          </Link>
-                        </div>
-                      </div>
-
-                      {/* NEWS CONTENT */}
-                      <div className="single_post_text">
-                        <h4>
-                          <Link to={newsUrl}>
-                            {item.title?.length > 65
-                              ? `${item.title.substring(0, 65)}...`
-                              : item.title}
-                          </Link>
-                        </h4>
-
-                        <div className="meta4">
-                          <Link to={categoryUrl}>
-                            {category?.name || "News"}
-                          </Link>
+                    return (
+                      <div
+                        key={item._id}
+                        className="single_post type14 widgets_small"
+                      >
+                        {/* IMAGE */}
+                        <div className="post_img">
+                          <div className="img_wrap">
+                            <Link to={newsUrl}>
+                              <img
+                                src={image}
+                                alt={item.title}
+                                style={{
+                                  width: "100%",
+                                  height: "100px",
+                                  objectFit: "cover",
+                                }}
+                              />
+                            </Link>
+                          </div>
                         </div>
 
-                        {i + 1 < posts.length && (
-                          <>
-                            <div className="space-5" />
-                            <div className="border_black" />
-                            <div className="space-15" />
-                          </>
-                        )}
-                      </div>
-                    </div>
-                  );
-                })
-              ) : (
-                <p>Loading news...</p>
-              )}
-            </div>
-          </div>
+                        {/* CONTENT */}
+                        <div className="single_post_text">
+                          <h4>
+                            <Link to={newsUrl}>
+                              {item.title?.length > 65
+                                ? `${item.title.substring(0, 65)}...`
+                                : item.title}
+                            </Link>
+                          </h4>
 
-          {/* =========================
-              RIGHT - STATIC
-          ========================== */}
-          <div className="d-none d-lg-block col-lg-4 col-xl-3">
-            <div className="single_post post_type3 post_type15 mb30 border-radious5 sm-mt30">
-              <div className="post_img">
-                <div className="img_wrap">
-                  <Link to="/">
-                    <img src={col26} alt="col26" />
-                  </Link>
-                </div>
+                          <div className="meta4">
+                            <Link to={categoryUrl}>
+                              {category?.name || "News"}
+                            </Link>
+                          </div>
+
+                          {i + 1 < textNews.length && (
+                            <>
+                              <div className="space-5" />
+                              <div className="border_black" />
+                              <div className="space-15" />
+                            </>
+                          )}
+                        </div>
+                      </div>
+                    );
+                  })
+                ) : (
+                  <p>Loading news...</p>
+                )}
               </div>
+            </div>
 
-              <div className="single_post_text white_bg padding20">
-                <h4>
-                  <Link to="/post1">
-                    Japan’s virus puzzled the world luck running out?
-                  </Link>
-                </h4>
+            {/* ==================================================
+                RIGHT - STATIC
+            ================================================== */}
+            <div className="d-none d-lg-block col-lg-4 col-xl-3">
+              <div className="single_post post_type3 post_type15 mb30 border-radious5 sm-mt30">
+                <div className="post_img">
+                  <div className="img_wrap">
+                    <Link to="/">
+                      <img src={col26} alt="static news" />
+                    </Link>
+                  </div>
+                </div>
 
-                <div className="space-10" />
+                <div className="single_post_text white_bg padding20">
+                  <h4>
+                    <Link to="/post1">
+                      Japan’s virus puzzled the world luck running out?
+                    </Link>
+                  </h4>
 
-                <p className="post-p">
-                  The property, complete with 30-seat screening from room, a
-                  100-seat amphitheater and a swimming pond with sandy shower…
-                </p>
+                  <div className="space-10" />
 
-                <div className="space-20" />
+                  <p className="post-p">
+                    The property, complete with 30-seat screening from room, a
+                    100-seat amphitheater and a swimming pond with sandy shower…
+                  </p>
 
-                <div className="meta3">
-                  <Link to="/">TECHNOLOGY</Link>
-                  <Link to="/">March 26, 2020</Link>
+                  <div className="space-20" />
+
+                  <div className="meta3">
+                    <Link to="/">TECHNOLOGY</Link>
+
+                    <Link to="/">March 26, 2020</Link>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 
