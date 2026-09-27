@@ -122,7 +122,7 @@ const TrendingNewsTwo = () => {
             RIGHT - UP NEWS CAROUSEL
         ========================== */}
         <div className="col-md-6">
-          <TrendingCarousel news={upNews.slice(1)} />
+          <TrendingCarousel news={upNews.slice(0, 10)} />
         </div>
       </div>
     </div>

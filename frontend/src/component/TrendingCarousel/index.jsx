@@ -163,7 +163,7 @@ const TrendingCarousel = ({ news = [] }) => {
           const category = item.categories?.[0];
 
           const image = item.thumbnail
-            ? `https://api.hindustantvlive.com/uploads/images/${item.thumbnail}`
+            ? `https://api.iotaclasses.in/uploads/images/${item.thumbnail}`
             : "";
 
           return (
