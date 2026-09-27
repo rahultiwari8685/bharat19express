@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import FontAwesome from "../uiStyle/FontAwesome";
 import ModalVideo from "react-modal-video";
 
-const API = "https://api.hindustantvlive.com";
+const API = "https://api.iotaclasses.in";
 
 const VideoNews = () => {
   const [vModal, setVModal] = useState(false);
