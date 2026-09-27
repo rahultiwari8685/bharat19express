@@ -38,7 +38,7 @@ const LogoAreaTwo = () => {
 
             <div className="logo">
               <Link to="/">
-                <img src={logo} alt="logo" height={150} width={300} />
+                <img src={logo} alt="logo" height={100} width={300} />
               </Link>
             </div>
           </div>
