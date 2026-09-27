@@ -37,7 +37,7 @@ const TrendingNewsTwo = () => {
   if (!featuredNews) return null;
 
   const image = featuredNews.thumbnail
-    ? `https://api.hindustantvlive.com/uploads/images/${featuredNews.thumbnail}`
+    ? `https://api.iotaclasses.in/uploads/images/${featuredNews.thumbnail}`
     : "";
 
   const newsUrl = `/news/${featuredNews.slug}`;
