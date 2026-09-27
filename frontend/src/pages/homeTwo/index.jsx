@@ -62,7 +62,7 @@ function HomeTwo() {
               <Opinion />
             </div>
             <div className="col-lg-6 col-xl-4">
-              <Whatsnew title="Whats new" />
+              <Whatsnew title="Entertainment" />
             </div>
           </div>
         </div>
