@@ -181,7 +181,7 @@ const Whatsnew = ({ className, title }) => {
 
   const getWhatsNew = async () => {
     try {
-      const res = await fetch(`${API}/api/news/getAllNews?limit=15`);
+      const res = await fetch(`${API}/api/news/getAllNews?limit=10`);
       const data = await res.json();
 
       if (data.status && Array.isArray(data.data)) {
