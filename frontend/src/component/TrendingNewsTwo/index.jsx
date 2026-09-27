@@ -70,7 +70,7 @@ const TrendingCarousel = () => {
   const getUPNews = async () => {
     try {
       const res = await fetch(
-        "https://api.iotaclasses.in/api/news/category/6ab5133ae0146bb0a4a80e48?limit=10",
+        "https://api.iotaclasses.in/api/news/category/6ab5133ae0146bb0a4a80e48?limit=5",
       );
 
       const data = await res.json();
