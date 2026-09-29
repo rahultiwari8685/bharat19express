@@ -19,6 +19,7 @@ import Sports from "../../component/Sports";
 import International from "../../component/International";
 
 function HomeTwo() {
+  const categoryId = "6ab5133ae0146bb0a4a80e48";
   return (
     <>
       <PostGalleryTwo />
