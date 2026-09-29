@@ -56,7 +56,8 @@ function HomeTwo() {
         <div className="container">
           <div className="row">
             <div className="col-md-6 col-xl-3">
-              <WidgetTabTwo className="sm-mt0 md-mt0" />
+              {/* <WidgetTabTwo className="sm-mt0 md-mt0" /> */}
+              <WidgetTabTwo categoryId={categoryId} className="sm-mt0 md-mt0" />
             </div>
             <div className="col-md-6 col-xl-5 d-lg-none d-xl-block">
               <Opinion />

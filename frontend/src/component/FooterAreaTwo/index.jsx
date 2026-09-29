@@ -28,9 +28,12 @@ const FooterAreaTwo = () => {
                 <div className="space-20" />
               </div>
               <p>
-                <span>Newspark</span> vitae elementum ros. Pellentesquees Leo
-                sed mi ullamcorper tristique mauris varius. congue enim in arcu
-                maximus feugiat vitae ut quam finibus risus molestie viverra.
+                <span>Bharat 19 Express</span> एक भरोसेमंद हिंदी न्यूज़
+                प्लेटफॉर्म है, जहाँ आपको देश-दुनिया, राजनीति, मनोरंजन, खेल,
+                व्यापार, सामाजिक मुद्दों और हर जरूरी खबर की ताज़ा और तथ्यपरक
+                जानकारी मिलती है। हमारा उद्देश्य महत्वपूर्ण खबरों को सरल, स्पष्ट
+                और तेज़ तरीके से आप तक पहुँचाना है। भारत 19 एक्सप्रेस — एक कदम
+                आगे….
               </p>
             </div>
             {/* <div className="footer_contact">

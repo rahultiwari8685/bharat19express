@@ -262,7 +262,7 @@ WidgetTabPane.propTypes = {
 };
 
 const WidgetTabTwo = ({ categoryId, className, dark }) => {
-  const [activeTab, setActiveTab] = useState("1");
+  const [activeTab, setActiveTab] = useState("3");
 
   const [related, setRelated] = useState([]);
   const [latest, setLatest] = useState([]);
@@ -355,7 +355,6 @@ const WidgetTabTwo = ({ categoryId, className, dark }) => {
         className ? className : ""
       }`}
     >
-      {/* TABS */}
       <Nav tabs className="white_bg">
         <NavItem>
           <a
@@ -403,9 +402,7 @@ const WidgetTabTwo = ({ categoryId, className, dark }) => {
         </NavItem>
       </Nav>
 
-      {/* TAB CONTENT */}
       <TabContent activeTab={activeTab} className="padding15 white_bg">
-        {/* RELATED */}
         <TabPane tabId="1">
           {related.length > 0 ? (
             <WidgetTabPane dark={dark} a_id={activeTab} id="1" arr={related} />
@@ -418,7 +415,6 @@ const WidgetTabTwo = ({ categoryId, className, dark }) => {
           )}
         </TabPane>
 
-        {/* LATEST */}
         <TabPane tabId="2">
           {latest.length > 0 ? (
             <WidgetTabPane dark={dark} a_id={activeTab} id="2" arr={latest} />
@@ -429,7 +425,6 @@ const WidgetTabTwo = ({ categoryId, className, dark }) => {
           )}
         </TabPane>
 
-        {/* POPULAR */}
         <TabPane tabId="3">
           {popular.length > 0 ? (
             <WidgetTabPane dark={dark} a_id={activeTab} id="3" arr={popular} />

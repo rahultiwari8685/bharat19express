@@ -426,7 +426,7 @@ const PostGalleryTwo = () => {
             (a, b) =>
               new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
           )
-          .slice(0, 2);
+          .slice(0, 4);
 
         setTextNews(news);
       }
