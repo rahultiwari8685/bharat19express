@@ -348,18 +348,12 @@ const MainMenuTwo = () => {
     }
   };
 
-  // Parent categories
   const parentMenus = menuItems.filter((item) => item.parentCategory === null);
 
-  // Get children of parent category
   const getChildren = (parentId) => {
     return menuItems.filter((item) => item.parentCategory?._id === parentId);
   };
-
-  // Show first 7 categories
   const visibleMenus = parentMenus.slice(0, 7);
-
-  // Remaining categories
   const moreMenus = parentMenus.slice(7);
 
   return (
@@ -400,9 +394,8 @@ const MainMenuTwo = () => {
                         >
                           {children.length > 0 ? (
                             <>
-                              {/* Parent Category */}
                               <NavLink
-                                to={`/category/${parent.slug}`}
+                                to={`/category/${parent._id}`}
                                 className="menu-dropdown"
                               >
                                 {parent.name}
@@ -413,7 +406,7 @@ const MainMenuTwo = () => {
                               <ul className="dropdown-menu" role="menu">
                                 {children.map((child) => (
                                   <li key={child._id}>
-                                    <NavLink to={`/category/${child.slug}`}>
+                                    <NavLink to={`/category/${child._id}`}>
                                       {child.name}
                                     </NavLink>
                                   </li>
@@ -422,7 +415,7 @@ const MainMenuTwo = () => {
                             </>
                           ) : (
                             <NavLink
-                              to={`/category/${parent.slug}`}
+                              to={`/category/${parent._id}`}
                               className="menu-dropdown"
                             >
                               {parent.name}
@@ -455,7 +448,7 @@ const MainMenuTwo = () => {
                                   children.length > 0 ? "dropdown-submenu" : ""
                                 }
                               >
-                                <NavLink to={`/category/${parent.slug}`}>
+                                <NavLink to={`/category/${parent._id}`}>
                                   {parent.name}
                                 </NavLink>
 
@@ -464,7 +457,7 @@ const MainMenuTwo = () => {
                                   <ul className="dropdown-menu">
                                     {children.map((child) => (
                                       <li key={child._id}>
-                                        <NavLink to={`/category/${child.slug}`}>
+                                        <NavLink to={`/category/${child._id}`}>
                                           {child.name}
                                         </NavLink>
                                       </li>

@@ -164,7 +164,7 @@ const FooterAreaTwo = () => {
               <div className="space-15" />
               <div className="row">
                 <div className="col-lg-6">
-                  <h3 className="widget-title">Newspark app download</h3>
+                  <h3 className="widget-title">Bharat19Express app download</h3>
                   <p>Free sign & download, iOS & Android app</p>
                 </div>
                 <div className="col-lg-6">
