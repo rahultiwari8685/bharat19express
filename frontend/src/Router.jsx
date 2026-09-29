@@ -223,9 +223,14 @@ const router = createBrowserRouter([
         path: "contact",
         element: <HomeTwoContact />,
       },
+      // {
+      //   path: "post1",
+      //   element: <HomeTwoPost1 />,
+      // },
+
       {
-        path: "post1",
-        element: <HomeTwoPost1 />,
+        path: "/:categorySlug/:slug",
+        element: <Post1 />,
       },
       {
         path: "post2",
