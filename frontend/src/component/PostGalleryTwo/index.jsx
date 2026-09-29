@@ -426,7 +426,7 @@ const PostGalleryTwo = () => {
             (a, b) =>
               new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
           )
-          .slice(0, 4);
+          .slice(0, 3);
 
         setTextNews(news);
       }
@@ -639,8 +639,7 @@ const PostGalleryTwo = () => {
                   <div className="space-10" />
 
                   <p className="post-p">
-                    The property, complete with 30-seat screening from room, a
-                    100-seat amphitheater and a swimming pond with sandy shower…
+                    The property, complete with 30-seat screening from room.
                   </p>
 
                   <div className="space-20" />
