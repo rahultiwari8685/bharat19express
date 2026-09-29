@@ -33,7 +33,7 @@ const FooterAreaTwo = () => {
                 maximus feugiat vitae ut quam finibus risus molestie viverra.
               </p>
             </div>
-            <div className="footer_contact">
+            {/* <div className="footer_contact">
               <h3 className="widget-title2">Newspark news services</h3>
               <div className="single_fcontact">
                 <div className="fcicon">
@@ -53,11 +53,11 @@ const FooterAreaTwo = () => {
                 </div>
                 <Link to="/">Contact Newspark news</Link>
               </div>
-            </div>
+            </div> */}
             <div className="space-30" />
             <div className="border_black" />
             <div className="space-30" />
-            <div className="single_footer_nav mb30">
+            {/* <div className="single_footer_nav mb30">
               <h3 className="widget-title2">News categories</h3>
               <div className="row">
                 <div className="col-lg-6">
@@ -111,7 +111,7 @@ const FooterAreaTwo = () => {
                   </ul>
                 </div>
               </div>
-            </div>
+            </div> */}
             <div className="space-30" />
             <div className="border_black" />
             <div className="space-30" />
