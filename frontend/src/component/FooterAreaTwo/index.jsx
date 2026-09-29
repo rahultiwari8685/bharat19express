@@ -29,11 +29,8 @@ const FooterAreaTwo = () => {
               </div>
               <p>
                 <span>Bharat 19 Express</span> एक भरोसेमंद हिंदी न्यूज़
-                प्लेटफॉर्म है, जहाँ आपको देश-दुनिया, राजनीति, मनोरंजन, खेल,
-                व्यापार, सामाजिक मुद्दों और हर जरूरी खबर की ताज़ा और तथ्यपरक
-                जानकारी मिलती है। हमारा उद्देश्य महत्वपूर्ण खबरों को सरल, स्पष्ट
-                और तेज़ तरीके से आप तक पहुँचाना है। भारत 19 एक्सप्रेस — एक कदम
-                आगे….
+                प्लेटफॉर्म है, हमारा उद्देश्य महत्वपूर्ण खबरों को सरल, स्पष्ट और
+                तेज़ तरीके से आप तक पहुँचाना है।
               </p>
             </div>
             {/* <div className="footer_contact">
@@ -124,8 +121,8 @@ const FooterAreaTwo = () => {
             <div className="contacts3">
               <div className="single_contact3">
                 <h6>Let's Talk</h6>
-                <Link to="/">+41 27 966 26690</Link>
-                <Link to="/">+880 1945 381758</Link>
+                <Link to="/">+918542822407</Link>
+                <Link to="/">+918707386745</Link>
               </div>
               <div className="single_contact3">
                 <h6>Let's Chat</h6>
@@ -135,9 +132,9 @@ const FooterAreaTwo = () => {
               <div className="single_contact3">
                 <h6>Headquaters</h6>
                 <p>
-                  44 Canal Center Plaza #200
+                  Shop No. 8, Rail Nagar, Sector J,
                   <br />
-                  Alexandria, VA 22314, USA
+                  Ashiyana, Lucknow(UP)-226012
                 </p>
               </div>
             </div>
