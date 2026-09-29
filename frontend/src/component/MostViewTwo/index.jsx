@@ -158,7 +158,7 @@ const MostViewTwo = ({ title }) => {
   const getPopularNews = async () => {
     try {
       const res = await fetch(
-        "https://api.hindustantvlive.com/api/news/popular?limit=10",
+        "https://api.iotaclasses.in/api/news/popular?limit=10",
       );
 
       const data = await res.json();
@@ -204,7 +204,7 @@ const MostViewTwo = ({ title }) => {
             const newsUrl = `/news/${item.slug}`;
 
             const image = item.thumbnail
-              ? `https://api.hindustantvlive.com/uploads/images/${item.thumbnail}`
+              ? `https://api.iotaclasses.in/uploads/images/${item.thumbnail}`
               : "";
 
             return (

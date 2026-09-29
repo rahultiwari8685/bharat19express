@@ -62,7 +62,7 @@ app.get("/news/:slug", async (req, res) => {
 <meta property="og:title" content="${news.title}">
 <meta property="og:description" content="${news.metaDescription || news.subtitle || ""}">
 <meta property="og:image" content="${image}">
-<meta property="og:url" content="https://hindustantvlive.com/news/${news.slug}">
+<meta property="og:url" content="https://iotaclasses.in/news/${news.slug}">
 
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="${news.title}">
