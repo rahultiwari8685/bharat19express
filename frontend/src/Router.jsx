@@ -188,6 +188,10 @@ const router = createBrowserRouter([
         element: <HomeTwo />,
       },
       {
+        path: "category/:categoryId",
+        element: <Category />,
+      },
+      {
         path: "business",
         element: <HomeTwoBusiness />,
       },
