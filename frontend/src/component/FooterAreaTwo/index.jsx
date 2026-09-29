@@ -54,9 +54,9 @@ const FooterAreaTwo = () => {
                 <Link to="/">Contact Newspark news</Link>
               </div>
             </div> */}
-            <div className="space-30" />
+            {/* <div className="space-30" />
             <div className="border_black" />
-            <div className="space-30" />
+            <div className="space-30" /> */}
             {/* <div className="single_footer_nav mb30">
               <h3 className="widget-title2">News categories</h3>
               <div className="row">
@@ -112,9 +112,9 @@ const FooterAreaTwo = () => {
                 </div>
               </div>
             </div> */}
-            <div className="space-30" />
+            {/* <div className="space-30" />
             <div className="border_black" />
-            <div className="space-30" />
+            <div className="space-30" /> */}
             {/* <TwitterfeedTwo /> */}
           </div>
           <div className="col-lg-8 col-md-6">
