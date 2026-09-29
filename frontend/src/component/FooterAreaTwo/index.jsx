@@ -115,7 +115,7 @@ const FooterAreaTwo = () => {
             <div className="space-30" />
             <div className="border_black" />
             <div className="space-30" />
-            <TwitterfeedTwo />
+            {/* <TwitterfeedTwo /> */}
           </div>
           <div className="col-lg-8 col-md-6">
             <div className="contacts3">
@@ -141,7 +141,7 @@ const FooterAreaTwo = () => {
             <div className="space-30" />
             <div className="border_black" />
             <div className="space-30" />
-            <div className="row">
+            {/* <div className="row">
               <div className="col-lg-6">
                 <WidgetMorenews />
               </div>
@@ -157,7 +157,7 @@ const FooterAreaTwo = () => {
                   </Link>
                 </div>
               </div>
-            </div>
+            </div> */}
             <div className="download_btn">
               <div className="space-15" />
               <div className="border_black" />

@@ -345,51 +345,35 @@ import col21 from "../../assets/img/post-news/1.jpg";
 const PostGalleryTwo = () => {
   const API = "https://api.iotaclasses.in";
 
-  // =========================
-  // VIDEO NEWS
-  // =========================
   const [videoNews, setVideoNews] = useState(null);
   const [isVideoOpen, setIsVideoOpen] = useState(false);
   const [videoId, setVideoId] = useState("");
 
-  // =========================
-  // TEXT NEWS
-  // =========================
   const [textNews, setTextNews] = useState([]);
 
-  // =========================
-  // FETCH DATA
-  // =========================
   useEffect(() => {
     getVideoNews();
     getTextNews();
   }, []);
 
-  // =========================
-  // GET YOUTUBE ID
-  // =========================
   const getYoutubeId = (url) => {
     if (!url) return "";
 
     try {
       const parsedUrl = new URL(url);
 
-      // youtube.com/watch?v=
       if (parsedUrl.searchParams.get("v")) {
         return parsedUrl.searchParams.get("v");
       }
 
-      // youtu.be/xxxx
       if (parsedUrl.hostname.includes("youtu.be")) {
         return parsedUrl.pathname.replace("/", "");
       }
 
-      // youtube.com/shorts/xxxx
       if (parsedUrl.pathname.includes("/shorts/")) {
         return parsedUrl.pathname.split("/shorts/")[1].split("/")[0];
       }
 
-      // youtube.com/embed/xxxx
       if (parsedUrl.pathname.includes("/embed/")) {
         return parsedUrl.pathname.split("/embed/")[1].split("/")[0];
       }
@@ -400,9 +384,6 @@ const PostGalleryTwo = () => {
     }
   };
 
-  // =========================
-  // GET VIDEO NEWS
-  // =========================
   const getVideoNews = async () => {
     try {
       const res = await fetch(`${API}/api/news/videos?limit=10`);
@@ -427,9 +408,6 @@ const PostGalleryTwo = () => {
     }
   };
 
-  // =========================
-  // GET TEXT NEWS
-  // =========================
   const getTextNews = async () => {
     try {
       const res = await fetch(`${API}/api/news/getAllNews?limit=15`);
@@ -440,11 +418,8 @@ const PostGalleryTwo = () => {
       if (data.status) {
         const news = (data.data || [])
           .filter((item) => {
-            // Published news
             if (Number(item.type) !== 1) return false;
 
-            // Only text news
-            // videoType 2 = normal/text news
             return Number(item.videoType) === 2;
           })
           .sort(
@@ -460,9 +435,6 @@ const PostGalleryTwo = () => {
     }
   };
 
-  // =========================
-  // VIDEO DATA
-  // =========================
   const youtubeId = videoNews ? getYoutubeId(videoNews.youtubeUrl) : "";
 
   const videoImage = videoNews?.thumbnail
@@ -479,9 +451,6 @@ const PostGalleryTwo = () => {
 
   const videoNewsUrl = videoNews?.slug ? `/news/${videoNews.slug}` : "#";
 
-  // =========================
-  // OPEN VIDEO
-  // =========================
   const openVideo = () => {
     if (!youtubeId) return;
 
@@ -491,9 +460,6 @@ const PostGalleryTwo = () => {
 
   return (
     <>
-      {/* =========================
-          VIDEO MODAL
-      ========================== */}
       <ModalVideo
         channel="youtube"
         youtube={{ autoplay: 1 }}
@@ -582,9 +548,6 @@ const PostGalleryTwo = () => {
               </div>
             </div>
 
-            {/* ==================================================
-                MIDDLE - DYNAMIC TEXT NEWS ONLY
-            ================================================== */}
             <div className="d-none d-xl-block col-xl-3">
               <div className="white_bg padding15 border-radious5 sm-mt30">
                 {textNews.length > 0 ? (
@@ -656,9 +619,6 @@ const PostGalleryTwo = () => {
               </div>
             </div>
 
-            {/* ==================================================
-                RIGHT - STATIC
-            ================================================== */}
             <div className="d-none d-lg-block col-lg-4 col-xl-3">
               <div className="single_post post_type3 post_type15 mb30 border-radious5 sm-mt30">
                 <div className="post_img">

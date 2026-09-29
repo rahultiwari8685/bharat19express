@@ -56,9 +56,6 @@ const TrendingNewsTwo = () => {
       </div>
 
       <div className="row">
-        {/* =========================
-            LEFT - FEATURED NEWS
-        ========================== */}
         <div className="col-md-6">
           <div className="single_post post_type3 xs-mb90 post_type15">
             {/* IMAGE */}
@@ -118,9 +115,6 @@ const TrendingNewsTwo = () => {
           </div>
         </div>
 
-        {/* =========================
-            RIGHT - UP NEWS CAROUSEL
-        ========================== */}
         <div className="col-md-6">
           <TrendingCarousel news={upNews.slice(0, 10)} />
         </div>

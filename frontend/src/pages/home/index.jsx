@@ -15,7 +15,6 @@ import UpcomingMatches from "../../component/UpcomingMatches";
 import NewsLetter from "../../component/NewsLetter";
 import CategoriesWidget from "../../component/CategoriesWidget";
 
-// images
 import banner1 from "../../assets/img/ad/ad-1.png";
 import banner2 from "../../assets/img/ad/ad-2.jpg";
 import { Link } from "react-router-dom";

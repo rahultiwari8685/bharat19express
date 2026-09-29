@@ -19,10 +19,6 @@ const SportsNews = ({ dark }) => {
 
       const data = await res.json();
 
-      // if (data.status) {
-      //   setSportsNews(data.data);
-      // }
-
       if (data.status) {
         const videoPosts = data.data.filter((item) => item.videoType === 2);
 
