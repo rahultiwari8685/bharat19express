@@ -345,11 +345,13 @@ const MainMenuTwo = () => {
 
   useEffect(() => {
     getMenu();
-  }, []);
+  }, [i18n.resolvedLanguage]);
 
   const getMenu = async () => {
     try {
-      const res = await fetch(`${API}/api/categories/menu`);
+      const language = i18n.resolvedLanguage || "en";
+
+      const res = await fetch(`${API}/api/categories/menu?lang=${language}`);
       const data = await res.json();
 
       if (data.success) {
@@ -365,6 +367,7 @@ const MainMenuTwo = () => {
   const getChildren = (parentId) => {
     return menuItems.filter((item) => item.parentCategory?._id === parentId);
   };
+
   const visibleMenus = parentMenus.slice(0, 7);
   const moreMenus = parentMenus.slice(7);
 

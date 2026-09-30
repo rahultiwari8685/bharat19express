@@ -25,7 +25,7 @@ import MostShareWidget from "../../../component/MostShareWidget";
 import FollowUs from "../../../component/FollowUs";
 import BannerSection from "../../../component/BannerSection";
 import PostOnePagination from "../../../component/PostOnePagination";
-
+import { useTranslation } from "react-i18next";
 // images
 import banner2 from "../../../assets/img/ad/ad-2.jpg";
 import big2 from "../../../assets/img/post-thumb-4.png";
@@ -44,28 +44,56 @@ function Post1() {
   // const { slug } = useParams();
   const { categorySlug, slug } = useParams();
   const [news, setNews] = useState(null);
-
+  const { t, i18n } = useTranslation();
   const [banners, setBanners] = useState({});
+
+  // useEffect(() => {
+  //   const loadNews = async () => {
+  //     try {
+  //       const res = await fetch(`${API}/api/news/slug/${slug}`);
+  //       const data = await res.json();
+
+  //       if (data.status) {
+  //         setNews(data.data);
+
+  //         // Increase View
+  //         increaseView(data.data._id);
+  //       }
+  //     } catch (err) {
+  //       console.log(err);
+  //     }
+  //   };
+
+  //   loadNews();
+  // }, [slug]);
 
   useEffect(() => {
     const loadNews = async () => {
       try {
-        const res = await fetch(`${API}/api/news/slug/${slug}`);
+        setNews(null);
+
+        const language = i18n.resolvedLanguage || "en";
+
+        const res = await fetch(
+          `${API}/api/news/slug/${slug}?lang=${language}`,
+        );
+
         const data = await res.json();
 
         if (data.status) {
           setNews(data.data);
 
-          // Increase View
           increaseView(data.data._id);
         }
       } catch (err) {
-        console.log(err);
+        console.log("News Detail Error:", err);
       }
     };
 
-    loadNews();
-  }, [slug]);
+    if (slug) {
+      loadNews();
+    }
+  }, [slug, i18n.resolvedLanguage]);
 
   const getAdvertisements = async () => {
     try {
@@ -93,8 +121,12 @@ function Post1() {
     getAdvertisements();
   }, []);
 
+  // if (!news) {
+  //   return <h2 className="text-center mt-5">Loading...</h2>;
+  // }
+
   if (!news) {
-    return <h2 className="text-center mt-5">Loading...</h2>;
+    return <h2 className="text-center mt-5">{t("loading") || "Loading..."}</h2>;
   }
 
   const shareUrl = `https://api.iotaclasses.in/api/news/share/${news?.slug || ""}`;
@@ -145,7 +177,8 @@ function Post1() {
       <div className="archives post post1">
         <BreadCrumb
           className="shadow5 padding-top-10"
-          title={`${news.categories?.[0]?.name || "News"} / ${news.title}`}
+          // title={`${news.categories?.[0]?.name || "News"} / ${news.title}`}
+          title={`${news.categories?.[0]?.name || t("latest")} / ${news.title}`}
         />
         <span className="space-10" />
         <div className="container">
@@ -320,19 +353,20 @@ function Post1() {
               <div className="tags">
                 <ul className="inline">
                   <li className="tag_list">
-                    <FontAwesome name="tag" /> tags
+                    {/* <FontAwesome name="tag" /> tags */}
+                    <FontAwesome name="tag" /> {t("categories")}
                   </li>
                   {news.categories?.map((cat) => (
                     <li key={cat._id}>
                       <Link to={`/category/${cat._id}`}>{cat.name}</Link>
                     </li>
                   ))}
-                  <li>
+                  {/* <li>
                     <Link to="/">World</Link>
                   </li>
                   <li>
                     <Link to="/">Corona</Link>
-                  </li>
+                  </li> */}
                 </ul>
               </div>
               <div className="space-40" />
