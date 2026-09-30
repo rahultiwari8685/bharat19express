@@ -324,12 +324,24 @@ import React, { useEffect, useState } from "react";
 import FontAwesome from "../uiStyle/FontAwesome";
 import { NavLink } from "react-router-dom";
 import SidebarMenu from "../SidebarMenu";
+import { useTranslation } from "react-i18next";
 
 const MainMenuTwo = () => {
   const API = "https://api.iotaclasses.in";
 
+  const { t, i18n } = useTranslation();
+
   const [menuItems, setMenuItems] = useState([]);
   const [sideShow, setSideShow] = useState(false);
+
+  const getCategoryName = (category) => {
+    return (
+      category?.translations?.[i18n.resolvedLanguage] ||
+      category?.translations?.en ||
+      category?.name ||
+      ""
+    );
+  };
 
   useEffect(() => {
     getMenu();
@@ -378,7 +390,8 @@ const MainMenuTwo = () => {
                   <ul className="nav navbar-nav" id="scroll">
                     {/* HOME */}
                     <li className="nav-item">
-                      <NavLink to="/">Home</NavLink>
+                      {/* <NavLink to="/">Home</NavLink> */}
+                      <NavLink to="/">{t("home")}</NavLink>
                     </li>
 
                     {/* DYNAMIC CATEGORIES */}
@@ -398,7 +411,8 @@ const MainMenuTwo = () => {
                                 to={`/category/${parent._id}`}
                                 className="menu-dropdown"
                               >
-                                {parent.name}
+                                {/* {parent.name} */}
+                                {getCategoryName(parent)}
                                 <FontAwesome name="angle-down" />
                               </NavLink>
 
@@ -407,7 +421,8 @@ const MainMenuTwo = () => {
                                 {children.map((child) => (
                                   <li key={child._id}>
                                     <NavLink to={`/category/${child._id}`}>
-                                      {child.name}
+                                      {/* {child.name} */}
+                                      {getCategoryName(child)}
                                     </NavLink>
                                   </li>
                                 ))}
@@ -418,7 +433,8 @@ const MainMenuTwo = () => {
                               to={`/category/${parent._id}`}
                               className="menu-dropdown"
                             >
-                              {parent.name}
+                              {/* {parent.name} */}
+                              {getCategoryName(parent)}
                             </NavLink>
                           )}
                         </li>
@@ -433,7 +449,7 @@ const MainMenuTwo = () => {
                           onClick={(e) => e.preventDefault()}
                           className="menu-dropdown"
                         >
-                          More
+                          {t("more")}
                           <FontAwesome name="angle-down" />
                         </NavLink>
 
@@ -458,7 +474,8 @@ const MainMenuTwo = () => {
                                     {children.map((child) => (
                                       <li key={child._id}>
                                         <NavLink to={`/category/${child._id}`}>
-                                          {child.name}
+                                          {/* {child.name} */}
+                                          {getCategoryName(child)}
                                         </NavLink>
                                       </li>
                                     ))}
