@@ -5,6 +5,32 @@ import News from "../models/News.js";
 import { sendNotification } from "../services/sendNotification.js";
 import NotificationToken from "../models/NotificationToken.js";
 
+const SUPPORTED_LANGUAGES = ["en", "hi", "bn", "mr", "ta"];
+
+const getLanguage = (req) => {
+  const lang = req.query.lang || "en";
+
+  return SUPPORTED_LANGUAGES.includes(lang) ? lang : "en";
+};
+
+const applyTranslation = (news, lang = "en") => {
+  if (!news) return news;
+
+  const item = news.toObject ? news.toObject() : { ...news };
+
+  const translation = item.translations?.[lang] || {};
+
+  return {
+    ...item,
+
+    title: translation.title || item.title || "",
+
+    subtitle: translation.subtitle || item.subtitle || "",
+
+    content: translation.content || item.content || {},
+  };
+};
+
 export const createNews = async (req, res) => {
   try {
     const {
@@ -16,14 +42,32 @@ export const createNews = async (req, res) => {
       slug,
       type,
       scheduledAt,
+      translations,
     } = req.body;
+    // const {
+    //   title,
+    //   sub_title,
+    //   video_type,
+    //   youtube_url,
+    //   content,
+    //   slug,
+    //   type,
+    //   scheduledAt,
+    // } = req.body;
 
     let categories = [];
 
+    // try {
+    //   categories = JSON.parse(req.body.categories || "[]");
+    // } catch (err) {
+    //   categories = [];
+    // }
+    let parsedTranslations = {};
+
     try {
-      categories = JSON.parse(req.body.categories || "[]");
+      parsedTranslations = JSON.parse(req.body.translations || "{}");
     } catch (err) {
-      categories = [];
+      parsedTranslations = {};
     }
 
     categories = categories.map((id) => new mongoose.Types.ObjectId(id));
@@ -82,7 +126,7 @@ export const createNews = async (req, res) => {
       youtubeUrl: youtube_url || "",
 
       content: content || "",
-
+      translations: parsedTranslations,
       type: Number(type),
 
       scheduledAt: scheduledDate,
@@ -146,7 +190,11 @@ export const createNews = async (req, res) => {
 
 export const getNews = async (req, res) => {
   try {
+    // const { page = 1, limit } = req.query;
+
     const { page = 1, limit } = req.query;
+
+    const lang = getLanguage(req);
 
     const query = {
       type: 1, // Published News
@@ -169,13 +217,22 @@ export const getNews = async (req, res) => {
 
     const news = await newsQuery;
 
+    const translatedNews = news.map((item) => applyTranslation(item, lang));
+
     const total = await News.countDocuments(query);
+
+    // return res.status(200).json({
+    //   status: true,
+    //   total,
+    //   totalPages: limit ? Math.ceil(total / parseInt(limit)) : 1,
+    //   data: news,
+    // });
 
     return res.status(200).json({
       status: true,
       total,
       totalPages: limit ? Math.ceil(total / parseInt(limit)) : 1,
-      data: news,
+      data: translatedNews,
     });
   } catch (error) {
     return res.status(500).json({
@@ -240,7 +297,7 @@ export const getAllNewsByCategory = async (req, res) => {
   try {
     const { categoryId } = req.params;
     const { page = 1, limit = 6 } = req.query;
-
+    const lang = getLanguage(req);
     if (!mongoose.Types.ObjectId.isValid(categoryId)) {
       return res.status(400).json({
         status: false,
@@ -252,23 +309,26 @@ export const getAllNewsByCategory = async (req, res) => {
 
     const news = await News.find({
       categories: { $in: [categoryId] },
-      type: 1, // ✅ Only published news
+      type: 1,
     })
+
       .populate("categories", "name slug _id")
       .sort({ createdAt: -1 })
       .skip(skip)
       .limit(parseInt(limit));
 
+    const translatedNews = news.map((item) => applyTranslation(item, lang));
+
     const total = await News.countDocuments({
       categories: { $in: [categoryId] },
-      type: 1, // ✅ Only published news
+      type: 1,
     });
 
     return res.status(200).json({
       status: true,
       totalPages: Math.ceil(total / limit),
       total,
-      data: news,
+      data: translatedNews,
     });
   } catch (error) {
     console.error("Get News By Category Error:", error);
@@ -280,36 +340,12 @@ export const getAllNewsByCategory = async (req, res) => {
   }
 };
 
-// export const getNewsBySlug = async (req, res) => {
-//   try {
-//     const news = await News.findOne({ slug: req.params.slug })
-//       .populate("author", "name email profileImage")
-//       .populate("categories", "name slug _id");
-
-//     if (!news) {
-//       return res.status(404).json({
-//         status: false,
-//         message: "News not found",
-//       });
-//     }
-
-//     return res.status(200).json({
-//       status: true,
-//       data: news,
-//     });
-//   } catch (error) {
-//     return res.status(500).json({
-//       status: false,
-//       message: error.message,
-//     });
-//   }
-// };
-
 export const getNewsBySlug = async (req, res) => {
   try {
+    const lang = getLanguage(req);
+
     const oldSlug = req.params.slug;
 
-    // Permanent redirects for changed old slugs
     const slugRedirects = {
       "-2": "haryana-ko-mili-badi-jimmedari-cpa-zone-2-ki-karegi-mezbani",
 
@@ -320,7 +356,6 @@ export const getNewsBySlug = async (req, res) => {
       "up--": "up-mein-congress-spa-ka-hoga-safaya-keshav",
     };
 
-    // If old slug exists, redirect to new slug
     if (slugRedirects[oldSlug]) {
       const newSlug = slugRedirects[oldSlug];
 
@@ -342,8 +377,13 @@ export const getNewsBySlug = async (req, res) => {
 
     return res.status(200).json({
       status: true,
-      data: news,
+      data: applyTranslation(news, lang),
     });
+
+    // return res.status(200).json({
+    //   status: true,
+    //   data: news,
+    // });
   } catch (error) {
     console.error("Get News By Slug Error:", error);
 
@@ -356,6 +396,7 @@ export const getNewsBySlug = async (req, res) => {
 
 export const getNewsById = async (req, res) => {
   try {
+    const lang = getLanguage(req);
     const { id } = req.params;
 
     const news = await News.findById(id).populate("categories", "name slug");
@@ -369,7 +410,7 @@ export const getNewsById = async (req, res) => {
 
     return res.status(200).json({
       status: true,
-      data: news,
+      data: applyTranslation(news, lang),
     });
   } catch (error) {
     return res.status(500).json({
@@ -391,9 +432,9 @@ export const updateNews = async (req, res) => {
       slug,
       type,
       scheduledAt,
+      translations,
     } = req.body;
 
-    // ✅ SAFE PARSE
     let categories = [];
     try {
       categories = JSON.parse(req.body.categories || "[]");
@@ -401,7 +442,14 @@ export const updateNews = async (req, res) => {
       categories = [];
     }
 
-    // ✅ CONVERT TO OBJECTID
+    let parsedTranslations = {};
+
+    try {
+      parsedTranslations = JSON.parse(req.body.translations || "{}");
+    } catch (err) {
+      parsedTranslations = {};
+    }
+
     categories = categories.map((id) => new mongoose.Types.ObjectId(id));
 
     const existingNews = await News.findOne({
@@ -423,19 +471,39 @@ export const updateNews = async (req, res) => {
       subtitle: sub_title,
       categories,
       videoType: video_type,
+
+      translations: parsedTranslations,
+
       ...(slug && slug.trim() ? { slug: slug.trim() } : {}),
+
       youtubeUrl: youtube_url || "",
 
-      // ✅ update content
       content: content || "",
+
       scheduledAt: req.body.scheduledAt
         ? new Date(new Date(req.body.scheduledAt).getTime() - 19800000)
         : null,
+
       isScheduled: Number(type) === 3,
 
-      // ✅ publish draft
       type: Number(type),
     };
+
+    // const updateData = {
+    //   title,
+    //   subtitle: sub_title,
+    //   categories,
+    //   videoType: video_type,
+    //   ...(slug && slug.trim() ? { slug: slug.trim() } : {}),
+    //   youtubeUrl: youtube_url || "",
+
+    //   content: content || "",
+    //   scheduledAt: req.body.scheduledAt
+    //     ? new Date(new Date(req.body.scheduledAt).getTime() - 19800000)
+    //     : null,
+    //   isScheduled: Number(type) === 3,
+    //   type: Number(type),
+    // };
 
     if (req.file) {
       updateData.thumbnail = req.file.filename;
@@ -564,8 +632,26 @@ export const getAllNewsByAuthorId = async (req, res) => {
 
 export const autoSaveNews = async (req, res) => {
   try {
-    const { title, subtitle, categories, videoType, content, type, slug } =
-      req.body;
+    // const { title, subtitle, categories, videoType, content, type, slug } =
+    //   req.body;
+    const {
+      title,
+      subtitle,
+      categories,
+      videoType,
+      content,
+      type,
+      slug,
+      translations,
+    } = req.body;
+
+    let parsedTranslations = {};
+
+    try {
+      parsedTranslations = JSON.parse(req.body.translations || "{}");
+    } catch (err) {
+      parsedTranslations = {};
+    }
 
     if (Number(type) === 2) {
       console.log("Draft auto-save: translation skipped");
@@ -610,7 +696,7 @@ export const autoSaveNews = async (req, res) => {
       }
       draft.categories = parsedCategories;
       draft.videoType = videoType;
-
+      draft.translations = parsedTranslations;
       draft.content =
         typeof content === "string" ? content : JSON.stringify(content);
 
@@ -626,6 +712,7 @@ export const autoSaveNews = async (req, res) => {
         ...(slug && slug.trim() ? { slug: slug.trim() } : {}),
         categories: parsedCategories,
         videoType,
+        translations: parsedTranslations,
         content:
           typeof content === "string" ? content : JSON.stringify(content),
         type: 2,
@@ -672,9 +759,12 @@ export const increaseView = async (req, res) => {
 
 export const getTrendingNews = async (req, res) => {
   try {
+    // const { limit = 10 } = req.query;
+
     const { limit = 10 } = req.query;
 
-    // Last 7 days
+    const lang = getLanguage(req);
+
     const last7Days = new Date();
     last7Days.setDate(last7Days.getDate() - 7);
 
@@ -690,10 +780,12 @@ export const getTrendingNews = async (req, res) => {
       })
       .limit(parseInt(limit));
 
+    const translatedNews = news.map((item) => applyTranslation(item, lang));
+
     return res.status(200).json({
       status: true,
       total: news.length,
-      data: news,
+      data: translatedNews,
     });
   } catch (error) {
     return res.status(500).json({
@@ -706,7 +798,7 @@ export const getTrendingNews = async (req, res) => {
 export const getPopularNews = async (req, res) => {
   try {
     const { limit = 10 } = req.query;
-
+    const lang = getLanguage(req);
     const news = await News.find({
       type: 1,
     })
@@ -718,10 +810,12 @@ export const getPopularNews = async (req, res) => {
       })
       .limit(parseInt(limit));
 
+    const translatedNews = news.map((item) => applyTranslation(item, lang));
+
     return res.status(200).json({
       status: true,
       total: news.length,
-      data: news,
+      data: translatedNews,
     });
   } catch (error) {
     return res.status(500).json({
@@ -756,7 +850,7 @@ export const increaseShare = async (req, res) => {
 export const getMostSharedNews = async (req, res) => {
   try {
     const { limit = 5 } = req.query;
-
+    const lang = getLanguage(req);
     const news = await News.find({
       type: 1,
     })
@@ -768,10 +862,12 @@ export const getMostSharedNews = async (req, res) => {
       })
       .limit(parseInt(limit));
 
+    const translatedNews = news.map((item) => applyTranslation(item, lang));
+
     return res.status(200).json({
       status: true,
       total: news.length,
-      data: news,
+      data: translatedNews,
     });
   } catch (error) {
     return res.status(500).json({
@@ -783,8 +879,10 @@ export const getMostSharedNews = async (req, res) => {
 
 export const getVideoNews = async (req, res) => {
   try {
+    // const { page = 1, limit = 10 } = req.query;
     const { page = 1, limit = 10 } = req.query;
 
+    const lang = getLanguage(req);
     const skip = (page - 1) * limit;
 
     const news = await News.find({
@@ -804,11 +902,13 @@ export const getVideoNews = async (req, res) => {
       videoType: 1,
     });
 
+    const translatedNews = news.map((item) => applyTranslation(item, lang));
+
     return res.status(200).json({
       status: true,
       total,
       totalPages: Math.ceil(total / limit),
-      data: news,
+      data: translatedNews,
     });
   } catch (error) {
     return res.status(500).json({
@@ -821,7 +921,7 @@ export const getVideoNews = async (req, res) => {
 export const previousNextNews = async (req, res) => {
   try {
     const { id } = req.params;
-
+    const lang = getLanguage(req);
     const currentNews = await News.findById(id);
 
     if (!currentNews) {
@@ -836,14 +936,14 @@ export const previousNextNews = async (req, res) => {
       createdAt: { $lt: currentNews.createdAt },
     })
       .sort({ createdAt: -1 })
-      .select("_id title slug");
-
+      // .select("_id title slug");
+      .select("_id title subtitle slug translations");
     const next = await News.findOne({
       type: 1,
       createdAt: { $gt: currentNews.createdAt },
     })
       .sort({ createdAt: 1 })
-      .select("_id title slug");
+      .select("_id title subtitle slug translations");
 
     return res.json({
       success: true,
