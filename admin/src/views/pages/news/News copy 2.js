@@ -344,8 +344,8 @@
 //                 <CCol md={12}>
 //                   <CFormInput
 //                     type="text"
-//                     label="Hindi Title"
-//                     placeholder="Enter Hindi Title"
+//                     label="Title"
+//                     placeholder="Enter Title"
 //                     {...register('title')}
 //                     onChange={(e) => {
 //                       setValue('title', e.target.value)
@@ -369,8 +369,8 @@
 //                 <CCol md={6}>
 //                   <CFormInput
 //                     type="text"
-//                     label="Hindi Subtitle"
-//                     placeholder="Enter Hindi Subtitle"
+//                     label="Subtitle"
+//                     placeholder="Enter SubTitle"
 //                     {...register('subtitle')}
 //                   />
 //                   {errors.subtitle && (
@@ -1261,8 +1261,8 @@ const News = () => {
                 <CCol md={12}>
                   <CFormInput
                     type="text"
-                    label="Hindi Title"
-                    placeholder="Enter Hindi Title"
+                    label="Title"
+                    placeholder="Enter Title"
                     {...register('title')}
                     onChange={(e) => {
                       setValue('title', e.target.value)
@@ -1286,8 +1286,8 @@ const News = () => {
                 <CCol md={6}>
                   <CFormInput
                     type="text"
-                    label="Hindi Subtitle"
-                    placeholder="Enter Hindi Subtitle"
+                    label="Subtitle"
+                    placeholder="Enter SubTitle"
                     {...register('subtitle')}
                   />
                   {errors.subtitle && (
@@ -1356,11 +1356,122 @@ const News = () => {
                 </CCol>
               </CRow> */}
 
-              <div className="alert alert-info mb-4">
-                <strong>Automatic Translation:</strong> Hindi is the source language. English,
-                Bengali, Marathi and Tamil translations are generated automatically when the news is
-                saved.
-              </div>
+              <CCard className="border rounded-3 mb-4">
+                <CCardHeader className="fw-bold">News Translations</CCardHeader>
+                <CCardBody>
+                  <p className="text-muted small mb-3">
+                    English uses the main Title, Subtitle and Content fields. Add translations for
+                    Hindi, Bengali, Marathi and Tamil here.
+                  </p>
+
+                  <div className="d-flex flex-wrap gap-2 mb-3">
+                    {TRANSLATION_LANGUAGES.map((language) => (
+                      <CButton
+                        key={language.code}
+                        type="button"
+                        size="sm"
+                        color={
+                          activeTranslationLanguage === language.code ? 'primary' : 'secondary'
+                        }
+                        variant={
+                          activeTranslationLanguage === language.code ? undefined : 'outline'
+                        }
+                        onClick={() => setActiveTranslationLanguage(language.code)}
+                      >
+                        {language.label}
+                      </CButton>
+                    ))}
+                  </div>
+
+                  <CFormInput
+                    type="text"
+                    label={`Title (${
+                      TRANSLATION_LANGUAGES.find((item) => item.code === activeTranslationLanguage)
+                        ?.label
+                    })`}
+                    value={translations[activeTranslationLanguage]?.title || ''}
+                    onChange={(e) =>
+                      updateTranslation(activeTranslationLanguage, 'title', e.target.value)
+                    }
+                    className="mb-3"
+                  />
+
+                  <CFormInput
+                    type="text"
+                    label={`Subtitle (${
+                      TRANSLATION_LANGUAGES.find((item) => item.code === activeTranslationLanguage)
+                        ?.label
+                    })`}
+                    value={translations[activeTranslationLanguage]?.subtitle || ''}
+                    onChange={(e) =>
+                      updateTranslation(activeTranslationLanguage, 'subtitle', e.target.value)
+                    }
+                    className="mb-3"
+                  />
+
+                  <label className="form-label fw-semibold">
+                    Content (
+                    {
+                      TRANSLATION_LANGUAGES.find((item) => item.code === activeTranslationLanguage)
+                        ?.label
+                    }
+                    )
+                  </label>
+
+                  <Editor
+                    apiKey="okwya9fvn8y65h8ufs9cpsvbv2a4yo789vbfvbfr3rkfjp32"
+                    value={translations[activeTranslationLanguage]?.content || ''}
+                    onEditorChange={(newValue) =>
+                      updateTranslation(activeTranslationLanguage, 'content', newValue)
+                    }
+                    init={{
+                      height: 400,
+                      menubar: true,
+                      branding: false,
+                      plugins: [
+                        'advlist',
+                        'autolink',
+                        'lists',
+                        'link',
+                        'image',
+                        'charmap',
+                        'preview',
+                        'anchor',
+                        'searchreplace',
+                        'visualblocks',
+                        'code',
+                        'fullscreen',
+                        'insertdatetime',
+                        'media',
+                        'table',
+                        'wordcount',
+                      ],
+                      toolbar:
+                        'undo redo | styles | bold italic underline | ' +
+                        'alignleft aligncenter alignright alignjustify | ' +
+                        'bullist numlist outdent indent | link image media table | ' +
+                        'code fullscreen',
+                      images_upload_handler: async (blobInfo) => {
+                        const formData = new FormData()
+                        formData.append('file', blobInfo.blob(), blobInfo.filename())
+
+                        const response = await fetch(`${setting.api}/api/upload/image`, {
+                          method: 'POST',
+                          body: formData,
+                        })
+
+                        const result = await response.json()
+
+                        if (!response.ok) {
+                          throw new Error(result.message || 'Upload failed')
+                        }
+
+                        return result.location
+                      },
+                    }}
+                  />
+                </CCardBody>
+              </CCard>
 
               <CRow className="mb-3 mt-2">
                 {/* <CCol md={6}>

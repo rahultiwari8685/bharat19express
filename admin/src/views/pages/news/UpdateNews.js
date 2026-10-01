@@ -1,749 +1,8 @@
-// import React, { useState, useEffect } from 'react'
-// import { useForm } from 'react-hook-form'
-// import { yupResolver } from '@hookform/resolvers/yup'
-// import * as yup from 'yup'
-// import setting from '../../../setting.json'
-
-// import { useNavigate } from 'react-router-dom'
-
-// import {
-//   CCard,
-//   CCardBody,
-//   CForm,
-//   CFormInput,
-//   CFormSelect,
-//   CButton,
-//   CRow,
-//   CCol,
-//   CCardHeader,
-//   CFormCheck,
-//   CDropdown,
-//   CDropdownToggle,
-//   CDropdownMenu,
-//   CDropdownItem,
-// } from '@coreui/react'
-// import secureLocalStorage from 'react-secure-storage'
-// import { useParams } from 'react-router-dom'
-// import toast from 'react-hot-toast'
-// // import { CKEditor } from 'ckeditor4-react'
-
-// import { Editor } from '@tinymce/tinymce-react'
-
-// const schema = yup.object().shape({
-//   title: yup.string().required('Title is required'),
-//   subtitle: yup.string().required('Subtitle is required'),
-//   videoType: yup.string().required('Video source is required'),
-//   type: yup.string().required('Video source is required'),
-// })
-
-// const UpdateNews = () => {
-//   const { id } = useParams()
-
-//   const navigate = useNavigate()
-
-//   const [slugEdited, setSlugEdited] = useState(false)
-//   const [editingNews, setEditingNews] = useState(null)
-//   const [newsList, setNewsList] = useState([])
-//   const [categoriesList, setCategoryList] = useState([])
-
-//   const [content, setContent] = useState('')
-
-//   const {
-//     register,
-//     handleSubmit,
-//     reset,
-//     setValue,
-//     watch,
-//     formState: { errors },
-//   } = useForm({
-//     resolver: yupResolver(schema),
-//     defaultValues: {
-//       title: '',
-//       subtitle: '',
-//       categories: [],
-//       videoType: '',
-//       type: '',
-//       slug: '',
-//       youtubeUrl: '',
-//       videoFile: null,
-//       thumbnail: null,
-//     },
-//   })
-
-//   const getYouTubeId = (url) => {
-//     try {
-//       const parsedUrl = new URL(url)
-//       if (parsedUrl.hostname === 'youtu.be') {
-//         return parsedUrl.pathname.slice(1)
-//       }
-//       if (parsedUrl.searchParams.has('v')) {
-//         return parsedUrl.searchParams.get('v')
-//       }
-//       if (parsedUrl.pathname.includes('/embed/')) {
-//         return parsedUrl.pathname.split('/embed/')[1]
-//       }
-//     } catch (e) {
-//       return null
-//     }
-//     return null
-//   }
-
-//   const formDataValues = watch()
-
-//   const toggleCategory = (id) => {
-//     const alreadySelected = formDataValues.categories.includes(id)
-//     const newCategories = alreadySelected
-//       ? formDataValues.categories.filter((c) => c !== id)
-//       : [...formDataValues.categories, id]
-//     setValue('categories', newCategories)
-//   }
-
-//   const getAllCategory = async () => {
-//     await fetch(setting.api + '/api/categories/getAllCategory', {
-//       method: 'GET',
-//       mode: 'cors',
-//       headers: {
-//         'Content-Type': 'application/json',
-//         Authorization: 'Bearer ' + JSON.parse(secureLocalStorage.getItem('logininfo')).token,
-//       },
-//     })
-//       .then((response) => response.json())
-//       .then((u) => {
-//         if (u.status == false) {
-//           secureLocalStorage.clear()
-//           navigate('/login')
-//         } else {
-//           setCategoryList(u.data)
-//           console.log(u.data)
-//         }
-//       })
-//   }
-
-//   useEffect(() => {
-//     getAllCategory()
-//   }, [])
-
-//   const fetchNewsById = async () => {
-//     try {
-//       const loginInfo = JSON.parse(secureLocalStorage.getItem('logininfo') || '{}')
-//       const token = loginInfo.token
-
-//       const res = await fetch(`${setting.api}/api/news/id/${id}`, {
-//         method: 'GET',
-//         headers: {
-//           Authorization: 'Bearer ' + token,
-//         },
-//       })
-
-//       const result = await res.json()
-
-//       if (!result.status) {
-//         toast.error('News not found')
-
-//         return
-//       }
-
-//       const selected = result.data
-
-//       console.log('Selected News:', selected)
-
-//       setEditingNews(selected)
-
-//       reset({
-//         title: selected.title || '',
-//         slug: selected.slug || '',
-//         subtitle: selected.subtitle || '',
-
-//         type: selected.type ? String(selected.type) : '',
-//         videoType: selected.videoType ? String(selected.videoType) : '',
-
-//         youtubeUrl: selected.youtubeUrl || '',
-
-//         categories: Array.isArray(selected.categories) ? selected.categories.map((c) => c._id) : [],
-
-//         videoFile: null,
-//         thumbnail: null,
-//       })
-
-//       if (selected.content) {
-//         setContent(selected.content)
-//       }
-
-//       // if (selected.content) {
-//       //   try {
-//       //     const parsedContent =
-//       //       typeof selected.content === 'string' ? JSON.parse(selected.content) : selected.content
-
-//       //     setContent(parsedContent)
-//       //   } catch (err) {
-//       //     console.log('Content parse error:', err)
-//       //     setContent({})
-//       //   }
-//       // }
-//     } catch (error) {
-//       console.error('Error fetching news:', error)
-//     }
-//   }
-
-//   useEffect(() => {
-//     if (id) {
-//       fetchNewsById()
-//     }
-//   }, [id])
-
-//   const updateNews = async (data) => {
-//     const formData = new FormData()
-//     formData.append('id', id)
-
-//     formData.append('title', data.title)
-//     formData.append('sub_title', data.subtitle)
-//     formData.append('video_type', data.videoType)
-//     formData.append('type', data.type)
-//     formData.append('slug', data.slug)
-
-//     formData.append('categories', JSON.stringify(data.categories))
-
-//     if (data.videoType === '1') {
-//       formData.append('youtube_url', data.youtubeUrl)
-//     } else if (data.videoType === '2') {
-//       formData.append('content', content)
-
-//       if (data.thumbnail?.[0]) formData.append('thumbnail', data.thumbnail[0])
-//     }
-
-//     let endpoint = '/api/news/updateNews'
-
-//     try {
-//       const res = await fetch(setting.api + endpoint, {
-//         method: 'POST',
-//         body: formData,
-//         headers: {
-//           Authorization: 'Bearer ' + JSON.parse(secureLocalStorage.getItem('logininfo')).token,
-//         },
-//       })
-
-//       const result = await res.json()
-//       console.log('News API response:', result)
-
-//       if (result.status) {
-//         toast.success('News Updated Successfully!')
-//         reset({
-//           title: '',
-//           slug: '',
-//           subtitle: '',
-//           categories: [],
-//           videoType: '',
-//           type: '',
-//           youtubeUrl: '',
-//           thumbnail: null,
-//         })
-//         setEditingNews(null)
-//         navigate('/PublishedNews')
-//       } else {
-//         // alert(result.message || 'Failed to save news')
-//         toast.error(result.message || 'Failed to update news')
-//       }
-//     } catch (error) {
-//       toast.error(error.message || 'Something went wrong')
-//     }
-//   }
-
-//   useEffect(() => {
-//     if (editingNews?.content) {
-//       setContent(editingNews.content)
-//     }
-//   }, [editingNews])
-
-//   return (
-//     <div className="d-flex flex-column flex-lg-row gap-4">
-//       <CCol lg={formDataValues.videoType === '1' ? 8 : 12}>
-//         <CCard className="shadow border-0 rounded-4">
-//           <CCardHeader className="bg-dark text-white fw-bold px-4 py-3 shadow-sm">
-//             <h5 className="mb-0">Update News</h5>
-//           </CCardHeader>
-
-//           <CCardBody>
-//             <CForm onSubmit={handleSubmit(updateNews)}>
-//               <CRow className="mb-3">
-//                 <CCol md={12}>
-//                   <CFormInput
-//                     type="text"
-//                     label="Title"
-//                     placeholder="Enter Title"
-//                     {...register('title')}
-//                     onChange={(e) => {
-//                       setValue('title', e.target.value)
-//                       setSlugEdited(false)
-//                     }}
-//                   />
-//                   {errors.title && <small className="text-danger">{errors.title.message}</small>}
-//                 </CCol>
-//               </CRow>
-
-//               <CRow className="mb-3">
-//                 <CCol md={6}>
-//                   <CFormInput
-//                     type="text"
-//                     label="Slug"
-//                     placeholder="Update Slug"
-//                     {...register('slug')}
-//                     onChange={(e) => {
-//                       setValue('slug', e.target.value)
-//                       setSlugEdited(true)
-//                     }}
-//                   />
-//                   {errors.slug && <small className="text-danger">{errors.slug.message}</small>}
-//                 </CCol>
-//                 <CCol md={6}>
-//                   <CFormInput
-//                     type="text"
-//                     label="Subtitle"
-//                     placeholder="Enter SubTitle"
-//                     {...register('subtitle')}
-//                   />
-//                   {errors.subtitle && (
-//                     <small className="text-danger">{errors.subtitle.message}</small>
-//                   )}
-//                 </CCol>
-//               </CRow>
-//               <CRow>
-//                 <CCol md={12}>
-//                   <p className="mb-2 ">Select Categories</p>
-//                   <CDropdown>
-//                     <CDropdownToggle color="secondary">
-//                       {formDataValues.categories.length > 0
-//                         ? categoriesList
-//                             .filter((cat) => formDataValues.categories.includes(cat._id))
-//                             .map((cat) => cat.name)
-//                             .join(', ')
-//                         : 'Select Categories'}
-//                     </CDropdownToggle>
-//                     <CDropdownMenu>
-//                       {categoriesList.map((cat) => {
-//                         const isSelected = formDataValues.categories.includes(cat._id)
-//                         return (
-//                           <CDropdownItem key={cat._id}>
-//                             <CFormCheck
-//                               id={`cat-${cat._id}`}
-//                               label={cat.name}
-//                               checked={isSelected}
-//                               onChange={() => toggleCategory(cat._id)}
-//                             />
-//                           </CDropdownItem>
-//                         )
-//                       })}
-//                     </CDropdownMenu>
-//                   </CDropdown>
-//                 </CCol>
-//               </CRow>
-
-//               <CRow className="mb-3 mt-2">
-//                 <CCol md={6}>
-//                   <CFormSelect
-//                     label="Type"
-//                     {...register('type')}
-//                     value={formDataValues.type}
-//                     onChange={(e) => setValue('type', e.target.value)}
-//                   >
-//                     <option value="">Select Type</option>
-//                     <option value="1">Published</option>
-//                     <option value="2">Draft</option>
-//                   </CFormSelect>
-//                   {errors.type && <small className="text-danger">{errors.type.message}</small>}
-//                 </CCol>
-
-//                 <CCol md={6}>
-//                   <CFormSelect
-//                     label="News Type"
-//                     {...register('videoType')}
-//                     value={formDataValues.videoType}
-//                     onChange={(e) => setValue('videoType', e.target.value)}
-//                   >
-//                     <option value="">Select Type</option>
-//                     <option value="1">Video</option>
-//                     <option value="2">Text</option>
-//                   </CFormSelect>
-//                   {errors.videoType && (
-//                     <small className="text-danger">{errors.videoType.message}</small>
-//                   )}
-//                 </CCol>
-//               </CRow>
-
-//               {formDataValues.videoType === '1' && (
-//                 <CFormInput
-//                   type="url"
-//                   label="YouTube URL"
-//                   {...register('youtubeUrl')}
-//                   placeholder="https://youtube.com/..."
-//                 />
-//               )}
-
-//               {formDataValues.videoType === '2' && (
-//                 <>
-//                   <CCol md={12} className="mb-2">
-//                     {formDataValues.videoType === '2' && (
-//                       <>
-//                         {/* <div
-//                           style={{
-//                             width: '100%',
-//                             height: '250px',
-//                             margin: '0 auto',
-
-//                             padding: '10px',
-//                             borderRadius: '8px',
-//                             overflowY: 'auto',
-//                           }}
-//                         >
-//                           <label className="fw-semibold mb-2">Description</label>
-//                           <EditorJSComponent data={content} onChange={setContent} />
-//                         </div> */}
-
-//                         <style>
-//                           {`
-//                                                         .cke_notification_warning {
-//                                                             display: none !important;
-//                                                         }
-//                                                         `}
-//                         </style>
-
-//                         {/* {editingNews && (
-//                           <CKEditor
-//                             key={editingNews._id}
-//                             initData={editingNews.content}
-//                             onChange={(event) => {
-//                               const data = event.editor.getData()
-//                               setContent(data)
-//                             }}
-//                             config={{
-//                               height: 400,
-
-//                               extraPlugins: 'font,colorbutton,justify',
-
-//                               toolbar: [
-//                                 {
-//                                   name: 'styles',
-//                                   items: ['Styles', 'Format', 'Font', 'FontSize'],
-//                                 },
-//                                 {
-//                                   name: 'basicstyles',
-//                                   items: ['Bold', 'Italic', 'Underline', 'Strike'],
-//                                 },
-//                                 {
-//                                   name: 'colors',
-//                                   items: ['TextColor', 'BGColor'],
-//                                 },
-//                                 {
-//                                   name: 'paragraph',
-//                                   items: [
-//                                     'NumberedList',
-//                                     'BulletedList',
-//                                     '-',
-//                                     'Outdent',
-//                                     'Indent',
-//                                     '-',
-//                                     'JustifyLeft',
-//                                     'JustifyCenter',
-//                                     'JustifyRight',
-//                                     'JustifyBlock',
-//                                   ],
-//                                 },
-//                                 {
-//                                   name: 'insert',
-//                                   items: ['Image', 'Table'],
-//                                 },
-//                                 {
-//                                   name: 'links',
-//                                   items: ['Link', 'Unlink'],
-//                                 },
-//                                 {
-//                                   name: 'document',
-//                                   items: ['Source'],
-//                                 },
-//                               ],
-
-//                               font_names:
-//                                 'Arial/Arial, Helvetica, sans-serif;' +
-//                                 'Times New Roman/Times New Roman, Times, serif;' +
-//                                 'Verdana/Verdana, Geneva, sans-serif;' +
-//                                 'Tahoma/Tahoma, Geneva, sans-serif;' +
-//                                 'Georgia/Georgia, serif;',
-
-//                               fontSize_sizes:
-//                                 '8/8px;10/10px;12/12px;14/14px;16/16px;18/18px;20/20px;24/24px;28/28px;36/36px;48/48px;72/72px',
-//                             }}
-//                           />
-//                         )} */}
-
-//                         {/* {editingNews && (
-//                           <CKEditor
-//                             key={editingNews._id}
-//                             editorUrl="https://cdn.ckeditor.com/4.22.1/full/ckeditor.js"
-//                             initData={content}
-//                             onChange={(event) => {
-//                               const html = event.editor.getData()
-
-//                               setContent(html)
-
-//                               setValue('description', html, {
-//                                 shouldValidate: true,
-//                                 shouldDirty: true,
-//                               })
-//                             }}
-//                             config={{
-//                               versionCheck: false,
-//                               height: 400,
-//                               allowedContent: true,
-//                               autoParagraph: false,
-//                               removePlugins: 'resize,elementspath',
-//                               extraPlugins: 'font,colorbutton,justify',
-//                               disableNativeSpellChecker: false,
-//                               toolbarCanCollapse: false,
-
-//                               toolbar: [
-//                                 {
-//                                   name: 'styles',
-//                                   items: ['Styles', 'Format', 'Font', 'FontSize'],
-//                                 },
-//                                 {
-//                                   name: 'basicstyles',
-//                                   items: ['Bold', 'Italic', 'Underline', 'Strike'],
-//                                 },
-//                                 {
-//                                   name: 'colors',
-//                                   items: ['TextColor', 'BGColor'],
-//                                 },
-//                                 {
-//                                   name: 'paragraph',
-//                                   items: [
-//                                     'NumberedList',
-//                                     'BulletedList',
-//                                     'Outdent',
-//                                     'Indent',
-//                                     'JustifyLeft',
-//                                     'JustifyCenter',
-//                                     'JustifyRight',
-//                                     'JustifyBlock',
-//                                   ],
-//                                 },
-//                                 {
-//                                   name: 'insert',
-//                                   items: ['Image', 'Table'],
-//                                 },
-//                                 {
-//                                   name: 'links',
-//                                   items: ['Link', 'Unlink'],
-//                                 },
-//                                 {
-//                                   name: 'document',
-//                                   items: ['Source'],
-//                                 },
-//                               ],
-//                             }}
-//                           />
-//                         )} */}
-
-//                         {editingNews && (
-//                           <Editor
-//                             apiKey="okwya9fvn8y65h8ufs9cpsvbv2a4yo789vbfvbfr3rkfjp32"
-//                             value={content}
-//                             onEditorChange={(newValue) => {
-//                               setContent(newValue)
-
-//                               setValue('description', newValue, {
-//                                 shouldValidate: true,
-//                                 shouldDirty: true,
-//                               })
-//                             }}
-//                             init={{
-//                               height: 600,
-//                               menubar: true,
-//                               branding: false,
-
-//                               plugins: [
-//                                 'advlist',
-//                                 'autolink',
-//                                 'lists',
-//                                 'link',
-//                                 'image',
-//                                 'charmap',
-//                                 'preview',
-//                                 'anchor',
-//                                 'searchreplace',
-//                                 'visualblocks',
-//                                 'code',
-//                                 'fullscreen',
-//                                 'insertdatetime',
-//                                 'media',
-//                                 'table',
-//                                 'wordcount',
-//                               ],
-
-//                               toolbar:
-//                                 'undo redo | styles | bold italic underline | ' +
-//                                 'alignleft aligncenter alignright alignjustify | ' +
-//                                 'bullist numlist outdent indent | ' +
-//                                 'link image media table | ' +
-//                                 'code fullscreen',
-
-//                               images_upload_handler: async (blobInfo) => {
-//                                 const formData = new FormData()
-
-//                                 formData.append('file', blobInfo.blob(), blobInfo.filename())
-
-//                                 const response = await fetch(`${setting.api}/api/upload/image`, {
-//                                   method: 'POST',
-//                                   body: formData,
-//                                 })
-
-//                                 const result = await response.json()
-
-//                                 if (!response.ok) {
-//                                   throw new Error(result.message)
-//                                 }
-
-//                                 return result.location
-//                               },
-//                             }}
-//                           />
-//                         )}
-
-//                         {errors.description && (
-//                           <p className="text-danger small mt-1">{errors.description.message}</p>
-//                         )}
-
-//                         {/* <CCol md={12} className="mb-3">
-//                           <CFormInput
-//                             type="file"
-//                             label="Thumbnail"
-//                             accept="image/*"
-//                             {...register('thumbnail')}
-//                           />
-//                         </CCol> */}
-
-//                         <CCol md={12} className="mb-3">
-//                           <CFormInput
-//                             type="file"
-//                             label="Thumbnail"
-//                             accept="image/*"
-//                             {...register('thumbnail')}
-//                           />
-
-//                           {/* Image Preview */}
-//                           {formDataValues.thumbnail?.[0] ? (
-//                             <div className="mt-3">
-//                               <img
-//                                 src={URL.createObjectURL(formDataValues.thumbnail[0])}
-//                                 alt="Preview"
-//                                 className="img-fluid rounded shadow"
-//                                 style={{
-//                                   maxHeight: '50px',
-//                                   objectFit: 'cover',
-//                                 }}
-//                               />
-//                             </div>
-//                           ) : editingNews?.thumbnail ? (
-//                             <div className="mt-3">
-//                               <img
-//                                 src={`${setting.api}/uploads/images/${editingNews.thumbnail}`}
-//                                 alt="Current Thumbnail"
-//                                 className="img-fluid rounded shadow"
-//                                 style={{
-//                                   maxHeight: '50px',
-//                                   objectFit: 'cover',
-//                                 }}
-//                               />
-//                             </div>
-//                           ) : null}
-//                         </CCol>
-//                       </>
-//                     )}
-//                   </CCol>
-//                 </>
-//               )}
-
-//               <div className="d-flex justify-content-end mt-4">
-//                 <CButton color="primary" type="submit">
-//                   {editingNews ? 'Update' : 'Publish'}
-//                 </CButton>
-//               </div>
-//             </CForm>
-//           </CCardBody>
-//         </CCard>
-//       </CCol>
-//       {formDataValues.videoType === '1' && (
-//         <CCol lg={4}>
-//           <CCard className="shadow border-0 rounded-4 text-dark">
-//             <CCardHeader className="bg-dark text-white fw-bold px-4 py-3 shadow-sm">
-//               <h5 className="mb-0">Live Preview</h5>
-//             </CCardHeader>
-//             <CCardBody>
-//               {formDataValues.title && (
-//                 <p>
-//                   <strong>Title:</strong> {formDataValues.title}
-//                 </p>
-//               )}
-//               {formDataValues.categories?.length > 0 && (
-//                 <p>
-//                   <strong>Categories:</strong>{' '}
-//                   {categoriesList
-//                     .filter((cat) => formDataValues.categories.includes(cat.id))
-//                     .map((cat) => cat.name)
-//                     .join(', ')}
-//                 </p>
-//               )}
-
-//               {formDataValues.videoType === '1' &&
-//                 formDataValues.youtubeUrl &&
-//                 (() => {
-//                   const videoId = getYouTubeId(formDataValues.youtubeUrl)
-//                   return videoId ? (
-//                     <iframe
-//                       width="100%"
-//                       height="250"
-//                       className="rounded mb-3"
-//                       src={`https://www.youtube.com/embed/${videoId}`}
-//                       title="YouTube Preview"
-//                       allowFullScreen
-//                     ></iframe>
-//                   ) : (
-//                     <p className="text-danger">Invalid YouTube URL</p>
-//                   )
-//                 })()}
-
-//               {formDataValues.videoType === '2' && formDataValues.videoFile?.[0] && (
-//                 <video width="100%" height="auto" className="rounded" controls>
-//                   <source src={URL.createObjectURL(formDataValues.videoFile[0])} />
-//                 </video>
-//               )}
-
-//               {formDataValues.videoType === 'self' && formDataValues.thumbnail?.[0] && (
-//                 <div className="mt-3">
-//                   <strong>Thumbnail:</strong>
-//                   <img
-//                     src={URL.createObjectURL(formDataValues.thumbnail[0])}
-//                     alt="Thumbnail"
-//                     className="img-fluid rounded mt-2"
-//                     style={{ maxHeight: '150px', objectFit: 'cover' }}
-//                   />
-//                 </div>
-//               )}
-//             </CCardBody>
-//           </CCard>
-//         </CCol>
-//       )}
-//     </div>
-//   )
-// }
-
-// export default UpdateNews
-
-import React, { useState, useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import setting from '../../../setting.json'
-
-import { useNavigate } from 'react-router-dom'
 
 import {
   CCard,
@@ -761,32 +20,22 @@ import {
   CDropdownMenu,
   CDropdownItem,
 } from '@coreui/react'
-import secureLocalStorage from 'react-secure-storage'
-import { useParams } from 'react-router-dom'
-import toast from 'react-hot-toast'
-// import { CKEditor } from 'ckeditor4-react'
 
+import secureLocalStorage from 'react-secure-storage'
+import { useNavigate, useParams } from 'react-router-dom'
+import toast from 'react-hot-toast'
 import { Editor } from '@tinymce/tinymce-react'
 
-const TRANSLATION_LANGUAGES = [
-  { code: 'hi', label: 'Hindi' },
-  { code: 'bn', label: 'Bengali' },
-  { code: 'mr', label: 'Marathi' },
-  { code: 'ta', label: 'Tamil' },
-]
-
-const emptyTranslations = {
-  hi: { title: '', subtitle: '', content: '' },
-  bn: { title: '', subtitle: '', content: '' },
-  mr: { title: '', subtitle: '', content: '' },
-  ta: { title: '', subtitle: '', content: '' },
-}
-
 const schema = yup.object().shape({
-  title: yup.string().required('Title is required'),
-  subtitle: yup.string().required('Subtitle is required'),
-  videoType: yup.string().required('Video source is required'),
-  type: yup.string().required('Video source is required'),
+  title: yup.string().required('Hindi Title is required'),
+
+  subtitle: yup.string().required('Hindi Subtitle is required'),
+
+  videoType: yup.string().required('News type is required'),
+
+  type: yup.string().required('News status is required'),
+
+  slug: yup.string().required('Slug is required'),
 })
 
 const UpdateNews = () => {
@@ -794,36 +43,17 @@ const UpdateNews = () => {
 
   const navigate = useNavigate()
 
-  const [slugEdited, setSlugEdited] = useState(false)
   const [editingNews, setEditingNews] = useState(null)
-  const [newsList, setNewsList] = useState([])
+
   const [categoriesList, setCategoryList] = useState([])
 
   const [content, setContent] = useState('')
-  const [translations, setTranslations] = useState(emptyTranslations)
-  const [activeTranslationLanguage, setActiveTranslationLanguage] = useState('hi')
 
-  const updateTranslation = (language, field, value) => {
-    setTranslations((prev) => ({
-      ...prev,
-      [language]: {
-        ...prev[language],
-        [field]: value,
-      },
-    }))
-  }
+  const [loading, setLoading] = useState(false)
 
-  const getTranslationsPayload = (values, englishContent) => ({
-    en: {
-      title: values.title || '',
-      subtitle: values.subtitle || '',
-      content: englishContent || '',
-    },
-    hi: translations.hi,
-    bn: translations.bn,
-    mr: translations.mr,
-    ta: translations.ta,
-  })
+  const [loginInfo, setLoginInfo] = useState(null)
+
+  const [thumbnailPreview, setThumbnailPreview] = useState(null)
 
   const {
     register,
@@ -834,6 +64,7 @@ const UpdateNews = () => {
     formState: { errors },
   } = useForm({
     resolver: yupResolver(schema),
+
     defaultValues: {
       title: '',
       subtitle: '',
@@ -847,237 +78,442 @@ const UpdateNews = () => {
     },
   })
 
-  const getYouTubeId = (url) => {
-    try {
-      const parsedUrl = new URL(url)
-      if (parsedUrl.hostname === 'youtu.be') {
-        return parsedUrl.pathname.slice(1)
-      }
-      if (parsedUrl.searchParams.has('v')) {
-        return parsedUrl.searchParams.get('v')
-      }
-      if (parsedUrl.pathname.includes('/embed/')) {
-        return parsedUrl.pathname.split('/embed/')[1]
-      }
-    } catch (e) {
-      return null
-    }
-    return null
-  }
-
   const formDataValues = watch()
 
-  const toggleCategory = (id) => {
-    const alreadySelected = formDataValues.categories.includes(id)
-    const newCategories = alreadySelected
-      ? formDataValues.categories.filter((c) => c !== id)
-      : [...formDataValues.categories, id]
-    setValue('categories', newCategories)
-  }
+  /*
+  |--------------------------------------------------------------------------
+  | LOGIN INFO
+  |--------------------------------------------------------------------------
+  */
+
+  useEffect(() => {
+    try {
+      const storedLogin = secureLocalStorage.getItem('logininfo')
+
+      if (storedLogin) {
+        const parsedLogin = typeof storedLogin === 'string' ? JSON.parse(storedLogin) : storedLogin
+
+        setLoginInfo(parsedLogin)
+      }
+    } catch (error) {
+      console.error('Invalid login information:', error)
+
+      secureLocalStorage.clear()
+
+      navigate('/login')
+    }
+  }, [navigate])
+
+  /*
+  |--------------------------------------------------------------------------
+  | GET CATEGORIES
+  |--------------------------------------------------------------------------
+  */
 
   const getAllCategory = async () => {
-    await fetch(setting.api + '/api/categories/getAllCategory', {
-      method: 'GET',
-      mode: 'cors',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: 'Bearer ' + JSON.parse(secureLocalStorage.getItem('logininfo')).token,
-      },
-    })
-      .then((response) => response.json())
-      .then((u) => {
-        if (u.status == false) {
-          secureLocalStorage.clear()
-          navigate('/login')
-        } else {
-          setCategoryList(u.data)
-          console.log(u.data)
-        }
+    try {
+      const token = loginInfo?.token
+
+      if (!token) {
+        return
+      }
+
+      const response = await fetch(`${setting.api}/api/categories/getAllCategory`, {
+        method: 'GET',
+
+        mode: 'cors',
+
+        headers: {
+          'Content-Type': 'application/json',
+
+          Authorization: 'Bearer ' + token,
+        },
       })
+
+      const result = await response.json()
+
+      if (result.status === false) {
+        secureLocalStorage.clear()
+
+        navigate('/login')
+
+        return
+      }
+
+      setCategoryList(result.data || [])
+    } catch (error) {
+      console.error('Category fetch failed:', error)
+    }
   }
 
   useEffect(() => {
+    if (!loginInfo?.token) {
+      return
+    }
+
     getAllCategory()
-  }, [])
+  }, [loginInfo?.token])
+
+  /*
+  |--------------------------------------------------------------------------
+  | CATEGORY SELECT
+  |--------------------------------------------------------------------------
+  */
+
+  const toggleCategory = (categoryId) => {
+    const currentCategories = formDataValues.categories || []
+
+    const alreadySelected = currentCategories.includes(categoryId)
+
+    const newCategories = alreadySelected
+      ? currentCategories.filter((id) => id !== categoryId)
+      : [...currentCategories, categoryId]
+
+    setValue('categories', newCategories, {
+      shouldDirty: true,
+    })
+  }
+
+  /*
+  |--------------------------------------------------------------------------
+  | YOUTUBE ID
+  |--------------------------------------------------------------------------
+  */
+
+  const getYouTubeId = (url) => {
+    try {
+      const parsedUrl = new URL(url)
+
+      if (parsedUrl.hostname === 'youtu.be') {
+        return parsedUrl.pathname.slice(1)
+      }
+
+      if (parsedUrl.searchParams.has('v')) {
+        return parsedUrl.searchParams.get('v')
+      }
+
+      if (parsedUrl.pathname.includes('/embed/')) {
+        return parsedUrl.pathname.split('/embed/')[1]
+      }
+
+      return null
+    } catch (error) {
+      return null
+    }
+  }
+
+  /*
+  |--------------------------------------------------------------------------
+  | FETCH NEWS
+  |--------------------------------------------------------------------------
+  |
+  | IMPORTANT:
+  |
+  | ?lang=hi ensures that the admin receives
+  | the Hindi source content.
+  |
+  */
 
   const fetchNewsById = async () => {
     try {
-      const loginInfo = JSON.parse(secureLocalStorage.getItem('logininfo') || '{}')
-      const token = loginInfo.token
+      if (!id) {
+        return
+      }
 
-      const res = await fetch(`${setting.api}/api/news/id/${id}`, {
+      const token = loginInfo?.token
+
+      if (!token) {
+        return
+      }
+
+      const response = await fetch(`${setting.api}/api/news/id/${id}?lang=hi`, {
         method: 'GET',
+
         headers: {
           Authorization: 'Bearer ' + token,
         },
       })
 
-      const result = await res.json()
+      const result = await response.json()
 
       if (!result.status) {
-        toast.error('News not found')
+        toast.error(result.message || 'News not found')
 
         return
       }
 
       const selected = result.data
 
-      console.log('Selected News:', selected)
+      console.log('Hindi News:', selected)
 
       setEditingNews(selected)
 
+      /*
+       * Fill form with Hindi source.
+       */
+
       reset({
         title: selected.title || '',
-        slug: selected.slug || '',
+
         subtitle: selected.subtitle || '',
 
-        type: selected.type ? String(selected.type) : '',
-        videoType: selected.videoType ? String(selected.videoType) : '',
+        slug: selected.slug || '',
+
+        type: selected.type !== undefined && selected.type !== null ? String(selected.type) : '',
+
+        videoType:
+          selected.videoType !== undefined && selected.videoType !== null
+            ? String(selected.videoType)
+            : '',
 
         youtubeUrl: selected.youtubeUrl || '',
 
-        categories: Array.isArray(selected.categories) ? selected.categories.map((c) => c._id) : [],
+        categories: Array.isArray(selected.categories)
+          ? selected.categories.map((category) => category?._id || category?.id || category)
+          : [],
 
         videoFile: null,
+
         thumbnail: null,
       })
 
-      const englishContent = selected.translations?.en?.content || selected.content || ''
+      /*
+       * Because the API request uses lang=hi,
+       * selected.content is Hindi content.
+       */
 
-      setContent(
-        typeof englishContent === 'string' ? englishContent : JSON.stringify(englishContent),
-      )
+      let hindiContent = selected.content || ''
 
-      setTranslations({
-        hi: {
-          title: selected.translations?.hi?.title || '',
-          subtitle: selected.translations?.hi?.subtitle || '',
-          content:
-            typeof selected.translations?.hi?.content === 'string'
-              ? selected.translations.hi.content
-              : selected.translations?.hi?.content
-                ? JSON.stringify(selected.translations.hi.content)
-                : '',
-        },
-        bn: {
-          title: selected.translations?.bn?.title || '',
-          subtitle: selected.translations?.bn?.subtitle || '',
-          content:
-            typeof selected.translations?.bn?.content === 'string'
-              ? selected.translations.bn.content
-              : selected.translations?.bn?.content
-                ? JSON.stringify(selected.translations.bn.content)
-                : '',
-        },
-        mr: {
-          title: selected.translations?.mr?.title || '',
-          subtitle: selected.translations?.mr?.subtitle || '',
-          content:
-            typeof selected.translations?.mr?.content === 'string'
-              ? selected.translations.mr.content
-              : selected.translations?.mr?.content
-                ? JSON.stringify(selected.translations.mr.content)
-                : '',
-        },
-        ta: {
-          title: selected.translations?.ta?.title || '',
-          subtitle: selected.translations?.ta?.subtitle || '',
-          content:
-            typeof selected.translations?.ta?.content === 'string'
-              ? selected.translations.ta.content
-              : selected.translations?.ta?.content
-                ? JSON.stringify(selected.translations.ta.content)
-                : '',
-        },
-      })
+      if (typeof hindiContent !== 'string') {
+        try {
+          hindiContent = JSON.stringify(hindiContent)
+        } catch (error) {
+          hindiContent = ''
+        }
+      }
 
-      // if (selected.content) {
-      //   try {
-      //     const parsedContent =
-      //       typeof selected.content === 'string' ? JSON.parse(selected.content) : selected.content
-
-      //     setContent(parsedContent)
-      //   } catch (err) {
-      //     console.log('Content parse error:', err)
-      //     setContent({})
-      //   }
-      // }
+      setContent(hindiContent)
     } catch (error) {
       console.error('Error fetching news:', error)
+
+      toast.error('Failed to load news')
     }
   }
 
   useEffect(() => {
-    if (id) {
-      fetchNewsById()
+    if (!id) {
+      return
     }
-  }, [id])
+
+    if (!loginInfo?.token) {
+      return
+    }
+
+    fetchNewsById()
+  }, [id, loginInfo?.token])
+
+  /*
+  |--------------------------------------------------------------------------
+  | THUMBNAIL PREVIEW
+  |--------------------------------------------------------------------------
+  */
+
+  useEffect(() => {
+    const file = formDataValues.thumbnail?.[0]
+
+    if (!file) {
+      setThumbnailPreview(null)
+
+      return
+    }
+
+    const objectUrl = URL.createObjectURL(file)
+
+    setThumbnailPreview(objectUrl)
+
+    return () => {
+      URL.revokeObjectURL(objectUrl)
+    }
+  }, [formDataValues.thumbnail])
+
+  /*
+  |--------------------------------------------------------------------------
+  | UPDATE NEWS
+  |--------------------------------------------------------------------------
+  |
+  | Hindi is sent as the source language.
+  |
+  | Backend automatically generates:
+  |
+  | English
+  | Bengali
+  | Marathi
+  | Tamil
+  |
+  */
 
   const updateNews = async (data) => {
-    const formData = new FormData()
-    formData.append('id', id)
-
-    formData.append('title', data.title)
-    formData.append('sub_title', data.subtitle)
-    formData.append('video_type', data.videoType)
-    formData.append('type', data.type)
-    formData.append('slug', data.slug)
-
-    formData.append('categories', JSON.stringify(data.categories))
-    formData.append('translations', JSON.stringify(getTranslationsPayload(data, content)))
-
-    if (data.videoType === '1') {
-      formData.append('youtube_url', data.youtubeUrl)
-    } else if (data.videoType === '2') {
-      formData.append('content', content)
-
-      if (data.thumbnail?.[0]) formData.append('thumbnail', data.thumbnail[0])
+    if (loading) {
+      return
     }
 
-    let endpoint = '/api/news/updateNews'
+    if (!id) {
+      toast.error('News ID is missing')
+
+      return
+    }
+
+    if (!loginInfo?.token) {
+      toast.error('Login session expired')
+
+      navigate('/login')
+
+      return
+    }
+
+    setLoading(true)
 
     try {
-      const res = await fetch(setting.api + endpoint, {
+      const formData = new FormData()
+
+      /*
+       * News ID
+       */
+
+      formData.append('id', id)
+
+      /*
+       * Hindi source title
+       */
+
+      formData.append('title', data.title || '')
+
+      /*
+       * Hindi source subtitle
+       */
+
+      formData.append('sub_title', data.subtitle || '')
+
+      /*
+       * News type
+       */
+
+      formData.append('video_type', data.videoType || '')
+
+      /*
+       * Status
+       */
+
+      formData.append('type', data.type || '')
+
+      /*
+       * Slug
+       */
+
+      formData.append('slug', data.slug || '')
+
+      /*
+       * Categories
+       */
+
+      formData.append('categories', JSON.stringify(data.categories || []))
+
+      /*
+       * Hindi content
+       */
+
+      if (data.videoType === '2') {
+        formData.append('content', content || '')
+      }
+
+      /*
+       * YouTube URL
+       */
+
+      if (data.videoType === '1') {
+        formData.append('youtube_url', data.youtubeUrl || '')
+      }
+
+      /*
+       * Hindi translation object.
+       *
+       * This tells the backend that Hindi
+       * is the source language.
+       *
+       * Backend will regenerate the other
+       * languages using Google Translate.
+       */
+
+      formData.append(
+        'translations',
+        JSON.stringify({
+          hi: {
+            title: data.title || '',
+
+            subtitle: data.subtitle || '',
+
+            content: data.videoType === '2' ? content || '' : '',
+          },
+        }),
+      )
+
+      /*
+       * New thumbnail
+       */
+
+      if (data.thumbnail?.[0]) {
+        formData.append('thumbnail', data.thumbnail[0])
+      }
+
+      /*
+       * Update API
+       */
+
+      const response = await fetch(`${setting.api}/api/news/updateNews`, {
         method: 'POST',
+
         body: formData,
+
         headers: {
-          Authorization: 'Bearer ' + JSON.parse(secureLocalStorage.getItem('logininfo')).token,
+          Authorization: 'Bearer ' + loginInfo.token,
         },
       })
 
-      const result = await res.json()
-      console.log('News API response:', result)
+      const result = await response.json()
 
-      if (result.status) {
-        toast.success('News Updated Successfully!')
-        reset({
-          title: '',
-          slug: '',
-          subtitle: '',
-          categories: [],
-          videoType: '',
-          type: '',
-          youtubeUrl: '',
-          thumbnail: null,
-        })
-        setTranslations(emptyTranslations)
-        setActiveTranslationLanguage('hi')
-        setEditingNews(null)
-        navigate('/PublishedNews')
-      } else {
-        // alert(result.message || 'Failed to save news')
+      console.log('Update News API response:', result)
+
+      if (!result.status) {
         toast.error(result.message || 'Failed to update news')
+
+        return
       }
+
+      /*
+       * Success
+       */
+
+      toast.success('News Updated Successfully!')
+
+      /*
+       * Navigate back.
+       */
+
+      navigate('/PublishedNews')
     } catch (error) {
-      toast.error(error.message || 'Something went wrong')
+      console.error('Update news error:', error)
+
+      toast.error(error.message || 'Something went wrong while updating news')
+    } finally {
+      setLoading(false)
     }
   }
 
-  useEffect(() => {
-    if (editingNews?.content) {
-      setContent(editingNews.content)
-    }
-  }, [editingNews])
+  /*
+  |--------------------------------------------------------------------------
+  | RENDER
+  |--------------------------------------------------------------------------
+  */
 
   return (
     <div className="d-flex flex-column flex-lg-row gap-4">
@@ -1088,22 +524,43 @@ const UpdateNews = () => {
           </CCardHeader>
 
           <CCardBody>
+            {/* =====================================================
+                AUTOMATIC TRANSLATION NOTICE
+            ====================================================== */}
+
+            <div className="alert alert-info mb-4">
+              <strong>Automatic Translation:</strong> Hindi is the source language. English,
+              Bengali, Marathi and Tamil translations are generated automatically when the news is
+              updated.
+            </div>
+
             <CForm onSubmit={handleSubmit(updateNews)}>
+              {/* ===================================================
+                  HINDI TITLE
+              ==================================================== */}
+
               <CRow className="mb-3">
                 <CCol md={12}>
                   <CFormInput
                     type="text"
-                    label="Title"
-                    placeholder="Enter Title"
+                    label="Hindi Title"
+                    placeholder="Enter Hindi Title"
                     {...register('title')}
-                    onChange={(e) => {
-                      setValue('title', e.target.value)
-                      setSlugEdited(false)
+                    onChange={(event) => {
+                      setValue('title', event.target.value, {
+                        shouldValidate: true,
+                        shouldDirty: true,
+                      })
                     }}
                   />
+
                   {errors.title && <small className="text-danger">{errors.title.message}</small>}
                 </CCol>
               </CRow>
+
+              {/* ===================================================
+                  SLUG + HINDI SUBTITLE
+              ==================================================== */}
 
               <CRow className="mb-3">
                 <CCol md={6}>
@@ -1112,172 +569,84 @@ const UpdateNews = () => {
                     label="Slug"
                     placeholder="Update Slug"
                     {...register('slug')}
-                    onChange={(e) => {
-                      setValue('slug', e.target.value)
-                      setSlugEdited(true)
+                    onChange={(event) => {
+                      setValue('slug', event.target.value, {
+                        shouldValidate: true,
+                        shouldDirty: true,
+                      })
                     }}
                   />
+
                   {errors.slug && <small className="text-danger">{errors.slug.message}</small>}
                 </CCol>
+
                 <CCol md={6}>
                   <CFormInput
                     type="text"
-                    label="Subtitle"
-                    placeholder="Enter SubTitle"
+                    label="Hindi Subtitle"
+                    placeholder="Enter Hindi Subtitle"
                     {...register('subtitle')}
+                    onChange={(event) => {
+                      setValue('subtitle', event.target.value, {
+                        shouldValidate: true,
+                        shouldDirty: true,
+                      })
+                    }}
                   />
+
                   {errors.subtitle && (
                     <small className="text-danger">{errors.subtitle.message}</small>
                   )}
                 </CCol>
               </CRow>
-              <CRow>
+
+              {/* ===================================================
+                  CATEGORIES
+              ==================================================== */}
+
+              <CRow className="mb-3">
                 <CCol md={12}>
-                  <p className="mb-2 ">Select Categories</p>
+                  <p className="mb-2">Select Categories</p>
+
                   <CDropdown>
                     <CDropdownToggle color="secondary">
-                      {formDataValues.categories.length > 0
+                      {formDataValues.categories?.length > 0
                         ? categoriesList
-                            .filter((cat) => formDataValues.categories.includes(cat._id))
-                            .map((cat) => cat.name)
+                            .filter((category) => formDataValues.categories.includes(category._id))
+                            .map((category) => category.name)
                             .join(', ')
                         : 'Select Categories'}
                     </CDropdownToggle>
+
                     <CDropdownMenu>
-                      {categoriesList.map((cat) => {
-                        const isSelected = formDataValues.categories.includes(cat._id)
-                        return (
-                          <CDropdownItem key={cat._id}>
-                            <CFormCheck
-                              id={`cat-${cat._id}`}
-                              label={cat.name}
-                              checked={isSelected}
-                              onChange={() => toggleCategory(cat._id)}
-                            />
-                          </CDropdownItem>
-                        )
-                      })}
+                      {categoriesList.length === 0 ? (
+                        <CDropdownItem disabled>No Categories Found</CDropdownItem>
+                      ) : (
+                        categoriesList.map((category) => {
+                          const isSelected = (formDataValues.categories || []).includes(
+                            category._id,
+                          )
+
+                          return (
+                            <CDropdownItem key={category._id}>
+                              <CFormCheck
+                                id={`cat-${category._id}`}
+                                label={category.name}
+                                checked={isSelected}
+                                onChange={() => toggleCategory(category._id)}
+                              />
+                            </CDropdownItem>
+                          )
+                        })
+                      )}
                     </CDropdownMenu>
                   </CDropdown>
                 </CCol>
               </CRow>
 
-              <CCard className="border rounded-3 mb-4">
-                <CCardHeader className="fw-bold">News Translations</CCardHeader>
-                <CCardBody>
-                  <p className="text-muted small mb-3">
-                    English uses the main Title, Subtitle and Content fields. Add translations for
-                    Hindi, Bengali, Marathi and Tamil here.
-                  </p>
-
-                  <div className="d-flex flex-wrap gap-2 mb-3">
-                    {TRANSLATION_LANGUAGES.map((language) => (
-                      <CButton
-                        key={language.code}
-                        type="button"
-                        size="sm"
-                        color={
-                          activeTranslationLanguage === language.code ? 'primary' : 'secondary'
-                        }
-                        variant={
-                          activeTranslationLanguage === language.code ? undefined : 'outline'
-                        }
-                        onClick={() => setActiveTranslationLanguage(language.code)}
-                      >
-                        {language.label}
-                      </CButton>
-                    ))}
-                  </div>
-
-                  <CFormInput
-                    type="text"
-                    label={`Title (${
-                      TRANSLATION_LANGUAGES.find((item) => item.code === activeTranslationLanguage)
-                        ?.label
-                    })`}
-                    value={translations[activeTranslationLanguage]?.title || ''}
-                    onChange={(e) =>
-                      updateTranslation(activeTranslationLanguage, 'title', e.target.value)
-                    }
-                    className="mb-3"
-                  />
-
-                  <CFormInput
-                    type="text"
-                    label={`Subtitle (${
-                      TRANSLATION_LANGUAGES.find((item) => item.code === activeTranslationLanguage)
-                        ?.label
-                    })`}
-                    value={translations[activeTranslationLanguage]?.subtitle || ''}
-                    onChange={(e) =>
-                      updateTranslation(activeTranslationLanguage, 'subtitle', e.target.value)
-                    }
-                    className="mb-3"
-                  />
-
-                  <label className="form-label fw-semibold">
-                    Content (
-                    {
-                      TRANSLATION_LANGUAGES.find((item) => item.code === activeTranslationLanguage)
-                        ?.label
-                    }
-                    )
-                  </label>
-
-                  <Editor
-                    apiKey="okwya9fvn8y65h8ufs9cpsvbv2a4yo789vbfvbfr3rkfjp32"
-                    value={translations[activeTranslationLanguage]?.content || ''}
-                    onEditorChange={(newValue) =>
-                      updateTranslation(activeTranslationLanguage, 'content', newValue)
-                    }
-                    init={{
-                      height: 400,
-                      menubar: true,
-                      branding: false,
-                      plugins: [
-                        'advlist',
-                        'autolink',
-                        'lists',
-                        'link',
-                        'image',
-                        'charmap',
-                        'preview',
-                        'anchor',
-                        'searchreplace',
-                        'visualblocks',
-                        'code',
-                        'fullscreen',
-                        'insertdatetime',
-                        'media',
-                        'table',
-                        'wordcount',
-                      ],
-                      toolbar:
-                        'undo redo | styles | bold italic underline | ' +
-                        'alignleft aligncenter alignright alignjustify | ' +
-                        'bullist numlist outdent indent | link image media table | ' +
-                        'code fullscreen',
-                      images_upload_handler: async (blobInfo) => {
-                        const formData = new FormData()
-                        formData.append('file', blobInfo.blob(), blobInfo.filename())
-
-                        const response = await fetch(`${setting.api}/api/upload/image`, {
-                          method: 'POST',
-                          body: formData,
-                        })
-
-                        const result = await response.json()
-
-                        if (!response.ok) {
-                          throw new Error(result.message || 'Upload failed')
-                        }
-
-                        return result.location
-                      },
-                    }}
-                  />
-                </CCardBody>
-              </CCard>
+              {/* ===================================================
+                  NEWS STATUS / NEWS TYPE
+              ==================================================== */}
 
               <CRow className="mb-3 mt-2">
                 <CCol md={6}>
@@ -1285,12 +654,21 @@ const UpdateNews = () => {
                     label="Type"
                     {...register('type')}
                     value={formDataValues.type}
-                    onChange={(e) => setValue('type', e.target.value)}
+                    onChange={(event) =>
+                      setValue('type', event.target.value, {
+                        shouldDirty: true,
+                      })
+                    }
                   >
                     <option value="">Select Type</option>
+
                     <option value="1">Published</option>
+
                     <option value="2">Draft</option>
+
+                    <option value="3">Scheduled</option>
                   </CFormSelect>
+
                   {errors.type && <small className="text-danger">{errors.type.message}</small>}
                 </CCol>
 
@@ -1299,17 +677,29 @@ const UpdateNews = () => {
                     label="News Type"
                     {...register('videoType')}
                     value={formDataValues.videoType}
-                    onChange={(e) => setValue('videoType', e.target.value)}
+                    onChange={(event) =>
+                      setValue('videoType', event.target.value, {
+                        shouldValidate: true,
+                        shouldDirty: true,
+                      })
+                    }
                   >
                     <option value="">Select Type</option>
-                    <option value="1">Video</option>
+
+                    <option value="1">Youtube Video</option>
+
                     <option value="2">Text</option>
                   </CFormSelect>
+
                   {errors.videoType && (
                     <small className="text-danger">{errors.videoType.message}</small>
                   )}
                 </CCol>
               </CRow>
+
+              {/* ===================================================
+                  YOUTUBE URL
+              ==================================================== */}
 
               {formDataValues.videoType === '1' && (
                 <CFormInput
@@ -1317,328 +707,192 @@ const UpdateNews = () => {
                   label="YouTube URL"
                   {...register('youtubeUrl')}
                   placeholder="https://youtube.com/..."
+                  className="mb-4"
                 />
               )}
 
+              {/* ===================================================
+                  HINDI CONTENT
+              ==================================================== */}
+
               {formDataValues.videoType === '2' && (
                 <>
-                  <CCol md={12} className="mb-2">
-                    {formDataValues.videoType === '2' && (
-                      <>
-                        {/* <div
+                  <div className="mb-4">
+                    <label className="form-label fw-semibold">Hindi Content</label>
+
+                    <Editor
+                      apiKey="okwya9fvn8y65h8ufs9cpsvbv2a4yo789vbfvbfr3rkfjp32"
+                      value={content}
+                      onEditorChange={(newValue) => {
+                        setContent(newValue)
+                      }}
+                      init={{
+                        height: 600,
+
+                        menubar: true,
+
+                        branding: false,
+
+                        plugins: [
+                          'advlist',
+                          'autolink',
+                          'lists',
+                          'link',
+                          'image',
+                          'charmap',
+                          'preview',
+                          'anchor',
+                          'searchreplace',
+                          'visualblocks',
+                          'code',
+                          'fullscreen',
+                          'insertdatetime',
+                          'media',
+                          'table',
+                          'wordcount',
+                        ],
+
+                        toolbar:
+                          'undo redo | styles | bold italic underline | ' +
+                          'alignleft aligncenter alignright alignjustify | ' +
+                          'bullist numlist outdent indent | ' +
+                          'link image media table | ' +
+                          'code fullscreen',
+
+                        images_upload_handler: async (blobInfo) => {
+                          const formData = new FormData()
+
+                          formData.append('file', blobInfo.blob(), blobInfo.filename())
+
+                          const response = await fetch(`${setting.api}/api/upload/image`, {
+                            method: 'POST',
+
+                            body: formData,
+                          })
+
+                          const result = await response.json()
+
+                          if (!response.ok) {
+                            throw new Error(result.message || 'Upload failed')
+                          }
+
+                          return result.location
+                        },
+
+                        images_reuse_filename: true,
+                      }}
+                    />
+                  </div>
+
+                  {/* =================================================
+                      THUMBNAIL
+                  ================================================== */}
+
+                  <CCol md={12} className="mb-4">
+                    <CFormInput
+                      type="file"
+                      label="Thumbnail"
+                      accept="image/*"
+                      {...register('thumbnail')}
+                    />
+
+                    {/* New thumbnail */}
+
+                    {thumbnailPreview && (
+                      <div className="mt-3">
+                        <p className="small fw-semibold mb-2">New Thumbnail</p>
+
+                        <img
+                          src={thumbnailPreview}
+                          alt="New Thumbnail"
+                          className="img-fluid rounded shadow"
                           style={{
-                            width: '100%',
-                            height: '250px',
-                            margin: '0 auto',
-
-                            padding: '10px',
-                            borderRadius: '8px',
-                            overflowY: 'auto',
+                            maxHeight: '150px',
+                            objectFit: 'cover',
                           }}
-                        >
-                          <label className="fw-semibold mb-2">Description</label>
-                          <EditorJSComponent data={content} onChange={setContent} />
-                        </div> */}
+                        />
+                      </div>
+                    )}
 
-                        <style>
-                          {`
-                                                        .cke_notification_warning {
-                                                            display: none !important;
-                                                        }
-                                                        `}
-                        </style>
+                    {/* Existing thumbnail */}
 
-                        {/* {editingNews && (
-                          <CKEditor
-                            key={editingNews._id}
-                            initData={editingNews.content}
-                            onChange={(event) => {
-                              const data = event.editor.getData()
-                              setContent(data)
-                            }}
-                            config={{
-                              height: 400,
+                    {!thumbnailPreview && editingNews?.thumbnail && (
+                      <div className="mt-3">
+                        <p className="small fw-semibold mb-2">Current Thumbnail</p>
 
-                              extraPlugins: 'font,colorbutton,justify',
-
-                              toolbar: [
-                                {
-                                  name: 'styles',
-                                  items: ['Styles', 'Format', 'Font', 'FontSize'],
-                                },
-                                {
-                                  name: 'basicstyles',
-                                  items: ['Bold', 'Italic', 'Underline', 'Strike'],
-                                },
-                                {
-                                  name: 'colors',
-                                  items: ['TextColor', 'BGColor'],
-                                },
-                                {
-                                  name: 'paragraph',
-                                  items: [
-                                    'NumberedList',
-                                    'BulletedList',
-                                    '-',
-                                    'Outdent',
-                                    'Indent',
-                                    '-',
-                                    'JustifyLeft',
-                                    'JustifyCenter',
-                                    'JustifyRight',
-                                    'JustifyBlock',
-                                  ],
-                                },
-                                {
-                                  name: 'insert',
-                                  items: ['Image', 'Table'],
-                                },
-                                {
-                                  name: 'links',
-                                  items: ['Link', 'Unlink'],
-                                },
-                                {
-                                  name: 'document',
-                                  items: ['Source'],
-                                },
-                              ],
-
-                              font_names:
-                                'Arial/Arial, Helvetica, sans-serif;' +
-                                'Times New Roman/Times New Roman, Times, serif;' +
-                                'Verdana/Verdana, Geneva, sans-serif;' +
-                                'Tahoma/Tahoma, Geneva, sans-serif;' +
-                                'Georgia/Georgia, serif;',
-
-                              fontSize_sizes:
-                                '8/8px;10/10px;12/12px;14/14px;16/16px;18/18px;20/20px;24/24px;28/28px;36/36px;48/48px;72/72px',
-                            }}
-                          />
-                        )} */}
-
-                        {/* {editingNews && (
-                          <CKEditor
-                            key={editingNews._id}
-                            editorUrl="https://cdn.ckeditor.com/4.22.1/full/ckeditor.js"
-                            initData={content}
-                            onChange={(event) => {
-                              const html = event.editor.getData()
-
-                              setContent(html)
-
-                              setValue('description', html, {
-                                shouldValidate: true,
-                                shouldDirty: true,
-                              })
-                            }}
-                            config={{
-                              versionCheck: false,
-                              height: 400,
-                              allowedContent: true,
-                              autoParagraph: false,
-                              removePlugins: 'resize,elementspath',
-                              extraPlugins: 'font,colorbutton,justify',
-                              disableNativeSpellChecker: false,
-                              toolbarCanCollapse: false,
-
-                              toolbar: [
-                                {
-                                  name: 'styles',
-                                  items: ['Styles', 'Format', 'Font', 'FontSize'],
-                                },
-                                {
-                                  name: 'basicstyles',
-                                  items: ['Bold', 'Italic', 'Underline', 'Strike'],
-                                },
-                                {
-                                  name: 'colors',
-                                  items: ['TextColor', 'BGColor'],
-                                },
-                                {
-                                  name: 'paragraph',
-                                  items: [
-                                    'NumberedList',
-                                    'BulletedList',
-                                    'Outdent',
-                                    'Indent',
-                                    'JustifyLeft',
-                                    'JustifyCenter',
-                                    'JustifyRight',
-                                    'JustifyBlock',
-                                  ],
-                                },
-                                {
-                                  name: 'insert',
-                                  items: ['Image', 'Table'],
-                                },
-                                {
-                                  name: 'links',
-                                  items: ['Link', 'Unlink'],
-                                },
-                                {
-                                  name: 'document',
-                                  items: ['Source'],
-                                },
-                              ],
-                            }}
-                          />
-                        )} */}
-
-                        {editingNews && (
-                          <Editor
-                            apiKey="okwya9fvn8y65h8ufs9cpsvbv2a4yo789vbfvbfr3rkfjp32"
-                            value={content}
-                            onEditorChange={(newValue) => {
-                              setContent(newValue)
-
-                              setValue('description', newValue, {
-                                shouldValidate: true,
-                                shouldDirty: true,
-                              })
-                            }}
-                            init={{
-                              height: 600,
-                              menubar: true,
-                              branding: false,
-
-                              plugins: [
-                                'advlist',
-                                'autolink',
-                                'lists',
-                                'link',
-                                'image',
-                                'charmap',
-                                'preview',
-                                'anchor',
-                                'searchreplace',
-                                'visualblocks',
-                                'code',
-                                'fullscreen',
-                                'insertdatetime',
-                                'media',
-                                'table',
-                                'wordcount',
-                              ],
-
-                              toolbar:
-                                'undo redo | styles | bold italic underline | ' +
-                                'alignleft aligncenter alignright alignjustify | ' +
-                                'bullist numlist outdent indent | ' +
-                                'link image media table | ' +
-                                'code fullscreen',
-
-                              images_upload_handler: async (blobInfo) => {
-                                const formData = new FormData()
-
-                                formData.append('file', blobInfo.blob(), blobInfo.filename())
-
-                                const response = await fetch(`${setting.api}/api/upload/image`, {
-                                  method: 'POST',
-                                  body: formData,
-                                })
-
-                                const result = await response.json()
-
-                                if (!response.ok) {
-                                  throw new Error(result.message)
-                                }
-
-                                return result.location
-                              },
-                            }}
-                          />
-                        )}
-
-                        {errors.description && (
-                          <p className="text-danger small mt-1">{errors.description.message}</p>
-                        )}
-
-                        {/* <CCol md={12} className="mb-3">
-                          <CFormInput
-                            type="file"
-                            label="Thumbnail"
-                            accept="image/*"
-                            {...register('thumbnail')}
-                          />
-                        </CCol> */}
-
-                        <CCol md={12} className="mb-3">
-                          <CFormInput
-                            type="file"
-                            label="Thumbnail"
-                            accept="image/*"
-                            {...register('thumbnail')}
-                          />
-
-                          {/* Image Preview */}
-                          {formDataValues.thumbnail?.[0] ? (
-                            <div className="mt-3">
-                              <img
-                                src={URL.createObjectURL(formDataValues.thumbnail[0])}
-                                alt="Preview"
-                                className="img-fluid rounded shadow"
-                                style={{
-                                  maxHeight: '50px',
-                                  objectFit: 'cover',
-                                }}
-                              />
-                            </div>
-                          ) : editingNews?.thumbnail ? (
-                            <div className="mt-3">
-                              <img
-                                src={`${setting.api}/uploads/images/${editingNews.thumbnail}`}
-                                alt="Current Thumbnail"
-                                className="img-fluid rounded shadow"
-                                style={{
-                                  maxHeight: '50px',
-                                  objectFit: 'cover',
-                                }}
-                              />
-                            </div>
-                          ) : null}
-                        </CCol>
-                      </>
+                        <img
+                          src={`${setting.api}/uploads/images/${editingNews.thumbnail}`}
+                          alt="Current Thumbnail"
+                          className="img-fluid rounded shadow"
+                          style={{
+                            maxHeight: '150px',
+                            objectFit: 'cover',
+                          }}
+                        />
+                      </div>
                     )}
                   </CCol>
                 </>
               )}
 
+              {/* ===================================================
+                  ACTION BUTTON
+              ==================================================== */}
+
               <div className="d-flex justify-content-end mt-4">
-                <CButton color="primary" type="submit">
-                  {editingNews ? 'Update' : 'Publish'}
+                <CButton color="primary" type="submit" disabled={loading}>
+                  {loading ? 'Updating...' : 'Update News'}
                 </CButton>
               </div>
             </CForm>
           </CCardBody>
         </CCard>
       </CCol>
+
+      {/* =============================================================
+          LIVE PREVIEW
+      ============================================================= */}
+
       {formDataValues.videoType === '1' && (
         <CCol lg={4}>
           <CCard className="shadow border-0 rounded-4 text-dark">
             <CCardHeader className="bg-dark text-white fw-bold px-4 py-3 shadow-sm">
               <h5 className="mb-0">Live Preview</h5>
             </CCardHeader>
+
             <CCardBody>
+              {/* Hindi title */}
+
               {formDataValues.title && (
                 <p>
-                  <strong>Title:</strong> {formDataValues.title}
+                  <strong>Hindi Title:</strong> {formDataValues.title}
                 </p>
               )}
+
+              {/* Categories */}
+
               {formDataValues.categories?.length > 0 && (
                 <p>
                   <strong>Categories:</strong>{' '}
                   {categoriesList
-                    .filter((cat) => formDataValues.categories.includes(cat.id))
-                    .map((cat) => cat.name)
+                    .filter((category) => formDataValues.categories.includes(category._id))
+                    .map((category) => category.name)
                     .join(', ')}
                 </p>
               )}
+
+              {/* YouTube preview */}
 
               {formDataValues.videoType === '1' &&
                 formDataValues.youtubeUrl &&
                 (() => {
                   const videoId = getYouTubeId(formDataValues.youtubeUrl)
-                  return videoId ? (
+
+                  if (!videoId) {
+                    return <p className="text-danger">Invalid YouTube URL</p>
+                  }
+
+                  return (
                     <iframe
                       width="100%"
                       height="250"
@@ -1646,29 +900,9 @@ const UpdateNews = () => {
                       src={`https://www.youtube.com/embed/${videoId}`}
                       title="YouTube Preview"
                       allowFullScreen
-                    ></iframe>
-                  ) : (
-                    <p className="text-danger">Invalid YouTube URL</p>
+                    />
                   )
                 })()}
-
-              {formDataValues.videoType === '2' && formDataValues.videoFile?.[0] && (
-                <video width="100%" height="auto" className="rounded" controls>
-                  <source src={URL.createObjectURL(formDataValues.videoFile[0])} />
-                </video>
-              )}
-
-              {formDataValues.videoType === 'self' && formDataValues.thumbnail?.[0] && (
-                <div className="mt-3">
-                  <strong>Thumbnail:</strong>
-                  <img
-                    src={URL.createObjectURL(formDataValues.thumbnail[0])}
-                    alt="Thumbnail"
-                    className="img-fluid rounded mt-2"
-                    style={{ maxHeight: '150px', objectFit: 'cover' }}
-                  />
-                </div>
-              )}
             </CCardBody>
           </CCard>
         </CCol>
