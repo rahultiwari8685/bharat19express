@@ -334,15 +334,6 @@ const MainMenuTwo = () => {
   const [menuItems, setMenuItems] = useState([]);
   const [sideShow, setSideShow] = useState(false);
 
-  // const getCategoryName = (category) => {
-  //   return (
-  //     category?.translations?.[i18n.resolvedLanguage] ||
-  //     category?.translations?.en ||
-  //     category?.name ||
-  //     ""
-  //   );
-  // };
-
   const getCategoryName = (category) => {
     const lang = i18n.resolvedLanguage || "en";
 
