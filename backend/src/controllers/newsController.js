@@ -4,7 +4,7 @@ import News from "../models/News.js";
 
 import { sendNotification } from "../services/sendNotification.js";
 import NotificationToken from "../models/NotificationToken.js";
-
+import { TranslationServiceClient } from "@google-cloud/translate";
 /*
 |--------------------------------------------------------------------------
 | Supported Languages
@@ -82,32 +82,25 @@ const applyTranslation = (news, lang = "en") => {
   };
 };
 
-/*
-|--------------------------------------------------------------------------
-| GOOGLE TRANSLATION
-|--------------------------------------------------------------------------
-|
-| Hindi is the SOURCE language.
-|
-| hi -> en
-| hi -> bn
-| hi -> mr
-| hi -> ta
-|
-*/
+const googleTranslationConfig = () => ({
+  projectIdConfigured: Boolean(process.env.GOOGLE_CLOUD_PROJECT_ID),
+  credentialsPathConfigured: Boolean(
+    process.env.GOOGLE_APPLICATION_CREDENTIALS,
+  ),
+});
 
 const generateGoogleTranslations = async ({ title, subtitle, content }) => {
-  const apiKey = process.env.GOOGLE_TRANSLATE_API_KEY;
+  const projectId = process.env.GOOGLE_CLOUD_PROJECT_ID;
+
+  if (!projectId) {
+    throw new Error(
+      "GOOGLE_CLOUD_PROJECT_ID is not configured in the backend .env file.",
+    );
+  }
 
   const normalizedContent = normalizeTranslationContent(content);
 
-  /*
-  |--------------------------------------------------------------------------
-  | Hindi source
-  |--------------------------------------------------------------------------
-  */
-
-  const base = {
+  const translations = {
     hi: {
       title: title || "",
       subtitle: subtitle || "",
@@ -115,94 +108,58 @@ const generateGoogleTranslations = async ({ title, subtitle, content }) => {
     },
   };
 
-  /*
-  |--------------------------------------------------------------------------
-  | API key not configured
-  |--------------------------------------------------------------------------
-  */
+  const translationClient = new TranslationServiceClient();
 
-  if (!apiKey) {
-    console.warn(
-      "GOOGLE_TRANSLATE_API_KEY is not configured. " +
-        "Hindi news saved without automatic translations.",
-    );
-
-    return base;
-  }
-
-  /*
-  |--------------------------------------------------------------------------
-  | Nothing to translate
-  |--------------------------------------------------------------------------
-  */
-
-  const sourceTexts = [title || "", subtitle || "", normalizedContent];
-
-  if (!sourceTexts.some((value) => value.trim())) {
-    return base;
-  }
-
-  const translated = {
-    ...base,
+  const sourceValues = {
+    title: title || "",
+    subtitle: subtitle || "",
+    content: normalizedContent,
   };
-
-  /*
-  |--------------------------------------------------------------------------
-  | Translate all target languages
-  |--------------------------------------------------------------------------
-  */
 
   for (const target of TRANSLATION_TARGETS) {
     try {
       console.log(`Translating Hindi news: hi -> ${target}`);
 
-      const params = new URLSearchParams();
+      const contents = [
+        sourceValues.title,
+        sourceValues.subtitle,
+        sourceValues.content,
+      ];
 
-      params.append("key", apiKey);
-      params.append("source", "hi");
-      params.append("target", target);
-      params.append("format", "html");
-
-      sourceTexts.forEach((value) => {
-        params.append("q", value);
+      const [response] = await translationClient.translateText({
+        parent: `projects/${projectId}/locations/global`,
+        contents,
+        mimeType: "text/html",
+        sourceLanguageCode: "hi",
+        targetLanguageCode: target,
       });
 
-      const response = await axios.post(
-        "https://translation.googleapis.com/language/translate/v2",
-        params.toString(),
-        {
-          headers: {
-            "Content-Type": "application/x-www-form-urlencoded",
-          },
+      const values = response?.translations || [];
 
-          timeout: 30000,
-        },
-      );
-
-      const values = response.data?.data?.translations || [];
-
-      translated[target] = {
+      translations[target] = {
         title: values[0]?.translatedText || "",
-
         subtitle: values[1]?.translatedText || "",
-
         content: values[2]?.translatedText || "",
       };
 
-      console.log(`Translation completed: hi -> ${target}`);
-    } catch (error) {
-      console.error(
-        `Google Translation failed for ${target}:`,
-        error.response?.data || error.message,
+      console.log(
+        `Translation completed: hi -> ${target} | ` +
+          `title=${Boolean(translations[target].title)} | ` +
+          `subtitle=${Boolean(translations[target].subtitle)} | ` +
+          `content=${Boolean(translations[target].content)}`,
       );
+    } catch (error) {
+      console.error(`Google Translation failed for ${target}:`);
 
-      /*
-      |--------------------------------------------------------------------------
-      | Do not copy Hindi into another language.
-      |--------------------------------------------------------------------------
-      */
+      if (error?.message) {
+        console.error(error.message);
+      }
 
-      translated[target] = {
+      if (error?.details) {
+        console.error(error.details);
+      }
+
+      translations[target] = {
         title: "",
         subtitle: "",
         content: "",
@@ -210,14 +167,21 @@ const generateGoogleTranslations = async ({ title, subtitle, content }) => {
     }
   }
 
-  return translated;
+  return translations;
 };
 
-/*
-|--------------------------------------------------------------------------
-| CREATE NEWS
-|--------------------------------------------------------------------------
-*/
+const getTranslationStatus = (translations = {}) => {
+  return Object.fromEntries(
+    TRANSLATION_TARGETS.map((language) => [
+      language,
+      Boolean(
+        translations?.[language]?.title ||
+        translations?.[language]?.subtitle ||
+        translations?.[language]?.content,
+      ),
+    ]),
+  );
+};
 
 export const createNews = async (req, res) => {
   try {
@@ -805,7 +769,6 @@ export const updateNews = async (req, res) => {
       slug,
       type,
       scheduledAt,
-      translations,
     } = req.body;
 
     /*
@@ -860,24 +823,18 @@ export const updateNews = async (req, res) => {
     |--------------------------------------------------------------------------
     */
 
-    let parsedTranslations = news.translations || {};
+    // let parsedTranslations = news.translations || {};
 
-    /*
-    |--------------------------------------------------------------------------
-    | If translations are manually sent
-    |--------------------------------------------------------------------------
-    */
-
-    if (translations) {
-      try {
-        parsedTranslations =
-          typeof translations === "string"
-            ? JSON.parse(translations)
-            : translations;
-      } catch (error) {
-        console.error("Translation Parse Error:", error);
-      }
-    }
+    // if (translations) {
+    //   try {
+    //     parsedTranslations =
+    //       typeof translations === "string"
+    //         ? JSON.parse(translations)
+    //         : translations;
+    //   } catch (error) {
+    //     console.error("Translation Parse Error:", error);
+    //   }
+    // }
 
     /*
     |--------------------------------------------------------------------------
