@@ -79,7 +79,6 @@ const SubscriberRegister = () => {
         return;
       }
 
-      // Save login information
       localStorage.setItem(
         "logininfo",
         JSON.stringify({
@@ -88,11 +87,9 @@ const SubscriberRegister = () => {
         }),
       );
 
-      // Redirect after registration
       navigate("/");
     } catch (error) {
       console.error("Registration Error:", error);
-
       setError("Unable to connect to the server. Please try again.");
     } finally {
       setLoading(false);
@@ -108,18 +105,7 @@ const SubscriberRegister = () => {
           align-items: center;
           justify-content: center;
           padding: 40px 15px;
-          background:
-            radial-gradient(
-              circle at top left,
-              rgba(255, 193, 7, 0.18),
-              transparent 35%
-            ),
-            linear-gradient(
-              135deg,
-              #fff8e1 0%,
-              #ffffff 45%,
-              #fff3cd 100%
-            );
+          background: #fff8e1;
         }
 
         .subscriber-register-card {
@@ -129,7 +115,7 @@ const SubscriberRegister = () => {
           border-radius: 22px;
           padding: 38px;
           box-shadow: 0 20px 60px rgba(0, 0, 0, 0.12);
-          border: 1px solid rgba(0, 0, 0, 0.06);
+          border: 1px solid #eeeeee;
         }
 
         .register-logo {
@@ -141,7 +127,7 @@ const SubscriberRegister = () => {
           align-items: center;
           justify-content: center;
           background: #ffc107;
-          color: #111;
+          color: #111111;
           font-size: 27px;
           font-weight: 800;
         }
@@ -150,28 +136,29 @@ const SubscriberRegister = () => {
           text-align: center;
           font-size: 30px;
           font-weight: 800;
-          margin-bottom: 8px;
+          margin: 0 0 8px;
           color: #171717;
         }
 
         .register-subtitle {
           text-align: center;
-          color: #777;
-          margin-bottom: 28px;
+          color: #777777;
+          margin: 0 0 28px;
         }
 
         .register-label {
           display: block;
           font-size: 14px;
           font-weight: 600;
-          color: #333;
+          color: #333333;
           margin-bottom: 8px;
         }
 
         .register-input {
           width: 100%;
           height: 50px;
-          border: 1px solid #ddd;
+          box-sizing: border-box;
+          border: 1px solid #dddddd;
           border-radius: 12px;
           padding: 0 15px;
           font-size: 15px;
@@ -201,7 +188,7 @@ const SubscriberRegister = () => {
           border: none;
           border-radius: 12px;
           background: #ffc107;
-          color: #111;
+          color: #111111;
           font-size: 16px;
           font-weight: 700;
           cursor: pointer;
@@ -222,12 +209,12 @@ const SubscriberRegister = () => {
         .register-login {
           text-align: center;
           margin-top: 22px;
-          color: #777;
+          color: #777777;
           font-size: 14px;
         }
 
         .register-login a {
-          color: #111;
+          color: #111111;
           font-weight: 700;
           text-decoration: none;
         }
