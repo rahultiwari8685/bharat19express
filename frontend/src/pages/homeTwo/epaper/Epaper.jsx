@@ -1,12 +1,12 @@
 import React, { useEffect, useMemo, useState } from "react";
-
+import { useNavigate } from "react-router-dom";
 const API = "https://api.iotaclasses.in";
 
 const Epaper = () => {
   const [epapers, setEpapers] = useState([]);
   const [filter, setFilter] = useState("all");
   const [loading, setLoading] = useState(true);
-
+  const navigate = useNavigate();
   useEffect(() => {
     fetchEpapers();
   }, []);
@@ -522,6 +522,38 @@ const Epaper = () => {
                       {/* PDF BUTTON */}
 
                       {item.pdfFile && (
+                        <button
+                          type="button"
+                          onClick={() => navigate(`/epaper/read/${item._id}`)}
+                          style={{
+                            display: "inline-flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            gap: "7px",
+                            minHeight: "36px",
+                            padding: "0 14px",
+                            border: "none",
+                            borderRadius: "5px",
+                            background: "#151515",
+                            color: "#fff",
+                            fontSize: "12px",
+                            fontWeight: "700",
+                            cursor: "pointer",
+                            whiteSpace: "nowrap",
+                          }}
+                        >
+                          Read Epaper
+                          <span
+                            style={{
+                              fontSize: "16px",
+                            }}
+                          >
+                            →
+                          </span>
+                        </button>
+                      )}
+
+                      {/* {item.pdfFile && (
                         <a
                           href={getPdfUrl(item)}
                           target="_blank"
@@ -551,7 +583,7 @@ const Epaper = () => {
                             →
                           </span>
                         </a>
-                      )}
+                      )} */}
                     </div>
                   </div>
                 </article>

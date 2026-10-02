@@ -85,6 +85,7 @@ import Category from "./pages/home/category";
 import SubscriberLogin from "./pages/homeTwo/subscriberLogin";
 import SubscriberRegister from "./pages/homeTwo/subscriberRegister";
 import Epaper from "./pages/homeTwo/epaper/Epaper";
+import EpaperReader from "./pages/homeTwo/epaper/EpaperReader";
 const router = createBrowserRouter([
   // {
   //   path: "/",
@@ -193,6 +194,7 @@ const router = createBrowserRouter([
       { path: "/login", element: <SubscriberLogin /> },
       { path: "/register", element: <SubscriberRegister /> },
       { path: "/epaper", element: <Epaper /> },
+      { path: "/epaper/read/:id", element: <EpaperReader /> },
       {
         path: "business",
         element: <HomeTwoBusiness />,
