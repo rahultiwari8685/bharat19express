@@ -6,17 +6,33 @@ export const getActivePoll = async (req, res) => {
     const now = new Date();
 
     const poll = await Poll.findOne({
-      start_date: { $lte: now },
-      end_date: { $gte: now },
-    });
+      start_date: {
+        $lte: now,
+      },
+      end_date: {
+        $gte: now,
+      },
+      status: "active",
+    }).lean();
 
     if (!poll) {
-      return res.json({ success: true, data: null });
+      return res.json({
+        success: true,
+        data: null,
+      });
     }
 
-    res.json({ success: true, data: poll });
-  } catch (err) {
-    res.status(500).json({ success: false, message: err.message });
+    return res.json({
+      success: true,
+      data: poll,
+    });
+  } catch (error) {
+    console.error("Get Active Poll Error:", error);
+
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
   }
 };
 
@@ -25,21 +41,26 @@ export const votePoll = async (req, res) => {
     const { option_index } = req.body;
 
     if (option_index === undefined) {
-      return res
-        .status(400)
-        .json({ success: false, message: "Option required" });
+      return res.status(400).json({
+        success: false,
+        message: "Option required",
+      });
     }
 
     if (!req.user || !req.user.customerId) {
-      return res.status(401).json({ success: false, message: "Unauthorized" });
+      return res.status(401).json({
+        success: false,
+        message: "Unauthorized",
+      });
     }
 
     const poll = await Poll.findById(req.params.id);
 
     if (!poll) {
-      return res
-        .status(404)
-        .json({ success: false, message: "Poll not found" });
+      return res.status(404).json({
+        success: false,
+        message: "Poll not found",
+      });
     }
 
     const now = new Date();
@@ -51,48 +72,64 @@ export const votePoll = async (req, res) => {
       });
     }
 
-    if (option_index < 0 || option_index >= poll.options.length) {
-      return res
-        .status(400)
-        .json({ success: false, message: "Invalid option" });
+    if (poll.status !== "active") {
+      return res.status(400).json({
+        success: false,
+        message: "Poll is not active",
+      });
     }
 
-    // create vote (unique index should prevent duplicates)
+    if (option_index < 0 || option_index >= poll.options.length) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid option",
+      });
+    }
+
+    // Check duplicate vote
+    const existingVote = await PollVote.findOne({
+      poll_id: poll._id,
+      customer_id: req.user.customerId,
+    });
+
+    if (existingVote) {
+      return res.status(409).json({
+        success: false,
+        message: "You have already voted",
+      });
+    }
+
+    // Save vote
     await PollVote.create({
       poll_id: poll._id,
       customer_id: req.user.customerId,
       option_index,
     });
 
-    // atomic increment
-    await Poll.findByIdAndUpdate(req.params.id, {
-      $inc: { [`options.${option_index}.votes`]: 1 },
+    // Increase option vote count
+    await Poll.findByIdAndUpdate(poll._id, {
+      $inc: {
+        [`options.${option_index}.votes`]: 1,
+      },
     });
 
-    res.json({ success: true, message: "Vote submitted" });
-  } catch (err) {
-    res.status(400).json({
+    return res.json({
+      success: true,
+      message: "Vote submitted successfully",
+    });
+  } catch (error) {
+    console.error("========== POLL VOTE ERROR ==========");
+
+    console.error(error);
+
+    console.error("======================================");
+
+    return res.status(500).json({
       success: false,
-      message: err.code === 11000 ? "Already voted" : err.message,
+      message: error.message || "Failed to submit vote",
     });
   }
 };
-
-// export const pollResults = async (req, res) => {
-//   try {
-//     const poll = await Poll.findById(req.params.id);
-
-//     if (!poll) {
-//       return res
-//         .status(404)
-//         .json({ success: false, message: "Poll not found" });
-//     }
-
-//     res.json({ success: true, data: poll });
-//   } catch (err) {
-//     res.status(500).json({ success: false, message: err.message });
-//   }
-// };
 
 export const pollResults = async (req, res) => {
   try {
@@ -131,10 +168,12 @@ export const pollResults = async (req, res) => {
         options,
       },
     });
-  } catch (err) {
+  } catch (error) {
+    console.error("Poll Results Error:", error);
+
     return res.status(500).json({
       success: false,
-      message: err.message,
+      message: error.message,
     });
   }
 };

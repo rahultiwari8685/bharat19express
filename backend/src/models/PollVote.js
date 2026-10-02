@@ -19,10 +19,19 @@ const pollVoteSchema = new mongoose.Schema(
       required: true,
     },
   },
-  { timestamps: true },
+  {
+    timestamps: true,
+  },
 );
 
-// Prevent multiple votes
-pollVoteSchema.index({ poll_id: 1, customer_id: 1 }, { unique: true });
+pollVoteSchema.index(
+  {
+    poll_id: 1,
+    customer_id: 1,
+  },
+  {
+    unique: true,
+  },
+);
 
 export default mongoose.model("PollVote", pollVoteSchema);

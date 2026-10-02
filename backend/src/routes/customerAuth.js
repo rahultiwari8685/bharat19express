@@ -14,7 +14,6 @@ router.post("/register", async (req, res) => {
   try {
     const { name, email, password, phone } = req.body;
 
-    // Validation
     if (!name || !email || !password) {
       return res.status(400).json({
         success: false,
@@ -24,7 +23,6 @@ router.post("/register", async (req, res) => {
 
     const normalizedEmail = email.trim().toLowerCase();
 
-    // Check existing customer
     const existingCustomer = await Customer.findOne({
       email: normalizedEmail,
     });
@@ -36,10 +34,8 @@ router.post("/register", async (req, res) => {
       });
     }
 
-    // Hash password
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Create customer
     const customer = await Customer.create({
       name: name.trim(),
       email: normalizedEmail,
@@ -48,7 +44,6 @@ router.post("/register", async (req, res) => {
       status: "active",
     });
 
-    // Generate JWT
     const token = jwt.sign(
       {
         customerId: customer._id,
@@ -101,7 +96,6 @@ router.post("/login", async (req, res) => {
 
     const normalizedEmail = email.trim().toLowerCase();
 
-    // Find customer
     const customer = await Customer.findOne({
       email: normalizedEmail,
     });
@@ -113,7 +107,6 @@ router.post("/login", async (req, res) => {
       });
     }
 
-    // Check blocked account
     if (customer.status === "blocked") {
       return res.status(403).json({
         success: false,
@@ -121,7 +114,6 @@ router.post("/login", async (req, res) => {
       });
     }
 
-    // Check password
     const isMatch = await bcrypt.compare(password, customer.password);
 
     if (!isMatch) {
@@ -131,7 +123,6 @@ router.post("/login", async (req, res) => {
       });
     }
 
-    // Generate JWT
     const token = jwt.sign(
       {
         customerId: customer._id,
