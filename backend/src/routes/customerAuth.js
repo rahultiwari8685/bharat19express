@@ -1,7 +1,7 @@
 import express from "express";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import Subscriber from "../models/Subscriber.js";
+import Customer from "../models/Customer.js";
 
 const router = express.Router();
 
@@ -20,7 +20,7 @@ router.post("/register", async (req, res) => {
     const normalizedEmail = email.trim().toLowerCase();
 
     // Check existing customer
-    const existingCustomer = await Subscriber.findOne({
+    const existingCustomer = await Customer.findOne({
       email: normalizedEmail,
     });
 
@@ -35,7 +35,7 @@ router.post("/register", async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     // Create customer
-    const subscriber = await Subscriber.create({
+    const customer = await Customer.create({
       name: name.trim(),
       email: normalizedEmail,
       password: hashedPassword,
@@ -45,7 +45,7 @@ router.post("/register", async (req, res) => {
     // Generate token
     const token = jwt.sign(
       {
-        customerId: subscriber._id,
+        customerId: customer._id,
         email: subscriber.email,
         role: "customer",
       },
@@ -90,18 +90,18 @@ router.post("/login", async (req, res) => {
 
     const normalizedEmail = email.trim().toLowerCase();
 
-    const subscriber = await Subscriber.findOne({
+    const customer = await Customer.findOne({
       email: normalizedEmail,
     });
 
-    if (!subscriber) {
+    if (!customer) {
       return res.status(404).json({
         success: false,
         message: "Customer not found",
       });
     }
 
-    const isMatch = await bcrypt.compare(password, subscriber.password);
+    const isMatch = await bcrypt.compare(password, customer.password);
 
     if (!isMatch) {
       return res.status(401).json({
@@ -112,8 +112,8 @@ router.post("/login", async (req, res) => {
 
     const token = jwt.sign(
       {
-        customerId: subscriber._id,
-        email: subscriber.email,
+        customerId: customer._id,
+        email: customer.email,
         role: "customer",
       },
       process.env.JWT_SECRET,
