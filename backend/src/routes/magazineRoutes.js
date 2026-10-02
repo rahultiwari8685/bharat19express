@@ -14,10 +14,6 @@ import {
 
 const router = express.Router();
 
-// ==========================================
-// UPLOAD DIRECTORY
-// ==========================================
-
 const uploadDir = path.join(process.cwd(), "uploads", "magazines");
 
 if (!fs.existsSync(uploadDir)) {
@@ -25,10 +21,6 @@ if (!fs.existsSync(uploadDir)) {
     recursive: true,
   });
 }
-
-// ==========================================
-// MULTER STORAGE
-// ==========================================
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -46,10 +38,6 @@ const storage = multer.diskStorage({
     cb(null, `${Date.now()}-${name}${ext}`);
   },
 });
-
-// ==========================================
-// FILE FILTER
-// ==========================================
 
 const fileFilter = (req, file, cb) => {
   // Cover image
@@ -77,10 +65,6 @@ const fileFilter = (req, file, cb) => {
   cb(new Error("Invalid file field"), false);
 };
 
-// ==========================================
-// MULTER
-// ==========================================
-
 const upload = multer({
   storage,
   fileFilter,
@@ -90,10 +74,6 @@ const upload = multer({
     fileSize: 50 * 1024 * 1024,
   },
 });
-
-// ==========================================
-// ROUTES
-// ==========================================
 
 router.get("/", getAllMagazines);
 

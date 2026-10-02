@@ -491,6 +491,33 @@ const MainMenuTwo = () => {
                         </ul>
                       </li>
                     )}
+                    <li
+                      className="nav-item"
+                      style={{
+                        marginLeft: "10px",
+                      }}
+                    >
+                      <NavLink
+                        to="/epaper"
+                        style={{
+                          display: "inline-flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          gap: "7px",
+                          minHeight: "36px",
+                          padding: "0 14px",
+                          borderRadius: "5px",
+                          background: "#e31e24",
+                          color: "#fff",
+                          fontSize: "12px",
+                          fontWeight: "800",
+                          textDecoration: "none",
+                        }}
+                      >
+                        <FontAwesome name="newspaper-o" />
+                        <span>Epaper</span>
+                      </NavLink>
+                    </li>
                   </ul>
                 </div>
 

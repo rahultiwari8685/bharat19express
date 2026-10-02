@@ -2,10 +2,6 @@ import Magazine from "../models/Magazine.js";
 import fs from "fs";
 import path from "path";
 
-// ==========================================
-// BOOLEAN HELPER
-// ==========================================
-
 const toBoolean = (value, defaultValue = false) => {
   if (value === undefined || value === null || value === "") {
     return defaultValue;
@@ -13,10 +9,6 @@ const toBoolean = (value, defaultValue = false) => {
 
   return value === true || value === "true" || value === "1" || value === 1;
 };
-
-// ==========================================
-// DELETE FILE
-// ==========================================
 
 const deleteFile = (fileName) => {
   if (!fileName) return;
@@ -27,10 +19,6 @@ const deleteFile = (fileName) => {
     fs.unlinkSync(filePath);
   }
 };
-
-// ==========================================
-// GET ALL MAGAZINES
-// ==========================================
 
 export const getAllMagazines = async (req, res) => {
   try {
@@ -53,10 +41,6 @@ export const getAllMagazines = async (req, res) => {
     });
   }
 };
-
-// ==========================================
-// GET SINGLE MAGAZINE
-// ==========================================
 
 export const getMagazineById = async (req, res) => {
   try {
@@ -83,10 +67,6 @@ export const getMagazineById = async (req, res) => {
     });
   }
 };
-
-// ==========================================
-// GET MAGAZINE BY SLUG
-// ==========================================
 
 export const getMagazineBySlug = async (req, res) => {
   try {
@@ -117,18 +97,10 @@ export const getMagazineBySlug = async (req, res) => {
   }
 };
 
-// ==========================================
-// CREATE MAGAZINE
-// ==========================================
-
 export const createMagazine = async (req, res) => {
   try {
     const { title, slug, description, category, issueDate, featured, status } =
       req.body;
-
-    // -----------------------------
-    // VALIDATION
-    // -----------------------------
 
     if (!title) {
       return res.status(400).json({
@@ -212,10 +184,6 @@ export const createMagazine = async (req, res) => {
     });
   }
 };
-
-// ==========================================
-// UPDATE MAGAZINE
-// ==========================================
 
 export const updateMagazine = async (req, res) => {
   try {
@@ -326,10 +294,6 @@ export const updateMagazine = async (req, res) => {
     });
   }
 };
-
-// ==========================================
-// DELETE MAGAZINE
-// ==========================================
 
 export const deleteMagazine = async (req, res) => {
   try {
