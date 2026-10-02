@@ -28,7 +28,6 @@ const SubscriberRegister = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     setError("");
 
     if (!formData.name.trim()) {
@@ -101,11 +100,18 @@ const SubscriberRegister = () => {
       <style>{`
         .subscriber-register-page {
           min-height: 100vh;
+          width: 100%;
           display: flex;
           align-items: center;
           justify-content: center;
           padding: 40px 15px;
-          background: #fff8e1;
+          box-sizing: border-box;
+          background: linear-gradient(
+            135deg,
+            #fff8e1 0%,
+            #ffffff 50%,
+            #fff3cd 100%
+          );
         }
 
         .subscriber-register-card {
@@ -114,6 +120,7 @@ const SubscriberRegister = () => {
           background: #ffffff;
           border-radius: 22px;
           padding: 38px;
+          box-sizing: border-box;
           box-shadow: 0 20px 60px rgba(0, 0, 0, 0.12);
           border: 1px solid #eeeeee;
         }
@@ -135,6 +142,7 @@ const SubscriberRegister = () => {
         .register-title {
           text-align: center;
           font-size: 30px;
+          line-height: 1.2;
           font-weight: 800;
           margin: 0 0 8px;
           color: #171717;
@@ -143,6 +151,7 @@ const SubscriberRegister = () => {
         .register-subtitle {
           text-align: center;
           color: #777777;
+          font-size: 15px;
           margin: 0 0 28px;
         }
 
@@ -155,6 +164,7 @@ const SubscriberRegister = () => {
         }
 
         .register-input {
+          display: block;
           width: 100%;
           height: 50px;
           box-sizing: border-box;
@@ -162,9 +172,15 @@ const SubscriberRegister = () => {
           border-radius: 12px;
           padding: 0 15px;
           font-size: 15px;
+          color: #222222;
+          background: #ffffff;
           outline: none;
-          transition: 0.2s;
           margin-bottom: 18px;
+          transition: all 0.2s ease;
+        }
+
+        .register-input::placeholder {
+          color: #aaaaaa;
         }
 
         .register-input:focus {
@@ -173,6 +189,8 @@ const SubscriberRegister = () => {
         }
 
         .register-error {
+          width: 100%;
+          box-sizing: border-box;
           background: #fff0f0;
           border: 1px solid #ffcaca;
           color: #c62828;
@@ -192,12 +210,16 @@ const SubscriberRegister = () => {
           font-size: 16px;
           font-weight: 700;
           cursor: pointer;
-          transition: 0.2s;
+          transition: all 0.2s ease;
         }
 
         .register-button:hover {
           background: #ffb300;
           transform: translateY(-1px);
+        }
+
+        .register-button:active {
+          transform: translateY(0);
         }
 
         .register-button:disabled {
@@ -224,6 +246,10 @@ const SubscriberRegister = () => {
         }
 
         @media (max-width: 576px) {
+          .subscriber-register-page {
+            padding: 25px 15px;
+          }
+
           .subscriber-register-card {
             padding: 28px 20px;
             border-radius: 18px;
