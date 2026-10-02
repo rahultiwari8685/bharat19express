@@ -1,10 +1,7 @@
 import React from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Home from "./pages/home";
-// import Business from "./pages/home/business";
 import LayoutTheme1 from "./component/Layout/LayoutTheme1";
-// import Entertainment from "./pages/home/entertainment";
-// import Feature from "./pages/home/Feature";
 import Trending from "./pages/home/trending";
 import Sports from "./pages/home/sports";
 import About from "./pages/home/about";
@@ -85,7 +82,7 @@ import HomeDarkAudioPost2 from "./pages/homeDark/audio_post2";
 import HomeDarkAudioPost3 from "./pages/homeDark/audio_post3";
 import HomeDarkLeftPost2 from "./pages/homeDark/left_post2";
 import Category from "./pages/home/category";
-
+import SubscriberLogin from "./pages/homeTwo/subscriberLogin";
 const router = createBrowserRouter([
   // {
   //   path: "/",
@@ -191,6 +188,7 @@ const router = createBrowserRouter([
         path: "category/:categoryId",
         element: <Category />,
       },
+      { path: "/login", element: <SubscriberLogin /> },
       {
         path: "business",
         element: <HomeTwoBusiness />,

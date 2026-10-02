@@ -15,16 +15,10 @@ import {
 const router = express.Router();
 
 router.post("/savePoll", createPoll);
-
 router.get("/admin", getAllPolls);
-
 router.put("/admin/:id", updatePoll);
-
 router.get("/active", getActivePoll);
-
-// router.post("/:id/vote", votePoll);
 router.post("/:id/vote", verifySubscriber, votePoll);
-
 router.get("/:id/results", pollResults);
 
 export default router;

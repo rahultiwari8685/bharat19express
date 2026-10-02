@@ -10,6 +10,8 @@ import userRoutes from "./routes/userRoutes.js";
 import categoryRoutes from "./routes/categoryRoutes.js";
 import newsRoutes from "./routes/newsRoutes.js";
 import authRoutes from "./routes/auth.js";
+import customerAuth from "./routes/customerAuth.js";
+
 import advertisementRoutes from "./routes/advertisementRoutes.js";
 import rateLimit from "express-rate-limit";
 import goldRoutes from "./routes/gold.js";
@@ -90,6 +92,7 @@ app.use("/api/categories", categoryRoutes);
 app.use("/api/news", newsRoutes);
 
 app.use("/api/auth", authRoutes);
+app.use("/api/customer", customerAuth);
 app.use("/api", goldRoutes);
 app.use("/api/advertisements", advertisementRoutes);
 app.use("/api/upload", uploadRoutes);
