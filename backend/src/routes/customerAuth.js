@@ -5,6 +5,11 @@ import Customer from "../models/Customer.js";
 
 const router = express.Router();
 
+/*
+|--------------------------------------------------------------------------
+| CUSTOMER REGISTER
+|--------------------------------------------------------------------------
+*/
 router.post("/register", async (req, res) => {
   try {
     const { name, email, password, phone } = req.body;
@@ -40,13 +45,14 @@ router.post("/register", async (req, res) => {
       email: normalizedEmail,
       password: hashedPassword,
       phone: phone ? phone.trim() : "",
+      status: "active",
     });
 
-    // Generate token
+    // Generate JWT
     const token = jwt.sign(
       {
         customerId: customer._id,
-        email: subscriber.email,
+        email: customer.email,
         role: "customer",
       },
       process.env.JWT_SECRET,
@@ -60,10 +66,10 @@ router.post("/register", async (req, res) => {
       message: "Customer registration successful",
       token,
       customer: {
-        id: subscriber._id,
-        name: subscriber.name,
-        email: subscriber.email,
-        phone: subscriber.phone || "",
+        id: customer._id,
+        name: customer.name,
+        email: customer.email,
+        phone: customer.phone || "",
       },
     });
   } catch (error) {
@@ -77,6 +83,11 @@ router.post("/register", async (req, res) => {
   }
 });
 
+/*
+|--------------------------------------------------------------------------
+| CUSTOMER LOGIN
+|--------------------------------------------------------------------------
+*/
 router.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -90,6 +101,7 @@ router.post("/login", async (req, res) => {
 
     const normalizedEmail = email.trim().toLowerCase();
 
+    // Find customer
     const customer = await Customer.findOne({
       email: normalizedEmail,
     });
@@ -101,6 +113,15 @@ router.post("/login", async (req, res) => {
       });
     }
 
+    // Check blocked account
+    if (customer.status === "blocked") {
+      return res.status(403).json({
+        success: false,
+        message: "Your account has been blocked",
+      });
+    }
+
+    // Check password
     const isMatch = await bcrypt.compare(password, customer.password);
 
     if (!isMatch) {
@@ -110,6 +131,7 @@ router.post("/login", async (req, res) => {
       });
     }
 
+    // Generate JWT
     const token = jwt.sign(
       {
         customerId: customer._id,
@@ -127,10 +149,10 @@ router.post("/login", async (req, res) => {
       message: "Customer login successful",
       token,
       customer: {
-        id: subscriber._id,
-        name: subscriber.name,
-        email: subscriber.email,
-        phone: subscriber.phone || "",
+        id: customer._id,
+        name: customer.name,
+        email: customer.email,
+        phone: customer.phone || "",
       },
     });
   } catch (error) {

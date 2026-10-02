@@ -29,7 +29,9 @@ export const verifySubscriber = (req, res, next) => {
     };
 
     next();
-  } catch (err) {
+  } catch (error) {
+    console.error("Customer Auth Error:", error.message);
+
     return res.status(401).json({
       success: false,
       message: "Invalid or expired token",
