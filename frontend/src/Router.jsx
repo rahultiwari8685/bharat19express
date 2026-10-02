@@ -83,6 +83,7 @@ import HomeDarkAudioPost3 from "./pages/homeDark/audio_post3";
 import HomeDarkLeftPost2 from "./pages/homeDark/left_post2";
 import Category from "./pages/home/category";
 import SubscriberLogin from "./pages/homeTwo/subscriberLogin";
+import SubscriberRegister from "./pages/homeTwo/subscriberRegister";
 const router = createBrowserRouter([
   // {
   //   path: "/",
@@ -189,6 +190,7 @@ const router = createBrowserRouter([
         element: <Category />,
       },
       { path: "/login", element: <SubscriberLogin /> },
+      { path: "/register", element: <SubscriberRegister /> },
       {
         path: "business",
         element: <HomeTwoBusiness />,
