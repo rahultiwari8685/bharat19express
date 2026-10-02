@@ -1,5 +1,5 @@
 import express from "express";
-import { verifySubscriber } from "../middleware/verifySubscriber.js";
+import { verifySubscriber } from "../middlewares/authMiddleware.js";
 import {
   createPoll,
   getAllPolls,
