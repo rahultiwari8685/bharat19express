@@ -84,6 +84,7 @@ import HomeDarkLeftPost2 from "./pages/homeDark/left_post2";
 import Category from "./pages/home/category";
 import SubscriberLogin from "./pages/homeTwo/subscriberLogin";
 import SubscriberRegister from "./pages/homeTwo/subscriberRegister";
+import Epaper from "./pages/homeTwo/epaper/Epaper";
 const router = createBrowserRouter([
   // {
   //   path: "/",
@@ -191,6 +192,7 @@ const router = createBrowserRouter([
       },
       { path: "/login", element: <SubscriberLogin /> },
       { path: "/register", element: <SubscriberRegister /> },
+      { path: "/epaper", element: <Epaper /> },
       {
         path: "business",
         element: <HomeTwoBusiness />,
