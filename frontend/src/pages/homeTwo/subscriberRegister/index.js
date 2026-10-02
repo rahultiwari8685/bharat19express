@@ -28,6 +28,7 @@ const SubscriberRegister = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     setError("");
 
     if (!formData.name.trim()) {
@@ -78,6 +79,7 @@ const SubscriberRegister = () => {
         return;
       }
 
+      // Save customer login information
       localStorage.setItem(
         "logininfo",
         JSON.stringify({
@@ -86,264 +88,237 @@ const SubscriberRegister = () => {
         }),
       );
 
+      // Redirect after successful registration
       navigate("/");
     } catch (error) {
-      console.error("Registration Error:", error);
+      console.error("Customer Registration Error:", error);
+
       setError("Unable to connect to the server. Please try again.");
     } finally {
       setLoading(false);
     }
   };
 
+  /*
+  |--------------------------------------------------------------------------
+  | Inline Styles
+  |--------------------------------------------------------------------------
+  */
+
+  const styles = {
+    page: {
+      minHeight: "100vh",
+      width: "100%",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      padding: "40px 15px",
+      boxSizing: "border-box",
+      background:
+        "linear-gradient(135deg, #fff8e1 0%, #ffffff 50%, #fff3cd 100%)",
+    },
+
+    card: {
+      width: "100%",
+      maxWidth: "520px",
+      background: "#ffffff",
+      borderRadius: "22px",
+      padding: "38px",
+      boxSizing: "border-box",
+      boxShadow: "0 20px 60px rgba(0, 0, 0, 0.12)",
+      border: "1px solid #eeeeee",
+    },
+
+    logo: {
+      width: "58px",
+      height: "58px",
+      margin: "0 auto 18px",
+      borderRadius: "16px",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      background: "#ffc107",
+      color: "#111111",
+      fontSize: "27px",
+      fontWeight: "800",
+    },
+
+    title: {
+      textAlign: "center",
+      fontSize: "30px",
+      lineHeight: "1.2",
+      fontWeight: "800",
+      margin: "0 0 8px",
+      color: "#171717",
+    },
+
+    subtitle: {
+      textAlign: "center",
+      color: "#777777",
+      fontSize: "15px",
+      margin: "0 0 28px",
+    },
+
+    label: {
+      display: "block",
+      fontSize: "14px",
+      fontWeight: "600",
+      color: "#333333",
+      marginBottom: "8px",
+    },
+
+    input: {
+      display: "block",
+      width: "100%",
+      height: "50px",
+      boxSizing: "border-box",
+      border: "1px solid #dddddd",
+      borderRadius: "12px",
+      padding: "0 15px",
+      fontSize: "15px",
+      color: "#222222",
+      background: "#ffffff",
+      outline: "none",
+      marginBottom: "18px",
+    },
+
+    error: {
+      width: "100%",
+      boxSizing: "border-box",
+      background: "#fff0f0",
+      border: "1px solid #ffcaca",
+      color: "#c62828",
+      padding: "12px 14px",
+      borderRadius: "10px",
+      fontSize: "14px",
+      marginBottom: "18px",
+    },
+
+    button: {
+      width: "100%",
+      height: "52px",
+      border: "none",
+      borderRadius: "12px",
+      background: "#ffc107",
+      color: "#111111",
+      fontSize: "16px",
+      fontWeight: "700",
+      cursor: loading ? "not-allowed" : "pointer",
+      opacity: loading ? 0.7 : 1,
+    },
+
+    loginText: {
+      textAlign: "center",
+      marginTop: "22px",
+      color: "#777777",
+      fontSize: "14px",
+    },
+
+    loginLink: {
+      color: "#111111",
+      fontWeight: "700",
+      textDecoration: "none",
+    },
+  };
+
   return (
-    <>
-      <style>{`
-        .subscriber-register-page {
-          min-height: 100vh;
-          width: 100%;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          padding: 40px 15px;
-          box-sizing: border-box;
-          background: linear-gradient(
-            135deg,
-            #fff8e1 0%,
-            #ffffff 50%,
-            #fff3cd 100%
-          );
-        }
+    <div style={styles.page}>
+      <div style={styles.card}>
+        {/* Logo */}
+        <div style={styles.logo}>IT</div>
 
-        .subscriber-register-card {
-          width: 100%;
-          max-width: 520px;
-          background: #ffffff;
-          border-radius: 22px;
-          padding: 38px;
-          box-sizing: border-box;
-          box-shadow: 0 20px 60px rgba(0, 0, 0, 0.12);
-          border: 1px solid #eeeeee;
-        }
+        {/* Heading */}
+        <h1 style={styles.title}>Create Account</h1>
 
-        .register-logo {
-          width: 58px;
-          height: 58px;
-          margin: 0 auto 18px;
-          border-radius: 16px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          background: #ffc107;
-          color: #111111;
-          font-size: 27px;
-          font-weight: 800;
-        }
+        <p style={styles.subtitle}>
+          Register to participate in polls and more.
+        </p>
 
-        .register-title {
-          text-align: center;
-          font-size: 30px;
-          line-height: 1.2;
-          font-weight: 800;
-          margin: 0 0 8px;
-          color: #171717;
-        }
+        {/* Error */}
+        {error && <div style={styles.error}>{error}</div>}
 
-        .register-subtitle {
-          text-align: center;
-          color: #777777;
-          font-size: 15px;
-          margin: 0 0 28px;
-        }
+        {/* Registration Form */}
+        <form onSubmit={handleSubmit}>
+          {/* Name */}
+          <label style={styles.label}>Full Name</label>
 
-        .register-label {
-          display: block;
-          font-size: 14px;
-          font-weight: 600;
-          color: #333333;
-          margin-bottom: 8px;
-        }
+          <input
+            type="text"
+            name="name"
+            placeholder="Enter your name"
+            value={formData.name}
+            onChange={handleChange}
+            style={styles.input}
+            autoComplete="name"
+          />
 
-        .register-input {
-          display: block;
-          width: 100%;
-          height: 50px;
-          box-sizing: border-box;
-          border: 1px solid #dddddd;
-          border-radius: 12px;
-          padding: 0 15px;
-          font-size: 15px;
-          color: #222222;
-          background: #ffffff;
-          outline: none;
-          margin-bottom: 18px;
-          transition: all 0.2s ease;
-        }
+          {/* Email */}
+          <label style={styles.label}>Email Address</label>
 
-        .register-input::placeholder {
-          color: #aaaaaa;
-        }
+          <input
+            type="email"
+            name="email"
+            placeholder="Enter your email"
+            value={formData.email}
+            onChange={handleChange}
+            style={styles.input}
+            autoComplete="email"
+          />
 
-        .register-input:focus {
-          border-color: #ffc107;
-          box-shadow: 0 0 0 4px rgba(255, 193, 7, 0.12);
-        }
+          {/* Phone */}
+          <label style={styles.label}>Phone Number</label>
 
-        .register-error {
-          width: 100%;
-          box-sizing: border-box;
-          background: #fff0f0;
-          border: 1px solid #ffcaca;
-          color: #c62828;
-          padding: 12px 14px;
-          border-radius: 10px;
-          font-size: 14px;
-          margin-bottom: 18px;
-        }
+          <input
+            type="tel"
+            name="phone"
+            placeholder="Enter phone number"
+            value={formData.phone}
+            onChange={handleChange}
+            style={styles.input}
+            autoComplete="tel"
+          />
 
-        .register-button {
-          width: 100%;
-          height: 52px;
-          border: none;
-          border-radius: 12px;
-          background: #ffc107;
-          color: #111111;
-          font-size: 16px;
-          font-weight: 700;
-          cursor: pointer;
-          transition: all 0.2s ease;
-        }
+          {/* Password */}
+          <label style={styles.label}>Password</label>
 
-        .register-button:hover {
-          background: #ffb300;
-          transform: translateY(-1px);
-        }
+          <input
+            type="password"
+            name="password"
+            placeholder="Create password"
+            value={formData.password}
+            onChange={handleChange}
+            style={styles.input}
+            autoComplete="new-password"
+          />
 
-        .register-button:active {
-          transform: translateY(0);
-        }
+          {/* Confirm Password */}
+          <label style={styles.label}>Confirm Password</label>
 
-        .register-button:disabled {
-          opacity: 0.7;
-          cursor: not-allowed;
-          transform: none;
-        }
+          <input
+            type="password"
+            name="confirmPassword"
+            placeholder="Confirm password"
+            value={formData.confirmPassword}
+            onChange={handleChange}
+            style={styles.input}
+            autoComplete="new-password"
+          />
 
-        .register-login {
-          text-align: center;
-          margin-top: 22px;
-          color: #777777;
-          font-size: 14px;
-        }
+          {/* Submit */}
+          <button type="submit" disabled={loading} style={styles.button}>
+            {loading ? "Creating Account..." : "Create Account"}
+          </button>
+        </form>
 
-        .register-login a {
-          color: #111111;
-          font-weight: 700;
-          text-decoration: none;
-        }
-
-        .register-login a:hover {
-          text-decoration: underline;
-        }
-
-        @media (max-width: 576px) {
-          .subscriber-register-page {
-            padding: 25px 15px;
-          }
-
-          .subscriber-register-card {
-            padding: 28px 20px;
-            border-radius: 18px;
-          }
-
-          .register-title {
-            font-size: 26px;
-          }
-        }
-      `}</style>
-
-      <div className="subscriber-register-page">
-        <div className="subscriber-register-card">
-          <div className="register-logo">IT</div>
-
-          <h1 className="register-title">Create Account</h1>
-
-          <p className="register-subtitle">
-            Register to participate in polls and more.
-          </p>
-
-          {error && <div className="register-error">{error}</div>}
-
-          <form onSubmit={handleSubmit}>
-            <label className="register-label">Full Name</label>
-
-            <input
-              type="text"
-              name="name"
-              className="register-input"
-              placeholder="Enter your name"
-              value={formData.name}
-              onChange={handleChange}
-            />
-
-            <label className="register-label">Email Address</label>
-
-            <input
-              type="email"
-              name="email"
-              className="register-input"
-              placeholder="Enter your email"
-              value={formData.email}
-              onChange={handleChange}
-            />
-
-            <label className="register-label">Phone Number</label>
-
-            <input
-              type="tel"
-              name="phone"
-              className="register-input"
-              placeholder="Enter phone number"
-              value={formData.phone}
-              onChange={handleChange}
-            />
-
-            <label className="register-label">Password</label>
-
-            <input
-              type="password"
-              name="password"
-              className="register-input"
-              placeholder="Create password"
-              value={formData.password}
-              onChange={handleChange}
-            />
-
-            <label className="register-label">Confirm Password</label>
-
-            <input
-              type="password"
-              name="confirmPassword"
-              className="register-input"
-              placeholder="Confirm password"
-              value={formData.confirmPassword}
-              onChange={handleChange}
-            />
-
-            <button
-              type="submit"
-              className="register-button"
-              disabled={loading}
-            >
-              {loading ? "Creating Account..." : "Create Account"}
-            </button>
-          </form>
-
-          <div className="register-login">
-            Already have an account? <Link to="/login">Login</Link>
-          </div>
+        {/* Login Link */}
+        <div style={styles.loginText}>
+          Already have an account?{" "}
+          <Link to="/login" style={styles.loginLink}>
+            Login
+          </Link>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 
