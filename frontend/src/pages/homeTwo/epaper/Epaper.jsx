@@ -3,8 +3,7 @@ import React, { useEffect, useMemo, useState } from "react";
 const API = "https://api.iotaclasses.in";
 
 const Epaper = () => {
-  const [magazines, setMagazines] = useState([]);
-  const [newspapers, setNewspapers] = useState([]);
+  const [epapers, setEpapers] = useState([]);
   const [filter, setFilter] = useState("all");
   const [loading, setLoading] = useState(true);
 
@@ -16,50 +15,37 @@ const Epaper = () => {
     try {
       setLoading(true);
 
-      const [magazineResponse, newspaperResponse] = await Promise.all([
-        fetch(`${API}/api/magazines`),
-        fetch(`${API}/api/newspapers`),
-      ]);
+      const response = await fetch(`${API}/api/magazines`);
 
-      const magazineResult = await magazineResponse.json();
+      const result = await response.json();
 
-      const newspaperResult = await newspaperResponse.json();
-
-      if (magazineResult.success) {
-        setMagazines(
-          (magazineResult.data || []).map((item) => ({
-            ...item,
-            epaperType: "magazine",
-          })),
-        );
-      }
-
-      if (newspaperResult.success) {
-        setNewspapers(
-          (newspaperResult.data || []).map((item) => ({
-            ...item,
-            epaperType: "newspaper",
-          })),
-        );
+      if (result.success) {
+        setEpapers(result.data || []);
+      } else {
+        setEpapers([]);
       }
     } catch (error) {
       console.error("Epaper Error:", error);
+      setEpapers([]);
     } finally {
       setLoading(false);
     }
   };
 
-  /* =========================================
-     COMBINE NEWSPAPER + MAGAZINE
-  ========================================= */
+  const filteredEpapers = useMemo(() => {
+    let data = [...epapers];
 
-  const epapers = useMemo(() => {
-    let data = [...magazines, ...newspapers];
+    // Only published/active epapers
+    data = data.filter((item) => item.status === true);
 
+    // Filter by category
     if (filter !== "all") {
-      data = data.filter((item) => item.epaperType === filter);
+      data = data.filter(
+        (item) => item.category?.toLowerCase() === filter.toLowerCase(),
+      );
     }
 
+    // Latest first
     return data.sort((a, b) => {
       const dateA = new Date(a.issueDate || a.createdAt || 0);
 
@@ -67,43 +53,23 @@ const Epaper = () => {
 
       return dateB - dateA;
     });
-  }, [magazines, newspapers, filter]);
-
-  /* =========================================
-     IMAGE URL
-  ========================================= */
+  }, [epapers, filter]);
 
   const getImageUrl = (item) => {
     if (!item.coverImage) {
       return "/assets/images/placeholder.jpg";
     }
 
-    if (item.epaperType === "magazine") {
-      return `${API}/uploads/magazines/${item.coverImage}`;
-    }
-
-    return `${API}/uploads/newspapers/${item.coverImage}`;
+    return `${API}/uploads/magazines/${item.coverImage}`;
   };
-
-  /* =========================================
-     PDF URL
-  ========================================= */
 
   const getPdfUrl = (item) => {
     if (!item.pdfFile) {
       return "#";
     }
 
-    if (item.epaperType === "magazine") {
-      return `${API}/uploads/magazines/${item.pdfFile}`;
-    }
-
-    return `${API}/uploads/newspapers/${item.pdfFile}`;
+    return `${API}/uploads/magazines/${item.pdfFile}`;
   };
-
-  /* =========================================
-     DATE
-  ========================================= */
 
   const formatDate = (date) => {
     if (!date) return "";
@@ -388,7 +354,7 @@ const Epaper = () => {
               EPAPER GRID
           ================================================= */}
 
-          {!loading && epapers.length > 0 && (
+          {!loading && filteredEpapers.length > 0 && (
             <div
               style={{
                 display: "grid",
@@ -396,9 +362,9 @@ const Epaper = () => {
                 gap: "28px",
               }}
             >
-              {epapers.map((item) => (
+              {filteredEpapers.map((item) => (
                 <article
-                  key={`${item.epaperType}-${item._id}`}
+                  key={`${item.category}-${item._id}`}
                   style={{
                     overflow: "hidden",
                     border: "1px solid #e8e8e8",
@@ -449,9 +415,7 @@ const Epaper = () => {
                         textTransform: "uppercase",
                       }}
                     >
-                      {item.epaperType === "magazine"
-                        ? "Magazine"
-                        : "Newspaper"}
+                      {item.category}
                     </span>
 
                     {/* FEATURED */}
@@ -552,7 +516,7 @@ const Epaper = () => {
                           textTransform: "capitalize",
                         }}
                       >
-                        {item.category || item.epaperType}
+                        {item.category}
                       </span>
 
                       {/* PDF BUTTON */}
