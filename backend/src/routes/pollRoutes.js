@@ -1,5 +1,5 @@
 import express from "express";
-
+import { verifySubscriber } from "../middleware/verifySubscriber.js";
 import {
   createPoll,
   getAllPolls,
@@ -22,7 +22,8 @@ router.put("/admin/:id", updatePoll);
 
 router.get("/active", getActivePoll);
 
-router.post("/:id/vote", votePoll);
+// router.post("/:id/vote", votePoll);
+router.post("/:id/vote", verifySubscriber, votePoll);
 
 router.get("/:id/results", pollResults);
 

@@ -380,7 +380,6 @@ const MainMenuTwo = () => {
           <div className="row justify-content-between">
             <nav className="navbar navbar-expand-lg col-lg-8 align-self-center">
               <div className="site-nav-inner">
-                {/* Mobile Button */}
                 <button
                   className="navbar-toggler"
                   onClick={() => setSideShow(true)}
@@ -495,7 +494,6 @@ const MainMenuTwo = () => {
                   </ul>
                 </div>
 
-                {/* Mobile Sidebar */}
                 <SidebarMenu
                   className="themeBlue"
                   sideShow={sideShow}
@@ -505,7 +503,6 @@ const MainMenuTwo = () => {
               </div>
             </nav>
 
-            {/* DATE */}
             <div className="col-lg-3 text-right align-self-center">
               <div className="date3">
                 <p>

@@ -351,9 +351,15 @@ const PostGalleryTwo = () => {
 
   const [textNews, setTextNews] = useState([]);
 
+  const [activePoll, setActivePoll] = useState(null);
+  const [pollLoading, setPollLoading] = useState(true);
+  const [pollVoting, setPollVoting] = useState(false);
+  const [pollVoted, setPollVoted] = useState(false);
+
   useEffect(() => {
     getVideoNews();
     getTextNews();
+    getActivePoll();
   }, []);
 
   const getYoutubeId = (url) => {
@@ -432,6 +438,80 @@ const PostGalleryTwo = () => {
       }
     } catch (error) {
       console.error("Text News Error:", error);
+    }
+  };
+  const getActivePoll = async () => {
+    try {
+      setPollLoading(true);
+
+      const res = await fetch(`${API}/api/polls/active`);
+      const data = await res.json();
+
+      if (data.success && data.data) {
+        setActivePoll(data.data);
+      } else {
+        setActivePoll(null);
+      }
+    } catch (error) {
+      console.error("Poll Error:", error);
+      setActivePoll(null);
+    } finally {
+      setPollLoading(false);
+    }
+  };
+
+  const votePoll = async (optionIndex) => {
+    if (!activePoll || pollVoting || pollVoted) {
+      return;
+    }
+
+    try {
+      setPollVoting(true);
+
+      const loginInfo = JSON.parse(localStorage.getItem("logininfo") || "null");
+
+      const token = loginInfo?.token;
+
+      if (!token) {
+        alert("Please login to vote.");
+        return;
+      }
+
+      const res = await fetch(`${API}/api/polls/${activePoll._id}/vote`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          option_index: optionIndex,
+        }),
+      });
+
+      const data = await res.json();
+
+      if (!data.success) {
+        alert(data.message || "Unable to submit vote");
+        return;
+      }
+
+      setPollVoted(true);
+
+      // Get updated percentages
+      const resultRes = await fetch(
+        `${API}/api/polls/${activePoll._id}/results`,
+      );
+
+      const resultData = await resultRes.json();
+
+      if (resultData.success) {
+        setActivePoll(resultData.data);
+      }
+    } catch (error) {
+      console.error("Vote Error:", error);
+      alert("Something went wrong while voting.");
+    } finally {
+      setPollVoting(false);
     }
   };
 
@@ -620,6 +700,157 @@ const PostGalleryTwo = () => {
             </div>
 
             <div className="d-none d-lg-block col-lg-4 col-xl-3">
+              <div
+                className="white_bg padding20 border-radious5 sm-mt30"
+                style={{
+                  border: "1px solid #e5e5e5",
+                }}
+              >
+                <div className="d-flex justify-content-between align-items-center mb-3">
+                  <h4
+                    style={{
+                      margin: 0,
+                      fontSize: "20px",
+                      fontWeight: "700",
+                    }}
+                  >
+                    Poll
+                  </h4>
+
+                  <span
+                    style={{
+                      fontSize: "12px",
+                      fontWeight: "600",
+                      padding: "4px 9px",
+                      borderRadius: "20px",
+                      background: "#f1f1f1",
+                    }}
+                  >
+                    VOTE
+                  </span>
+                </div>
+
+                {pollLoading ? (
+                  <p className="mb-0">Loading poll...</p>
+                ) : !activePoll ? (
+                  <p className="mb-0">No active poll available.</p>
+                ) : (
+                  <>
+                    {/* QUESTION */}
+
+                    <h5
+                      style={{
+                        fontSize: "17px",
+                        lineHeight: "1.5",
+                        fontWeight: "700",
+                        marginBottom: "18px",
+                      }}
+                    >
+                      {activePoll.question}
+                    </h5>
+
+                    {/* OPTIONS */}
+
+                    {!pollVoted ? (
+                      <div>
+                        {activePoll.options?.map((option, index) => (
+                          <button
+                            key={index}
+                            type="button"
+                            onClick={() => votePoll(index)}
+                            disabled={pollVoting}
+                            style={{
+                              width: "100%",
+                              textAlign: "left",
+                              border: "1px solid #ddd",
+                              background: "#fff",
+                              borderRadius: "6px",
+                              padding: "11px 12px",
+                              marginBottom: "10px",
+                              cursor: pollVoting ? "not-allowed" : "pointer",
+                              fontSize: "14px",
+                              fontWeight: "600",
+                              transition: "0.2s",
+                            }}
+                          >
+                            {option.text}
+                          </button>
+                        ))}
+                      </div>
+                    ) : (
+                      <div>
+                        {activePoll.options?.map((option, index) => (
+                          <div
+                            key={index}
+                            style={{
+                              marginBottom: "15px",
+                            }}
+                          >
+                            <div
+                              style={{
+                                display: "flex",
+                                justifyContent: "space-between",
+                                marginBottom: "5px",
+                                fontSize: "13px",
+                                fontWeight: "600",
+                              }}
+                            >
+                              <span>{option.text}</span>
+
+                              <span>{option.percentage || 0}%</span>
+                            </div>
+
+                            <div
+                              style={{
+                                width: "100%",
+                                height: "8px",
+                                background: "#e9ecef",
+                                borderRadius: "10px",
+                                overflow: "hidden",
+                              }}
+                            >
+                              <div
+                                style={{
+                                  width: `${option.percentage || 0}%`,
+                                  height: "100%",
+                                  background: "#111",
+                                  borderRadius: "10px",
+                                  transition: "width 0.5s ease",
+                                }}
+                              />
+                            </div>
+
+                            <div
+                              style={{
+                                marginTop: "3px",
+                                fontSize: "11px",
+                                color: "#777",
+                              }}
+                            >
+                              {option.votes || 0} votes
+                            </div>
+                          </div>
+                        ))}
+
+                        <div
+                          style={{
+                            borderTop: "1px solid #eee",
+                            paddingTop: "10px",
+                            marginTop: "10px",
+                            fontSize: "12px",
+                            color: "#777",
+                          }}
+                        >
+                          Total Votes: {activePoll.totalVotes || 0}
+                        </div>
+                      </div>
+                    )}
+                  </>
+                )}
+              </div>
+            </div>
+
+            {/* <div className="d-none d-lg-block col-lg-4 col-xl-3">
               <div className="single_post post_type3 post_type15 mb30 border-radious5 sm-mt30">
                 <div className="post_img">
                   <div className="img_wrap">
@@ -651,7 +882,7 @@ const PostGalleryTwo = () => {
                   </div>
                 </div>
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>

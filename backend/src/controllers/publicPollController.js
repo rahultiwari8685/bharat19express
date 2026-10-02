@@ -42,6 +42,15 @@ export const votePoll = async (req, res) => {
         .json({ success: false, message: "Poll not found" });
     }
 
+    const now = new Date();
+
+    if (now < new Date(poll.start_date) || now > new Date(poll.end_date)) {
+      return res.status(400).json({
+        success: false,
+        message: "Poll is not active",
+      });
+    }
+
     if (option_index < 0 || option_index >= poll.options.length) {
       return res
         .status(400)
@@ -69,18 +78,63 @@ export const votePoll = async (req, res) => {
   }
 };
 
+// export const pollResults = async (req, res) => {
+//   try {
+//     const poll = await Poll.findById(req.params.id);
+
+//     if (!poll) {
+//       return res
+//         .status(404)
+//         .json({ success: false, message: "Poll not found" });
+//     }
+
+//     res.json({ success: true, data: poll });
+//   } catch (err) {
+//     res.status(500).json({ success: false, message: err.message });
+//   }
+// };
+
 export const pollResults = async (req, res) => {
   try {
-    const poll = await Poll.findById(req.params.id);
+    const poll = await Poll.findById(req.params.id).lean();
 
     if (!poll) {
-      return res
-        .status(404)
-        .json({ success: false, message: "Poll not found" });
+      return res.status(404).json({
+        success: false,
+        message: "Poll not found",
+      });
     }
 
-    res.json({ success: true, data: poll });
+    const totalVotes = poll.options.reduce(
+      (total, option) => total + Number(option.votes || 0),
+      0,
+    );
+
+    const options = poll.options.map((option) => {
+      const votes = Number(option.votes || 0);
+
+      const percentage =
+        totalVotes > 0 ? Number(((votes / totalVotes) * 100).toFixed(1)) : 0;
+
+      return {
+        ...option,
+        votes,
+        percentage,
+      };
+    });
+
+    return res.json({
+      success: true,
+      data: {
+        ...poll,
+        totalVotes,
+        options,
+      },
+    });
   } catch (err) {
-    res.status(500).json({ success: false, message: err.message });
+    return res.status(500).json({
+      success: false,
+      message: err.message,
+    });
   }
 };
