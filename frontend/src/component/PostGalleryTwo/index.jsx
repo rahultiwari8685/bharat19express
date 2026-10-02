@@ -470,12 +470,12 @@ const PostGalleryTwo = () => {
 
       const loginInfo = JSON.parse(localStorage.getItem("logininfo") || "null");
 
-      const token = loginInfo?.token;
+      // const token = loginInfo?.token;
 
-      if (!token) {
-        alert("Please login to vote.");
-        return;
-      }
+      // if (!token) {
+      //   alert("Please login to vote.");
+      //   return;
+      // }
 
       const res = await fetch(`${API}/api/polls/${activePoll._id}/vote`, {
         method: "POST",
