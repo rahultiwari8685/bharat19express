@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Document, Page, pdfjs } from "react-pdf";
 
-// PDF.js worker
 pdfjs.GlobalWorkerOptions.workerSrc = `https://unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
 
 const API = "https://api.iotaclasses.in";
@@ -22,10 +21,6 @@ const EpaperReader = () => {
   const [scale, setScale] = useState(1);
 
   const [isFullscreen, setIsFullscreen] = useState(false);
-
-  // ==========================================
-  // FETCH EPAPER
-  // ==========================================
 
   useEffect(() => {
     const fetchEpaper = async () => {
@@ -54,27 +49,15 @@ const EpaperReader = () => {
     }
   }, [id]);
 
-  // ==========================================
-  // PDF URL
-  // ==========================================
-
   const pdfUrl = epaper?.pdfFile
     ? `${API}/uploads/magazines/${epaper.pdfFile}`
     : "";
-
-  // ==========================================
-  // PDF LOAD SUCCESS
-  // ==========================================
 
   const onDocumentLoadSuccess = ({ numPages }) => {
     setNumPages(numPages);
     setPageNumber(1);
     setPdfLoading(false);
   };
-
-  // ==========================================
-  // PAGE NAVIGATION
-  // ==========================================
 
   const previousPage = () => {
     setPageNumber((prev) => Math.max(prev - 1, 1));
@@ -83,10 +66,6 @@ const EpaperReader = () => {
   const nextPage = () => {
     setPageNumber((prev) => Math.min(prev + 1, numPages));
   };
-
-  // ==========================================
-  // ZOOM
-  // ==========================================
 
   const zoomOut = () => {
     setScale((prev) => Math.max(prev - 0.1, 0.6));
@@ -99,10 +78,6 @@ const EpaperReader = () => {
   const resetZoom = () => {
     setScale(1);
   };
-
-  // ==========================================
-  // FULLSCREEN
-  // ==========================================
 
   const toggleFullscreen = async () => {
     try {
@@ -130,10 +105,6 @@ const EpaperReader = () => {
     };
   }, []);
 
-  // ==========================================
-  // DOWNLOAD
-  // ==========================================
-
   const downloadPdf = () => {
     if (!pdfUrl) return;
 
@@ -143,10 +114,6 @@ const EpaperReader = () => {
     link.rel = "noopener noreferrer";
     link.click();
   };
-
-  // ==========================================
-  // LOADING
-  // ==========================================
 
   if (loading) {
     return (
@@ -173,10 +140,6 @@ const EpaperReader = () => {
     );
   }
 
-  // ==========================================
-  // ERROR
-  // ==========================================
-
   if (error || !epaper) {
     return (
       <div style={styles.errorPage}>
@@ -195,10 +158,6 @@ const EpaperReader = () => {
     );
   }
 
-  // ==========================================
-  // MAIN
-  // ==========================================
-
   return (
     <div
       ref={viewerRef}
@@ -207,10 +166,6 @@ const EpaperReader = () => {
         ...(isFullscreen ? styles.fullscreenPage : {}),
       }}
     >
-      {/* =====================================
-          TOP HEADER
-      ===================================== */}
-
       <div style={styles.header}>
         <div style={styles.headerInner}>
           {/* BACK */}
@@ -234,10 +189,6 @@ const EpaperReader = () => {
           </button>
         </div>
       </div>
-
-      {/* =====================================
-          TOOLBAR
-      ===================================== */}
 
       <div style={styles.toolbar}>
         <div style={styles.toolbarInner}>
@@ -314,10 +265,6 @@ const EpaperReader = () => {
         </div>
       </div>
 
-      {/* =====================================
-          PDF VIEWER
-      ===================================== */}
-
       <div style={styles.viewer}>
         {pdfLoading && (
           <div style={styles.pdfLoading}>
@@ -349,10 +296,6 @@ const EpaperReader = () => {
         </Document>
       </div>
 
-      {/* =====================================
-          BOTTOM NAVIGATION
-      ===================================== */}
-
       <div style={styles.bottomBar}>
         <button
           onClick={previousPage}
@@ -380,10 +323,6 @@ const EpaperReader = () => {
           Next →
         </button>
       </div>
-
-      {/* =====================================
-          RESPONSIVE CSS
-      ===================================== */}
 
       <style>
         {`

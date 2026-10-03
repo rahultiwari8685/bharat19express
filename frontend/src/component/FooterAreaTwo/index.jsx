@@ -7,7 +7,6 @@ import FontAwesome from "../uiStyle/FontAwesome";
 import WidgetMorenews from "../WidgetMorenews";
 import TwitterfeedTwo from "../TwitterfeedTwo";
 
-// images
 import logo from "../../assets/img/Bharat19_Logo.png";
 import banner from "../../assets/img/ad/ad-3.png";
 import phone_black from "../../assets/img/icon/phone_black.png";
@@ -122,6 +121,7 @@ const FooterAreaTwo = () => {
               <div className="single_contact3">
                 <h6>Let's Talk</h6>
                 <Link to="/">+918542822407</Link>
+                <br />
                 <Link to="/">+918707386745</Link>
               </div>
               <div className="single_contact3">
