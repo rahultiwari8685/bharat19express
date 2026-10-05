@@ -138,9 +138,9 @@ const FooterAreaTwo = () => {
                 </p>
               </div>
             </div>
-            <div className="space-30" />
+            {/* <div className="space-30" />
             <div className="border_black" />
-            <div className="space-30" />
+            <div className="space-30" /> */}
             {/* <div className="row">
               <div className="col-lg-6">
                 <WidgetMorenews />
