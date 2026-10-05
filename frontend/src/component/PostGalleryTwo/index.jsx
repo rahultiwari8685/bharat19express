@@ -176,7 +176,7 @@ const PostGalleryTwo = () => {
             (a, b) =>
               new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
           )
-          .slice(0, 4);
+          .slice(0, 3);
 
         setLatestNews(news);
       } else {
