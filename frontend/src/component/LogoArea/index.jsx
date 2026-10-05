@@ -58,7 +58,7 @@ const LogoArea = ({ className, dark }) => {
                     alt={siteSetting.siteName}
                     style={{
                       width: "220px",
-                      height: "100px",
+                      height: "80px",
                       objectFit: "contain",
                     }}
                   />
@@ -81,8 +81,8 @@ const LogoArea = ({ className, dark }) => {
                     src={`https://api.iotaclasses.in/uploads/advertisements/${banner.image}`}
                     alt={banner.title}
                     style={{
-                      width: "750px",
-                      height: "100px",
+                      width: "728px",
+                      height: "80px",
                       objectFit: "cover",
                     }}
                   />
