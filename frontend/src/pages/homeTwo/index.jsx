@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import PostGalleryTwo from "../../component/PostGalleryTwo";
 import TrendingNewsTwo from "../../component/TrendingNewsTwo";
 import FeatureNewsTwo from "../../component/FeatureNewsTwo";
