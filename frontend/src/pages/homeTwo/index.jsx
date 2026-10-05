@@ -22,9 +22,11 @@ function HomeTwo() {
   const categoryId = "6ab5133ae0146bb0a4a80e48";
 
   const [banner, setBanner] = useState(null);
+  const [bannerMiddle, setBannerMiddle] = useState(null);
 
   useEffect(() => {
     getBanner();
+    getBannerMiddle();
   }, []);
 
   const getBanner = async () => {
@@ -43,6 +45,26 @@ function HomeTwo() {
     } catch (err) {
       console.error("Advertisement Error:", err);
       setBanner(null);
+    }
+  };
+  const getBannerMiddle = async () => {
+    try {
+      const res = await fetch("https://api.iotaclasses.in/api/advertisements");
+
+      const result = await res.json();
+
+      if (result.success) {
+        const ads = result.data
+          .filter(
+            (item) => item.status === true && item.position === "homepage_top",
+          )
+          .sort((a, b) => (a.priority || 0) - (b.priority || 0));
+
+        setBannerMiddle(ads[0] || null);
+      }
+    } catch (err) {
+      console.error("Advertisement Error:", err);
+      setBannerMiddle(null);
     }
   };
 
@@ -127,16 +149,16 @@ function HomeTwo() {
                 </Link>
               </div> */}
 
-              {banner && (
+              {bannerMiddle && (
                 <div className="banner_area mb30 xs-mt60">
                   <a
-                    href={banner.link || "#"}
-                    target={banner.link ? "_blank" : "_self"}
+                    href={bannerMiddle.link || "#"}
+                    target={bannerMiddle.link ? "_blank" : "_self"}
                     rel="noopener noreferrer"
                   >
                     <img
-                      src={`https://api.iotaclasses.in/uploads/advertisements/${banner.image}`}
-                      alt={banner.title || "Advertisement"}
+                      src={`https://api.iotaclasses.in/uploads/advertisements/${bannerMiddle.image}`}
+                      alt={bannerMiddle.title || "Advertisement"}
                       style={{
                         width: "100%",
                         height: "auto",
