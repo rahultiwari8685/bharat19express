@@ -121,11 +121,32 @@ function HomeTwo() {
         <div className="container">
           <div className="row">
             <div className="col-xl-8 col-md-12">
-              <div className="banner_area mb30 xs-mt60">
+              {/* <div className="banner_area mb30 xs-mt60">
                 <Link to="/">
                   <img src={banner3} alt="banner3" />
                 </Link>
-              </div>
+              </div> */}
+
+              {banner && (
+                <div className="banner_area mb30 xs-mt60">
+                  <a
+                    href={banner.link || "#"}
+                    target={banner.link ? "_blank" : "_self"}
+                    rel="noopener noreferrer"
+                  >
+                    <img
+                      src={`https://api.iotaclasses.in/uploads/advertisements/${banner.image}`}
+                      alt={banner.title || "Advertisement"}
+                      style={{
+                        width: "100%",
+                        height: "auto",
+                        display: "block",
+                      }}
+                    />
+                  </a>
+                </div>
+              )}
+
               <div className="row">
                 <div className="col-md-6">
                   <NewsLetter className="white_bg border-radious5" />
