@@ -86,7 +86,8 @@ class Contact extends Component {
                     </div>
                     <p>LOCATION:</p>
                     <h6>
-                      44 Canal Center Plaza #200 Alexandria, VA 22314, USA
+                      Shop No. 8, Rail Nagar, Sector J, Ashiyana,
+                      Lucknow(UP)-226012
                     </h6>
                   </div>
                 </div>
@@ -102,7 +103,8 @@ class Contact extends Component {
                     </div>
                     <p>LOCATION:</p>
                     <h6>
-                      44 Canal Center Plaza #200 Alexandria, VA 22314, USA
+                      Shop No. 8, Rail Nagar, Sector J, Ashiyana,
+                      Lucknow(UP)-226012
                     </h6>
                   </div>
                 </div>
@@ -118,7 +120,8 @@ class Contact extends Component {
                     </div>
                     <p>LOCATION:</p>
                     <h6>
-                      44 Canal Center Plaza #200 Alexandria, VA 22314, USA
+                      Shop No. 8, Rail Nagar, Sector J, Ashiyana,
+                      Lucknow(UP)-226012
                     </h6>
                   </div>
                 </div>
@@ -167,7 +170,7 @@ class Contact extends Component {
                             {this.validator.message(
                               "Full Name",
                               name,
-                              "required"
+                              "required",
                             )}
                           </div>
                           <div className="col-lg-6">
@@ -181,7 +184,7 @@ class Contact extends Component {
                             {this.validator.message(
                               "Subject",
                               subject,
-                              "required"
+                              "required",
                             )}
                           </div>
                           <div className="col-lg-6">
@@ -195,7 +198,7 @@ class Contact extends Component {
                             {this.validator.message(
                               "Email",
                               email,
-                              "required|email"
+                              "required|email",
                             )}
                           </div>
                           <div className="col-lg-6">
@@ -221,7 +224,7 @@ class Contact extends Component {
                             {this.validator.message(
                               "Message",
                               message,
-                              "required"
+                              "required",
                             )}
                           </div>
                           <div className="col-12">

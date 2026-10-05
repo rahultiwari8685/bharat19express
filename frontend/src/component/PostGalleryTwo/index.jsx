@@ -25,6 +25,9 @@ const PostGalleryTwo = () => {
   const [pollVoting, setPollVoting] = useState(false);
   const [pollVoted, setPollVoted] = useState(false);
 
+  const [latestNews, setLatestNews] = useState([]);
+  const [latestNewsLoading, setLatestNewsLoading] = useState(false);
+
   useEffect(() => {
     getVideoNews();
     getTextNews();
@@ -109,6 +112,26 @@ const PostGalleryTwo = () => {
       console.error("Text News Error:", error);
     }
   };
+  // const getActivePoll = async () => {
+  //   try {
+  //     setPollLoading(true);
+
+  //     const res = await fetch(`${API}/api/polls/active`);
+  //     const data = await res.json();
+
+  //     if (data.success && data.data) {
+  //       setActivePoll(data.data);
+  //     } else {
+  //       setActivePoll(null);
+  //     }
+  //   } catch (error) {
+  //     console.error("Poll Error:", error);
+  //     setActivePoll(null);
+  //   } finally {
+  //     setPollLoading(false);
+  //   }
+  // };
+
   const getActivePoll = async () => {
     try {
       setPollLoading(true);
@@ -117,72 +140,55 @@ const PostGalleryTwo = () => {
       const data = await res.json();
 
       if (data.success && data.data) {
+        // Active poll found
         setActivePoll(data.data);
       } else {
+        // No active poll
         setActivePoll(null);
+
+        // Show latest news instead
+        getLatestNews();
       }
     } catch (error) {
       console.error("Poll Error:", error);
+
       setActivePoll(null);
+
+      // If poll API fails, show latest news
+      getLatestNews();
     } finally {
       setPollLoading(false);
     }
   };
 
-  // const votePoll = async (optionIndex) => {
-  //   if (!activePoll || pollVoting || pollVoted) {
-  //     return;
-  //   }
+  const getLatestNews = async () => {
+    try {
+      setLatestNewsLoading(true);
 
-  //   try {
-  //     setPollVoting(true);
+      const res = await fetch(`${API}/api/news/getAllNews?limit=5`);
 
-  //     const loginInfo = JSON.parse(localStorage.getItem("logininfo") || "null");
+      const data = await res.json();
 
-  //     // const token = loginInfo?.token;
+      if (data.status && Array.isArray(data.data)) {
+        const news = data.data
+          .filter((item) => Number(item.type) === 1)
+          .sort(
+            (a, b) =>
+              new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+          )
+          .slice(0, 4);
 
-  //     // if (!token) {
-  //     //   alert("Please login to vote.");
-  //     //   return;
-  //     // }
-
-  //     const res = await fetch(`${API}/api/polls/${activePoll._id}/vote`, {
-  //       method: "POST",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //         Authorization: `Bearer ${token}`,
-  //       },
-  //       body: JSON.stringify({
-  //         option_index: optionIndex,
-  //       }),
-  //     });
-
-  //     const data = await res.json();
-
-  //     if (!data.success) {
-  //       alert(data.message || "Unable to submit vote");
-  //       return;
-  //     }
-
-  //     setPollVoted(true);
-
-  //     // Get updated percentages
-  //     const resultRes = await fetch(
-  //       `${API}/api/polls/${activePoll._id}/results`,
-  //     );
-
-  //     const resultData = await resultRes.json();
-
-  //     if (resultData.success) {
-  //       setActivePoll(resultData.data);
-  //     }
-  //   } catch (error) {
-  //     console.error("Vote Error:", error);
-  //     alert("Something went wrong while voting.");
-  //   } finally {
-  //     setPollVoting(false);
-  //   }
-  // };
+        setLatestNews(news);
+      } else {
+        setLatestNews([]);
+      }
+    } catch (error) {
+      console.error("Latest News Error:", error);
+      setLatestNews([]);
+    } finally {
+      setLatestNewsLoading(false);
+    }
+  };
 
   const votePoll = async (optionIndex) => {
     if (!activePoll || pollVoting || pollVoted) {
@@ -449,36 +455,52 @@ const PostGalleryTwo = () => {
                   border: "1px solid #e5e5e5",
                 }}
               >
-                <div className="d-flex justify-content-between align-items-center mb-3">
-                  <h4
-                    style={{
-                      margin: 0,
-                      fontSize: "20px",
-                      fontWeight: "700",
-                    }}
-                  >
-                    Poll
-                  </h4>
-
-                  <span
-                    style={{
-                      fontSize: "12px",
-                      fontWeight: "600",
-                      padding: "4px 9px",
-                      borderRadius: "20px",
-                      background: "#f1f1f1",
-                    }}
-                  >
-                    VOTE
-                  </span>
-                </div>
-
                 {pollLoading ? (
-                  <p className="mb-0">Loading poll...</p>
-                ) : !activePoll ? (
-                  <p className="mb-0">No active poll available.</p>
-                ) : (
                   <>
+                    <div className="d-flex justify-content-between align-items-center mb-3">
+                      <h4
+                        style={{
+                          margin: 0,
+                          fontSize: "20px",
+                          fontWeight: "700",
+                        }}
+                      >
+                        Poll
+                      </h4>
+                    </div>
+
+                    <p className="mb-0">Loading...</p>
+                  </>
+                ) : activePoll ? (
+                  <>
+                    {/* =========================
+            ACTIVE POLL
+        ========================= */}
+
+                    <div className="d-flex justify-content-between align-items-center mb-3">
+                      <h4
+                        style={{
+                          margin: 0,
+                          fontSize: "20px",
+                          fontWeight: "700",
+                        }}
+                      >
+                        Poll
+                      </h4>
+
+                      <span
+                        style={{
+                          fontSize: "12px",
+                          fontWeight: "600",
+                          padding: "4px 9px",
+                          borderRadius: "20px",
+                          background: "#f1f1f1",
+                        }}
+                      >
+                        VOTE
+                      </span>
+                    </div>
+
                     {/* QUESTION */}
 
                     <h5
@@ -589,43 +611,126 @@ const PostGalleryTwo = () => {
                       </div>
                     )}
                   </>
+                ) : (
+                  <>
+                    {/* =========================
+            LATEST NEWS
+        ========================= */}
+
+                    <div className="d-flex justify-content-between align-items-center mb-3">
+                      <h4
+                        style={{
+                          margin: 0,
+                          fontSize: "20px",
+                          fontWeight: "700",
+                        }}
+                      >
+                        Latest News
+                      </h4>
+                    </div>
+
+                    {latestNewsLoading ? (
+                      <p className="mb-0">Loading latest news...</p>
+                    ) : latestNews.length > 0 ? (
+                      latestNews.map((item, index) => {
+                        const newsUrl = `/news/${item.slug}`;
+
+                        const image = item.thumbnail
+                          ? `${API}/uploads/images/${item.thumbnail}`
+                          : col21;
+
+                        const category = item.categories?.[0];
+
+                        return (
+                          <div key={item._id || index}>
+                            <div
+                              style={{
+                                display: "flex",
+                                gap: "10px",
+                                alignItems: "center",
+                              }}
+                            >
+                              {/* IMAGE */}
+
+                              <div
+                                style={{
+                                  width: "75px",
+                                  height: "60px",
+                                  flexShrink: 0,
+                                  overflow: "hidden",
+                                  borderRadius: "5px",
+                                }}
+                              >
+                                <Link to={newsUrl}>
+                                  <img
+                                    src={image}
+                                    alt={item.title || "Latest News"}
+                                    style={{
+                                      width: "100%",
+                                      height: "100%",
+                                      objectFit: "cover",
+                                    }}
+                                  />
+                                </Link>
+                              </div>
+
+                              {/* CONTENT */}
+
+                              <div>
+                                <p
+                                  style={{
+                                    margin: "0 0 4px",
+                                    fontSize: "10px",
+                                    fontWeight: "700",
+                                    color: "#e31e24",
+                                    textTransform: "uppercase",
+                                  }}
+                                >
+                                  {category?.name || "News"}
+                                </p>
+
+                                <h5
+                                  style={{
+                                    margin: 0,
+                                    fontSize: "13px",
+                                    lineHeight: "1.4",
+                                    fontWeight: "700",
+                                  }}
+                                >
+                                  <Link
+                                    to={newsUrl}
+                                    style={{
+                                      color: "#222",
+                                      textDecoration: "none",
+                                    }}
+                                  >
+                                    {item.title?.length > 70
+                                      ? `${item.title.substring(0, 70)}...`
+                                      : item.title}
+                                  </Link>
+                                </h5>
+                              </div>
+                            </div>
+
+                            {/* SEPARATOR */}
+
+                            {index + 1 < latestNews.length && (
+                              <>
+                                <div className="space-10" />
+                                <div className="border_black" />
+                                <div className="space-10" />
+                              </>
+                            )}
+                          </div>
+                        );
+                      })
+                    ) : (
+                      <p className="mb-0">No latest news available.</p>
+                    )}
+                  </>
                 )}
               </div>
             </div>
-
-            {/* <div className="d-none d-lg-block col-lg-4 col-xl-3">
-              <div className="single_post post_type3 post_type15 mb30 border-radious5 sm-mt30">
-                <div className="post_img">
-                  <div className="img_wrap">
-                    <Link to="/">
-                      <img src={col26} alt="static news" />
-                    </Link>
-                  </div>
-                </div>
-
-                <div className="single_post_text white_bg padding20">
-                  <h4>
-                    <Link to="/post1">
-                      Japan’s virus puzzled the world luck running out?
-                    </Link>
-                  </h4>
-
-                  <div className="space-10" />
-
-                  <p className="post-p">
-                    The property, complete with 30-seat screening from room.
-                  </p>
-
-                  <div className="space-20" />
-
-                  <div className="meta3">
-                    <Link to="/">TECHNOLOGY</Link>
-
-                    <Link to="/">March 26, 2020</Link>
-                  </div>
-                </div>
-              </div>
-            </div> */}
           </div>
         </div>
       </div>

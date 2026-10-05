@@ -32,7 +32,7 @@ const International = () => {
             (a, b) =>
               new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
           )
-          .slice(0, 5);
+          .slice(0, 4);
 
         setNationalNews(news);
       }
@@ -52,10 +52,6 @@ const International = () => {
       year: "numeric",
     });
   };
-
-  // ==========================================
-  // LOADING
-  // ==========================================
 
   if (loading) {
     return (
@@ -93,7 +89,6 @@ const International = () => {
         return (
           <div key={item._id || i}>
             <div className="single_international">
-              {/* CATEGORY */}
               <p className="meta before">
                 <Link to={category?.slug ? `/category/${category.slug}` : "#"}>
                   {category?.name || "National"}

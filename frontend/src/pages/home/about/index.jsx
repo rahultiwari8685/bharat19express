@@ -69,8 +69,8 @@ function About() {
                 <h2>Bharat TV Media</h2>
 
                 <p>
-                  Bharat TV Media is a digital Hindi news platform committed to
-                  delivering accurate, fast and unbiased news from India and
+                  Bharat 19 Express is a digital Hindi news platform committed
+                  to delivering accurate, fast and unbiased news from India and
                   around the world.
                 </p>
 
