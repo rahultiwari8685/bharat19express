@@ -378,6 +378,17 @@ const PostGalleryTwo = () => {
             </div>
 
             <div className="d-none d-xl-block col-xl-3">
+              <div className="d-flex justify-content-between align-items-center mb-3">
+                <h4
+                  style={{
+                    margin: 0,
+                    fontSize: "20px",
+                    fontWeight: "700",
+                  }}
+                >
+                  Latest News
+                </h4>
+              </div>
               <div className="white_bg padding15 border-radious5 sm-mt30">
                 {textNews.length > 0 ? (
                   textNews.map((item, i) => {
@@ -625,7 +636,7 @@ const PostGalleryTwo = () => {
                           fontWeight: "700",
                         }}
                       >
-                        Latest News
+                        Top News
                       </h4>
                     </div>
 
