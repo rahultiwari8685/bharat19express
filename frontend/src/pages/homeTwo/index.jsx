@@ -20,6 +20,31 @@ import International from "../../component/International";
 
 function HomeTwo() {
   const categoryId = "6ab5133ae0146bb0a4a80e48";
+
+  const [banner, setBanner] = useState(null);
+
+  useEffect(() => {
+    getBanner();
+  }, []);
+
+  const getBanner = async () => {
+    try {
+      const res = await fetch("https://api.iotaclasses.in/api/advertisements");
+
+      const result = await res.json();
+
+      if (result.success) {
+        const ad = result.data
+          .filter((item) => item.position === "sidebar" && item.status === true)
+          .sort((a, b) => a.priority - b.priority)[0];
+
+        setBanner(ad);
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   return (
     <>
       <PostGalleryTwo />
