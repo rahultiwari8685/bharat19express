@@ -34,14 +34,15 @@ function HomeTwo() {
       const result = await res.json();
 
       if (result.success) {
-        const ad = result.data
-          .filter((item) => item.position === "sidebar" && item.status === true)
-          .sort((a, b) => a.priority - b.priority)[0];
+        const ads = result.data
+          .filter((item) => item.status === true && item.position === "sidebar")
+          .sort((a, b) => (a.priority || 0) - (b.priority || 0));
 
-        setBanner(ad);
+        setBanner(ads[0] || null);
       }
     } catch (err) {
-      console.error(err);
+      console.error("Advertisement Error:", err);
+      setBanner(null);
     }
   };
 
@@ -61,13 +62,35 @@ function HomeTwo() {
                 <div className="col-md-6 col-lg-12">
                   <MostViewTwo />
                 </div>
-                <div className="col-md-6 col-lg-12 d-md-none d-lg-block">
+                {banner && (
+                  <div className="col-md-6 col-lg-12 d-md-none d-lg-block">
+                    <div className="banner2 mb30 border-radious5">
+                      <a
+                        href={banner.link || "#"}
+                        target={banner.link ? "_blank" : "_self"}
+                        rel="noopener noreferrer"
+                      >
+                        <img
+                          src={`https://api.iotaclasses.in/uploads/advertisements/${banner.image}`}
+                          alt={banner.title || "Advertisement"}
+                          style={{
+                            width: "100%",
+                            height: "auto",
+                            display: "block",
+                          }}
+                        />
+                      </a>
+                    </div>
+                  </div>
+                )}
+
+                {/* <div className="col-md-6 col-lg-12 d-md-none d-lg-block">
                   <div className="banner2 mb30 border-radious5">
                     <Link to="/">
                       <img src={banner2} alt="thumb" />
                     </Link>
                   </div>
-                </div>
+                </div> */}
 
                 <div className="col-md-6 col-lg-12">
                   <WidgetFinance />
