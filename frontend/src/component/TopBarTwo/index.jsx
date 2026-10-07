@@ -10,6 +10,7 @@ const TopBarTwo = () => {
   const { t, i18n } = useTranslation();
 
   const [trendingNews, setTrendingNews] = useState([]);
+  const [showYoutubeMenu, setShowYoutubeMenu] = useState(false);
 
   useEffect(() => {
     getTrendingNews();
@@ -39,12 +40,27 @@ const TopBarTwo = () => {
   };
 
   return (
-    <div className="topbar red_bg" id="top">
+    // <div className="topbar white_bg" id="top">
+    <div
+      className="topbar"
+      id="top"
+      style={{
+        background: "#e31e24",
+        color: "#fff",
+      }}
+    >
       <div className="container">
         <div className="row">
           <div className="col-md-8 align-self-center">
             <div className="trancarousel_area" style={{ display: "flex" }}>
-              <p className="trand">{t("trending")}</p>
+              <p
+                className="trand"
+                style={{
+                  color: "#fff",
+                }}
+              >
+                {t("trending")}
+              </p>
 
               <div className="trancarousel nav_style1" style={{ width: "80%" }}>
                 <Slider
@@ -63,7 +79,14 @@ const TopBarTwo = () => {
                   {trendingNews.map((news) => (
                     <div className="trancarousel_item" key={news._id}>
                       <p>
-                        <Link to={`/news/${news.slug}`}>{news.title}</Link>
+                        <Link
+                          to={`/news/${news.slug}`}
+                          style={{
+                            color: "#fff",
+                          }}
+                        >
+                          {news.title}
+                        </Link>
                       </p>
                     </div>
                   ))}
@@ -107,14 +130,111 @@ const TopBarTwo = () => {
                     </a>
                   </li>
 
-                  <li>
+                  <li
+                    style={{
+                      position: "relative",
+                    }}
+                    onMouseEnter={() => setShowYoutubeMenu(true)}
+                    onMouseLeave={() => setShowYoutubeMenu(false)}
+                  >
                     <a
-                      href="https://youtube.com/"
-                      target="_blank"
-                      rel="noopener noreferrer"
+                      href="#!"
+                      onClick={(e) => e.preventDefault()}
+                      style={{
+                        cursor: "pointer",
+                      }}
                     >
                       <FontAwesome name="youtube-play" />
                     </a>
+
+                    {showYoutubeMenu && (
+                      <div
+                        style={{
+                          position: "absolute",
+                          top: "32px",
+                          right: "-10px",
+                          width: "230px",
+                          background: "#fff",
+                          borderRadius: "6px",
+                          boxShadow: "0 5px 20px rgba(0,0,0,0.25)",
+                          padding: "8px 0",
+                          zIndex: 9999,
+                          textAlign: "left",
+                        }}
+                      >
+                        <div
+                          style={{
+                            padding: "8px 14px",
+                            fontSize: "13px",
+                            fontWeight: "700",
+                            color: "#e31e24",
+                            borderBottom: "1px solid #eee",
+                          }}
+                        >
+                          Our YouTube Channels
+                        </div>
+
+                        <a
+                          href="https://youtube.com/"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          style={{
+                            display: "block",
+                            padding: "10px 14px",
+                            color: "#333",
+                            textDecoration: "none",
+                            fontSize: "13px",
+                          }}
+                        >
+                          Bharat TV Media
+                        </a>
+
+                        <a
+                          href="https://youtube.com/"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          style={{
+                            display: "block",
+                            padding: "10px 14px",
+                            color: "#333",
+                            textDecoration: "none",
+                            fontSize: "13px",
+                          }}
+                        >
+                          Bharat TV Hindi
+                        </a>
+
+                        <a
+                          href="https://youtube.com/"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          style={{
+                            display: "block",
+                            padding: "10px 14px",
+                            color: "#333",
+                            textDecoration: "none",
+                            fontSize: "13px",
+                          }}
+                        >
+                          Bharat TV News
+                        </a>
+
+                        <a
+                          href="https://youtube.com/"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          style={{
+                            display: "block",
+                            padding: "10px 14px",
+                            color: "#333",
+                            textDecoration: "none",
+                            fontSize: "13px",
+                          }}
+                        >
+                          Bharat TV Live
+                        </a>
+                      </div>
+                    )}
                   </li>
 
                   <li>
@@ -167,6 +287,7 @@ const TopBarTwo = () => {
                   style={{
                     border: "none",
                     background: "transparent",
+                    color: "#fff",
                     cursor: "pointer",
                     outline: "none",
                     fontSize: "14px",
