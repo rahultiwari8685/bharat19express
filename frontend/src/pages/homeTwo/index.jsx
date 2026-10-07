@@ -17,7 +17,7 @@ import FollowUs from "../../component/FollowUs";
 import MostViewThree from "../../component/MostViewThree";
 import Sports from "../../component/Sports";
 import International from "../../component/International";
-
+import BannerSection from "../../component/BannerSection";
 function HomeTwo() {
   const categoryId = "6ab5133ae0146bb0a4a80e48";
 
@@ -72,6 +72,7 @@ function HomeTwo() {
   return (
     <>
       <PostGalleryTwo />
+      <BannerSection className="section-padding2 theme3_bg layout3" />
       <div className="total3 mb30">
         <div className="container">
           <div className="row">
