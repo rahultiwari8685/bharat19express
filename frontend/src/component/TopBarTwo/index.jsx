@@ -57,6 +57,8 @@ const TopBarTwo = () => {
                 className="trand"
                 style={{
                   color: "#fff",
+                  background: "transparent",
+                  fontWeight: "600",
                 }}
               >
                 {t("trending")}
@@ -83,6 +85,8 @@ const TopBarTwo = () => {
                           to={`/news/${news.slug}`}
                           style={{
                             color: "#fff",
+                            textDecoration: "none",
+                            fontWeight: "500",
                           }}
                         >
                           {news.title}
@@ -108,13 +112,21 @@ const TopBarTwo = () => {
           <div className="col-md-4 align-self-center">
             <div className="top_date_social text-right">
               {/* SOCIAL */}
-              <div className="social1">
+              <div
+                className="social1"
+                style={{
+                  color: "#fff",
+                }}
+              >
                 <ul className="inline">
                   <li>
                     <a
                       href="https://twitter.com/"
                       target="_blank"
                       rel="noopener noreferrer"
+                      style={{
+                        color: "#fff",
+                      }}
                     >
                       <FontAwesome name="twitter" />
                     </a>
@@ -125,6 +137,9 @@ const TopBarTwo = () => {
                       href="https://facebook.com/"
                       target="_blank"
                       rel="noopener noreferrer"
+                      style={{
+                        color: "#fff",
+                      }}
                     >
                       <FontAwesome name="facebook-f" />
                     </a>
