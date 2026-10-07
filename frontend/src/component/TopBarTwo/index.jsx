@@ -45,7 +45,7 @@ const TopBarTwo = () => {
       className="topbar"
       id="top"
       style={{
-        background: "#e31e24",
+        background: "#b40000",
         color: "#fff",
       }}
     >
@@ -167,7 +167,7 @@ const TopBarTwo = () => {
                             padding: "8px 14px",
                             fontSize: "13px",
                             fontWeight: "700",
-                            color: "#e31e24",
+                            color: "#b40000",
                             borderBottom: "1px solid #eee",
                           }}
                         >
@@ -267,7 +267,7 @@ const TopBarTwo = () => {
                     height: "34px",
                     padding: "0 13px",
                     borderRadius: "5px",
-                    background: "#e31e24",
+                    background: "transparent",
                     color: "#fff",
                     fontSize: "12px",
                     fontWeight: "700",
