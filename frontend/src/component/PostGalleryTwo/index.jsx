@@ -199,6 +199,19 @@ const PostGalleryTwo = () => {
     }
   };
 
+  const getShortDescription = (description, limit = 170) => {
+    if (!description) return "";
+
+    const text = String(description)
+      .replace(/<[^>]*>/g, " ")
+      .replace(/&nbsp;/g, " ")
+      .replace(/&amp;/g, "&")
+      .replace(/\s+/g, " ")
+      .trim();
+
+    return text.length > limit ? `${text.substring(0, limit)}...` : text;
+  };
+
   const getActivePoll = async () => {
     try {
       setPollLoading(true);
@@ -468,12 +481,23 @@ const PostGalleryTwo = () => {
                                     height: "350px",
                                     overflow: "hidden",
                                     background: "#111",
+                                    borderRadius: "6px",
                                   }}
                                 >
-                                  <Link to={`/news/${item.slug}`}>
+                                  <Link
+                                    to={`/news/${item.slug}`}
+                                    style={{
+                                      display: "block",
+                                      width: "100%",
+                                      height: "100%",
+                                      position: "relative",
+                                      textDecoration: "none",
+                                    }}
+                                  >
+                                    {/* IMAGE */}
                                     <img
                                       src={`${API}/uploads/images/${image}`}
-                                      alt={item.title}
+                                      alt={item.title || "News"}
                                       style={{
                                         width: "100%",
                                         height: "350px",
@@ -482,13 +506,14 @@ const PostGalleryTwo = () => {
                                       }}
                                     />
 
-                                    {/* DARK OVERLAY */}
+                                    {/* PREMIUM DARK GRADIENT */}
                                     <div
                                       style={{
                                         position: "absolute",
                                         inset: 0,
                                         background:
-                                          "linear-gradient(to top, rgba(0,0,0,0.85), rgba(0,0,0,0.05))",
+                                          "linear-gradient(to bottom, rgba(0,0,0,0.02) 20%, rgba(0,0,0,0.15) 38%, rgba(0,0,0,0.72) 70%, rgba(0,0,0,0.96) 100%)",
+                                        zIndex: 1,
                                       }}
                                     />
 
@@ -496,40 +521,120 @@ const PostGalleryTwo = () => {
                                     <div
                                       style={{
                                         position: "absolute",
-                                        left: "20px",
-                                        right: "20px",
-                                        bottom: "20px",
-                                        zIndex: 2,
+                                        left: "22px",
+                                        right: "22px",
+                                        bottom: "18px",
+                                        zIndex: 3,
+                                        color: "#fff",
                                       }}
                                     >
-                                      <span
+                                      {/* CATEGORY + DATE */}
+                                      <div
                                         style={{
-                                          display: "inline-block",
-                                          background: "#e31e24",
-                                          color: "#fff",
-                                          padding: "4px 9px",
-                                          borderRadius: "3px",
-                                          fontSize: "11px",
-                                          fontWeight: "700",
-                                          marginBottom: "8px",
+                                          display: "flex",
+                                          alignItems: "center",
+                                          gap: "10px",
+                                          marginBottom: "9px",
+                                          minHeight: "24px",
+                                          flexWrap: "wrap",
                                         }}
                                       >
-                                        {item.category?.name ||
-                                          item.categoryName ||
-                                          "News"}
-                                      </span>
+                                        {/* CATEGORY */}
+                                        <span
+                                          style={{
+                                            display: "inline-flex",
+                                            alignItems: "center",
+                                            background: "#e31e24",
+                                            color: "#fff",
+                                            padding: "4px 9px",
+                                            borderRadius: "3px",
+                                            fontSize: "10px",
+                                            fontWeight: "800",
+                                            textTransform: "uppercase",
+                                            letterSpacing: "0.4px",
+                                            lineHeight: "1",
+                                            whiteSpace: "nowrap",
+                                          }}
+                                        >
+                                          {item.categories?.[0]?.name ||
+                                            item.category?.name ||
+                                            item.categoryName ||
+                                            "News"}
+                                        </span>
 
+                                        {/* DATE */}
+                                        <span
+                                          style={{
+                                            display: "inline-flex",
+                                            alignItems: "center",
+                                            gap: "4px",
+                                            color: "rgba(255,255,255,0.9)",
+                                            fontSize: "11px",
+                                            fontWeight: "500",
+                                            whiteSpace: "nowrap",
+                                            lineHeight: "1",
+                                          }}
+                                        >
+                                          <FontAwesome name="calendar" />
+
+                                          {item.createdAt
+                                            ? new Date(
+                                                item.createdAt,
+                                              ).toLocaleDateString("en-IN", {
+                                                day: "numeric",
+                                                month: "short",
+                                                year: "numeric",
+                                              })
+                                            : ""}
+                                        </span>
+                                      </div>
+
+                                      {/* TITLE */}
                                       <h2
                                         style={{
-                                          margin: 0,
+                                          margin: "0 0 8px 0",
+                                          padding: 0,
                                           color: "#fff",
-                                          fontSize: "24px",
-                                          lineHeight: "1.25",
+                                          fontSize: "clamp(20px, 2.2vw, 28px)",
+                                          lineHeight: "1.18",
                                           fontWeight: "800",
+                                          letterSpacing: "-0.2px",
+                                          textShadow:
+                                            "0 2px 5px rgba(0,0,0,0.5)",
+                                          display: "-webkit-box",
+                                          WebkitLineClamp: 2,
+                                          WebkitBoxOrient: "vertical",
+                                          overflow: "hidden",
                                         }}
                                       >
-                                        {item.title}
+                                        {item.title || "Latest News"}
                                       </h2>
+
+                                      {/* SHORT DESCRIPTION */}
+                                      {item.description && (
+                                        <p
+                                          style={{
+                                            margin: 0,
+                                            padding: 0,
+                                            maxWidth: "92%",
+                                            color: "rgba(255,255,255,0.88)",
+                                            fontSize: "13px",
+                                            lineHeight: "1.45",
+                                            fontWeight: "400",
+                                            textShadow:
+                                              "0 1px 3px rgba(0,0,0,0.6)",
+                                            display: "-webkit-box",
+                                            WebkitLineClamp: 2,
+                                            WebkitBoxOrient: "vertical",
+                                            overflow: "hidden",
+                                          }}
+                                        >
+                                          {getShortDescription(
+                                            item.description,
+                                            170,
+                                          )}
+                                        </p>
+                                      )}
                                     </div>
                                   </Link>
                                 </div>
@@ -554,43 +659,61 @@ const PostGalleryTwo = () => {
                         {/* SLIDER BUTTONS */}
                         {sliderNews.length > 1 && (
                           <>
+                            {/* PREVIOUS */}
                             <button
                               className="hero-news-prev"
                               type="button"
+                              aria-label="Previous news"
                               style={{
                                 position: "absolute",
-                                left: "10px",
+                                left: "12px",
                                 top: "50%",
                                 transform: "translateY(-50%)",
-                                zIndex: 5,
-                                width: "36px",
-                                height: "36px",
-                                border: "none",
+                                zIndex: 10,
+                                width: "38px",
+                                height: "38px",
+                                border: "1px solid rgba(255,255,255,0.35)",
                                 borderRadius: "50%",
-                                background: "rgba(0,0,0,0.6)",
+                                background: "rgba(0,0,0,0.45)",
+                                backdropFilter: "blur(5px)",
+                                WebkitBackdropFilter: "blur(5px)",
                                 color: "#fff",
                                 cursor: "pointer",
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                                fontSize: "16px",
+                                transition: "all 0.2s ease",
                               }}
                             >
                               ❮
                             </button>
 
+                            {/* NEXT */}
                             <button
                               className="hero-news-next"
                               type="button"
+                              aria-label="Next news"
                               style={{
                                 position: "absolute",
-                                right: "10px",
+                                right: "12px",
                                 top: "50%",
                                 transform: "translateY(-50%)",
-                                zIndex: 5,
-                                width: "36px",
-                                height: "36px",
-                                border: "none",
+                                zIndex: 10,
+                                width: "38px",
+                                height: "38px",
+                                border: "1px solid rgba(255,255,255,0.35)",
                                 borderRadius: "50%",
-                                background: "rgba(0,0,0,0.6)",
+                                background: "rgba(0,0,0,0.45)",
+                                backdropFilter: "blur(5px)",
+                                WebkitBackdropFilter: "blur(5px)",
                                 color: "#fff",
                                 cursor: "pointer",
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                                fontSize: "16px",
+                                transition: "all 0.2s ease",
                               }}
                             >
                               ❯
