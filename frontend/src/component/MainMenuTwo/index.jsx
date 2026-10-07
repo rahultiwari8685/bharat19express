@@ -206,8 +206,12 @@ const MainMenuTwo = () => {
                 />
               </div>
             </nav>
-
-            <div className="col-lg-3 text-right align-self-center">
+            <div
+              className="col-lg-3 text-right align-self-center"
+              style={{
+                background: "transparent",
+              }}
+            >
               <div
                 className="date3"
                 style={{
@@ -215,6 +219,7 @@ const MainMenuTwo = () => {
                   alignItems: "center",
                   justifyContent: "flex-end",
                   gap: "12px",
+                  background: "transparent",
                 }}
               >
                 {/* EPAPER */}
