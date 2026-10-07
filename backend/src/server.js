@@ -23,6 +23,9 @@ import notificationRoutes from "./routes/notificationRoutes.js";
 import magazineRoutes from "./routes/magazineRoutes.js";
 import sitemapRoutes from "./routes/sitemapRoutes.js";
 import pollRoutes from "./routes/pollRoutes.js";
+
+import { checkLiveStatus } from "./services/youtubeService.js";
+
 const app = express();
 
 const __filename = fileURLToPath(import.meta.url);
@@ -102,6 +105,26 @@ app.use("/api/notification", notificationRoutes);
 app.use("/", sitemapRoutes);
 app.use("/api/magazines", magazineRoutes);
 app.use("/api/polls", pollRoutes);
+
+app.get("/api/youtube/live", async (req, res) => {
+  try {
+    const result = await checkLiveStatus();
+
+    res.json({
+      status: true,
+      ...result,
+    });
+  } catch (error) {
+    console.error("YouTube Live Route Error:", error);
+
+    res.status(500).json({
+      status: false,
+      isLive: false,
+      message: "Failed to check YouTube live status",
+    });
+  }
+});
+
 const PORT = process.env.PORT || 5001;
 const MONGO_URI = process.env.MONGO_URI;
 
