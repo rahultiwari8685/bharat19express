@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import FontAwesome from "../uiStyle/FontAwesome";
-
+import Slider from "../Slider";
 import ModalVideo from "react-modal-video";
 import "react-modal-video/css/modal-video.min.css";
 
@@ -18,6 +18,12 @@ const PostGalleryTwo = () => {
   const [isVideoOpen, setIsVideoOpen] = useState(false);
   const [videoId, setVideoId] = useState("");
 
+  const [isYoutubeLive, setIsYoutubeLive] = useState(false);
+  const [youtubeLiveId, setYoutubeLiveId] = useState("");
+  const [youtubeLiveTitle, setYoutubeLiveTitle] = useState("");
+  const [liveLoading, setLiveLoading] = useState(true);
+  const [sliderNews, setSliderNews] = useState([]);
+
   const [textNews, setTextNews] = useState([]);
 
   const [activePoll, setActivePoll] = useState(null);
@@ -29,10 +35,47 @@ const PostGalleryTwo = () => {
   const [latestNewsLoading, setLatestNewsLoading] = useState(false);
 
   useEffect(() => {
+    checkYoutubeLive();
     getVideoNews();
     getTextNews();
+    getSliderNews();
     getActivePoll();
+
+    const interval = setInterval(() => {
+      checkYoutubeLive();
+    }, 60000);
+
+    return () => clearInterval(interval);
   }, []);
+
+  const checkYoutubeLive = async () => {
+    try {
+      setLiveLoading(true);
+
+      const res = await fetch(`${API}/api/youtube/live`);
+      const data = await res.json();
+
+      console.log("YouTube Live Status:", data);
+
+      if (data.status && data.isLive && data.videoId) {
+        setIsYoutubeLive(true);
+        setYoutubeLiveId(data.videoId);
+        setYoutubeLiveTitle(data.title || "Live News");
+      } else {
+        setIsYoutubeLive(false);
+        setYoutubeLiveId("");
+        setYoutubeLiveTitle("");
+      }
+    } catch (error) {
+      console.error("YouTube Live Error:", error);
+
+      setIsYoutubeLive(false);
+      setYoutubeLiveId("");
+      setYoutubeLiveTitle("");
+    } finally {
+      setLiveLoading(false);
+    }
+  };
 
   const getYoutubeId = (url) => {
     if (!url) return "";
@@ -131,6 +174,30 @@ const PostGalleryTwo = () => {
   //     setPollLoading(false);
   //   }
   // };
+
+  const getSliderNews = async () => {
+    try {
+      const res = await fetch(`${API}/api/news/getAllNews?limit=10`);
+      const data = await res.json();
+
+      if (data.status && Array.isArray(data.data)) {
+        const news = data.data
+          .filter((item) => Number(item.type) === 1)
+          .sort(
+            (a, b) =>
+              new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+          )
+          .slice(0, 5);
+
+        setSliderNews(news);
+      } else {
+        setSliderNews([]);
+      }
+    } catch (error) {
+      console.error("Slider News Error:", error);
+      setSliderNews([]);
+    }
+  };
 
   const getActivePoll = async () => {
     try {
@@ -304,7 +371,236 @@ const PostGalleryTwo = () => {
               <div className="single_post post_type6 border-radious7 xs-mb30">
                 <div className="post_img gradient1">
                   <div className="img_wrap">
-                    {videoNews && youtubeId ? (
+                    {liveLoading ? (
+                      <div
+                        style={{
+                          width: "100%",
+                          height: "350px",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          background: "#111",
+                          color: "#fff",
+                          fontSize: "16px",
+                        }}
+                      >
+                        Loading...
+                      </div>
+                    ) : isYoutubeLive && youtubeLiveId ? (
+                      <div
+                        style={{
+                          position: "relative",
+                          width: "100%",
+                          height: "350px",
+                          background: "#000",
+                        }}
+                      >
+                        {/* LIVE BADGE */}
+                        <div
+                          style={{
+                            position: "absolute",
+                            top: "12px",
+                            left: "12px",
+                            zIndex: 10,
+                            background: "#e31e24",
+                            color: "#fff",
+                            padding: "5px 10px",
+                            borderRadius: "4px",
+                            fontSize: "12px",
+                            fontWeight: "800",
+                          }}
+                        >
+                          ● LIVE
+                        </div>
+
+                        <iframe
+                          width="100%"
+                          height="350"
+                          src={`https://www.youtube.com/embed/${youtubeLiveId}?autoplay=1&mute=1&rel=0&playsinline=1`}
+                          title={youtubeLiveTitle || "Live News"}
+                          frameBorder="0"
+                          allow="autoplay; encrypted-media; picture-in-picture"
+                          allowFullScreen
+                          style={{
+                            width: "100%",
+                            height: "350px",
+                            display: "block",
+                            border: "none",
+                          }}
+                        />
+                      </div>
+                    ) : (
+                      <div
+                        style={{
+                          position: "relative",
+                          width: "100%",
+                          height: "350px",
+                          overflow: "hidden",
+                        }}
+                      >
+                        {sliderNews.length > 0 ? (
+                          <Slider
+                            slidesPerView={1}
+                            spaceBetween={0}
+                            loop={sliderNews.length > 1}
+                            autoplay={{
+                              delay: 4000,
+                              disableOnInteraction: false,
+                            }}
+                            navigation={{
+                              nextEl: ".hero-news-next",
+                              prevEl: ".hero-news-prev",
+                            }}
+                          >
+                            {sliderNews.map((item) => {
+                              const image =
+                                item.thumbnail ||
+                                item.big_img ||
+                                item.image ||
+                                "";
+
+                              return (
+                                <div
+                                  key={item._id}
+                                  style={{
+                                    position: "relative",
+                                    width: "100%",
+                                    height: "350px",
+                                    overflow: "hidden",
+                                    background: "#111",
+                                  }}
+                                >
+                                  <Link to={`/news/${item.slug}`}>
+                                    <img
+                                      src={`${API}/uploads/images/${image}`}
+                                      alt={item.title}
+                                      style={{
+                                        width: "100%",
+                                        height: "350px",
+                                        objectFit: "cover",
+                                        display: "block",
+                                      }}
+                                    />
+
+                                    {/* DARK OVERLAY */}
+                                    <div
+                                      style={{
+                                        position: "absolute",
+                                        inset: 0,
+                                        background:
+                                          "linear-gradient(to top, rgba(0,0,0,0.85), rgba(0,0,0,0.05))",
+                                      }}
+                                    />
+
+                                    {/* NEWS CONTENT */}
+                                    <div
+                                      style={{
+                                        position: "absolute",
+                                        left: "20px",
+                                        right: "20px",
+                                        bottom: "20px",
+                                        zIndex: 2,
+                                      }}
+                                    >
+                                      <span
+                                        style={{
+                                          display: "inline-block",
+                                          background: "#e31e24",
+                                          color: "#fff",
+                                          padding: "4px 9px",
+                                          borderRadius: "3px",
+                                          fontSize: "11px",
+                                          fontWeight: "700",
+                                          marginBottom: "8px",
+                                        }}
+                                      >
+                                        {item.category?.name ||
+                                          item.categoryName ||
+                                          "News"}
+                                      </span>
+
+                                      <h2
+                                        style={{
+                                          margin: 0,
+                                          color: "#fff",
+                                          fontSize: "24px",
+                                          lineHeight: "1.25",
+                                          fontWeight: "800",
+                                        }}
+                                      >
+                                        {item.title}
+                                      </h2>
+                                    </div>
+                                  </Link>
+                                </div>
+                              );
+                            })}
+                          </Slider>
+                        ) : (
+                          <div
+                            style={{
+                              height: "350px",
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "center",
+                              background: "#111",
+                              color: "#fff",
+                            }}
+                          >
+                            No latest news available
+                          </div>
+                        )}
+
+                        {/* SLIDER BUTTONS */}
+                        {sliderNews.length > 1 && (
+                          <>
+                            <button
+                              className="hero-news-prev"
+                              type="button"
+                              style={{
+                                position: "absolute",
+                                left: "10px",
+                                top: "50%",
+                                transform: "translateY(-50%)",
+                                zIndex: 5,
+                                width: "36px",
+                                height: "36px",
+                                border: "none",
+                                borderRadius: "50%",
+                                background: "rgba(0,0,0,0.6)",
+                                color: "#fff",
+                                cursor: "pointer",
+                              }}
+                            >
+                              ❮
+                            </button>
+
+                            <button
+                              className="hero-news-next"
+                              type="button"
+                              style={{
+                                position: "absolute",
+                                right: "10px",
+                                top: "50%",
+                                transform: "translateY(-50%)",
+                                zIndex: 5,
+                                width: "36px",
+                                height: "36px",
+                                border: "none",
+                                borderRadius: "50%",
+                                background: "rgba(0,0,0,0.6)",
+                                color: "#fff",
+                                cursor: "pointer",
+                              }}
+                            >
+                              ❯
+                            </button>
+                          </>
+                        )}
+                      </div>
+                    )}
+
+                    {/* {videoNews && youtubeId ? (
                       <iframe
                         width="100%"
                         height="350"
@@ -330,7 +626,7 @@ const PostGalleryTwo = () => {
                           objectFit: "cover",
                         }}
                       />
-                    )}
+                    )} */}
                   </div>
                 </div>
 
