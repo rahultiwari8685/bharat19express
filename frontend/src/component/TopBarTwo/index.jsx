@@ -10,7 +10,7 @@ const TopBarTwo = () => {
   const { t, i18n } = useTranslation();
 
   const [trendingNews, setTrendingNews] = useState([]);
-
+  const [showYoutubeMenu, setShowYoutubeMenu] = useState(false);
   useEffect(() => {
     getTrendingNews();
   }, [i18n.resolvedLanguage]);
@@ -85,7 +85,7 @@ const TopBarTwo = () => {
           <div className="col-md-4 align-self-center">
             <div className="top_date_social text-right">
               {/* SOCIAL */}
-              <div className="social1">
+              {/* <div className="social1">
                 <ul className="inline">
                   <li>
                     <a
@@ -127,8 +127,143 @@ const TopBarTwo = () => {
                     </a>
                   </li>
                 </ul>
-              </div>
+              </div> */}
+              <div
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  marginRight: "10px",
+                }}
+              >
+                <div
+                  style={{
+                    position: "relative",
+                  }}
+                  onMouseEnter={() => setShowYoutubeMenu(true)}
+                  onMouseLeave={() => setShowYoutubeMenu(false)}
+                >
+                  {/* YOUTUBE BUTTON */}
+                  <button
+                    type="button"
+                    style={{
+                      display: "inline-flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      gap: "6px",
+                      height: "34px",
+                      padding: "0 13px",
+                      border: "none",
+                      borderRadius: "5px",
+                      background: "#e31e24",
+                      color: "#fff",
+                      fontSize: "12px",
+                      fontWeight: "700",
+                      cursor: "pointer",
+                      whiteSpace: "nowrap",
+                    }}
+                  >
+                    <FontAwesome name="youtube-play" />
+                    <span>YouTube</span>
+                  </button>
 
+                  {/* DROPDOWN */}
+                  {showYoutubeMenu && (
+                    <div
+                      style={{
+                        position: "absolute",
+                        top: "38px",
+                        right: "0",
+                        width: "220px",
+                        background: "#fff",
+                        borderRadius: "5px",
+                        boxShadow: "0 5px 20px rgba(0,0,0,0.25)",
+                        zIndex: 99999,
+                        overflow: "hidden",
+                        textAlign: "left",
+                      }}
+                    >
+                      <div
+                        style={{
+                          background: "#b40000",
+                          color: "#fff",
+                          padding: "10px 14px",
+                          fontSize: "13px",
+                          fontWeight: "700",
+                        }}
+                      >
+                        Our YouTube Channels
+                      </div>
+
+                      <a
+                        href="https://www.youtube.com/channel/UC0lg7tqrUdlky_u1Wug7uEw"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style={{
+                          display: "block",
+                          padding: "10px 14px",
+                          color: "#333",
+                          background: "#fff",
+                          textDecoration: "none",
+                          fontSize: "13px",
+                          borderBottom: "1px solid #eee",
+                        }}
+                      >
+                        Bharat 19 Express Nation
+                      </a>
+
+                      <a
+                        href="https://www.youtube.com/channel/UC7_OlirbGWvmG0-0Nc3WedA"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style={{
+                          display: "block",
+                          padding: "10px 14px",
+                          color: "#333",
+                          background: "#fff",
+                          textDecoration: "none",
+                          fontSize: "13px",
+                          borderBottom: "1px solid #eee",
+                        }}
+                      >
+                        Bharat 19 Express Regional
+                      </a>
+
+                      <a
+                        href="https://www.youtube.com/channel/UCkJQAejO5Zx1TaQzzA_3Hvg"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style={{
+                          display: "block",
+                          padding: "10px 14px",
+                          color: "#333",
+                          background: "#fff",
+                          textDecoration: "none",
+                          fontSize: "13px",
+                          borderBottom: "1px solid #eee",
+                        }}
+                      >
+                        Bharat 19 Entertainment
+                      </a>
+
+                      <a
+                        href="https://www.youtube.com/channel/UCygk_AnahPPNje9H3NLK1tA"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style={{
+                          display: "block",
+                          padding: "10px 14px",
+                          color: "#333",
+                          background: "#fff",
+                          textDecoration: "none",
+                          fontSize: "13px",
+                        }}
+                      >
+                        Bharat 19 Express
+                      </a>
+                    </div>
+                  )}
+                </div>
+              </div>
               <div
                 className="user3"
                 style={{
