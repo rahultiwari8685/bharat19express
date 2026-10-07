@@ -753,46 +753,19 @@ const PostGalleryTwo = () => {
                   </div>
                 </div>
 
-                <div className="single_post_text">
-                  <h4>
-                    {videoNews ? (
-                      <Link to={videoNewsUrl}></Link>
-                    ) : (
-                      <Link to="/video_post1">Latest Video News</Link>
-                    )}
-                  </h4>
+                {isYoutubeLive && (
+                  <div className="single_post_text">
+                    <h4>
+                      <span>🔴 {youtubeLiveTitle || "Live News"}</span>
+                    </h4>
 
-                  <div className="space-5" />
+                    <div className="space-5" />
 
-                  <p className="post-p">
-                    {videoNews?.description
-                      ? videoNews.description.length > 180
-                        ? `${videoNews.description.substring(0, 180)}...`
-                        : videoNews.description
-                      : ""}
-                  </p>
-
-                  <div className="space-20" />
-
-                  <div className="meta meta_separator1">
-                    <Link to={videoCategoryUrl}>
-                      {videoCategory?.name || "News"}
-                    </Link>
-
-                    <Link to={videoNewsUrl}>
-                      {videoNews?.createdAt
-                        ? new Date(videoNews.createdAt).toLocaleDateString(
-                            "en-IN",
-                            {
-                              day: "numeric",
-                              month: "short",
-                              year: "numeric",
-                            },
-                          )
-                        : "Latest"}
-                    </Link>
+                    <p className="post-p">
+                      Live news is currently streaming on YouTube.
+                    </p>
                   </div>
-                </div>
+                )}
               </div>
             </div>
 
