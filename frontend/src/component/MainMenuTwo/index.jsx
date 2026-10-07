@@ -76,7 +76,6 @@ const MainMenuTwo = () => {
                       <NavLink to="/">{t("home")}</NavLink>
                     </li>
 
-                    {/* DYNAMIC CATEGORIES */}
                     {visibleMenus.map((parent) => {
                       const children = getChildren(parent._id);
 
@@ -175,7 +174,7 @@ const MainMenuTwo = () => {
                         marginLeft: "10px",
                       }}
                     >
-                      <NavLink
+                      {/* <NavLink
                         to="/epaper"
                         style={{
                           display: "inline-flex",
@@ -194,7 +193,7 @@ const MainMenuTwo = () => {
                       >
                         <FontAwesome name="newspaper-o" />
                         <span>Epaper</span>
-                      </NavLink>
+                      </NavLink> */}
                     </li>
                   </ul>
                 </div>
@@ -209,8 +208,45 @@ const MainMenuTwo = () => {
             </nav>
 
             <div className="col-lg-3 text-right align-self-center">
-              <div className="date3">
-                <p>
+              <div
+                className="date3"
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "flex-end",
+                  gap: "12px",
+                }}
+              >
+                {/* EPAPER */}
+                <NavLink
+                  to="/epaper"
+                  style={{
+                    display: "inline-flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    gap: "6px",
+                    minHeight: "34px",
+                    padding: "0 13px",
+                    borderRadius: "5px",
+                    background: "#e31e24",
+                    color: "#fff",
+                    fontSize: "12px",
+                    fontWeight: "800",
+                    textDecoration: "none",
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  <FontAwesome name="newspaper-o" />
+                  <span>Epaper</span>
+                </NavLink>
+
+                {/* DATE */}
+                <p
+                  style={{
+                    margin: 0,
+                    whiteSpace: "nowrap",
+                  }}
+                >
                   {new Date().toLocaleDateString("en-IN", {
                     weekday: "long",
                     month: "long",
