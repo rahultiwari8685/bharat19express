@@ -602,7 +602,7 @@ const PostGalleryTwo = () => {
                                           textShadow:
                                             "0 2px 5px rgba(0,0,0,0.5)",
                                           display: "-webkit-box",
-                                          WebkitLineClamp: 2,
+                                          WebkitLineClamp: 3,
                                           WebkitBoxOrient: "vertical",
                                           overflow: "hidden",
                                         }}
