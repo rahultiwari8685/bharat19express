@@ -52,13 +52,23 @@ const TopBarTwo = () => {
       <div className="container">
         <div className="row">
           <div className="col-md-8 align-self-center">
-            <div className="trancarousel_area" style={{ display: "flex" }}>
+            <div
+              className="trancarousel_area"
+              style={{
+                display: "flex",
+                alignItems: "center",
+                width: "100%",
+              }}
+            >
               <p
                 className="trand"
                 style={{
                   color: "#fff",
-                  background: "transparent",
-                  fontWeight: "600",
+                  margin: 0,
+                  marginRight: "12px",
+                  whiteSpace: "nowrap",
+                  fontWeight: "700",
+                  fontSize: "14px",
                 }}
               >
                 {t("trending")}
@@ -79,14 +89,36 @@ const TopBarTwo = () => {
                   }}
                 >
                   {trendingNews.map((news) => (
-                    <div className="trancarousel_item" key={news._id}>
-                      <p>
+                    <div
+                      className="trancarousel_item"
+                      key={news._id}
+                      style={{
+                        width: "100%",
+                        overflow: "hidden",
+                      }}
+                    >
+                      <p
+                        style={{
+                          margin: 0,
+                          padding: 0,
+                          width: "100%",
+                          whiteSpace: "nowrap",
+                          overflow: "hidden",
+                          textOverflow: "ellipsis",
+                        }}
+                      >
                         <Link
                           to={`/news/${news.slug}`}
                           style={{
                             color: "#fff",
                             textDecoration: "none",
+                            fontSize: "14px",
                             fontWeight: "500",
+                            lineHeight: "34px",
+                            display: "block",
+                            whiteSpace: "nowrap",
+                            overflow: "hidden",
+                            textOverflow: "ellipsis",
                           }}
                         >
                           {news.title}
@@ -110,7 +142,15 @@ const TopBarTwo = () => {
           </div>
 
           <div className="col-md-4 align-self-center">
-            <div className="top_date_social text-right">
+            <div
+              className="top_date_social text-right"
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "flex-end",
+                whiteSpace: "nowrap",
+              }}
+            >
               {/* SOCIAL */}
               <div
                 className="social1"
@@ -295,29 +335,98 @@ const TopBarTwo = () => {
                 </Link>
               </div>
 
-              <div className="lang-3">
+              <div
+                className="lang-3"
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  marginLeft: "12px",
+                  position: "relative",
+                }}
+              >
                 <select
                   value={i18n.resolvedLanguage || "en"}
                   onChange={(e) => changeLanguage(e.target.value)}
                   style={{
+                    appearance: "none",
+                    WebkitAppearance: "none",
+                    MozAppearance: "none",
                     border: "none",
+                    outline: "none",
                     background: "transparent",
                     color: "#fff",
                     cursor: "pointer",
-                    outline: "none",
-                    fontSize: "14px",
+                    fontSize: "13px",
+                    fontWeight: "600",
+                    padding: "4px 22px 4px 5px",
+                    margin: 0,
+                    minWidth: "75px",
                   }}
                 >
-                  <option value="en">English</option>
+                  <option
+                    value="en"
+                    style={{
+                      color: "#222",
+                      background: "#fff",
+                    }}
+                  >
+                    English
+                  </option>
 
-                  <option value="hi">हिन्दी</option>
+                  <option
+                    value="hi"
+                    style={{
+                      color: "#222",
+                      background: "#fff",
+                    }}
+                  >
+                    हिन्दी
+                  </option>
 
-                  <option value="bn">বাংলা</option>
+                  <option
+                    value="bn"
+                    style={{
+                      color: "#222",
+                      background: "#fff",
+                    }}
+                  >
+                    বাংলা
+                  </option>
 
-                  <option value="mr">मराठी</option>
+                  <option
+                    value="mr"
+                    style={{
+                      color: "#222",
+                      background: "#fff",
+                    }}
+                  >
+                    मराठी
+                  </option>
 
-                  <option value="ta">தமிழ்</option>
+                  <option
+                    value="ta"
+                    style={{
+                      color: "#222",
+                      background: "#fff",
+                    }}
+                  >
+                    தமிழ்
+                  </option>
                 </select>
+
+                <span
+                  style={{
+                    position: "absolute",
+                    right: "3px",
+                    top: "50%",
+                    transform: "translateY(-50%)",
+                    color: "#fff",
+                    fontSize: "11px",
+                    pointerEvents: "none",
+                  }}
+                >
+                  ▼
+                </span>
               </div>
             </div>
           </div>
