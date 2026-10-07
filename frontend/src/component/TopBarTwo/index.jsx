@@ -10,7 +10,6 @@ const TopBarTwo = () => {
   const { t, i18n } = useTranslation();
 
   const [trendingNews, setTrendingNews] = useState([]);
-  const [showYoutubeMenu, setShowYoutubeMenu] = useState(false);
 
   useEffect(() => {
     getTrendingNews();
@@ -40,39 +39,12 @@ const TopBarTwo = () => {
   };
 
   return (
-    // <div className="topbar white_bg" id="top">
-    <div
-      className="topbar"
-      id="top"
-      style={{
-        background: "#b40000",
-        color: "#fff",
-      }}
-    >
+    <div className="topbar white_bg" id="top">
       <div className="container">
         <div className="row">
           <div className="col-md-8 align-self-center">
-            <div
-              className="trancarousel_area"
-              style={{
-                display: "flex",
-                alignItems: "center",
-                width: "100%",
-              }}
-            >
-              <p
-                className="trand"
-                style={{
-                  color: "#fff",
-                  margin: 0,
-                  marginRight: "12px",
-                  whiteSpace: "nowrap",
-                  fontWeight: "700",
-                  fontSize: "14px",
-                }}
-              >
-                {t("trending")}
-              </p>
+            <div className="trancarousel_area" style={{ display: "flex" }}>
+              <p className="trand">{t("trending")}</p>
 
               <div className="trancarousel nav_style1" style={{ width: "80%" }}>
                 <Slider
@@ -89,40 +61,9 @@ const TopBarTwo = () => {
                   }}
                 >
                   {trendingNews.map((news) => (
-                    <div
-                      className="trancarousel_item"
-                      key={news._id}
-                      style={{
-                        width: "100%",
-                        overflow: "hidden",
-                      }}
-                    >
-                      <p
-                        style={{
-                          margin: 0,
-                          padding: 0,
-                          width: "100%",
-                          whiteSpace: "nowrap",
-                          overflow: "hidden",
-                          textOverflow: "ellipsis",
-                        }}
-                      >
-                        <Link
-                          to={`/news/${news.slug}`}
-                          style={{
-                            color: "#fff",
-                            textDecoration: "none",
-                            fontSize: "14px",
-                            fontWeight: "500",
-                            lineHeight: "34px",
-                            display: "block",
-                            whiteSpace: "nowrap",
-                            overflow: "hidden",
-                            textOverflow: "ellipsis",
-                          }}
-                        >
-                          {news.title}
-                        </Link>
+                    <div className="trancarousel_item" key={news._id}>
+                      <p>
+                        <Link to={`/news/${news.slug}`}>{news.title}</Link>
                       </p>
                     </div>
                   ))}
@@ -142,31 +83,15 @@ const TopBarTwo = () => {
           </div>
 
           <div className="col-md-4 align-self-center">
-            <div
-              className="top_date_social text-right"
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "flex-end",
-                whiteSpace: "nowrap",
-              }}
-            >
+            <div className="top_date_social text-right">
               {/* SOCIAL */}
-              <div
-                className="social1"
-                style={{
-                  color: "#fff",
-                }}
-              >
+              <div className="social1">
                 <ul className="inline">
                   <li>
                     <a
                       href="https://twitter.com/"
                       target="_blank"
                       rel="noopener noreferrer"
-                      style={{
-                        color: "#fff",
-                      }}
                     >
                       <FontAwesome name="twitter" />
                     </a>
@@ -177,119 +102,19 @@ const TopBarTwo = () => {
                       href="https://facebook.com/"
                       target="_blank"
                       rel="noopener noreferrer"
-                      style={{
-                        color: "#fff",
-                      }}
                     >
                       <FontAwesome name="facebook-f" />
                     </a>
                   </li>
 
-                  <li
-                    style={{
-                      position: "relative",
-                    }}
-                    onMouseEnter={() => setShowYoutubeMenu(true)}
-                    onMouseLeave={() => setShowYoutubeMenu(false)}
-                  >
+                  <li>
                     <a
-                      href="#!"
-                      onClick={(e) => e.preventDefault()}
-                      style={{
-                        cursor: "pointer",
-                      }}
+                      href="https://youtube.com/"
+                      target="_blank"
+                      rel="noopener noreferrer"
                     >
                       <FontAwesome name="youtube-play" />
                     </a>
-
-                    {showYoutubeMenu && (
-                      <div
-                        style={{
-                          position: "absolute",
-                          top: "32px",
-                          right: "-10px",
-                          width: "230px",
-                          background: "#fff",
-                          borderRadius: "6px",
-                          boxShadow: "0 5px 20px rgba(0,0,0,0.25)",
-                          padding: "8px 0",
-                          zIndex: 9999,
-                          textAlign: "left",
-                        }}
-                      >
-                        <div
-                          style={{
-                            padding: "8px 14px",
-                            fontSize: "13px",
-                            fontWeight: "700",
-                            color: "#b40000",
-                            borderBottom: "1px solid #eee",
-                          }}
-                        >
-                          Our YouTube Channels
-                        </div>
-
-                        <a
-                          href="https://youtube.com/"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          style={{
-                            display: "block",
-                            padding: "10px 14px",
-                            color: "#333",
-                            textDecoration: "none",
-                            fontSize: "13px",
-                          }}
-                        >
-                          Bharat TV Media
-                        </a>
-
-                        <a
-                          href="https://youtube.com/"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          style={{
-                            display: "block",
-                            padding: "10px 14px",
-                            color: "#333",
-                            textDecoration: "none",
-                            fontSize: "13px",
-                          }}
-                        >
-                          Bharat TV Hindi
-                        </a>
-
-                        <a
-                          href="https://youtube.com/"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          style={{
-                            display: "block",
-                            padding: "10px 14px",
-                            color: "#333",
-                            textDecoration: "none",
-                            fontSize: "13px",
-                          }}
-                        >
-                          Bharat TV News
-                        </a>
-
-                        <a
-                          href="https://youtube.com/"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          style={{
-                            display: "block",
-                            padding: "10px 14px",
-                            color: "#333",
-                            textDecoration: "none",
-                            fontSize: "13px",
-                          }}
-                        >
-                          Bharat TV Live
-                        </a>
-                      </div>
-                    )}
                   </li>
 
                   <li>
@@ -322,7 +147,7 @@ const TopBarTwo = () => {
                     height: "34px",
                     padding: "0 13px",
                     borderRadius: "5px",
-                    background: "transparent",
+                    background: "#e31e24",
                     color: "#fff",
                     fontSize: "12px",
                     fontWeight: "700",
@@ -335,98 +160,28 @@ const TopBarTwo = () => {
                 </Link>
               </div>
 
-              <div
-                className="lang-3"
-                style={{
-                  display: "inline-flex",
-                  alignItems: "center",
-                  marginLeft: "12px",
-                  position: "relative",
-                }}
-              >
+              <div className="lang-3">
                 <select
                   value={i18n.resolvedLanguage || "en"}
                   onChange={(e) => changeLanguage(e.target.value)}
                   style={{
-                    appearance: "none",
-                    WebkitAppearance: "none",
-                    MozAppearance: "none",
                     border: "none",
-                    outline: "none",
                     background: "transparent",
-                    color: "#fff",
                     cursor: "pointer",
-                    fontSize: "13px",
-                    fontWeight: "600",
-                    padding: "4px 22px 4px 5px",
-                    margin: 0,
-                    minWidth: "75px",
+                    outline: "none",
+                    fontSize: "14px",
                   }}
                 >
-                  <option
-                    value="en"
-                    style={{
-                      color: "#222",
-                      background: "#fff",
-                    }}
-                  >
-                    English
-                  </option>
+                  <option value="en">English</option>
 
-                  <option
-                    value="hi"
-                    style={{
-                      color: "#222",
-                      background: "#fff",
-                    }}
-                  >
-                    हिन्दी
-                  </option>
+                  <option value="hi">हिन्दी</option>
 
-                  <option
-                    value="bn"
-                    style={{
-                      color: "#222",
-                      background: "#fff",
-                    }}
-                  >
-                    বাংলা
-                  </option>
+                  <option value="bn">বাংলা</option>
 
-                  <option
-                    value="mr"
-                    style={{
-                      color: "#222",
-                      background: "#fff",
-                    }}
-                  >
-                    मराठी
-                  </option>
+                  <option value="mr">मराठी</option>
 
-                  <option
-                    value="ta"
-                    style={{
-                      color: "#222",
-                      background: "#fff",
-                    }}
-                  >
-                    தமிழ்
-                  </option>
+                  <option value="ta">தமிழ்</option>
                 </select>
-
-                <span
-                  style={{
-                    position: "absolute",
-                    right: "3px",
-                    top: "50%",
-                    transform: "translateY(-50%)",
-                    color: "#fff",
-                    fontSize: "11px",
-                    pointerEvents: "none",
-                  }}
-                >
-                  ▼
-                </span>
               </div>
             </div>
           </div>
