@@ -39,7 +39,7 @@ const TopBarTwo = () => {
   };
 
   return (
-    <div className="topbar white_bg" id="top">
+    <div className="topbar red_bg" id="top">
       <div className="container">
         <div className="row">
           <div className="col-md-8 align-self-center">
