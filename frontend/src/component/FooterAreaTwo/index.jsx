@@ -16,7 +16,7 @@ import speaker_black from "../../assets/img/icon/speaker_black.png";
 import envelope_black from "../../assets/img/icon/envelope_black.png";
 
 const FooterAreaTwo = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   return (
     <div className="footer footer_area3 white_bg">
