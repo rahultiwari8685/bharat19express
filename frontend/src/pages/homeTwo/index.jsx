@@ -73,7 +73,7 @@ function HomeTwo() {
     <>
       <PostGalleryTwo />
       <BannerSection className="section-padding2 theme3_bg layout3" />
-      <div className="total3 mb30">
+      <div className="total3 ">
         <div className="container">
           <div className="row">
             <div className="col-md-12 col-lg-8">
