@@ -2,7 +2,7 @@ import Category from "../models/Category.js";
 import slugify from "slugify";
 import { TranslationServiceClient } from "@google-cloud/translate";
 
-const SUPPORTED_LANGUAGES = ["en", "hi", "bn", "mr", "ta"];
+const SUPPORTED_LANGUAGES = ["en", "hi", "ur", "bn", "mr"];
 
 const getLanguage = (req) => {
   const lang = req.query.lang || "en";
@@ -10,49 +10,49 @@ const getLanguage = (req) => {
   return SUPPORTED_LANGUAGES.includes(lang) ? lang : "en";
 };
 
-const CATEGORY_TRANSLATION_TARGETS = ["hi", "bn", "mr", "ta"];
+const CATEGORY_TRANSLATION_TARGETS = ["hi", "ur", "bn", "mr"];
 
 const CATEGORY_TRANSLATION_OVERRIDES = {
   States: {
     hi: "राज्य",
+    ur: "ریاستیں",
     bn: "রাজ্যগুলি",
     mr: "राज्ये",
-    ta: "மாநிலங்கள்",
   },
 
   "Uttar Pradesh": {
     hi: "उत्तर प्रदेश",
+    ur: "اتر پردیش",
     bn: "উত্তর প্রদেশ",
     mr: "उत्तर प्रदेश",
-    ta: "உத்தரப் பிரதேசம்",
   },
 
   National: {
     hi: "राष्ट्रीय",
+    ur: "قومی",
     bn: "জাতীয়",
     mr: "राष्ट्रीय",
-    ta: "தேசிய",
   },
 
   Sports: {
     hi: "खेल",
+    ur: "کھیل",
     bn: "খেলাধুলা",
     mr: "खेळ",
-    ta: "விளையாட்டு",
   },
 
   World: {
     hi: "दुनिया",
+    ur: "دنیا",
     bn: "বিশ্ব",
     mr: "जग",
-    ta: "உலகம்",
   },
 
   Opinion: {
     hi: "राय",
+    ur: "رائے",
     bn: "মতামত",
     mr: "मत",
-    ta: "கருத்து",
   },
 };
 
@@ -67,23 +67,11 @@ const generateCategoryTranslations = async (name) => {
 
   const cleanName = name.trim();
 
-  /*
-  |--------------------------------------------------------------------------
-  | English
-  |--------------------------------------------------------------------------
-  */
-
   const translations = {
     en: {
       name: cleanName,
     },
   };
-
-  /*
-  |--------------------------------------------------------------------------
-  | Check custom translations first
-  |--------------------------------------------------------------------------
-  */
 
   const override = CATEGORY_TRANSLATION_OVERRIDES[cleanName];
 
@@ -98,12 +86,6 @@ const generateCategoryTranslations = async (name) => {
 
     return translations;
   }
-
-  /*
-  |--------------------------------------------------------------------------
-  | Google Translation for other categories
-  |--------------------------------------------------------------------------
-  */
 
   const projectId = process.env.GOOGLE_CLOUD_PROJECT_ID;
 

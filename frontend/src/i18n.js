@@ -3,6 +3,9 @@ import { initReactI18next } from "react-i18next";
 import LanguageDetector from "i18next-browser-languagedetector";
 
 const resources = {
+  // =====================================================
+  // ENGLISH
+  // =====================================================
   en: {
     translation: {
       home: "Home",
@@ -30,6 +33,9 @@ const resources = {
     },
   },
 
+  // =====================================================
+  // HINDI
+  // =====================================================
   hi: {
     translation: {
       home: "होम",
@@ -57,6 +63,39 @@ const resources = {
     },
   },
 
+  // =====================================================
+  // URDU
+  // =====================================================
+  ur: {
+    translation: {
+      home: "ہوم",
+      politics: "سیاست",
+      national: "قومی",
+      sports: "کھیل",
+      states: "ریاستیں",
+      world: "دنیا",
+      opinion: "رائے",
+      trending: "تازہ ترین",
+      latest: "تازہ ترین",
+      popular: "مقبول",
+      related: "متعلقہ",
+      readMore: "مزید پڑھیں",
+      search: "تلاش",
+      categories: "زمرے",
+      about: "ہمارے بارے میں",
+      contact: "رابطہ کریں",
+      privacy: "پرائیویسی پالیسی",
+      terms: "شرائط و ضوابط",
+      share: "شیئر کریں",
+      author: "مصنف",
+      noNews: "کوئی خبر دستیاب نہیں",
+      language: "زبان",
+    },
+  },
+
+  // =====================================================
+  // BENGALI
+  // =====================================================
   bn: {
     translation: {
       home: "হোম",
@@ -84,6 +123,9 @@ const resources = {
     },
   },
 
+  // =====================================================
+  // MARATHI
+  // =====================================================
   mr: {
     translation: {
       home: "मुख्यपृष्ठ",
@@ -110,33 +152,6 @@ const resources = {
       language: "भाषा",
     },
   },
-
-  ta: {
-    translation: {
-      home: "முகப்பு",
-      politics: "அரசியல்",
-      national: "தேசியம்",
-      sports: "விளையாட்டு",
-      states: "மாநிலங்கள்",
-      world: "உலகம்",
-      opinion: "கருத்து",
-      trending: "டிரெண்டிங்",
-      latest: "சமீபத்திய",
-      popular: "பிரபலமான",
-      related: "தொடர்புடைய",
-      readMore: "மேலும் படிக்க",
-      search: "தேடல்",
-      categories: "வகைகள்",
-      about: "எங்களைப் பற்றி",
-      contact: "தொடர்பு கொள்ள",
-      privacy: "தனியுரிமைக் கொள்கை",
-      terms: "விதிமுறைகள்",
-      share: "பகிரவும்",
-      author: "ஆசிரியர்",
-      noNews: "செய்திகள் எதுவும் இல்லை",
-      language: "மொழி",
-    },
-  },
 };
 
 i18n
@@ -144,9 +159,13 @@ i18n
   .use(initReactI18next)
   .init({
     resources,
+
     fallbackLng: "en",
 
-    supportedLngs: ["en", "hi", "bn", "mr", "ta"],
+    // ===================================================
+    // SUPPORTED LANGUAGES
+    // ===================================================
+    supportedLngs: ["en", "hi", "ur", "bn", "mr"],
 
     detection: {
       order: ["localStorage"],

@@ -268,11 +268,11 @@ const TopBarTwo = () => {
 
                   <option value="hi">हिन्दी</option>
 
+                  <option value="ur">اردو</option>
+
                   <option value="bn">বাংলা</option>
 
                   <option value="mr">मराठी</option>
-
-                  <option value="ta">தமிழ்</option>
                 </select>
               </div>
             </div>
