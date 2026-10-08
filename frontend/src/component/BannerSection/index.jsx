@@ -34,7 +34,7 @@ const BannerSection = ({ className }) => {
   return (
     <>
       <div className={className || ""}>
-        <div className="banner-container-custom">
+        <div className="banner-container-custom mb20 mt20">
           <a
             href={banner.redirectUrl || "#"}
             target="_blank"

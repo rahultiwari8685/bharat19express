@@ -41,31 +41,10 @@ import BlogComment from "../../../component/BlogComment";
 function Post1() {
   const API = "https://api.iotaclasses.in";
 
-  // const { slug } = useParams();
   const { categorySlug, slug } = useParams();
   const [news, setNews] = useState(null);
   const { t, i18n } = useTranslation();
   const [banners, setBanners] = useState({});
-
-  // useEffect(() => {
-  //   const loadNews = async () => {
-  //     try {
-  //       const res = await fetch(`${API}/api/news/slug/${slug}`);
-  //       const data = await res.json();
-
-  //       if (data.status) {
-  //         setNews(data.data);
-
-  //         // Increase View
-  //         increaseView(data.data._id);
-  //       }
-  //     } catch (err) {
-  //       console.log(err);
-  //     }
-  //   };
-
-  //   loadNews();
-  // }, [slug]);
 
   useEffect(() => {
     const loadNews = async () => {
@@ -120,10 +99,6 @@ function Post1() {
   useEffect(() => {
     getAdvertisements();
   }, []);
-
-  // if (!news) {
-  //   return <h2 className="text-center mt-5">Loading...</h2>;
-  // }
 
   if (!news) {
     return <h2 className="text-center mt-5">{t("loading") || "Loading..."}</h2>;
@@ -193,20 +168,6 @@ function Post1() {
                     </div>
                   </div>
                 </div>
-                {/* <div className="col-6 text-right">
-                  <div className="page_comments">
-                    <ul className="inline">
-                      <li>
-                        <FontAwesome name="comment" />
-                        {news.views}
-                      </li>
-                      <li>
-                        <FontAwesome name="fire" />
-                        {news.views}
-                      </li>
-                    </ul>
-                  </div>
-                </div> */}
               </div>
 
               <div className="single_post_heading">
@@ -232,29 +193,6 @@ function Post1() {
                     </div>
 
                     <Link to="#">{news.author?.name || "Admin"}</Link>
-
-                    {/* <ul>
-                      <li>
-                        <Link to="#">
-                          {new Date(news.createdAt).toLocaleDateString(
-                            "en-IN",
-                            {
-                              day: "numeric",
-                              month: "long",
-                              year: "numeric",
-                            },
-                          )}
-                        </Link>
-                      </li>
-
-                      <li>
-                        Updated{" "}
-                        {new Date(news.updatedAt).toLocaleTimeString("en-IN", {
-                          hour: "2-digit",
-                          minute: "2-digit",
-                        })}
-                      </li>
-                    </ul> */}
                   </div>
                 </div>
                 <div className="col-lg-8 ">
@@ -317,17 +255,6 @@ function Post1() {
                     >
                       <EmailIcon size={42} round />
                     </EmailShareButton>
-
-                    {/* <button
-                          className="btn btn-dark btn-sm"
-                          style={{ display: "inline-block", zIndex: 9999 }}
-                          onClick={() => {
-                            navigator.clipboard.writeText(shareUrl);
-                            alert("Link copied!");
-                          }}
-                        >
-                          Copy
-                        </button> */}
                   </div>
                 </div>
               </div>
@@ -361,12 +288,6 @@ function Post1() {
                       <Link to={`/category/${cat._id}`}>{cat.name}</Link>
                     </li>
                   ))}
-                  {/* <li>
-                    <Link to="/">World</Link>
-                  </li>
-                  <li>
-                    <Link to="/">Corona</Link>
-                  </li> */}
                 </ul>
               </div>
               <div className="space-40" />
@@ -401,11 +322,9 @@ function Post1() {
           </div>
         </div>
       </div>
-      {/* <div className="space-10" /> */}
+
       <OurBlogSection />
-      {/* <div className="space-10" /> */}
-      {/* <BlogComment /> */}
-      {/* <div className="space-10" /> */}
+
       <BannerSection />
 
       <style>{`
