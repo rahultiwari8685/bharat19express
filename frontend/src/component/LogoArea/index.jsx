@@ -58,7 +58,7 @@ const LogoArea = ({ className, dark }) => {
                     alt={siteSetting.siteName}
                     style={{
                       width: "220px",
-                      height: "80px",
+                      height: "150px",
                       objectFit: "contain",
                     }}
                   />
