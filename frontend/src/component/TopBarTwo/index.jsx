@@ -36,7 +36,14 @@ const TopBarTwo = () => {
 
   const changeLanguage = (language) => {
     setTrendingNews([]);
+
     i18n.changeLanguage(language);
+
+    // Set HTML language
+    document.documentElement.lang = language;
+
+    // Urdu is RTL
+    document.documentElement.dir = language === "ur" ? "rtl" : "ltr";
   };
 
   return (
