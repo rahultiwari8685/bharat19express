@@ -18,6 +18,8 @@ import MostViewThree from "../../component/MostViewThree";
 import Sports from "../../component/Sports";
 import International from "../../component/International";
 import BannerSection from "../../component/BannerSection";
+import YouTubeChannelSlider from "../../component/YouTubeChannelSlider";
+
 function HomeTwo() {
   const categoryId = "6ab5133ae0146bb0a4a80e48";
 
@@ -73,6 +75,7 @@ function HomeTwo() {
     <>
       <PostGalleryTwo />
       <BannerSection className="theme3_bg mb10" />
+      <YouTubeChannelSlider />
       <div className="total3 ">
         <div className="container">
           <div className="row">

@@ -23,7 +23,7 @@ import notificationRoutes from "./routes/notificationRoutes.js";
 import magazineRoutes from "./routes/magazineRoutes.js";
 import sitemapRoutes from "./routes/sitemapRoutes.js";
 import pollRoutes from "./routes/pollRoutes.js";
-
+import youtubeRoutes from "./routes/youtubeRoutes.js";
 import { checkLiveStatus } from "./services/youtubeService.js";
 
 const app = express();
@@ -105,7 +105,7 @@ app.use("/api/notification", notificationRoutes);
 app.use("/", sitemapRoutes);
 app.use("/api/magazines", magazineRoutes);
 app.use("/api/polls", pollRoutes);
-
+app.use("/api/youtube", youtubeRoutes);
 app.get("/api/youtube/live", async (req, res) => {
   try {
     const result = await checkLiveStatus();
