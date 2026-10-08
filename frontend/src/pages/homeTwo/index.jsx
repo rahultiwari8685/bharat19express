@@ -72,7 +72,7 @@ function HomeTwo() {
   return (
     <>
       <PostGalleryTwo />
-      <BannerSection className=" theme3_bg  layout3" />
+      <BannerSection className="theme3_bg" />
       <div className="total3 ">
         <div className="container">
           <div className="row">

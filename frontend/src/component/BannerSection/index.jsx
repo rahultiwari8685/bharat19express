@@ -32,61 +32,76 @@ const BannerSection = ({ className }) => {
   if (!banner) return null;
 
   return (
-    <div className={className || ""}>
-      <div className="container">
-        <div
-          className="row"
-          style={{
-            marginLeft: 0,
-            marginRight: 0,
-          }}
-        >
-          <div
-            className="col-12"
-            style={{
-              paddingLeft: 0,
-              paddingRight: 0,
-            }}
+    <>
+      <div className={className || ""}>
+        <div className="banner-container-custom">
+          <a
+            href={banner.redirectUrl || "#"}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="banner-link-custom"
           >
-            <div
-              className="banner1"
-              style={{
-                width: "100%",
-                maxWidth: "100%",
-                margin: "0 0 30px 0",
-                padding: 0,
-              }}
-            >
-              <a
-                href={banner.redirectUrl || "#"}
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{
-                  display: "block",
-                  width: "100%",
-                  margin: 0,
-                  padding: 0,
-                }}
-              >
-                <img
-                  src={`https://api.iotaclasses.in/uploads/advertisements/${banner.image}`}
-                  alt={banner.title || "Advertisement"}
-                  style={{
-                    width: "100%",
-                    maxWidth: "100%",
-                    height: "100px",
-                    objectFit: "cover",
-                    display: "block",
-                    margin: 0,
-                    padding: 0,
-                  }}
-                />
-              </a>
-            </div>
-          </div>
+            <img
+              src={`https://api.iotaclasses.in/uploads/advertisements/${banner.image}`}
+              alt={banner.title || "Advertisement"}
+              className="banner-image-custom"
+            />
+          </a>
         </div>
       </div>
-    </div>
+
+      <style>
+        {`
+          .banner-container-custom {
+            width: 100%;
+            max-width: 1215px;
+            margin-left: auto;
+            margin-right: auto;
+            padding-left: 0;
+            padding-right: 0;
+          }
+
+          .banner-link-custom {
+            display: block;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+          }
+
+          .banner-image-custom {
+            display: block;
+            width: 100%;
+            max-width: 100%;
+            height: 100px;
+            object-fit: cover;
+            margin: 0;
+            padding: 0;
+          }
+
+          @media (max-width: 1250px) {
+            .banner-container-custom {
+              width: calc(100% - 30px);
+            }
+          }
+
+          @media (max-width: 767px) {
+            .banner-image-custom {
+              height: 80px;
+            }
+
+            .banner-container-custom {
+              width: calc(100% - 20px);
+            }
+          }
+
+          @media (max-width: 480px) {
+            .banner-image-custom {
+              height: 70px;
+            }
+          }
+        `}
+      </style>
+    </>
   );
 };
 
