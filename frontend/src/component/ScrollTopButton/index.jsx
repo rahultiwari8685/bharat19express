@@ -3,6 +3,7 @@ import FontAwesome from "../uiStyle/FontAwesome";
 
 const ScrollTopButton = () => {
   const [sticky, setSticky] = useState("");
+
   useEffect(() => {
     window.addEventListener("scroll", () => {
       if (Math.ceil(window.scrollY) >= 200) {

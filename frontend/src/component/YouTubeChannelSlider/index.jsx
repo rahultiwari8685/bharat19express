@@ -100,28 +100,24 @@ const YouTubeChannelSlider = () => {
             slidesPerGroup={4}
             loop={false}
             breakpoints={{
-              // Mobile
               0: {
                 slidesPerView: 1,
                 slidesPerGroup: 1,
                 spaceBetween: 15,
               },
 
-              // Small tablet
               576: {
                 slidesPerView: 2,
                 slidesPerGroup: 2,
                 spaceBetween: 15,
               },
 
-              // Tablet
               992: {
                 slidesPerView: 3,
                 slidesPerGroup: 3,
                 spaceBetween: 20,
               },
 
-              // Desktop
               1200: {
                 slidesPerView: 4,
                 slidesPerGroup: 4,
@@ -194,8 +190,6 @@ const YouTubeChannelSlider = () => {
                     </div>
                   </div>
 
-                  {/* VIDEO THUMBNAIL */}
-
                   <a
                     href={`https://www.youtube.com/watch?v=${video.videoId}`}
                     target="_blank"
@@ -214,8 +208,6 @@ const YouTubeChannelSlider = () => {
                       </div>
                     </div>
                   </a>
-
-                  {/* VIDEO CONTENT */}
 
                   <div className="youtube-content">
                     <h3>{video.title}</h3>
@@ -249,8 +241,6 @@ const YouTubeStyles = () => {
   return (
     <style>
       {`
-
-
         .youtube-section {
           width: 100%;
           padding: 40px 0;
@@ -283,9 +273,7 @@ const YouTubeStyles = () => {
           color: #111;
         }
 
-/* =========================================
-   CHANNEL NAME - TOP OF CARD
-========================================= */
+
 
 .youtube-channel-top {
   width: 100%;
@@ -302,7 +290,6 @@ const YouTubeStyles = () => {
   border-bottom: 1px solid #eeeeee;
 }
 
-/* YouTube icon */
 
 .youtube-channel-icon {
   width: 30px;
@@ -454,17 +441,12 @@ const YouTubeStyles = () => {
           margin-left: 3px;
         }
 
-        /* =========================================
-           CONTENT
-        ========================================= */
 
         .youtube-content {
           padding: 15px;
         }
 
-        /* =========================================
-           CHANNEL NAME
-        ========================================= */
+
 
         .youtube-channel-name {
           color: #e60000;
@@ -479,9 +461,6 @@ const YouTubeStyles = () => {
           text-overflow: ellipsis;
         }
 
-        /* =========================================
-           VIDEO TITLE
-        ========================================= */
 
         .youtube-content h3 {
           margin: 0;
@@ -500,9 +479,6 @@ const YouTubeStyles = () => {
           overflow: hidden;
         }
 
-        /* =========================================
-           DATE
-        ========================================= */
 
         .youtube-date {
           margin-top: 10px;
@@ -513,9 +489,6 @@ const YouTubeStyles = () => {
           color: #888888;
         }
 
-        /* =========================================
-           SWIPER NAVIGATION
-        ========================================= */
 
         .youtube-section
         .swiper-button-prev,
@@ -542,9 +515,6 @@ const YouTubeStyles = () => {
           color: #222222;
         }
 
-        /* =========================================
-           SWIPER PAGINATION
-        ========================================= */
 
         .youtube-section
         .swiper-pagination {
@@ -567,9 +537,7 @@ const YouTubeStyles = () => {
           opacity: 1;
         }
 
-        /* =========================================
-           LOADING
-        ========================================= */
+
 
         .youtube-loading {
           width: 100%;
@@ -585,9 +553,7 @@ const YouTubeStyles = () => {
           color: #777777;
         }
 
-        /* =========================================
-           MOBILE
-        ========================================= */
+
 
         @media (max-width: 991px) {
 
@@ -601,9 +567,7 @@ const YouTubeStyles = () => {
 
         }
 
-        /* =========================================
-           SMALL TABLET
-        ========================================= */
+
 
         @media (max-width: 767px) {
 
@@ -629,9 +593,6 @@ const YouTubeStyles = () => {
 
         }
 
-        /* =========================================
-           MOBILE
-        ========================================= */
 
         @media (max-width: 575px) {
 

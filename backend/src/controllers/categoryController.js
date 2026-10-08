@@ -12,6 +12,50 @@ const getLanguage = (req) => {
 
 const CATEGORY_TRANSLATION_TARGETS = ["hi", "bn", "mr", "ta"];
 
+const CATEGORY_TRANSLATION_OVERRIDES = {
+  States: {
+    hi: "राज्य",
+    bn: "রাজ্যগুলি",
+    mr: "राज्ये",
+    ta: "மாநிலங்கள்",
+  },
+
+  "Uttar Pradesh": {
+    hi: "उत्तर प्रदेश",
+    bn: "উত্তর প্রদেশ",
+    mr: "उत्तर प्रदेश",
+    ta: "உத்தரப் பிரதேசம்",
+  },
+
+  National: {
+    hi: "राष्ट्रीय",
+    bn: "জাতীয়",
+    mr: "राष्ट्रीय",
+    ta: "தேசிய",
+  },
+
+  Sports: {
+    hi: "खेल",
+    bn: "খেলাধুলা",
+    mr: "खेळ",
+    ta: "விளையாட்டு",
+  },
+
+  World: {
+    hi: "दुनिया",
+    bn: "বিশ্ব",
+    mr: "जग",
+    ta: "உலகம்",
+  },
+
+  Opinion: {
+    hi: "राय",
+    bn: "মতামত",
+    mr: "मत",
+    ta: "கருத்து",
+  },
+};
+
 const generateCategoryTranslations = async (name) => {
   if (!name || !name.trim()) {
     return {
@@ -21,6 +65,46 @@ const generateCategoryTranslations = async (name) => {
     };
   }
 
+  const cleanName = name.trim();
+
+  /*
+  |--------------------------------------------------------------------------
+  | English
+  |--------------------------------------------------------------------------
+  */
+
+  const translations = {
+    en: {
+      name: cleanName,
+    },
+  };
+
+  /*
+  |--------------------------------------------------------------------------
+  | Check custom translations first
+  |--------------------------------------------------------------------------
+  */
+
+  const override = CATEGORY_TRANSLATION_OVERRIDES[cleanName];
+
+  if (override) {
+    console.log(`Using custom translation for category: ${cleanName}`);
+
+    for (const target of CATEGORY_TRANSLATION_TARGETS) {
+      translations[target] = {
+        name: override[target] || "",
+      };
+    }
+
+    return translations;
+  }
+
+  /*
+  |--------------------------------------------------------------------------
+  | Google Translation for other categories
+  |--------------------------------------------------------------------------
+  */
+
   const projectId = process.env.GOOGLE_CLOUD_PROJECT_ID;
 
   if (!projectId) {
@@ -29,21 +113,19 @@ const generateCategoryTranslations = async (name) => {
 
   const translationClient = new TranslationServiceClient();
 
-  const translations = {
-    en: {
-      name: name.trim(),
-    },
-  };
-
   for (const target of CATEGORY_TRANSLATION_TARGETS) {
     try {
-      console.log(`Translating category: en -> ${target}`);
+      console.log(`Translating category: ${cleanName} -> ${target}`);
 
       const [response] = await translationClient.translateText({
         parent: `projects/${projectId}/locations/global`,
-        contents: [name.trim()],
+
+        contents: [cleanName],
+
         mimeType: "text/plain",
+
         sourceLanguageCode: "en",
+
         targetLanguageCode: target,
       });
 
@@ -52,12 +134,12 @@ const generateCategoryTranslations = async (name) => {
       };
 
       console.log(
-        `Category translation completed: en -> ${target}:`,
+        `Category translation completed: ${cleanName} -> ${target}:`,
         translations[target].name,
       );
     } catch (error) {
       console.error(
-        `Category translation failed: en -> ${target}`,
+        `Category translation failed: ${cleanName} -> ${target}`,
         error?.message || error,
       );
 
@@ -105,22 +187,6 @@ export const createCategory = async (req, res) => {
     if (!parentCategory || parentCategory === "0") {
       parentCategory = null;
     }
-
-    // let parsedTranslations = {};
-
-    // try {
-    //   parsedTranslations =
-    //     typeof translations === "string"
-    //       ? JSON.parse(translations)
-    //       : translations || {};
-    // } catch (error) {
-    //   parsedTranslations = {};
-    // }
-
-    // parsedTranslations.en = {
-    //   ...(parsedTranslations.en || {}),
-    //   name: parsedTranslations.en?.name || name,
-    // };
 
     const parsedTranslations = await generateCategoryTranslations(name);
 
@@ -200,37 +266,6 @@ export const updateCategory = async (req, res) => {
       });
     }
 
-    // let parsedTranslations = {};
-
-    // try {
-    //   parsedTranslations =
-    //     typeof translations === "string"
-    //       ? JSON.parse(translations)
-    //       : translations || {};
-    // } catch (error) {
-    //   parsedTranslations = {};
-    // }
-
-    // const updateData = {
-    //   parentCategory:
-    //     !parentCategory || parentCategory === "0" ? null : parentCategory,
-
-    //   showInMenu:
-    //     showInMenu === "1" ||
-    //     showInMenu === 1 ||
-    //     showInMenu === true ||
-    //     showInMenu === "true"
-    //       ? "1"
-    //       : "0",
-
-    //   position: Number(position) || 0,
-
-    //   meta_title: meta_title || "",
-    //   meta_desc: meta_desc || "",
-
-    //   translations: parsedTranslations,
-    // };
-
     const updateData = {
       parentCategory:
         !parentCategory || parentCategory === "0" ? null : parentCategory,
@@ -249,21 +284,6 @@ export const updateCategory = async (req, res) => {
       meta_desc: meta_desc || "",
     };
 
-    // if (name && name.trim()) {
-    //   updateData.name = name.trim();
-
-    //   updateData.slug = slugify(name.trim(), {
-    //     lower: true,
-    //     strict: true,
-    //     trim: true,
-    //   });
-
-    //   updateData.translations.en = {
-    //     ...(updateData.translations.en || {}),
-    //     name: name.trim(),
-    //   };
-    // }
-
     if (name && name.trim()) {
       updateData.name = name.trim();
 
@@ -273,7 +293,6 @@ export const updateCategory = async (req, res) => {
         trim: true,
       });
 
-      // Regenerate all translations
       updateData.translations = await generateCategoryTranslations(name.trim());
     }
 

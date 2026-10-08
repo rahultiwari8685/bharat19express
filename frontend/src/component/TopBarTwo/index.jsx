@@ -11,6 +11,7 @@ const TopBarTwo = () => {
 
   const [trendingNews, setTrendingNews] = useState([]);
   const [showYoutubeMenu, setShowYoutubeMenu] = useState(false);
+
   useEffect(() => {
     getTrendingNews();
   }, [i18n.resolvedLanguage]);
@@ -84,50 +85,6 @@ const TopBarTwo = () => {
 
           <div className="col-md-4 align-self-center">
             <div className="top_date_social text-right">
-              {/* SOCIAL */}
-              {/* <div className="social1">
-                <ul className="inline">
-                  <li>
-                    <a
-                      href="https://twitter.com/"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <FontAwesome name="twitter" />
-                    </a>
-                  </li>
-
-                  <li>
-                    <a
-                      href="https://facebook.com/"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <FontAwesome name="facebook-f" />
-                    </a>
-                  </li>
-
-                  <li>
-                    <a
-                      href="https://youtube.com/"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <FontAwesome name="youtube-play" />
-                    </a>
-                  </li>
-
-                  <li>
-                    <a
-                      href="https://instagram.com/"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <FontAwesome name="instagram" />
-                    </a>
-                  </li>
-                </ul>
-              </div> */}
               <div
                 style={{
                   display: "inline-flex",
