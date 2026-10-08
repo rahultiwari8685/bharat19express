@@ -33,7 +33,7 @@ const BannerSection = ({ className }) => {
   if (!banner) return null;
 
   return (
-    <div className={`${className ? className : " fourth_bg"}`}>
+    <div className={`${className ? className : "padding10 fourth_bg"}`}>
       <div className="container">
         <div className="row">
           <div className="col-lg-8 m-auto">

@@ -377,7 +377,7 @@ const PostGalleryTwo = () => {
         onClose={() => setIsVideoOpen(false)}
       />
 
-      <div className="post_gallary_area theme3_bg mb40 padding-top-30">
+      <div className="post_gallary_area theme3_bg mb10 padding-top-30">
         <div className="container">
           <div className="row">
             <div className="col-lg-8 col-xl-6">
