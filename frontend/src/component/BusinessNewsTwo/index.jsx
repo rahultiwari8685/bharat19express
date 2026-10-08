@@ -157,7 +157,7 @@ const BusinessNewsTwo = () => {
   if (!businessNews.length) return null;
 
   return (
-    <div className="business3 padding20 mb10 white_bg border-radious5">
+    <div className="business3 padding20 mb20 white_bg border-radious5">
       <h4 className="widget-title">Trending News</h4>
 
       {businessNews.map((item, i) => {

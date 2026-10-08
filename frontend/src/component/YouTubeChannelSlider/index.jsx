@@ -130,8 +130,72 @@ const YouTubeChannelSlider = () => {
             }}
           >
             {videos.map((video, index) => (
+              // <SwiperSlide key={`${video.videoId}-${index}`}>
+              //   <div className="youtube-card">
+              //     <a
+              //       href={`https://www.youtube.com/watch?v=${video.videoId}`}
+              //       target="_blank"
+              //       rel="noopener noreferrer"
+              //       className="youtube-thumbnail-link"
+              //     >
+              //       <div className="youtube-thumbnail">
+              //         <img
+              //           src={video.thumbnail}
+              //           alt={video.title}
+              //           loading="lazy"
+              //         />
+
+              //         {/* Play Button */}
+
+              //         <div className="youtube-play">
+              //           <span>▶</span>
+              //         </div>
+              //       </div>
+              //     </a>
+
+              //     <div className="youtube-content">
+              //       {/* Channel Name */}
+
+              //       <div className="youtube-channel-name">
+              //         {video.channelName}
+              //       </div>
+
+              //       {/* Video Title */}
+
+              //       <h3>{video.title}</h3>
+
+              //       {/* Date */}
+
+              //       {video.publishedAt && (
+              //         <div className="youtube-date">
+              //           {new Date(video.publishedAt).toLocaleDateString(
+              //             "en-IN",
+              //             {
+              //               day: "numeric",
+              //               month: "short",
+              //               year: "numeric",
+              //             },
+              //           )}
+              //         </div>
+              //       )}
+              //     </div>
+              //   </div>
+              // </SwiperSlide>
+
               <SwiperSlide key={`${video.videoId}-${index}`}>
                 <div className="youtube-card">
+                  {/* CHANNEL NAME - TOP */}
+
+                  <div className="youtube-channel-top">
+                    <div className="youtube-channel-icon">▶</div>
+
+                    <div className="youtube-channel-title">
+                      {video.channelName}
+                    </div>
+                  </div>
+
+                  {/* VIDEO THUMBNAIL */}
+
                   <a
                     href={`https://www.youtube.com/watch?v=${video.videoId}`}
                     target="_blank"
@@ -145,26 +209,16 @@ const YouTubeChannelSlider = () => {
                         loading="lazy"
                       />
 
-                      {/* Play Button */}
-
                       <div className="youtube-play">
                         <span>▶</span>
                       </div>
                     </div>
                   </a>
 
+                  {/* VIDEO CONTENT */}
+
                   <div className="youtube-content">
-                    {/* Channel Name */}
-
-                    <div className="youtube-channel-name">
-                      {video.channelName}
-                    </div>
-
-                    {/* Video Title */}
-
                     <h3>{video.title}</h3>
-
-                    {/* Date */}
 
                     {video.publishedAt && (
                       <div className="youtube-date">
