@@ -144,7 +144,7 @@ function HomeTwo() {
       <div className="mix_elements">
         <div className="container">
           <div className="row">
-            <div className="col-xl-8 col-md-12">
+            <div className="col-xl-12 col-md-12">
               {/* <div className="banner_area mb30 xs-mt60">
                 <Link to="/">
                   <img src={banner3} alt="banner3" />
