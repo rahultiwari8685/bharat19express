@@ -7,7 +7,7 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 
-const API_URL = "http://api.iotaclasses.in/api/youtube/videos";
+const API_URL = "https://api.iotaclasses.in/api/youtube/videos";
 // Production:
 // const API_URL = "https://your-api-domain.com/api/youtube/videos";
 
