@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-
+import { useTranslation } from "react-i18next";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination } from "swiper/modules";
 
@@ -12,16 +12,19 @@ const API_URL = "https://api.iotaclasses.in/api/youtube/videos";
 // const API_URL = "https://your-api-domain.com/api/youtube/videos";
 
 const YouTubeChannelSlider = () => {
+  const { i18n, t } = useTranslation();
   const [channels, setChannels] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetchVideos();
-  }, []);
+  }, [i18n.resolvedLanguage]);
 
   const fetchVideos = async () => {
     try {
-      const response = await fetch(API_URL);
+      const language = i18n.resolvedLanguage || "en";
+
+      const response = await fetch(`${API_URL}?lang=${language}`);
 
       if (!response.ok) {
         throw new Error("Failed to fetch YouTube videos");
@@ -49,7 +52,9 @@ const YouTubeChannelSlider = () => {
               <h2>YouTube Videos</h2>
             </div>
 
-            <div className="youtube-loading">Loading videos...</div>
+            <div className="youtube-loading">
+              {t("loadingVideos", "Loading videos...")}
+            </div>
           </div>
         </section>
 
@@ -85,7 +90,7 @@ const YouTubeChannelSlider = () => {
           <div className="youtube-heading">
             <div>
               {/* <span>WATCH NOW</span> */}
-              <h2> Videos News</h2>
+              <h2>{t("videosNews", "Videos News")}</h2>
             </div>
           </div>
 
@@ -126,58 +131,6 @@ const YouTubeChannelSlider = () => {
             }}
           >
             {videos.map((video, index) => (
-              // <SwiperSlide key={`${video.videoId}-${index}`}>
-              //   <div className="youtube-card">
-              //     <a
-              //       href={`https://www.youtube.com/watch?v=${video.videoId}`}
-              //       target="_blank"
-              //       rel="noopener noreferrer"
-              //       className="youtube-thumbnail-link"
-              //     >
-              //       <div className="youtube-thumbnail">
-              //         <img
-              //           src={video.thumbnail}
-              //           alt={video.title}
-              //           loading="lazy"
-              //         />
-
-              //         {/* Play Button */}
-
-              //         <div className="youtube-play">
-              //           <span>▶</span>
-              //         </div>
-              //       </div>
-              //     </a>
-
-              //     <div className="youtube-content">
-              //       {/* Channel Name */}
-
-              //       <div className="youtube-channel-name">
-              //         {video.channelName}
-              //       </div>
-
-              //       {/* Video Title */}
-
-              //       <h3>{video.title}</h3>
-
-              //       {/* Date */}
-
-              //       {video.publishedAt && (
-              //         <div className="youtube-date">
-              //           {new Date(video.publishedAt).toLocaleDateString(
-              //             "en-IN",
-              //             {
-              //               day: "numeric",
-              //               month: "short",
-              //               year: "numeric",
-              //             },
-              //           )}
-              //         </div>
-              //       )}
-              //     </div>
-              //   </div>
-              // </SwiperSlide>
-
               <SwiperSlide key={`${video.videoId}-${index}`}>
                 <div className="youtube-card">
                   {/* CHANNEL NAME - TOP */}
