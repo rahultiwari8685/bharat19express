@@ -152,19 +152,40 @@ function HomeTwo() {
               </div> */}
 
               {bannerMiddle && (
-                <div className="banner_area mb30 xs-mt60">
+                <div
+                  className="banner_area mb30 xs-mt60"
+                  style={{
+                    width: "100%",
+                    maxWidth: "100%",
+                    marginLeft: 0,
+                    marginRight: 0,
+                    paddingLeft: 0,
+                    paddingRight: 0,
+                    display: "block",
+                  }}
+                >
                   <a
                     href={bannerMiddle.link || "#"}
                     target={bannerMiddle.link ? "_blank" : "_self"}
                     rel="noopener noreferrer"
+                    style={{
+                      display: "block",
+                      width: "100%",
+                      maxWidth: "100%",
+                      margin: 0,
+                      padding: 0,
+                    }}
                   >
                     <img
                       src={`https://api.iotaclasses.in/uploads/advertisements/${bannerMiddle.image}`}
                       alt={bannerMiddle.title || "Advertisement"}
                       style={{
                         width: "100%",
+                        maxWidth: "100%",
                         height: "auto",
                         display: "block",
+                        margin: 0,
+                        padding: 0,
                       }}
                     />
                   </a>
