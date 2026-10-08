@@ -21,10 +21,11 @@ const BannerSection = ({ className }) => {
           )
           .sort((a, b) => (a.priority || 0) - (b.priority || 0))[0];
 
-        setBanner(homeTop);
+        setBanner(homeTop || null);
       }
     } catch (err) {
-      console.log(err);
+      console.error("Advertisement Error:", err);
+      setBanner(null);
     }
   };
 
@@ -33,9 +34,29 @@ const BannerSection = ({ className }) => {
   return (
     <div className={className || ""}>
       <div className="container">
-        <div className="row">
-          <div className="col-12">
-            <div className="banner1">
+        <div
+          className="row"
+          style={{
+            marginLeft: 0,
+            marginRight: 0,
+          }}
+        >
+          <div
+            className="col-12"
+            style={{
+              paddingLeft: 0,
+              paddingRight: 0,
+            }}
+          >
+            <div
+              className="banner1"
+              style={{
+                width: "100%",
+                maxWidth: "100%",
+                margin: "0 0 30px 0",
+                padding: 0,
+              }}
+            >
               <a
                 href={banner.redirectUrl || "#"}
                 target="_blank"
@@ -43,6 +64,8 @@ const BannerSection = ({ className }) => {
                 style={{
                   display: "block",
                   width: "100%",
+                  margin: 0,
+                  padding: 0,
                 }}
               >
                 <img
@@ -50,9 +73,12 @@ const BannerSection = ({ className }) => {
                   alt={banner.title || "Advertisement"}
                   style={{
                     width: "100%",
-                    height: "200px",
+                    maxWidth: "100%",
+                    height: "100px",
                     objectFit: "cover",
                     display: "block",
+                    margin: 0,
+                    padding: 0,
                   }}
                 />
               </a>
