@@ -283,7 +283,77 @@ const YouTubeStyles = () => {
           color: #111;
         }
 
+/* =========================================
+   CHANNEL NAME - TOP OF CARD
+========================================= */
 
+.youtube-channel-top {
+  width: 100%;
+  min-height: 48px;
+
+  padding: 10px 12px;
+
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  background: #ffffff;
+
+  border-bottom: 1px solid #eeeeee;
+}
+
+/* YouTube icon */
+
+.youtube-channel-icon {
+  width: 30px;
+  height: 30px;
+
+  flex: 0 0 30px;
+
+  border-radius: 50%;
+
+  background: #ff0000;
+
+  color: #ffffff;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 11px;
+
+  padding-left: 2px;
+}
+
+/* Channel name */
+
+.youtube-channel-title {
+  flex: 1;
+
+  font-size: 14px;
+  font-weight: 700;
+
+  color: #111111;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Small red line */
+
+.youtube-channel-top::after {
+  content: "";
+
+  width: 4px;
+  height: 30px;
+
+  background: #ff0000;
+
+  border-radius: 3px;
+
+  order: -1;
+}
 
         .youtube-card {
           width: 100%;
