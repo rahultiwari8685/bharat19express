@@ -34,16 +34,28 @@ const TopBarTwo = () => {
     }
   };
 
-  const changeLanguage = (language) => {
-    setTrendingNews([]);
+  const changeLanguage = async (language) => {
+    try {
+      setTrendingNews([]);
 
-    i18n.changeLanguage(language);
+      localStorage.setItem("i18nextLng", language);
 
-    // Set HTML language
-    document.documentElement.lang = language;
+      await i18n.changeLanguage(language);
 
-    // Urdu is RTL
-    document.documentElement.dir = language === "ur" ? "rtl" : "ltr";
+      document.documentElement.lang = language;
+
+      if (language === "ur") {
+        document.documentElement.dir = "rtl";
+      } else {
+        document.documentElement.dir = "ltr";
+      }
+
+      console.log("Selected Language:", language);
+      console.log("i18n Language:", i18n.language);
+      console.log("Resolved Language:", i18n.resolvedLanguage);
+    } catch (error) {
+      console.error("Language change error:", error);
+    }
   };
 
   return (

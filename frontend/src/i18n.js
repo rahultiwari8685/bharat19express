@@ -162,10 +162,9 @@ i18n
 
     fallbackLng: "en",
 
-    // ===================================================
-    // SUPPORTED LANGUAGES
-    // ===================================================
     supportedLngs: ["en", "hi", "ur", "bn", "mr"],
+
+    load: "languageOnly",
 
     detection: {
       order: ["localStorage"],
@@ -176,5 +175,7 @@ i18n
       escapeValue: false,
     },
   });
+
+export default i18n;
 
 export default i18n;

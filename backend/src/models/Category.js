@@ -79,19 +79,23 @@ const categorySchema = new mongoose.Schema(
         type: categoryTranslationSchema,
         default: {},
       },
+
       hi: {
         type: categoryTranslationSchema,
         default: {},
       },
+
+      ur: {
+        type: categoryTranslationSchema,
+        default: {},
+      },
+
       bn: {
         type: categoryTranslationSchema,
         default: {},
       },
+
       mr: {
-        type: categoryTranslationSchema,
-        default: {},
-      },
-      ta: {
         type: categoryTranslationSchema,
         default: {},
       },

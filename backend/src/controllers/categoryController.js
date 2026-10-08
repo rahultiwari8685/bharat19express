@@ -134,15 +134,43 @@ const generateCategoryTranslations = async (name) => {
   return translations;
 };
 
+// const applyCategoryTranslation = (category, lang = "en") => {
+//   const item =
+//     typeof category.toObject === "function"
+//       ? category.toObject()
+//       : { ...category };
+
+//   const translatedName = item.translations?.[lang]?.name?.trim();
+
+//   item.name = translatedName || item.name;
+
+//   return item;
+// };
+
 const applyCategoryTranslation = (category, lang = "en") => {
   const item =
     typeof category.toObject === "function"
       ? category.toObject()
       : { ...category };
 
-  const translatedName = item.translations?.[lang]?.name?.trim();
+  // First try database translation
+  let translatedName = item.translations?.[lang]?.name?.trim();
 
-  item.name = translatedName || item.name;
+  // If Urdu translation doesn't exist in old records,
+  // use our predefined translation.
+  if (!translatedName && lang !== "en") {
+    const englishName =
+      item.translations?.en?.name?.trim() || item.name?.trim();
+
+    const override = CATEGORY_TRANSLATION_OVERRIDES[englishName];
+
+    if (override?.[lang]) {
+      translatedName = override[lang];
+    }
+  }
+
+  // Final fallback
+  item.name = translatedName || item.translations?.en?.name || item.name;
 
   return item;
 };
