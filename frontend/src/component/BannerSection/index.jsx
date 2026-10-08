@@ -31,42 +31,34 @@ const BannerSection = ({ className }) => {
   if (!banner) return null;
 
   return (
-    <div
-      className={className || ""}
-      style={{
-        width: "100vw",
-        marginLeft: "calc(50% - 50vw)",
-        padding: 0,
-        marginRight: 0,
-      }}
-    >
-      <div
-        style={{
-          width: "100%",
-          padding: 0,
-          margin: 0,
-        }}
-      >
-        <a
-          href={banner.redirectUrl || "#"}
-          target="_blank"
-          rel="noopener noreferrer"
-          style={{
-            display: "block",
-            width: "100%",
-          }}
-        >
-          <img
-            src={`https://api.iotaclasses.in/uploads/advertisements/${banner.image}`}
-            alt={banner.title || "Advertisement"}
-            style={{
-              width: "100%",
-              height: "200px",
-              objectFit: "cover",
-              display: "block",
-            }}
-          />
-        </a>
+    <div className={className || ""}>
+      <div className="container">
+        <div className="row">
+          <div className="col-12">
+            <div className="banner1">
+              <a
+                href={banner.redirectUrl || "#"}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  display: "block",
+                  width: "100%",
+                }}
+              >
+                <img
+                  src={`https://api.iotaclasses.in/uploads/advertisements/${banner.image}`}
+                  alt={banner.title || "Advertisement"}
+                  style={{
+                    width: "100%",
+                    height: "200px",
+                    objectFit: "cover",
+                    display: "block",
+                  }}
+                />
+              </a>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
