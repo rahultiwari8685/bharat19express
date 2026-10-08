@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import { Link } from "react-router-dom";
 
 const BannerSection = ({ className }) => {
   const [banner, setBanner] = useState(null);
@@ -16,12 +15,11 @@ const BannerSection = ({ className }) => {
       const result = await res.json();
 
       if (result.success) {
-        // Homepage Top Advertisement
         const homeTop = result.data
           .filter(
             (item) => item.position === "homepage_top" && item.status === true,
           )
-          .sort((a, b) => a.priority - b.priority)[0];
+          .sort((a, b) => (a.priority || 0) - (b.priority || 0))[0];
 
         setBanner(homeTop);
       }
@@ -33,26 +31,42 @@ const BannerSection = ({ className }) => {
   if (!banner) return null;
 
   return (
-    <div className={`${className ? className : "padding10 mb10 fourth_bg"}`}>
-      <div className="container">
-        <div className="row">
-          <div className="col-lg-12 m-auto">
-            <div className="banner1">
-              <Link
-                to={banner.redirectUrl || "#"}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <img
-                  src={`https://api.iotaclasses.in/uploads/advertisements/${banner.image}`}
-                  alt={banner.title}
-                  className="img-fluid"
-                  height="200px"
-                />
-              </Link>
-            </div>
-          </div>
-        </div>
+    <div
+      className={className || ""}
+      style={{
+        width: "100vw",
+        marginLeft: "calc(50% - 50vw)",
+        padding: 0,
+        marginRight: 0,
+      }}
+    >
+      <div
+        style={{
+          width: "100%",
+          padding: 0,
+          margin: 0,
+        }}
+      >
+        <a
+          href={banner.redirectUrl || "#"}
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{
+            display: "block",
+            width: "100%",
+          }}
+        >
+          <img
+            src={`https://api.iotaclasses.in/uploads/advertisements/${banner.image}`}
+            alt={banner.title || "Advertisement"}
+            style={{
+              width: "100%",
+              height: "200px",
+              objectFit: "cover",
+              display: "block",
+            }}
+          />
+        </a>
       </div>
     </div>
   );
