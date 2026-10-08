@@ -1,20 +1,24 @@
 import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import TrendingCarousel from "../TrendingCarousel";
 import FontAwesome from "../uiStyle/FontAwesome";
 
 const TrendingNewsTwo = () => {
+  const { i18n, t } = useTranslation();
   const [featuredNews, setFeaturedNews] = useState(null);
   const [upNews, setUpNews] = useState([]);
 
   useEffect(() => {
     getUPNews();
-  }, []);
+  }, [i18n.resolvedLanguage]);
 
   const getUPNews = async () => {
     try {
+      const language = i18n.resolvedLanguage || "en";
+
       const res = await fetch(
-        "https://api.iotaclasses.in/api/news/category/6ab5133ae0146bb0a4a80e48?limit=10",
+        `https://api.iotaclasses.in/api/news/category/6ab5133ae0146bb0a4a80e48?limit=10&lang=${language}`,
       );
 
       const data = await res.json();
@@ -50,7 +54,10 @@ const TrendingNewsTwo = () => {
       <div className="row">
         <div className="col-12">
           <div className="heading">
-            <h2 className="widget-title">Uttar Pradesh</h2>
+            <h2 className="widget-title">
+              {featuredNews.categories?.[0]?.name ||
+                t("uttarPradesh", "Uttar Pradesh")}
+            </h2>
           </div>
         </div>
       </div>
@@ -97,7 +104,7 @@ const TrendingNewsTwo = () => {
 
               <div className="meta3">
                 <Link to={category?.slug ? `/category/${category.slug}` : "#"}>
-                  {category?.name || "Uttar Pradesh"}
+                  {category?.name || t("uttarPradesh", "Uttar Pradesh")}
                 </Link>
 
                 <Link to={newsUrl}>
