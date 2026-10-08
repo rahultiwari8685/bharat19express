@@ -39,12 +39,6 @@ const YouTubeChannelSlider = () => {
     }
   };
 
-  /*
-  |--------------------------------------------------------------------------
-  | Loading
-  |--------------------------------------------------------------------------
-  */
-
   if (loading) {
     return (
       <>
@@ -64,33 +58,9 @@ const YouTubeChannelSlider = () => {
     );
   }
 
-  /*
-  |--------------------------------------------------------------------------
-  | No videos
-  |--------------------------------------------------------------------------
-  */
-
   if (!channels.length) {
     return null;
   }
-
-  /*
-  |--------------------------------------------------------------------------
-  | Create slider structure
-  |
-  | Slide 1:
-  | Channel 1 Video 1
-  | Channel 2 Video 1
-  | Channel 3 Video 1
-  | Channel 4 Video 1
-  |
-  | Slide 2:
-  | Channel 1 Video 2
-  | Channel 2 Video 2
-  | Channel 3 Video 2
-  | Channel 4 Video 2
-  |--------------------------------------------------------------------------
-  */
 
   const maxVideos = Math.max(
     ...channels.map((channel) => channel.videos?.length || 0),
@@ -112,20 +82,12 @@ const YouTubeChannelSlider = () => {
     <>
       <section className="youtube-section">
         <div className="container">
-          {/* =========================
-              SECTION HEADER
-          ========================== */}
-
           <div className="youtube-heading">
             <div>
               <span>WATCH NOW</span>
               <h2>YouTube Videos</h2>
             </div>
           </div>
-
-          {/* =========================
-              SLIDER
-          ========================== */}
 
           <Swiper
             modules={[Navigation, Pagination]}
@@ -170,10 +132,6 @@ const YouTubeChannelSlider = () => {
             {videos.map((video, index) => (
               <SwiperSlide key={`${video.videoId}-${index}`}>
                 <div className="youtube-card">
-                  {/* =========================
-                      VIDEO THUMBNAIL
-                  ========================== */}
-
                   <a
                     href={`https://www.youtube.com/watch?v=${video.videoId}`}
                     target="_blank"
@@ -194,10 +152,6 @@ const YouTubeChannelSlider = () => {
                       </div>
                     </div>
                   </a>
-
-                  {/* =========================
-                      VIDEO CONTENT
-                  ========================== */}
 
                   <div className="youtube-content">
                     {/* Channel Name */}
@@ -232,38 +186,22 @@ const YouTubeChannelSlider = () => {
         </div>
       </section>
 
-      {/* =========================
-          CSS IN SAME FILE
-      ========================== */}
-
       <YouTubeStyles />
     </>
   );
 };
 
-/*
-|--------------------------------------------------------------------------
-| CSS Component
-|--------------------------------------------------------------------------
-*/
-
 const YouTubeStyles = () => {
   return (
     <style>
       {`
-        /* =========================================
-           MAIN SECTION
-        ========================================= */
+
 
         .youtube-section {
           width: 100%;
           padding: 40px 0;
           background: #f5f5f5;
         }
-
-        /* =========================================
-           HEADER
-        ========================================= */
 
         .youtube-heading {
           display: flex;
@@ -291,9 +229,7 @@ const YouTubeStyles = () => {
           color: #111;
         }
 
-        /* =========================================
-           CARD
-        ========================================= */
+
 
         .youtube-card {
           width: 100%;
@@ -319,9 +255,6 @@ const YouTubeStyles = () => {
             rgba(0, 0, 0, 0.14);
         }
 
-        /* =========================================
-           THUMBNAIL
-        ========================================= */
 
         .youtube-thumbnail-link {
           display: block;
@@ -352,9 +285,7 @@ const YouTubeStyles = () => {
           transform: scale(1.05);
         }
 
-        /* =========================================
-           PLAY BUTTON
-        ========================================= */
+
 
         .youtube-play {
           position: absolute;
