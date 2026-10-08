@@ -110,17 +110,17 @@ const newsSchema = new mongoose.Schema(
         default: {},
       },
 
+      ur: {
+        type: translationSchema,
+        default: {},
+      },
+
       bn: {
         type: translationSchema,
         default: {},
       },
 
       mr: {
-        type: translationSchema,
-        default: {},
-      },
-
-      ta: {
         type: translationSchema,
         default: {},
       },

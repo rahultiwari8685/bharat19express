@@ -5,37 +5,16 @@ import News from "../models/News.js";
 import { sendNotification } from "../services/sendNotification.js";
 import NotificationToken from "../models/NotificationToken.js";
 import { TranslationServiceClient } from "@google-cloud/translate";
-/*
-|--------------------------------------------------------------------------
-| Supported Languages
-|--------------------------------------------------------------------------
-*/
 
-const SUPPORTED_LANGUAGES = ["en", "hi", "bn", "mr", "ta"];
+const SUPPORTED_LANGUAGES = ["en", "hi", "ur", "bn", "mr"];
 
-const TRANSLATION_TARGETS = ["en", "bn", "mr", "ta"];
-
-/*
-|--------------------------------------------------------------------------
-| Get Language
-|--------------------------------------------------------------------------
-*/
+const TRANSLATION_TARGETS = ["en", "ur", "bn", "mr"];
 
 const getLanguage = (req) => {
   const lang = req.query.lang || "en";
 
   return SUPPORTED_LANGUAGES.includes(lang) ? lang : "en";
 };
-
-/*
-|--------------------------------------------------------------------------
-| Normalize Translation Content
-|--------------------------------------------------------------------------
-|
-| TinyMCE / Editor content can sometimes be an object.
-| Google Translate expects text/html.
-|
-*/
 
 const normalizeTranslationContent = (value) => {
   if (value === null || value === undefined) {
@@ -49,21 +28,6 @@ const normalizeTranslationContent = (value) => {
   return JSON.stringify(value);
 };
 
-/*
-|--------------------------------------------------------------------------
-| Apply Translation
-|--------------------------------------------------------------------------
-|
-| API response will continue returning:
-|
-| title
-| subtitle
-| content
-|
-| according to ?lang=
-|
-*/
-
 const applyTranslation = (news, lang = "en") => {
   if (!news) return news;
 
@@ -71,15 +35,26 @@ const applyTranslation = (news, lang = "en") => {
 
   const translation = item.translations?.[lang] || {};
 
-  return {
-    ...item,
+  item.title = translation.title || item.title || "";
 
-    title: translation.title || item.title || "",
+  item.subtitle = translation.subtitle || item.subtitle || "";
 
-    subtitle: translation.subtitle || item.subtitle || "",
+  item.content = translation.content || item.content || {};
 
-    content: translation.content || item.content || {},
-  };
+  if (Array.isArray(item.categories)) {
+    item.categories = item.categories.map((category) => {
+      if (!category) return category;
+
+      const categoryTranslation = category.translations?.[lang]?.name?.trim();
+
+      return {
+        ...category,
+        name: categoryTranslation || category.name || "",
+      };
+    });
+  }
+
+  return item;
 };
 
 const googleTranslationConfig = () => ({
@@ -416,12 +391,6 @@ export const createNews = async (req, res) => {
   }
 };
 
-/*
-|--------------------------------------------------------------------------
-| GET PUBLISHED NEWS
-|--------------------------------------------------------------------------
-*/
-
 export const getNews = async (req, res) => {
   try {
     const { page = 1, limit } = req.query;
@@ -485,12 +454,6 @@ export const getNews = async (req, res) => {
     });
   }
 };
-
-/*
-|--------------------------------------------------------------------------
-| GET ALL DRAFT NEWS
-|--------------------------------------------------------------------------
-*/
 
 export const getAllDraftNews = async (req, res) => {
   try {
@@ -562,12 +525,6 @@ export const getAllDraftNews = async (req, res) => {
     });
   }
 };
-
-/*
-|--------------------------------------------------------------------------
-| GET NEWS BY CATEGORY
-|--------------------------------------------------------------------------
-*/
 
 export const getAllNewsByCategory = async (req, res) => {
   try {
@@ -647,12 +604,6 @@ export const getAllNewsByCategory = async (req, res) => {
   }
 };
 
-/*
-|--------------------------------------------------------------------------
-| GET NEWS BY SLUG
-|--------------------------------------------------------------------------
-*/
-
 export const getNewsBySlug = async (req, res) => {
   try {
     const lang = getLanguage(req);
@@ -715,12 +666,6 @@ export const getNewsBySlug = async (req, res) => {
   }
 };
 
-/*
-|--------------------------------------------------------------------------
-| GET NEWS BY ID
-|--------------------------------------------------------------------------
-*/
-
 export const getNewsById = async (req, res) => {
   try {
     const lang = getLanguage(req);
@@ -751,12 +696,6 @@ export const getNewsById = async (req, res) => {
   }
 };
 
-/*
-|--------------------------------------------------------------------------
-| UPDATE NEWS
-|--------------------------------------------------------------------------
-*/
-
 export const updateNews = async (req, res) => {
   try {
     const {
@@ -771,24 +710,12 @@ export const updateNews = async (req, res) => {
       scheduledAt,
     } = req.body;
 
-    /*
-    |--------------------------------------------------------------------------
-    | Validate ID
-    |--------------------------------------------------------------------------
-    */
-
     if (!mongoose.Types.ObjectId.isValid(id)) {
       return res.status(400).json({
         status: false,
         message: "Invalid news ID",
       });
     }
-
-    /*
-    |--------------------------------------------------------------------------
-    | Find Existing News
-    |--------------------------------------------------------------------------
-    */
 
     const news = await News.findById(id);
 
@@ -798,12 +725,6 @@ export const updateNews = async (req, res) => {
         message: "News not found",
       });
     }
-
-    /*
-    |--------------------------------------------------------------------------
-    | Categories
-    |--------------------------------------------------------------------------
-    */
 
     let categories = [];
 
@@ -816,31 +737,6 @@ export const updateNews = async (req, res) => {
     categories = categories
       .filter((categoryId) => mongoose.Types.ObjectId.isValid(categoryId))
       .map((categoryId) => new mongoose.Types.ObjectId(categoryId));
-
-    /*
-    |--------------------------------------------------------------------------
-    | Existing Translations
-    |--------------------------------------------------------------------------
-    */
-
-    // let parsedTranslations = news.translations || {};
-
-    // if (translations) {
-    //   try {
-    //     parsedTranslations =
-    //       typeof translations === "string"
-    //         ? JSON.parse(translations)
-    //         : translations;
-    //   } catch (error) {
-    //     console.error("Translation Parse Error:", error);
-    //   }
-    // }
-
-    /*
-    |--------------------------------------------------------------------------
-    | Slug Duplicate Check
-    |--------------------------------------------------------------------------
-    */
 
     if (slug && slug.trim()) {
       const existingSlug = await News.findOne({
@@ -859,18 +755,6 @@ export const updateNews = async (req, res) => {
       }
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | Generate Automatic Translation
-    |--------------------------------------------------------------------------
-    |
-    | Hindi is the source language.
-    |
-    | Every time the published/saved news is
-    | updated, translations are regenerated.
-    |
-    */
-
     console.log("========================================");
 
     console.log("Generating translations for updated news...");
@@ -885,23 +769,11 @@ export const updateNews = async (req, res) => {
 
     console.log("========================================");
 
-    /*
-    |--------------------------------------------------------------------------
-    | Schedule Date
-    |--------------------------------------------------------------------------
-    */
-
     let scheduledDate = null;
 
     if (scheduledAt) {
       scheduledDate = new Date(new Date(scheduledAt).getTime() - 19800000);
     }
-
-    /*
-    |--------------------------------------------------------------------------
-    | Update News
-    |--------------------------------------------------------------------------
-    */
 
     news.title = title || "";
 
@@ -915,33 +787,11 @@ export const updateNews = async (req, res) => {
 
     news.youtubeUrl = youtube_url || "";
 
-    /*
-    |--------------------------------------------------------------------------
-    | Automatic Translation
-    |--------------------------------------------------------------------------
-    |
-    | Ignore old manually supplied translations
-    | when Hindi source is updated.
-    |
-    */
-
     news.translations = automaticTranslations;
-
-    /*
-    |--------------------------------------------------------------------------
-    | Slug
-    |--------------------------------------------------------------------------
-    */
 
     if (slug && slug.trim()) {
       news.slug = slug.trim();
     }
-
-    /*
-    |--------------------------------------------------------------------------
-    | Type
-    |--------------------------------------------------------------------------
-    */
 
     if (type !== undefined) {
       news.type = Number(type);
@@ -949,37 +799,13 @@ export const updateNews = async (req, res) => {
       news.isScheduled = Number(type) === 3;
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | Schedule
-    |--------------------------------------------------------------------------
-    */
-
     news.scheduledAt = scheduledDate;
-
-    /*
-    |--------------------------------------------------------------------------
-    | Thumbnail
-    |--------------------------------------------------------------------------
-    */
 
     if (req.file) {
       news.thumbnail = req.file.filename;
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | Save
-    |--------------------------------------------------------------------------
-    */
-
     await news.save();
-
-    /*
-    |--------------------------------------------------------------------------
-    | Push Notification
-    |--------------------------------------------------------------------------
-    */
 
     if (Number(news.type) === 1) {
       console.log("================================");
@@ -1006,21 +832,9 @@ export const updateNews = async (req, res) => {
       console.log("================================");
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | Populate
-    |--------------------------------------------------------------------------
-    */
-
     const updatedNews = await News.findById(news._id)
       .populate("author", "name email profileImage")
       .populate("categories", "name slug");
-
-    /*
-    |--------------------------------------------------------------------------
-    | Response
-    |--------------------------------------------------------------------------
-    */
 
     return res.status(200).json({
       status: true,
@@ -1046,21 +860,9 @@ export const updateNews = async (req, res) => {
   }
 };
 
-/*
-|--------------------------------------------------------------------------
-| DELETE NEWS
-|--------------------------------------------------------------------------
-*/
-
 export const deleteNews = async (req, res) => {
   try {
     const { id } = req.params;
-
-    /*
-    |--------------------------------------------------------------------------
-    | Validate ID
-    |--------------------------------------------------------------------------
-    */
 
     if (!mongoose.Types.ObjectId.isValid(id)) {
       return res.status(400).json({
@@ -1068,12 +870,6 @@ export const deleteNews = async (req, res) => {
         message: "Invalid news ID",
       });
     }
-
-    /*
-    |--------------------------------------------------------------------------
-    | Delete
-    |--------------------------------------------------------------------------
-    */
 
     const news = await News.findByIdAndDelete(id);
 
@@ -1099,23 +895,11 @@ export const deleteNews = async (req, res) => {
   }
 };
 
-/*
-|--------------------------------------------------------------------------
-| GET ALL NEWS BY AUTHOR
-|--------------------------------------------------------------------------
-*/
-
 export const getAllNewsByAuthorId = async (req, res) => {
   try {
     const { authorId } = req.params;
 
     const { page = 1, limit = 10 } = req.query;
-
-    /*
-      |--------------------------------------------------------------------------
-      | Validate Author
-      |--------------------------------------------------------------------------
-      */
 
     if (!mongoose.Types.ObjectId.isValid(authorId)) {
       return res.status(400).json({
@@ -1130,21 +914,9 @@ export const getAllNewsByAuthorId = async (req, res) => {
 
     const skip = (pageNumber - 1) * limitNumber;
 
-    /*
-      |--------------------------------------------------------------------------
-      | Query
-      |--------------------------------------------------------------------------
-      */
-
     const query = {
       author: authorId,
     };
-
-    /*
-      |--------------------------------------------------------------------------
-      | Get News
-      |--------------------------------------------------------------------------
-      */
 
     const news = await News.find(query)
       .populate("author", "name email profileImage")
@@ -1155,19 +927,7 @@ export const getAllNewsByAuthorId = async (req, res) => {
       .skip(skip)
       .limit(limitNumber);
 
-    /*
-      |--------------------------------------------------------------------------
-      | Total
-      |--------------------------------------------------------------------------
-      */
-
     const total = await News.countDocuments(query);
-
-    /*
-      |--------------------------------------------------------------------------
-      | Response
-      |--------------------------------------------------------------------------
-      */
 
     return res.status(200).json({
       status: true,
@@ -1188,35 +948,9 @@ export const getAllNewsByAuthorId = async (req, res) => {
   }
 };
 
-/*
-|--------------------------------------------------------------------------
-| AUTO SAVE NEWS
-|--------------------------------------------------------------------------
-|
-| IMPORTANT:
-|
-| Auto-save should NOT call Google Translate.
-|
-| Otherwise every few seconds:
-|
-| Hindi → Google API
-|
-| This would consume translation quota.
-|
-| Auto-save stores only Hindi.
-|
-|--------------------------------------------------------------------------
-*/
-
 export const autoSaveNews = async (req, res) => {
   try {
     const { title, subtitle, categories, videoType, content, slug } = req.body;
-
-    /*
-      |--------------------------------------------------------------------------
-      | Parse Categories
-      |--------------------------------------------------------------------------
-      */
 
     let parsedCategories = [];
 
@@ -1230,12 +964,6 @@ export const autoSaveNews = async (req, res) => {
       .filter((id) => mongoose.Types.ObjectId.isValid(id))
       .map((id) => new mongoose.Types.ObjectId(id));
 
-    /*
-      |--------------------------------------------------------------------------
-      | Find Latest Draft
-      |--------------------------------------------------------------------------
-      */
-
     let draft = await News.findOne({
       author: req.body.author,
 
@@ -1243,12 +971,6 @@ export const autoSaveNews = async (req, res) => {
     }).sort({
       updatedAt: -1,
     });
-
-    /*
-      |--------------------------------------------------------------------------
-      | Slug Check
-      |--------------------------------------------------------------------------
-      */
 
     if (slug && slug.trim()) {
       const existingSlug = await News.findOne({
@@ -1267,15 +989,6 @@ export const autoSaveNews = async (req, res) => {
       }
     }
 
-    /*
-      |--------------------------------------------------------------------------
-      | Hindi Translation Object
-      |--------------------------------------------------------------------------
-      |
-      | Only Hindi is stored during auto-save.
-      |
-      */
-
     const hindiTranslation = {
       hi: {
         title: title || "",
@@ -1285,12 +998,6 @@ export const autoSaveNews = async (req, res) => {
         content: normalizeTranslationContent(content),
       },
     };
-
-    /*
-      |--------------------------------------------------------------------------
-      | Update Existing Draft
-      |--------------------------------------------------------------------------
-      */
 
     if (draft) {
       draft.title = title || "";
@@ -1308,19 +1015,7 @@ export const autoSaveNews = async (req, res) => {
       draft.content =
         typeof content === "string" ? content : JSON.stringify(content || {});
 
-      /*
-        |--------------------------------------------------------------------------
-        | Save Hindi Only
-        |--------------------------------------------------------------------------
-        */
-
       draft.translations = hindiTranslation;
-
-      /*
-        |--------------------------------------------------------------------------
-        | Thumbnail
-        |--------------------------------------------------------------------------
-        */
 
       if (req.file) {
         draft.thumbnail = req.file.filename;
@@ -1328,12 +1023,6 @@ export const autoSaveNews = async (req, res) => {
 
       await draft.save();
     } else {
-      /*
-        |--------------------------------------------------------------------------
-        | Create New Draft
-        |--------------------------------------------------------------------------
-        */
-
       draft = await News.create({
         title: title || "",
 
@@ -1349,12 +1038,6 @@ export const autoSaveNews = async (req, res) => {
 
         videoType,
 
-        /*
-            |--------------------------------------------------------------------------
-            | Hindi Only
-            |--------------------------------------------------------------------------
-            */
-
         translations: hindiTranslation,
 
         content:
@@ -1369,12 +1052,6 @@ export const autoSaveNews = async (req, res) => {
         youtubeUrl: "",
       });
     }
-
-    /*
-      |--------------------------------------------------------------------------
-      | Response
-      |--------------------------------------------------------------------------
-      */
 
     return res.json({
       status: true,
@@ -1395,12 +1072,6 @@ export const autoSaveNews = async (req, res) => {
     });
   }
 };
-
-/*
-|--------------------------------------------------------------------------
-| INCREASE VIEW
-|--------------------------------------------------------------------------
-*/
 
 export const increaseView = async (req, res) => {
   try {
@@ -1423,33 +1094,15 @@ export const increaseView = async (req, res) => {
   }
 };
 
-/*
-|--------------------------------------------------------------------------
-| TRENDING NEWS
-|--------------------------------------------------------------------------
-*/
-
 export const getTrendingNews = async (req, res) => {
   try {
     const { limit = 10 } = req.query;
 
     const lang = getLanguage(req);
 
-    /*
-      |--------------------------------------------------------------------------
-      | Last 7 Days
-      |--------------------------------------------------------------------------
-      */
-
     const last7Days = new Date();
 
     last7Days.setDate(last7Days.getDate() - 7);
-
-    /*
-      |--------------------------------------------------------------------------
-      | Get Trending
-      |--------------------------------------------------------------------------
-      */
 
     const news = await News.find({
       type: 1,
@@ -1467,12 +1120,6 @@ export const getTrendingNews = async (req, res) => {
       })
       .limit(parseInt(limit));
 
-    /*
-      |--------------------------------------------------------------------------
-      | Apply Translation
-      |--------------------------------------------------------------------------
-      */
-
     const translatedNews = news.map((item) => applyTranslation(item, lang));
 
     return res.status(200).json({
@@ -1490,23 +1137,11 @@ export const getTrendingNews = async (req, res) => {
   }
 };
 
-/*
-|--------------------------------------------------------------------------
-| POPULAR NEWS
-|--------------------------------------------------------------------------
-*/
-
 export const getPopularNews = async (req, res) => {
   try {
     const { limit = 10 } = req.query;
 
     const lang = getLanguage(req);
-
-    /*
-      |--------------------------------------------------------------------------
-      | Get Popular News
-      |--------------------------------------------------------------------------
-      */
 
     const news = await News.find({
       type: 1,
@@ -1520,12 +1155,6 @@ export const getPopularNews = async (req, res) => {
       })
       .limit(parseInt(limit));
 
-    /*
-      |--------------------------------------------------------------------------
-      | Apply Translation
-      |--------------------------------------------------------------------------
-      */
-
     const translatedNews = news.map((item) => applyTranslation(item, lang));
 
     return res.status(200).json({
@@ -1542,12 +1171,6 @@ export const getPopularNews = async (req, res) => {
     });
   }
 };
-
-/*
-|--------------------------------------------------------------------------
-| INCREASE SHARE
-|--------------------------------------------------------------------------
-*/
 
 export const increaseShare = async (req, res) => {
   try {
@@ -1572,23 +1195,11 @@ export const increaseShare = async (req, res) => {
   }
 };
 
-/*
-|--------------------------------------------------------------------------
-| MOST SHARED NEWS
-|--------------------------------------------------------------------------
-*/
-
 export const getMostSharedNews = async (req, res) => {
   try {
     const { limit = 5 } = req.query;
 
     const lang = getLanguage(req);
-
-    /*
-      |--------------------------------------------------------------------------
-      | Get Most Shared
-      |--------------------------------------------------------------------------
-      */
 
     const news = await News.find({
       type: 1,
@@ -1601,12 +1212,6 @@ export const getMostSharedNews = async (req, res) => {
         createdAt: -1,
       })
       .limit(parseInt(limit));
-
-    /*
-      |--------------------------------------------------------------------------
-      | Translation
-      |--------------------------------------------------------------------------
-      */
 
     const translatedNews = news.map((item) => applyTranslation(item, lang));
 
@@ -1624,12 +1229,6 @@ export const getMostSharedNews = async (req, res) => {
     });
   }
 };
-
-/*
-|--------------------------------------------------------------------------
-| VIDEO NEWS
-|--------------------------------------------------------------------------
-*/
 
 export const getVideoNews = async (req, res) => {
   try {
@@ -1649,12 +1248,6 @@ export const getVideoNews = async (req, res) => {
       videoType: 1,
     };
 
-    /*
-      |--------------------------------------------------------------------------
-      | Get Video News
-      |--------------------------------------------------------------------------
-      */
-
     const news = await News.find(query)
       .populate("author", "name")
       .populate("categories", "name slug")
@@ -1665,12 +1258,6 @@ export const getVideoNews = async (req, res) => {
       .limit(limitNumber);
 
     const total = await News.countDocuments(query);
-
-    /*
-      |--------------------------------------------------------------------------
-      | Translation
-      |--------------------------------------------------------------------------
-      */
 
     const translatedNews = news.map((item) => applyTranslation(item, lang));
 
@@ -1691,23 +1278,11 @@ export const getVideoNews = async (req, res) => {
   }
 };
 
-/*
-|--------------------------------------------------------------------------
-| PREVIOUS / NEXT NEWS
-|--------------------------------------------------------------------------
-*/
-
 export const previousNextNews = async (req, res) => {
   try {
     const { id } = req.params;
 
     const lang = getLanguage(req);
-
-    /*
-      |--------------------------------------------------------------------------
-      | Current News
-      |--------------------------------------------------------------------------
-      */
 
     const currentNews = await News.findById(id);
 
@@ -1718,12 +1293,6 @@ export const previousNextNews = async (req, res) => {
         message: "News not found",
       });
     }
-
-    /*
-      |--------------------------------------------------------------------------
-      | Previous
-      |--------------------------------------------------------------------------
-      */
 
     const previous = await News.findOne({
       type: 1,
@@ -1737,12 +1306,6 @@ export const previousNextNews = async (req, res) => {
       })
       .select("_id title subtitle slug translations");
 
-    /*
-      |--------------------------------------------------------------------------
-      | Next
-      |--------------------------------------------------------------------------
-      */
-
     const next = await News.findOne({
       type: 1,
 
@@ -1754,12 +1317,6 @@ export const previousNextNews = async (req, res) => {
         createdAt: 1,
       })
       .select("_id title subtitle slug translations");
-
-    /*
-      |--------------------------------------------------------------------------
-      | Response
-      |--------------------------------------------------------------------------
-      */
 
     return res.json({
       success: true,
@@ -1776,12 +1333,6 @@ export const previousNextNews = async (req, res) => {
     });
   }
 };
-
-/*
-|--------------------------------------------------------------------------
-| SHARE NEWS
-|--------------------------------------------------------------------------
-*/
 
 export const shareNews = async (req, res) => {
   try {
@@ -1811,12 +1362,6 @@ export const shareNews = async (req, res) => {
   }
 };
 
-/*
-|--------------------------------------------------------------------------
-| YOUTUBE LIVE STATUS
-|--------------------------------------------------------------------------
-*/
-
 export const getLiveStatus = async (req, res) => {
   try {
     const API_KEY = process.env.YOUTUBE_API_KEY;
@@ -1843,12 +1388,6 @@ export const getLiveStatus = async (req, res) => {
       },
     });
 
-    /*
-      |--------------------------------------------------------------------------
-      | Live Available
-      |--------------------------------------------------------------------------
-      */
-
     if (response.data.items.length > 0) {
       const live = response.data.items[0];
 
@@ -1864,12 +1403,6 @@ export const getLiveStatus = async (req, res) => {
         thumbnail: live.snippet.thumbnails.high.url,
       });
     }
-
-    /*
-      |--------------------------------------------------------------------------
-      | Not Live
-      |--------------------------------------------------------------------------
-      */
 
     return res.json({
       status: true,
@@ -1896,12 +1429,6 @@ export const getLiveStatus = async (req, res) => {
     });
   }
 };
-
-/*
-|--------------------------------------------------------------------------
-| NEWS META / SEO
-|--------------------------------------------------------------------------
-*/
 
 export const newsMeta = async (req, res) => {
   try {

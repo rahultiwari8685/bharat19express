@@ -4,7 +4,7 @@ import FontAwesome from "../uiStyle/FontAwesome";
 import Slider from "../Slider";
 import ModalVideo from "react-modal-video";
 import "react-modal-video/css/modal-video.min.css";
-
+import { useTranslation } from "react-i18next";
 import big_img from "../../assets/img/gallery-post-2.jpg";
 import col26 from "../../assets/img/post-news-thumb-1.png";
 import col21 from "../../assets/img/post-news/1.jpg";
@@ -17,7 +17,7 @@ const PostGalleryTwo = () => {
   const [videoNews, setVideoNews] = useState(null);
   const [isVideoOpen, setIsVideoOpen] = useState(false);
   const [videoId, setVideoId] = useState("");
-
+  const { i18n } = useTranslation();
   const [isYoutubeLive, setIsYoutubeLive] = useState(false);
   const [youtubeLiveId, setYoutubeLiveId] = useState("");
   const [youtubeLiveTitle, setYoutubeLiveTitle] = useState("");
@@ -34,6 +34,20 @@ const PostGalleryTwo = () => {
   const [latestNews, setLatestNews] = useState([]);
   const [latestNewsLoading, setLatestNewsLoading] = useState(false);
 
+  // useEffect(() => {
+  //   checkYoutubeLive();
+  //   getVideoNews();
+  //   getTextNews();
+  //   getSliderNews();
+  //   getActivePoll();
+
+  //   const interval = setInterval(() => {
+  //     checkYoutubeLive();
+  //   }, 60000);
+
+  //   return () => clearInterval(interval);
+  // }, []);
+
   useEffect(() => {
     checkYoutubeLive();
     getVideoNews();
@@ -46,7 +60,7 @@ const PostGalleryTwo = () => {
     }, 60000);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [i18n.resolvedLanguage]);
 
   const checkYoutubeLive = async () => {
     try {
@@ -107,7 +121,13 @@ const PostGalleryTwo = () => {
 
   const getVideoNews = async () => {
     try {
-      const res = await fetch(`${API}/api/news/videos?limit=10`);
+      // const res = await fetch(`${API}/api/news/videos?limit=10`);
+
+      const language = i18n.resolvedLanguage || "en";
+
+      const res = await fetch(
+        `${API}/api/news/videos?limit=10&lang=${language}`,
+      );
       const data = await res.json();
 
       console.log("Video News API:", data);
@@ -131,7 +151,12 @@ const PostGalleryTwo = () => {
 
   const getTextNews = async () => {
     try {
-      const res = await fetch(`${API}/api/news/getAllNews?limit=15`);
+      // const res = await fetch(`${API}/api/news/getAllNews?limit=15`);
+      const language = i18n.resolvedLanguage || "en";
+
+      const res = await fetch(
+        `${API}/api/news/getAllNews?limit=15&lang=${language}`,
+      );
       const data = await res.json();
 
       console.log("Text News API:", data);
@@ -177,7 +202,13 @@ const PostGalleryTwo = () => {
 
   const getSliderNews = async () => {
     try {
-      const res = await fetch(`${API}/api/news/getAllNews?limit=10`);
+      // const res = await fetch(`${API}/api/news/getAllNews?limit=10`);
+
+      const language = i18n.resolvedLanguage || "en";
+
+      const res = await fetch(
+        `${API}/api/news/getAllNews?limit=10&lang=${language}`,
+      );
       const data = await res.json();
 
       if (data.status && Array.isArray(data.data)) {
@@ -245,7 +276,13 @@ const PostGalleryTwo = () => {
     try {
       setLatestNewsLoading(true);
 
-      const res = await fetch(`${API}/api/news/getAllNews?limit=5`);
+      // const res = await fetch(`${API}/api/news/getAllNews?limit=5`);
+
+      const language = i18n.resolvedLanguage || "en";
+
+      const res = await fetch(
+        `${API}/api/news/getAllNews?limit=5&lang=${language}`,
+      );
 
       const data = await res.json();
 
