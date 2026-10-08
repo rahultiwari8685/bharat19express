@@ -84,8 +84,8 @@ const YouTubeChannelSlider = () => {
         <div className="container">
           <div className="youtube-heading">
             <div>
-              <span>WATCH NOW</span>
-              <h2>YouTube Videos</h2>
+              {/* <span>WATCH NOW</span> */}
+              <h2> Videos News</h2>
             </div>
           </div>
 
