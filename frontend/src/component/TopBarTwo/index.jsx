@@ -287,7 +287,7 @@ const TopBarTwo = () => {
 
                   <option value="hi">हिन्दी</option>
 
-                  <option value="ur">اردو</option>
+                  {/* <option value="ur">اردو</option> */}
 
                   <option value="bn">বাংলা</option>
 
