@@ -8,6 +8,8 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 
 const API_URL = "https://api.iotaclasses.in/api/youtube/videos";
+// Production:
+// const API_URL = "https://your-api-domain.com/api/youtube/videos";
 
 const YouTubeChannelSlider = () => {
   const { i18n, t } = useTranslation();
@@ -65,18 +67,26 @@ const YouTubeChannelSlider = () => {
     return null;
   }
 
-  const nationChannels = channels.filter((channel) =>
-    channel.channelName?.toLowerCase().includes("nation"),
-  );
+  // const maxVideos = Math.max(
+  //   ...channels.map((channel) => channel.videos?.length || 0),
+  // );
 
-  const otherChannels = channels
-    .filter((channel) => !channel.channelName?.toLowerCase().includes("nation"))
-    .reverse();
+  // const videos = [];
 
-  const orderedChannels = [...nationChannels, ...otherChannels];
+  // for (let index = 0; index < maxVideos; index++) {
+  //   channels.forEach((channel) => {
+  //     const video = channel.videos?.[index];
 
-  const videos = orderedChannels.flatMap((channel) =>
-    (channel.videos || []).map((video) => ({
+  //     if (video) {
+  //       videos.push(video);
+  //     }
+  //   });
+  // }
+
+  const reversedChannels = [...channels].reverse();
+
+  const videos = reversedChannels.flatMap((channel) =>
+    [...(channel.videos || [])].reverse().map((video) => ({
       ...video,
       channelName: video.channelName || channel.channelName,
     })),
