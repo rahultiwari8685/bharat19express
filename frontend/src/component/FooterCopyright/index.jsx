@@ -6,10 +6,10 @@ const quick_links = [
     name: "About",
     link: "/about",
   },
-  {
-    name: "Advertise",
-    link: "/",
-  },
+  // {
+  //   name: "Advertise",
+  //   link: "/",
+  // },
   {
     name: "Privacy & Policy",
     link: "/",

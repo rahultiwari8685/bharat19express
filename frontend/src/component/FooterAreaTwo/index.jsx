@@ -163,12 +163,10 @@ const FooterAreaTwo = () => {
     }
   };
 
-  // Dynamic logo
   const footerLogo = settings?.footerLogo
     ? `${API}/uploads/images/${settings.footerLogo}`
     : "";
 
-  // Dynamic phone numbers
   const phoneNumbers = settings?.phone
     ? settings.phone
         .split(",")
@@ -176,7 +174,6 @@ const FooterAreaTwo = () => {
         .filter(Boolean)
     : [];
 
-  // Dynamic emails
   const emails = settings?.email
     ? settings.email
         .split(",")
@@ -217,14 +214,8 @@ const FooterAreaTwo = () => {
             </div>
           </div>
 
-          {/* ================================
-              RIGHT SECTION
-          ================================= */}
           <div className="col-lg-8 col-md-6">
             <div className="contacts3">
-              {/* ================================
-                  PHONE
-              ================================= */}
               <div className="single_contact3">
                 <h6>{t("letsTalk", "Let's Talk")}</h6>
 
@@ -241,9 +232,6 @@ const FooterAreaTwo = () => {
                 )}
               </div>
 
-              {/* ================================
-                  EMAIL
-              ================================= */}
               <div className="single_contact3">
                 <h6>{t("letsChat", "Let's Chat")}</h6>
 
@@ -260,9 +248,6 @@ const FooterAreaTwo = () => {
                 )}
               </div>
 
-              {/* ================================
-                  ADDRESS
-              ================================= */}
               <div className="single_contact3">
                 <h6>{t("headquarters", "Headquarters")}</h6>
 
@@ -273,9 +258,6 @@ const FooterAreaTwo = () => {
             <div className="space-30" />
             <div className="space-30" />
 
-            {/* ================================
-                APP DOWNLOAD
-            ================================= */}
             <div className="download_btn">
               <div className="space-15" />
 
