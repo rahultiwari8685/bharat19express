@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import Slider from "./Slider";
+import Slider from "../Slider";
 
 const API = "https://api.iotaclasses.in";
 
