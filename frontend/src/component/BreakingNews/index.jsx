@@ -32,21 +32,30 @@ const BreakingNews = () => {
   return (
     <>
       <style>{`
-        .breaking-news-container {
-          width: 100%;
-          min-height: 32px;
-          display: flex;
-          align-items: center;
-          overflow: hidden;
-          box-sizing: border-box;
-          background: #fff;
-          border: 1px solid #e5e5e5;
-          font-family: Arial, sans-serif;
-        }
+     
+.breaking-news-container {
+  width: calc(100% - 40px);
+  max-width: 1200px;
+  height: 36px;
+  min-height: 36px;
+  margin: 10px auto;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  box-sizing: border-box;
+  background: #fff;
+  border: 1px solid #e3e3e3;
+  border-radius: 4px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+  font-family: Arial, sans-serif;
+}
+
 
         .breaking-news-label {
-          height: 32px;
-          padding: 0 12px;
+          height: 36px;
+          padding: 0 14px;
+
+
           display: flex;
           align-items: center;
           gap: 6px;
@@ -79,12 +88,12 @@ const BreakingNews = () => {
         .breaking-news-slider,
         .breaking-news-slider .swiper-wrapper,
         .breaking-news-slider .swiper-slide {
-          height: 30px;
+          height: 34px;
         }
 
         .breaking-news-item {
-          height: 30px;
-          line-height: 30px;
+          height: 34px;
+          line-height: 34px;
           overflow: hidden;
           white-space: nowrap;
           text-overflow: ellipsis;
@@ -92,7 +101,7 @@ const BreakingNews = () => {
 
         .breaking-news-item a {
           color: #222;
-          font-size: 11px;
+          font-size: 13px;
           text-decoration: none;
           font-weight: 500;
         }
@@ -131,6 +140,17 @@ const BreakingNews = () => {
             padding: 0 7px;
             font-size: 9px;
           }
+
+          .breaking-news-container {
+  width: calc(100% - 16px);
+  margin: 6px auto;
+  height: 32px;
+  min-height: 32px;
+}
+
+.breaking-news-item a {
+  font-size: 11px;
+}
 
           .breaking-news-headlines {
             padding: 0 5px;
