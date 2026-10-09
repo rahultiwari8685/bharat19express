@@ -7,6 +7,7 @@ import MainMenuTwo from "../../component/MainMenuTwo";
 import FooterAreaTwo from "../../component/FooterAreaTwo";
 import ScrollTopButton from "../ScrollTopButton";
 import LogoArea from "../LogoArea";
+import BreakingNews from "../BreakingNews";
 
 const LayoutTheme2 = ({ children }) => {
   return (
@@ -16,6 +17,7 @@ const LayoutTheme2 = ({ children }) => {
       <div className="border_black" />
       <LogoArea />
       <MainMenuTwo />
+      <BreakingNews />
       <Outlet />
       {children}
       <FooterAreaTwo />
