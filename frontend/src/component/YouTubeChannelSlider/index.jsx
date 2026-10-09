@@ -67,30 +67,21 @@ const YouTubeChannelSlider = () => {
     return null;
   }
 
-  // const maxVideos = Math.max(
-  //   ...channels.map((channel) => channel.videos?.length || 0),
-  // );
-
-  // const videos = [];
-
-  // for (let index = 0; index < maxVideos; index++) {
-  //   channels.forEach((channel) => {
-  //     const video = channel.videos?.[index];
-
-  //     if (video) {
-  //       videos.push(video);
-  //     }
-  //   });
-  // }
-
-  const reversedChannels = [...channels].reverse();
-
-  const videos = reversedChannels.flatMap((channel) =>
-    [...(channel.videos || [])].reverse().map((video) => ({
-      ...video,
-      channelName: video.channelName || channel.channelName,
-    })),
+  const maxVideos = Math.max(
+    ...channels.map((channel) => channel.videos?.length || 0),
   );
+
+  const videos = [];
+
+  for (let index = 0; index < maxVideos; index++) {
+    channels.forEach((channel) => {
+      const video = channel.videos?.[index];
+
+      if (video) {
+        videos.push(video);
+      }
+    });
+  }
 
   return (
     <>
