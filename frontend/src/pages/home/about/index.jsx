@@ -10,7 +10,6 @@ import { Fade, Nav, NavItem, TabContent, TabPane } from "reactstrap";
 import MostShareWidget from "../../../component/MostShareWidget";
 import BannerSection from "../../../component/BannerSection";
 
-// images
 import banner2 from "../../../assets/img/ad/ad-2.jpg";
 import author1 from "../../../assets/img/author.png";
 import calendar from "../../../assets/img/icon/calendar.png";
@@ -60,18 +59,18 @@ function About() {
   };
   return (
     <>
-      <BreadCrumb className="shadow5" title="About Bharat TV Media">
+      <BreadCrumb className="shadow5" title="About Bharat 19 Express">
         <>
           <div className="space-50" />
           <div className="row">
             <div className="col-12">
               <div className="about_company">
-                <h2>Bharat TV Media</h2>
+                <h2>Bharat 19 Express</h2>
 
                 <p>
-                  Bharat 19 Express is a digital Hindi news platform committed
-                  to delivering accurate, fast and unbiased news from India and
-                  around the world.
+                  Bharat 19 Express Bharat 19 Express is a trusted Hindi news
+                  platform. Our aim is to deliver important news to you in a
+                  simple, clear and fast way.
                 </p>
 
                 <div className="space-20" />

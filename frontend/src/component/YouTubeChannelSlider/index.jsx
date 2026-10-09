@@ -8,8 +8,6 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 
 const API_URL = "https://api.iotaclasses.in/api/youtube/videos";
-// Production:
-// const API_URL = "https://your-api-domain.com/api/youtube/videos";
 
 const YouTubeChannelSlider = () => {
   const { i18n, t } = useTranslation();
@@ -67,21 +65,22 @@ const YouTubeChannelSlider = () => {
     return null;
   }
 
-  const maxVideos = Math.max(
-    ...channels.map((channel) => channel.videos?.length || 0),
+  const nationChannels = channels.filter((channel) =>
+    channel.channelName?.toLowerCase().includes("nation"),
   );
 
-  const videos = [];
+  const otherChannels = channels
+    .filter((channel) => !channel.channelName?.toLowerCase().includes("nation"))
+    .reverse();
 
-  for (let index = 0; index < maxVideos; index++) {
-    channels.forEach((channel) => {
-      const video = channel.videos?.[index];
+  const orderedChannels = [...nationChannels, ...otherChannels];
 
-      if (video) {
-        videos.push(video);
-      }
-    });
-  }
+  const videos = orderedChannels.flatMap((channel) =>
+    (channel.videos || []).map((video) => ({
+      ...video,
+      channelName: video.channelName || channel.channelName,
+    })),
+  );
 
   return (
     <>
