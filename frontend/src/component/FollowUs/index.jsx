@@ -95,7 +95,7 @@ const socialPlatforms = [
     key: "linkedin",
     label: "LinkedIn",
     icon: "linkedin",
-    className: "social_facebook",
+    className: "social_linkedin",
     text: "Connect on LinkedIn",
   },
 ];
@@ -105,61 +105,203 @@ const FollowUs = ({ className = "", title = "Follow Us" }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    const controller = new AbortController();
+
     const fetchSettings = async () => {
       try {
-        const response = await fetch(`${API}/api/site-settings`);
+        const response = await fetch(`${API}/api/site-settings`, {
+          signal: controller.signal,
+        });
+
+        if (!response.ok) {
+          throw new Error(`Settings request failed: ${response.status}`);
+        }
+
         const result = await response.json();
 
-        if (response.ok && result.success && result.data) {
+        if (result.success && result.data) {
           setSettings(result.data);
         }
       } catch (error) {
-        console.error("Follow Us Settings Error:", error);
+        if (error.name !== "AbortError") {
+          console.error("Follow Us Settings Error:", error);
+        }
       } finally {
-        setLoading(false);
+        if (!controller.signal.aborted) {
+          setLoading(false);
+        }
       }
     };
 
     fetchSettings();
-  }, []);
 
-  if (loading) {
-    return null;
-  }
+    return () => controller.abort();
+  }, []);
 
   const activePlatforms = socialPlatforms.filter((platform) => {
     const url = settings?.[platform.key];
+
     return typeof url === "string" && url.trim() !== "";
   });
 
-  if (activePlatforms.length === 0) {
-    return null;
-  }
-
   return (
-    <div className={`follow_box widget mb30 ${className}`}>
-      <h2 className="widget-title">{title}</h2>
+    <>
+      <style>{`
+        .follow-us-widget {
+          width: 100%;
+          min-width: 0;
+          box-sizing: border-box;
+          padding: 22px;
+          background: #fff;
+          border: 1px solid #e9edf2;
+          border-radius: 10px;
+          box-shadow: 0 4px 16px rgba(20, 35, 55, 0.05);
+        }
 
-      <div className="social_shares">
-        {activePlatforms.map((platform) => (
-          <a
-            key={platform.key}
-            className={`single_social ${platform.className}`}
-            href={settings[platform.key]}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label={platform.text}
-            title={platform.text}
-          >
-            <span className="follow_icon">
-              <FontAwesome name={platform.icon} />
-            </span>
+        .follow-us-widget .widget-title {
+          margin: 0 0 20px;
+          color: #17212b;
+          font-size: 22px;
+          font-weight: 700;
+          line-height: 1.35;
+        }
 
-            <span>{platform.label}</span>
-          </a>
-        ))}
+        .follow-us-widget .social_shares {
+          display: grid;
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          gap: 12px;
+          width: 100%;
+          margin: 0;
+        }
+
+        .follow-us-widget .single_social {
+          display: flex !important;
+          align-items: center;
+          justify-content: flex-start;
+          gap: 10px;
+          width: 100%;
+          min-width: 0;
+          min-height: 52px;
+          margin: 0 !important;
+          padding: 10px 12px;
+          box-sizing: border-box;
+          border: 1px solid transparent;
+          border-radius: 8px;
+          color: #fff !important;
+          font-size: 14px;
+          font-weight: 600;
+          line-height: 1.35;
+          text-decoration: none !important;
+          white-space: normal;
+          overflow: visible;
+          transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .follow-us-widget .single_social:hover {
+          color: #fff !important;
+          transform: translateY(-2px);
+          box-shadow: 0 5px 14px rgba(0, 0, 0, 0.14);
+        }
+
+        .follow-us-widget .follow_icon {
+          display: flex !important;
+          align-items: center;
+          justify-content: center;
+          flex: 0 0 30px;
+          width: 30px;
+          height: 30px;
+          margin: 0;
+          border-radius: 7px;
+          background: rgba(255, 255, 255, 0.18);
+          color: #fff;
+          font-size: 16px;
+        }
+
+        .follow-us-widget .social-name {
+          display: block;
+          flex: 1 1 auto;
+          min-width: 0;
+          margin: 0;
+          color: inherit;
+          overflow: visible;
+          white-space: normal;
+          overflow-wrap: normal;
+          word-break: normal;
+        }
+
+        .follow-us-widget .social_facebook {
+          background: #1877f2;
+        }
+
+        .follow-us-widget .social_twitter {
+          background: #263746;
+        }
+
+        .follow-us-widget .social_youtube {
+          background: #e62117;
+        }
+
+        .follow-us-widget .social_instagram {
+          background: linear-gradient(120deg, #833ab4, #c13584);
+        }
+
+        .follow-us-widget .social_linkedin {
+          background: #0a66c2;
+        }
+
+        .follow-us-widget .follow-us-loading {
+          color: #697586;
+          font-size: 14px;
+        }
+
+        @media (max-width: 480px) {
+          .follow-us-widget {
+            padding: 16px;
+          }
+
+          .follow-us-widget .social_shares {
+            grid-template-columns: minmax(0, 1fr);
+            gap: 10px;
+          }
+
+          .follow-us-widget .single_social {
+            min-height: 48px;
+          }
+        }
+      `}</style>
+
+      <div className={`follow-us-widget follow_box widget mb30 ${className}`}>
+        <h2 className="widget-title">{title}</h2>
+
+        {loading ? (
+          <div className="follow-us-loading">Loading social links...</div>
+        ) : activePlatforms.length > 0 ? (
+          <div className="social_shares">
+            {activePlatforms.map((platform) => (
+              <a
+                key={platform.key}
+                className={`single_social ${platform.className}`}
+                href={settings[platform.key].trim()}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={platform.text}
+                title={platform.text}
+              >
+                <span className="follow_icon">
+                  <FontAwesome name={platform.icon} />
+                </span>
+
+                <span className="social-name">{platform.label}</span>
+              </a>
+            ))}
+          </div>
+        ) : (
+          <p style={{ margin: 0, color: "#697586", fontSize: 14 }}>
+            Social links are currently unavailable.
+          </p>
+        )}
       </div>
-    </div>
+    </>
   );
 };
 
