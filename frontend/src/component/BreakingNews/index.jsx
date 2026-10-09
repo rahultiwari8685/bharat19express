@@ -90,12 +90,12 @@ const BreakingNews = () => {
 .breaking-news-slider,
 .breaking-news-slider .swiper-wrapper,
 .breaking-news-slider .swiper-slide {
-  height: 34px;
+  height: 38px;
 }
 
 .breaking-news-item {
-  height: 34px;
-  line-height: 34px;
+  height: 38px;
+  line-height: 38px;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -126,7 +126,7 @@ const BreakingNews = () => {
 
      
 .breaking-news-controls {
-  height: 34px;
+  height: 38px;
   padding: 0 7px;
   display: flex;
   align-items: center;
