@@ -16,9 +16,7 @@ const BannerSection = ({ className }) => {
 
       if (result.success) {
         const homeTop = result.data
-          .filter(
-            (item) => item.position === "homepage_top" && item.status === true,
-          )
+          .filter((item) => item.position === "sidebar" && item.status === true)
           .sort((a, b) => (a.priority || 0) - (b.priority || 0))[0];
 
         setBanner(homeTop || null);

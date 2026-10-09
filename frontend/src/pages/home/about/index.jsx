@@ -23,11 +23,32 @@ function About() {
 
   const [latestNews, setLatestNews] = useState([]);
   const [popularNews, setPopularNews] = useState([]);
+  const [banner, setBanner] = useState(null);
 
   useEffect(() => {
     getLatestNews();
     getPopularNews();
+    getBanner();
   }, [i18n.resolvedLanguage]);
+
+  const getBanner = async () => {
+    try {
+      const res = await fetch("https://api.iotaclasses.in/api/advertisements");
+
+      const result = await res.json();
+
+      if (result.success) {
+        const ads = result.data
+          .filter((item) => item.status === true && item.position === "sidebar")
+          .sort((a, b) => (a.priority || 0) - (b.priority || 0));
+
+        setBanner(ads[0] || null);
+      }
+    } catch (err) {
+      console.error("Advertisement Error:", err);
+      setBanner(null);
+    }
+  };
 
   const getLatestNews = async () => {
     try {
@@ -109,15 +130,15 @@ function About() {
                 <h4>{t("about.coverTitle", "What We Cover")}</h4>
 
                 <ul className="about-list">
-                  <li>Politics</li>
-                  <li>National News</li>
-                  <li>State News</li>
-                  <li>Business</li>
-                  <li>Sports</li>
-                  <li>Entertainment</li>
-                  <li>Technology</li>
-                  <li>Health</li>
-                  <li>World News</li>
+                  <li>{t("about.politics")}</li>
+                  <li>{t("about.national")}</li>
+                  <li>{t("about.states")}</li>
+                  <li>{t("about.business")}</li>
+                  <li>{t("about.sports")}</li>
+                  <li>{t("about.entertainment")}</li>
+                  <li>{t("about.technology")}</li>
+                  <li>{t("about.health")}</li>
+                  <li>{t("about.world")}</li>
                 </ul>
               </div>
 
@@ -138,21 +159,18 @@ function About() {
                       <NavItem>
                         <div
                           className={activeTab === "1" ? "active" : ""}
-                          onClick={() => {
-                            toggle("1");
-                          }}
+                          onClick={() => toggle("1")}
                         >
-                          Latest news
+                          {t("about.latestNews")}
                         </div>
                       </NavItem>
+
                       <NavItem>
                         <div
                           className={activeTab === "2" ? "active" : ""}
-                          onClick={() => {
-                            toggle("2");
-                          }}
+                          onClick={() => toggle("2")}
                         >
-                          Popular news
+                          {t("about.popularNews")}
                         </div>
                       </NavItem>
                     </Nav>
@@ -235,11 +253,33 @@ function About() {
             <div className="col-md-6 col-lg-4">
               <WidgetTab />
               <WidgetTrendingNews />
-              <div className="banner2 mb30">
+              {/* <div className="banner2 mb30">
                 <Link to="/">
                   <img src={banner2} alt="thumb" />
                 </Link>
-              </div>
+              </div> */}
+
+              {banner && (
+                <div className="col-md-6 col-lg-12 d-md-none d-lg-block">
+                  <div className="banner2 mb30 border-radious5">
+                    <a
+                      href={banner.link || "#"}
+                      target={banner.link ? "_blank" : "_self"}
+                      rel="noopener noreferrer"
+                    >
+                      <img
+                        src={`https://api.iotaclasses.in/uploads/advertisements/${banner.image}`}
+                        alt={banner.title || "Advertisement"}
+                        style={{
+                          width: "100%",
+                          height: "auto",
+                          display: "block",
+                        }}
+                      />
+                    </a>
+                  </div>
+                </div>
+              )}
               {/* <MostShareWidget title="Most Share" /> */}
               {/* <NewsLetter /> */}
             </div>

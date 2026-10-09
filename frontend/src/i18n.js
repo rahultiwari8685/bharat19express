@@ -59,6 +59,7 @@ const resources = {
         states: "State News",
         business: "Business",
         sports: "Sports",
+
         entertainment: "Entertainment",
         technology: "Technology",
         health: "Health",
