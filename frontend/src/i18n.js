@@ -42,7 +42,7 @@ const resources = {
       appStore: "App Store",
       loading: "Loading...",
       showMore: "Show More",
-      aboutPage: {
+      about: {
         title: "About Bharat 19 Express",
         heading: "Bharat 19 Express",
         intro:
@@ -116,7 +116,7 @@ const resources = {
       loading: "लोड हो रहा है...",
       showMore: "और दिखाएं",
 
-      aboutPage: {
+      about: {
         title: "भारत 19 एक्सप्रेस के बारे में",
         heading: "भारत 19 एक्सप्रेस",
         intro:
@@ -192,7 +192,7 @@ const resources = {
       loading: "لوڈ ہو رہا ہے...",
       showMore: "مزید دکھائیں",
 
-      aboutPage: {
+      about: {
         title: "بھارت 19 ایکسپریس کے بارے میں",
         heading: "بھارت 19 ایکسپریس",
         intro:
@@ -260,7 +260,7 @@ const resources = {
       loading: "লোড হচ্ছে...",
       showMore: "আরও দেখুন",
 
-      aboutPage: {
+      about: {
         title: "ভারত ১৯ এক্সপ্রেস সম্পর্কে",
         heading: "ভারত ১৯ এক্সপ্রেস",
         intro:
@@ -334,7 +334,7 @@ const resources = {
       loading: "लोड होत आहे...",
       showMore: "अधिक दाखवा",
 
-      aboutPage: {
+      about: {
         title: "भारत १९ एक्सप्रेसबद्दल",
         heading: "भारत १९ एक्सप्रेस",
         intro:
