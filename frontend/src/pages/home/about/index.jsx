@@ -14,8 +14,9 @@ import banner2 from "../../../assets/img/ad/ad-2.jpg";
 import author1 from "../../../assets/img/author.png";
 import calendar from "../../../assets/img/icon/calendar.png";
 import { entertainments2 } from "../../../data/entertainments";
-
+import { useTranslation } from "react-i18next";
 function About() {
+  const { t, i18n } = useTranslation();
   const [activeTab, setActiveTab] = useState("1");
 
   const API = "https://api.iotaclasses.in";
@@ -26,11 +27,13 @@ function About() {
   useEffect(() => {
     getLatestNews();
     getPopularNews();
-  }, []);
+  }, [i18n.resolvedLanguage]);
 
   const getLatestNews = async () => {
     try {
-      const res = await fetch(`${API}/api/news/getAllNews?limit=6`);
+      const res = await fetch(
+        `${API}/api/news/getAllNews?limit=6&lang=${i18n.resolvedLanguage || i18n.language}`,
+      );
       const data = await res.json();
 
       if (data.status) {
@@ -43,7 +46,9 @@ function About() {
 
   const getPopularNews = async () => {
     try {
-      const res = await fetch(`${API}/api/news/popular?limit=6`);
+      const res = await fetch(
+        `${API}/api/news/popular?limit=6&lang=${i18n.resolvedLanguage || i18n.language}`,
+      );
       const data = await res.json();
 
       if (data.status) {
@@ -59,44 +64,49 @@ function About() {
   };
   return (
     <>
-      <BreadCrumb className="shadow5" title="About Bharat 19 Express">
+      <BreadCrumb
+        className="shadow5"
+        title={t("about.title", "About Bharat 19 Express")}
+      >
         <>
           <div className="space-50" />
           <div className="row">
             <div className="col-12">
               <div className="about_company">
-                <h2>Bharat 19 Express</h2>
+                <h2>{t("about.heading", "Bharat 19 Express")}</h2>
 
                 <p>
-                  Bharat 19 Express Bharat 19 Express is a trusted Hindi news
-                  platform. Our aim is to deliver important news to you in a
-                  simple, clear and fast way.
+                  {t(
+                    "about.intro",
+                    "Bharat 19 Express is a trusted Hindi news platform. Our aim is to deliver important news to you in a simple, clear and fast way.",
+                  )}
                 </p>
 
                 <div className="space-20" />
 
-                <h4>Our Mission</h4>
+                <h4>{t("about.missionTitle", "Our Mission")}</h4>
 
                 <p>
-                  Our mission is to provide trustworthy journalism, factual
-                  reporting and real-time updates covering Politics, National,
-                  International, Sports, Entertainment, Business, Technology and
-                  Local News.
+                  {t(
+                    "about.mission",
+                    "Our mission is to provide trustworthy journalism, factual reporting and real-time updates covering Politics, National, International, Sports, Entertainment, Business, Technology and Local News.",
+                  )}
                 </p>
 
                 <div className="space-20" />
 
-                <h4>Our Vision</h4>
+                <h4>{t("about.visionTitle", "Our Vision")}</h4>
 
                 <p>
-                  To become one of India's most trusted digital news
-                  organizations by delivering quality journalism with speed,
-                  transparency and credibility.
+                  {t(
+                    "about.vision",
+                    "To become one of India's most trusted digital news organizations by delivering quality journalism with speed, transparency and credibility.",
+                  )}
                 </p>
 
                 <div className="space-20" />
 
-                <h4>What We Cover</h4>
+                <h4>{t("about.coverTitle", "What We Cover")}</h4>
 
                 <ul className="about-list">
                   <li>Politics</li>

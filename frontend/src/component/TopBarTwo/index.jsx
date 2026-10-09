@@ -139,7 +139,7 @@ const TopBarTwo = () => {
                     }}
                   >
                     <FontAwesome name="youtube-play" />
-                    <span>YouTube</span>
+                    <span>{t("youtubeButton", "YouTube")}</span>
                   </button>
 
                   {/* DROPDOWN */}
@@ -167,7 +167,7 @@ const TopBarTwo = () => {
                           fontWeight: "700",
                         }}
                       >
-                        Our YouTube Channels
+                        {t("youtubeChannels", "Our YouTube Channels")}
                       </div>
 
                       <a
@@ -184,7 +184,7 @@ const TopBarTwo = () => {
                           borderBottom: "1px solid #eee",
                         }}
                       >
-                        Bharat 19 Express Nation
+                        {t("channelNation", "Bharat 19 Express Nation")}
                       </a>
 
                       <a
@@ -201,7 +201,7 @@ const TopBarTwo = () => {
                           borderBottom: "1px solid #eee",
                         }}
                       >
-                        Bharat 19 Express Regional
+                        {t("channelRegional", "Bharat 19 Express Regional")}
                       </a>
 
                       <a
@@ -218,7 +218,7 @@ const TopBarTwo = () => {
                           borderBottom: "1px solid #eee",
                         }}
                       >
-                        Bharat 19 Entertainment
+                        {t("channelEntertainment", "Bharat 19 Entertainment")}
                       </a>
 
                       <a
@@ -234,7 +234,7 @@ const TopBarTwo = () => {
                           fontSize: "13px",
                         }}
                       >
-                        Bharat 19 Express
+                        {t("channelMain", "Bharat 19 Express")}
                       </a>
                     </div>
                   )}
@@ -267,7 +267,7 @@ const TopBarTwo = () => {
                   }}
                 >
                   <FontAwesome name="user-circle" />
-                  <span>Login</span>
+                  <span>{t("login", "Login")}</span>
                 </Link>
               </div>
 
