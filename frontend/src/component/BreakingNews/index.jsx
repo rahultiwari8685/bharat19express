@@ -33,42 +33,43 @@ const BreakingNews = () => {
     <>
       <style>{`
      
+
 .breaking-news-container {
-  width: calc(100% - 40px);
+  width: 100%;
   max-width: 1200px;
   height: 36px;
   min-height: 36px;
-  margin: 10px auto;
+  margin: 0 auto;
   display: flex;
   align-items: center;
   overflow: hidden;
   box-sizing: border-box;
   background: #fff;
-  border: 1px solid #e3e3e3;
-  border-radius: 4px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+  border-top: 1px solid #e5e5e5;
+  border-bottom: 1px solid #e5e5e5;
   font-family: Arial, sans-serif;
 }
 
 
-        .breaking-news-label {
-          height: 36px;
-          padding: 0 14px;
 
+    
+.breaking-news-label {
+  height: 36px;
+  padding: 0 20px 0 12px;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  flex-shrink: 0;
+  background: #c9151e;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  white-space: nowrap;
+  position: relative;
+  z-index: 2;
+  clip-path: polygon(0 0, 100% 0, 90% 50%, 100% 100%, 0 100%);
+}
 
-          display: flex;
-          align-items: center;
-          gap: 6px;
-          flex-shrink: 0;
-          background: #c9151e;
-          color: #fff;
-          font-size: 11px;
-          font-weight: 700;
-          white-space: nowrap;
-          border-radius: 0 18px 18px 0;
-          position: relative;
-          z-index: 2;
-        }
 
         .breaking-news-dot {
           width: 8px;
@@ -78,26 +79,39 @@ const BreakingNews = () => {
           border-radius: 50%;
         }
 
-        .breaking-news-headlines {
-          flex: 1;
-          min-width: 0;
-          padding: 0 10px;
-          overflow: hidden;
-        }
+      
+.breaking-news-headlines {
+  flex: 1;
+  min-width: 0;
+  padding: 0 10px;
+  overflow: hidden;
+}
 
-        .breaking-news-slider,
-        .breaking-news-slider .swiper-wrapper,
-        .breaking-news-slider .swiper-slide {
-          height: 34px;
-        }
+.breaking-news-slider,
+.breaking-news-slider .swiper-wrapper,
+.breaking-news-slider .swiper-slide {
+  height: 34px;
+}
 
-        .breaking-news-item {
-          height: 34px;
-          line-height: 34px;
-          overflow: hidden;
-          white-space: nowrap;
-          text-overflow: ellipsis;
-        }
+.breaking-news-item {
+  height: 34px;
+  line-height: 34px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.breaking-news-item a {
+  color: #222;
+  font-size: 13px;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.breaking-news-item a:hover {
+  color: #c9151e;
+}
+
 
         .breaking-news-item a {
           color: #222;
@@ -110,56 +124,77 @@ const BreakingNews = () => {
           color: #c9151e;
         }
 
-        .breaking-news-controls {
-          height: 32px;
-          padding: 0 5px;
-          display: flex;
-          align-items: center;
-          gap: 3px;
-          flex-shrink: 0;
-          background: #fff;
-        }
+     
+.breaking-news-controls {
+  height: 34px;
+  padding: 0 7px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  flex-shrink: 0;
+  background: #fff;
+}
 
-        .breaking-news-controls button {
-          width: 18px;
-          height: 24px;
-          padding: 0;
-          border: 0;
-          background: transparent;
-          color: #333;
-          font-size: 19px;
-          cursor: pointer;
-        }
+.breaking-news-controls button {
+  width: 16px;
+  height: 24px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #333;
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.breaking-news-controls button:hover {
+  color: #c9151e;
+}
+
 
         .breaking-news-controls button:hover {
           color: #c9151e;
         }
 
-        @media (max-width: 576px) {
-          .breaking-news-label {
-            padding: 0 7px;
-            font-size: 9px;
-          }
+     
+@media (max-width: 576px) {
+  .breaking-news-container {
+    width: 100%;
+    height: 32px;
+    min-height: 32px;
+  }
 
-          .breaking-news-container {
-  width: calc(100% - 16px);
-  margin: 6px auto;
-  height: 32px;
-  min-height: 32px;
+  .breaking-news-label {
+    height: 32px;
+    padding: 0 14px 0 8px;
+    font-size: 9px;
+  }
+
+  .breaking-news-headlines {
+    padding: 0 5px;
+  }
+
+  .breaking-news-slider,
+  .breaking-news-slider .swiper-wrapper,
+  .breaking-news-slider .swiper-slide {
+    height: 30px;
+  }
+
+  .breaking-news-item {
+    height: 30px;
+    line-height: 30px;
+  }
+
+  .breaking-news-item a {
+    font-size: 11px;
+  }
+
+  .breaking-news-controls {
+    padding: 0 4px;
+    gap: 2px;
+  }
 }
 
-.breaking-news-item a {
-  font-size: 11px;
-}
-
-          .breaking-news-headlines {
-            padding: 0 5px;
-          }
-
-          .breaking-news-item a {
-            font-size: 10px;
-          }
-        }
       `}</style>
 
       <div className="breaking-news-container">
@@ -208,6 +243,29 @@ const BreakingNews = () => {
             aria-label="Next headline"
           >
             ›
+          </button>
+
+          <button
+            type="button"
+            aria-label="Pause headlines"
+            title="Pause headlines"
+            onClick={(e) => {
+              const swiper = e.currentTarget
+                .closest(".breaking-news-container")
+                ?.querySelector(".breaking-news-slider")?.swiper;
+
+              if (swiper?.autoplay?.running) {
+                swiper.autoplay.stop();
+                e.currentTarget.textContent = "▶";
+                e.currentTarget.setAttribute("aria-label", "Play headlines");
+              } else if (swiper?.autoplay) {
+                swiper.autoplay.start();
+                e.currentTarget.textContent = "Ⅱ";
+                e.currentTarget.setAttribute("aria-label", "Pause headlines");
+              }
+            }}
+          >
+            Ⅱ
           </button>
         </div>
       </div>
