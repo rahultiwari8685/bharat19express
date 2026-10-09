@@ -52,7 +52,7 @@ class Contact extends Component {
     const { name, subject, email, phone, message } = this.state;
     return (
       <>
-        <div className="inner inner_bg inner_overlay">
+        {/* <div className="inner inner_bg inner_overlay">
           <div className="container">
             <div className="inner_wrap">
               <div className="row">
@@ -70,13 +70,13 @@ class Contact extends Component {
               </div>
             </div>
           </div>
-        </div>
+        </div> */}
 
         <div className="contacts section-padding">
           <div className="container">
             <div className="row">
               <div className="col-lg-4">
-                <div className="box single_contact_box">
+                {/* <div className="box single_contact_box">
                   <div className="contact_title">
                     <h3>Headquarters</h3>
                   </div>
@@ -90,7 +90,7 @@ class Contact extends Component {
                       Lucknow(UP)-226012
                     </h6>
                   </div>
-                </div>
+                </div> */}
               </div>
               <div className="col-lg-4">
                 <div className="box single_contact_box">
@@ -110,7 +110,7 @@ class Contact extends Component {
                 </div>
               </div>
               <div className="col-lg-4">
-                <div className="box single_contact_box">
+                {/* <div className="box single_contact_box">
                   <div className="contact_title">
                     <h3>Headquarters</h3>
                   </div>
@@ -124,7 +124,7 @@ class Contact extends Component {
                       Lucknow(UP)-226012
                     </h6>
                   </div>
-                </div>
+                </div> */}
               </div>
             </div>
           </div>
@@ -140,7 +140,13 @@ class Contact extends Component {
                     frameBorder={0}
                     height="450px"
                     width="100%"
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d193595.9147703055!2d-74.11976314309273!3d40.69740344223377!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c24fa5d33f083b%3A0xc80b8f06e177fe62!2sNew+York%2C+NY%2C+USA!5e0!3m2!1sen!2sbd!4v1547528325671"
+                    src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d7122.551661420581!2d80.91643676642067!3d26.799344524631543!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zMjbCsDQ3JzU1LjciTiA4MMKwNTUnMTguMSJF!5e0!3m2!1sen!2sin!4v1791558691962!5m2!1sen!2sin"
+                    width="600"
+                    height="450"
+                    style="border:0;"
+                    allowfullscreen=""
+                    loading="lazy"
+                    referrerpolicy="strict-origin-when-cross-origin"
                     allowFullScreen
                   />
                 </div>
