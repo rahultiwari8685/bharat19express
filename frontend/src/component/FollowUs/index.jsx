@@ -147,137 +147,158 @@ const FollowUs = ({ className = "", title = "Follow Us" }) => {
   return (
     <>
       <style>{`
-        .follow-us-widget {
-          width: 100%;
-          min-width: 0;
-          padding: 20px;
-          box-sizing: border-box;
-          background: #fff;
-          border: 1px solid #e9edf2;
-          border-radius: 10px;
-          box-shadow: 0 4px 16px rgba(20, 35, 55, 0.05);
-        }
+  .follow-us-widget {
+    width: 100%;
+    min-width: 0;
+    padding: 20px;
+    box-sizing: border-box;
+    background: #fff;
+    border: 1px solid #e9edf2;
+    border-radius: 10px;
+    box-shadow: 0 4px 16px rgba(20, 35, 55, 0.05);
+  }
 
-        .follow-us-widget .widget-title {
-          margin: 0 0 18px;
-          color: #17212b;
-          font-size: 22px;
-          font-weight: 700;
-          line-height: 1.35;
-        }
+  .follow-us-widget .widget-title {
+    margin: 0 0 18px;
+    color: #17212b;
+    font-size: 22px;
+    font-weight: 700;
+    line-height: 1.35;
+  }
 
-        .follow-us-widget .social_shares {
-          display: grid !important;
-          grid-template-columns: repeat(2, minmax(0, 1fr));
-          gap: 10px;
-          width: 100%;
-          margin: 0;
-        }
+  .follow-us-widget .social_shares {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+    width: 100%;
+    margin: 0;
+  }
 
-        .follow-us-widget .social_shares .single_social {
-          display: flex !important;
-          align-items: center;
-          justify-content: flex-start;
-          gap: 8px;
-          width: 100%;
-          min-width: 0;
-          min-height: 48px;
-          margin: 0 !important;
-          padding: 8px 10px;
-          box-sizing: border-box;
-          border: none;
-          border-radius: 7px;
-          color: #fff !important;
-          font-size: 13px;
-          font-weight: 600;
-          line-height: 1.3;
-          text-decoration: none !important;
-          white-space: nowrap;
-          overflow: hidden;
-          transition: transform 0.2s ease, box-shadow 0.2s ease;
-        }
+  .follow-us-widget .social_shares .single_social {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    gap: 10px !important;
 
-        .follow-us-widget .social_shares .single_social:hover {
-          color: #fff !important;
-          transform: translateY(-2px);
-          box-shadow: 0 5px 12px rgba(0, 0, 0, 0.14);
-        }
+    width: 100%;
+    min-width: 0;
+    min-height: 48px;
+    margin: 0 !important;
+    padding: 8px 10px !important;
+    box-sizing: border-box;
 
-        .follow-us-widget .follow_icon {
-          display: flex !important;
-          align-items: center;
-          justify-content: center;
-          flex: 0 0 28px;
-          width: 28px;
-          height: 28px;
-          margin: 0;
-          border-radius: 6px;
-          background: rgba(255, 255, 255, 0.18);
-          color: #fff;
-          font-size: 15px;
-        }
+    border: none;
+    border-radius: 7px;
+    color: #fff !important;
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.3;
+    text-decoration: none !important;
+    white-space: nowrap;
+    overflow: hidden;
 
-        .follow-us-widget .social-name {
-          display: block;
-          flex: 1 1 auto;
-          min-width: 0;
-          margin: 0;
-          color: inherit;
-          font-size: 13px;
-          line-height: 1.3;
-          white-space: normal;
-          overflow-wrap: anywhere;
-          word-break: normal;
-        }
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
 
-        .follow-us-widget .social_facebook {
-          background: #1877f2;
-        }
+  .follow-us-widget .social_shares .single_social:hover {
+    color: #fff !important;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 12px rgba(0, 0, 0, 0.14);
+  }
 
-        .follow-us-widget .social_twitter {
-          background: #263746;
-        }
+  .follow-us-widget .social_shares .follow_icon {
+    position: static !important;
+    float: none !important;
+    transform: none !important;
 
-        .follow-us-widget .social_youtube {
-          background: #e62117;
-        }
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
 
-        .follow-us-widget .social_instagram {
-          background: linear-gradient(120deg, #833ab4, #c13584);
-        }
+    flex: 0 0 30px !important;
+    width: 30px !important;
+    min-width: 30px;
+    height: 30px;
+    margin: 0 !important;
+    padding: 0 !important;
+    box-sizing: border-box;
 
-        .follow-us-widget .social_linkedin {
-          background: #0a66c2;
-        }
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.18);
+    color: #fff;
+    font-size: 15px;
+  }
 
-        .follow-us-widget .follow-us-loading,
-        .follow-us-widget .follow-us-empty {
-          margin: 0;
-          color: #697586;
-          font-size: 14px;
-          line-height: 1.5;
-        }
+  .follow-us-widget .social_shares .social-name {
+    position: static !important;
+    float: none !important;
 
-        @media (max-width: 480px) {
-          .follow-us-widget {
-            padding: 16px;
-          }
+    display: block !important;
+    flex: 1 1 auto;
+    min-width: 0;
+    margin: 0 !important;
+    padding: 0 !important;
 
-          .follow-us-widget .social_shares {
-            grid-template-columns: minmax(0, 1fr);
-            gap: 10px;
-          }
+    color: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.3;
+    text-align: left;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 
-          .follow-us-widget .social_shares .single_social {
-            min-height: 46px;
-          }
+  .follow-us-widget .social_facebook {
+    background: #1877f2;
+  }
 
-          .follow-us-widget .social-name {
-            white-space: nowrap;
-            overflow-wrap: normal;
-          }
-        }
-      `}</style>
+  .follow-us-widget .social_twitter {
+    background: #263746;
+  }
+
+  .follow-us-widget .social_youtube {
+    background: #e62117;
+  }
+
+  .follow-us-widget .social_instagram {
+    background: linear-gradient(120deg, #833ab4, #c13584);
+  }
+
+  .follow-us-widget .social_linkedin {
+    background: #0a66c2;
+  }
+
+  .follow-us-widget .follow-us-loading,
+  .follow-us-widget .follow-us-empty {
+    margin: 0;
+    color: #697586;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  @media (max-width: 480px) {
+    .follow-us-widget {
+      padding: 16px;
+    }
+
+    .follow-us-widget .social_shares {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 10px;
+    }
+
+    .follow-us-widget .social_shares .single_social {
+      min-height: 46px;
+    }
+
+    .follow-us-widget .social_shares .social-name {
+      white-space: nowrap;
+      overflow-wrap: normal;
+      text-overflow: clip;
+    }
+  }
+`}</style>
 
       <div className={`follow-us-widget follow_box widget mb30 ${className}`}>
         <h2 className="widget-title">{title}</h2>
