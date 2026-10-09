@@ -188,9 +188,6 @@ const FooterAreaTwo = () => {
     <div className="footer footer_area3 white_bg">
       <div className="container">
         <div className="row">
-          {/* ================================
-              LEFT SECTION
-          ================================= */}
           <div className="col-md-6 col-lg-4">
             <div className="single_footer3 mb30">
               {/* LOGO */}

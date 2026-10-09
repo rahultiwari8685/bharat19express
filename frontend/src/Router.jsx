@@ -217,7 +217,7 @@ const router = createBrowserRouter([
       },
       {
         path: "about",
-        element: <HomeTwoAbout />,
+        element: <About />,
       },
       {
         path: "archive",
@@ -225,7 +225,7 @@ const router = createBrowserRouter([
       },
       {
         path: "contact",
-        element: <HomeTwoContact />,
+        element: <Contact />,
       },
       // {
       //   path: "post1",
