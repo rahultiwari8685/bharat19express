@@ -59,15 +59,15 @@ const FooterCopyright = () => {
 
   const quick_links = [
     {
-      name: t("about"),
+      name: t("about.title", "About"),
       link: "/about",
     },
     {
-      name: t("privacy"),
+      name: t("privacy", "Privacy Policy"),
       link: "/privacy",
     },
     {
-      name: t("contact"),
+      name: t("contact", "Contact Us"),
       link: "/contact",
     },
   ];
