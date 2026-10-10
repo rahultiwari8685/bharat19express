@@ -59,38 +59,24 @@ let videosLastFetch = 0;
 
 const YOUTUBE_API_URL = "https://www.googleapis.com/youtube/v3";
 
-/*
-|--------------------------------------------------------------------------
-| Bharat 19 YouTube Channels
-|--------------------------------------------------------------------------
-*/
-
 const YOUTUBE_CHANNELS = [
   {
-    name: "भारत 19 एक्सप्रेस",
-    channelId: "UCygk_AnahPPNje9H3NLK1tA",
-  },
-  {
-    name: "Bharat 19 Entertainment",
-    channelId: "UCkJQAejO5Zx1TaQzzA_3Hvg",
+    name: "Bharat 19 Express Nation",
+    channelId: "UC0lg7tqrUdlky_u1Wug7uEw",
   },
   {
     name: "Bharat 19 Express Regional",
     channelId: "UC7_OlirbGWvmG0-0Nc3WedA",
   },
   {
-    name: "Bharat 19 Express Nation",
-    channelId: "UC0lg7tqrUdlky_u1Wug7uEw",
+    name: "Bharat 19 Entertainment",
+    channelId: "UCkJQAejO5Zx1TaQzzA_3Hvg",
+  },
+  {
+    name: "भारत 19 एक्सप्रेस",
+    channelId: "UCygk_AnahPPNje9H3NLK1tA",
   },
 ];
-
-/*
-|--------------------------------------------------------------------------
-| Check Live Status
-|--------------------------------------------------------------------------
-| Your existing functionality
-|--------------------------------------------------------------------------
-*/
 
 export const checkLiveStatus = async () => {
   if (!process.env.YOUTUBE_API_KEY || !process.env.YOUTUBE_CHANNEL_ID) {
@@ -148,12 +134,6 @@ export const checkLiveStatus = async () => {
   }
 };
 
-/*
-|--------------------------------------------------------------------------
-| Get Latest Videos From All 4 Channels
-|--------------------------------------------------------------------------
-*/
-
 export const getLatestYouTubeVideos = async () => {
   if (!process.env.YOUTUBE_API_KEY) {
     throw new Error("YOUTUBE_API_KEY is missing");
@@ -161,21 +141,9 @@ export const getLatestYouTubeVideos = async () => {
 
   const now = Date.now();
 
-  /*
-    |--------------------------------------------------------------------------
-    | Return cache if less than 10 minutes old
-    |--------------------------------------------------------------------------
-    */
-
   if (videosCache && now - videosLastFetch < 10 * 60 * 1000) {
     return videosCache;
   }
-
-  /*
-    |--------------------------------------------------------------------------
-    | Get channel details for all 4 channels
-    |--------------------------------------------------------------------------
-    */
 
   const channelIds = YOUTUBE_CHANNELS.map((channel) => channel.channelId).join(
     ",",
@@ -192,12 +160,6 @@ export const getLatestYouTubeVideos = async () => {
   });
 
   const channelItems = channelResponse.data?.items || [];
-
-  /*
-    |--------------------------------------------------------------------------
-    | Get latest 5 videos for every channel
-    |--------------------------------------------------------------------------
-    */
 
   const channelResults = await Promise.all(
     YOUTUBE_CHANNELS.map(async (channel) => {
@@ -231,12 +193,6 @@ export const getLatestYouTubeVideos = async () => {
           videos: [],
         };
       }
-
-      /*
-            |--------------------------------------------------------------------------
-            | Get latest 5 uploads
-            |--------------------------------------------------------------------------
-            */
 
       const playlistResponse = await axios.get(
         `${YOUTUBE_API_URL}/playlistItems`,
@@ -288,12 +244,6 @@ export const getLatestYouTubeVideos = async () => {
         })
         .filter(Boolean);
 
-      /*
-            |--------------------------------------------------------------------------
-            | Ensure newest first
-            |--------------------------------------------------------------------------
-            */
-
       videos.sort((a, b) => new Date(b.publishedAt) - new Date(a.publishedAt));
 
       return {
@@ -310,12 +260,6 @@ export const getLatestYouTubeVideos = async () => {
       };
     }),
   );
-
-  /*
-    |--------------------------------------------------------------------------
-    | Save cache
-    |--------------------------------------------------------------------------
-    */
 
   videosCache = channelResults;
 
