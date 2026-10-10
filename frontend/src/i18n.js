@@ -74,6 +74,8 @@ const resources = {
       channelRegional: "Bharat 19 Express Regional",
       channelEntertainment: "Bharat 19 Entertainment",
       channelMain: "Bharat 19 Express",
+      copyright: "Copyright",
+      allRightsReserved: "All Rights Reserved",
     },
   },
 
@@ -149,6 +151,8 @@ const resources = {
       channelRegional: "भारत 19 एक्सप्रेस रीजनल",
       channelEntertainment: "भारत 19 एंटरटेनमेंट",
       channelMain: "भारत 19 एक्सप्रेस",
+      copyright: "कॉपीराइट",
+      allRightsReserved: "सर्वाधिकार सुरक्षित",
     },
   },
 
@@ -192,6 +196,9 @@ const resources = {
       appStore: "App Store",
       loading: "لوڈ ہو رہا ہے...",
       showMore: "مزید دکھائیں",
+
+      copyright: "کاپی رائٹ",
+      allRightsReserved: "جملہ حقوق محفوظ ہیں",
 
       about: {
         title: "بھارت 19 ایکسپریس کے بارے میں",
@@ -292,6 +299,8 @@ const resources = {
       channelRegional: "ভারত ১৯ এক্সপ্রেস রিজিওনাল",
       channelEntertainment: "ভারত ১৯ এন্টারটেইনমেন্ট",
       channelMain: "ভারত ১৯ এক্সপ্রেস",
+      copyright: "কপিরাইট",
+      allRightsReserved: "সর্বস্বত্ব সংরক্ষিত",
     },
   },
 
@@ -367,6 +376,8 @@ const resources = {
       channelRegional: "भारत १९ एक्सप्रेस रिजनल",
       channelEntertainment: "भारत १९ एंटरटेनमेंट",
       channelMain: "भारत १९ एक्सप्रेस",
+      copyright: "कॉपीराइट",
+      allRightsReserved: "सर्व हक्क राखीव",
     },
   },
 };
