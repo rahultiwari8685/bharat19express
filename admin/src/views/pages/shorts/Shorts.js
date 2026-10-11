@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import axios from 'axios'
 import {
   CCard,
   CCardBody,
@@ -60,6 +61,7 @@ const Shorts = () => {
 
   const [authors, setAuthors] = useState([])
   const [loading, setLoading] = useState(false)
+  const [uploadProgress, setUploadProgress] = useState(0)
   const [search, setSearch] = useState('')
   const [categories, setCategories] = useState([])
 
@@ -193,18 +195,38 @@ const Shorts = () => {
         formData.append('video', values.video)
       }
 
-      const response = await fetch(
-        editing ? setting.api + '/api/shorts/update' : setting.api + '/api/shorts/create',
-        {
-          method: 'POST',
-          headers: {
-            Authorization: 'Bearer ' + token,
-          },
-          body: formData,
-        },
-      )
+      setUploadProgress(0)
 
-      const data = await response.json()
+      const response = await axios({
+        url: editing ? setting.api + '/api/shorts/update' : setting.api + '/api/shorts/create',
+        method: 'POST',
+        data: formData,
+        headers: {
+          Authorization: 'Bearer ' + token,
+        },
+        onUploadProgress: (progressEvent) => {
+          if (progressEvent.total) {
+            const percent = Math.round((progressEvent.loaded * 100) / progressEvent.total)
+
+            setUploadProgress(percent)
+          }
+        },
+      })
+
+      const data = response.data
+
+      // const response = await fetch(
+      //   editing ? setting.api + '/api/shorts/update' : setting.api + '/api/shorts/create',
+      //   {
+      //     method: 'POST',
+      //     headers: {
+      //       Authorization: 'Bearer ' + token,
+      //     },
+      //     body: formData,
+      //   },
+      // )
+
+      // const data = await response.json()
 
       if (data.status) {
         toast.success(data.message)
@@ -229,6 +251,7 @@ const Shorts = () => {
       alert('Something went wrong.')
     } finally {
       setLoading(false)
+      setUploadProgress(0)
     }
   }
 
@@ -475,7 +498,11 @@ const Shorts = () => {
                   <CCol md={12}>
                     <CFormLabel>Subtitle</CFormLabel>
 
-                    <CFormTextarea rows={3} {...register('subtitle')} />
+                    <CFormTextarea
+                      rows={3}
+                      {...register('subtitle')}
+                      placeholder="Enter Subtitle"
+                    />
                   </CCol>
                 </CRow>
 
@@ -582,11 +609,42 @@ const Shorts = () => {
                   </div>
                 )}
 
+                {loading && (
+                  <div className="mt-4 mb-3">
+                    <div className="d-flex justify-content-between mb-2">
+                      <strong>
+                        {uploadProgress < 100 ? 'Uploading Short...' : 'Processing...'}
+                      </strong>
+                      <strong>{uploadProgress}%</strong>
+                    </div>
+
+                    <div
+                      className="progress"
+                      style={{ height: '12px', borderRadius: '10px' }}
+                      role="progressbar"
+                      aria-valuenow={uploadProgress}
+                      aria-valuemin={0}
+                      aria-valuemax={100}
+                    >
+                      <div
+                        className="progress-bar progress-bar-striped progress-bar-animated bg-primary"
+                        style={{
+                          width: `${uploadProgress}%`,
+                          transition: 'width 0.2s ease',
+                        }}
+                      />
+                    </div>
+
+                    <small className="text-muted d-block mt-2">
+                      Please wait until the video upload finishes.
+                    </small>
+                  </div>
+                )}
+
                 <div className="mt-4">
-                  <CButton color="secondary" onClick={() => setVisible(false)}>
+                  <CButton color="secondary" onClick={() => setVisible(false)} disabled={loading}>
                     Cancel
                   </CButton>
-
                   <CButton
                     color="primary"
                     className="ms-3"
