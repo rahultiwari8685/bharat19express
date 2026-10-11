@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import axios from 'axios'
 import {
   CCard,
   CCardBody,
@@ -46,6 +47,9 @@ const Magazine = () => {
 
   const [editingMagazine, setEditingMagazine] = useState(null)
   const [visible, setVisible] = useState(false)
+
+  const [isSaving, setIsSaving] = useState(false)
+  const [uploadProgress, setUploadProgress] = useState(0)
 
   const [currentPage, setCurrentPage] = useState(1)
   const itemsPerPage = 10
@@ -200,32 +204,46 @@ const Magazine = () => {
     }
 
     try {
-      const res = await fetch(setting.api + endpoint, {
+      setIsSaving(true)
+      setUploadProgress(0)
+
+      const loginInfo = JSON.parse(secureLocalStorage.getItem('logininfo') || '{}')
+
+      const response = await axios({
+        url: `${setting.api}${endpoint}`,
         method,
-        body: formData,
-        mode: 'cors',
-        headers,
+        data: formData,
+        headers: {
+          Authorization: 'Bearer ' + (loginInfo?.token || ''),
+        },
+        onUploadProgress: (progressEvent) => {
+          if (progressEvent.total) {
+            const percent = Math.round((progressEvent.loaded * 100) / progressEvent.total)
+
+            setUploadProgress(percent)
+          }
+        },
       })
 
-      const result = await res.json()
-
-      console.log('Magazine API response:', result)
+      const result = response.data
 
       if (result.success === true || result.status === true) {
-        allMagazineList()
+        await allMagazineList()
 
         reset()
-
         setEditingMagazine(null)
-
         setVisible(false)
-
         setCoverPreview(null)
+        setUploadProgress(0)
       } else {
         alert(result.message || 'Failed to save magazine')
       }
     } catch (error) {
       console.error('Error saving magazine:', error)
+
+      alert(error.response?.data?.message || error.message || 'Failed to upload magazine')
+    } finally {
+      setIsSaving(false)
     }
   }
 
@@ -661,17 +679,63 @@ const Magazine = () => {
 
             {/* SAVE */}
 
+            {isSaving && (
+              <div className="mb-3">
+                <div className="d-flex justify-content-between mb-2">
+                  <strong>{uploadProgress < 100 ? 'Uploading file...' : 'Processing...'}</strong>
+
+                  <strong>{uploadProgress}%</strong>
+                </div>
+
+                <div
+                  className="progress"
+                  style={{ height: '12px', borderRadius: '10px' }}
+                  role="progressbar"
+                  aria-valuenow={uploadProgress}
+                  aria-valuemin={0}
+                  aria-valuemax={100}
+                >
+                  <div
+                    className="progress-bar progress-bar-striped progress-bar-animated bg-success"
+                    style={{
+                      width: `${uploadProgress}%`,
+                      transition: 'width 0.2s ease',
+                    }}
+                  />
+                </div>
+
+                <small className="text-muted d-block mt-2">
+                  Please wait until the upload finishes.
+                </small>
+              </div>
+            )}
+
             <div className="d-flex justify-content-end">
               <CButton
                 type="submit"
                 color={editingMagazine ? 'warning' : 'success'}
                 className="rounded-pill px-4 shadow-sm fw-semibold"
+                disabled={isSaving}
               >
-                <i
-                  className={`bi ${editingMagazine ? 'bi-arrow-repeat' : 'bi-check-circle'} me-2`}
-                ></i>
-
-                {editingMagazine ? 'Update Magazine' : 'Save Magazine'}
+                {isSaving ? (
+                  <>
+                    <span
+                      className="spinner-border spinner-border-sm me-2"
+                      role="status"
+                      aria-hidden="true"
+                    />
+                    {uploadProgress < 100 ? 'Uploading...' : 'Processing...'}
+                  </>
+                ) : (
+                  <>
+                    <i
+                      className={`bi ${
+                        editingMagazine ? 'bi-arrow-repeat' : 'bi-check-circle'
+                      } me-2`}
+                    />
+                    {editingMagazine ? 'Update Magazine' : 'Save Magazine'}
+                  </>
+                )}
               </CButton>
             </div>
           </CForm>
