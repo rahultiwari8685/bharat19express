@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import axios from 'axios'
 import {
   CCard,
   CCardBody,
@@ -45,6 +46,10 @@ const Advertisement = () => {
   const [visible, setVisible] = useState(false)
   const [preview, setPreview] = useState('')
   const [search, setSearch] = useState('')
+
+  const [saving, setSaving] = useState(false)
+  const [deletingId, setDeletingId] = useState(null)
+  const [uploadProgress, setUploadProgress] = useState(0)
 
   const [currentPage, setCurrentPage] = useState(1)
   const itemsPerPage = 10
@@ -117,63 +122,155 @@ const Advertisement = () => {
   }, [])
 
   const saveAdvertisement = async (data) => {
-    const formData = new FormData()
+    if (saving) return
 
-    formData.append('title', data.title)
-    formData.append('position', data.position)
-    formData.append('priority', data.priority)
-    formData.append('redirectUrl', data.redirectUrl)
-    formData.append('status', data.status)
+    setSaving(true)
+    setUploadProgress(0)
 
-    if (data.image?.[0]) {
-      formData.append('image', data.image[0])
-    }
+    try {
+      const formData = new FormData()
 
-    const token = JSON.parse(secureLocalStorage.getItem('logininfo'))?.token
+      formData.append('title', data.title)
+      formData.append('position', data.position)
+      formData.append('priority', data.priority)
+      formData.append('redirectUrl', data.redirectUrl || '')
+      formData.append('status', data.status)
 
-    let endpoint = '/api/advertisements/create'
+      if (data.image?.[0]) {
+        formData.append('image', data.image[0])
+      }
 
-    if (editingAdvertisement) {
-      endpoint = `/api/advertisements/update/${editingAdvertisement._id}`
-    }
+      const token = JSON.parse(secureLocalStorage.getItem('logininfo') || '{}')?.token
 
-    const res = await fetch(setting.api + endpoint, {
-      method: editingAdvertisement ? 'PUT' : 'POST',
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-      body: formData,
-    })
+      const endpoint = editingAdvertisement
+        ? `/api/advertisements/update/${editingAdvertisement._id}`
+        : '/api/advertisements/create'
 
-    const result = await res.json()
+      const response = await axios({
+        url: setting.api + endpoint,
+        method: editingAdvertisement ? 'PUT' : 'POST',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        data: formData,
+        onUploadProgress: (event) => {
+          if (event.total) {
+            const percent = Math.round((event.loaded * 100) / event.total)
+            setUploadProgress(percent)
+          }
+        },
+      })
 
-    if (result.success) {
-      getAdvertisements()
-      setVisible(false)
-      reset()
-      setPreview('')
-      setEditingAdvertisement(null)
+      const result = response.data
+
+      if (result.success) {
+        await getAdvertisements()
+        setVisible(false)
+        reset()
+        setPreview('')
+        setEditingAdvertisement(null)
+      } else {
+        alert(result.message || 'Failed to save advertisement')
+      }
+    } catch (error) {
+      console.error('Error saving advertisement:', error)
+      alert(error.response?.data?.message || 'Something went wrong while saving advertisement')
+    } finally {
+      setSaving(false)
+      setUploadProgress(0)
     }
   }
+
+  // const saveAdvertisement = async (data) => {
+  //   const formData = new FormData()
+
+  //   formData.append('title', data.title)
+  //   formData.append('position', data.position)
+  //   formData.append('priority', data.priority)
+  //   formData.append('redirectUrl', data.redirectUrl)
+  //   formData.append('status', data.status)
+
+  //   if (data.image?.[0]) {
+  //     formData.append('image', data.image[0])
+  //   }
+
+  //   const token = JSON.parse(secureLocalStorage.getItem('logininfo'))?.token
+
+  //   let endpoint = '/api/advertisements/create'
+
+  //   if (editingAdvertisement) {
+  //     endpoint = `/api/advertisements/update/${editingAdvertisement._id}`
+  //   }
+
+  //   const res = await fetch(setting.api + endpoint, {
+  //     method: editingAdvertisement ? 'PUT' : 'POST',
+  //     headers: {
+  //       Authorization: `Bearer ${token}`,
+  //     },
+  //     body: formData,
+  //   })
+
+  //   const result = await res.json()
+
+  //   if (result.success) {
+  //     getAdvertisements()
+  //     setVisible(false)
+  //     reset()
+  //     setPreview('')
+  //     setEditingAdvertisement(null)
+  //   }
+  // }
 
   const handleEdit = (item) => {
     setEditingAdvertisement(item)
     setVisible(true)
   }
 
+  // const handleDelete = async (id) => {
+  //   if (!window.confirm('Delete Advertisement?')) return
+
+  //   const token = JSON.parse(secureLocalStorage.getItem('logininfo'))?.token
+
+  //   await fetch(`${setting.api}/api/advertisements/delete/${id}`, {
+  //     method: 'DELETE',
+  //     headers: {
+  //       Authorization: `Bearer ${token}`,
+  //     },
+  //   })
+
+  //   getAdvertisements()
+  // }
+
   const handleDelete = async (id) => {
+    if (deletingId !== null) return
     if (!window.confirm('Delete Advertisement?')) return
 
-    const token = JSON.parse(secureLocalStorage.getItem('logininfo'))?.token
+    setDeletingId(id)
 
-    await fetch(`${setting.api}/api/advertisements/delete/${id}`, {
-      method: 'DELETE',
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
+    try {
+      const token = JSON.parse(secureLocalStorage.getItem('logininfo') || '{}')?.token
 
-    getAdvertisements()
+      const response = await fetch(`${setting.api}/api/advertisements/delete/${id}`, {
+        method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+
+      const result = await response.json()
+
+      if (!response.ok || result.success === false) {
+        alert(result.message || 'Failed to delete advertisement')
+        return
+      }
+
+      await getAdvertisements()
+    } catch (error) {
+      console.error('Error deleting advertisement:', error)
+      alert('Something went wrong while deleting advertisement')
+    } finally {
+      setDeletingId(null)
+    }
   }
 
   const filtered = advertisements.filter(
@@ -292,8 +389,20 @@ const Advertisement = () => {
                         color="danger"
                         className="rounded-pill"
                         onClick={() => handleDelete(item._id)}
+                        disabled={deletingId !== null}
                       >
-                        <CIcon icon={cilTrash} />
+                        {deletingId === item._id ? (
+                          <>
+                            <span
+                              className="spinner-border spinner-border-sm me-1"
+                              role="status"
+                              aria-hidden="true"
+                            />
+                            Deleting...
+                          </>
+                        ) : (
+                          <CIcon icon={cilTrash} />
+                        )}
                       </CButton>
                     </CTableDataCell>
                   </CTableRow>
@@ -497,14 +606,64 @@ Selected: ${img.width} × ${img.height}px`,
               </div>
             )}
 
+            {saving && (
+              <div className="mt-3 mb-4">
+                <div className="d-flex justify-content-between mb-2">
+                  <strong>
+                    {uploadProgress >= 100
+                      ? 'Processing advertisement...'
+                      : 'Uploading advertisement...'}
+                  </strong>
+                  <strong>{uploadProgress}%</strong>
+                </div>
+
+                <div
+                  className="progress"
+                  style={{ height: '12px', borderRadius: '10px' }}
+                  role="progressbar"
+                  aria-valuenow={uploadProgress}
+                  aria-valuemin={0}
+                  aria-valuemax={100}
+                >
+                  <div
+                    className="progress-bar progress-bar-striped progress-bar-animated"
+                    style={{
+                      width: `${uploadProgress}%`,
+                      transition: 'width 0.2s ease',
+                    }}
+                  />
+                </div>
+
+                <small className="text-muted d-block mt-2">
+                  Please wait until the upload and save operation finishes.
+                </small>
+              </div>
+            )}
+
             <div className="d-flex justify-content-end">
-              <CButton
-                color={editingAdvertisement ? 'warning' : 'success'}
-                type="submit"
-                className="rounded-pill px-4"
-              >
-                {editingAdvertisement ? 'Update Advertisement' : 'Save Advertisement'}
-              </CButton>
+              <div className="d-flex justify-content-end">
+                <CButton
+                  color={editingAdvertisement ? 'warning' : 'success'}
+                  type="submit"
+                  className="rounded-pill px-4"
+                  disabled={saving}
+                >
+                  {saving ? (
+                    <>
+                      <span
+                        className="spinner-border spinner-border-sm me-2"
+                        role="status"
+                        aria-hidden="true"
+                      />
+                      {uploadProgress >= 100 ? 'Processing...' : `${uploadProgress}% Uploading...`}
+                    </>
+                  ) : editingAdvertisement ? (
+                    'Update Advertisement'
+                  ) : (
+                    'Save Advertisement'
+                  )}
+                </CButton>
+              </div>
             </div>
           </CForm>
         </COffcanvasBody>

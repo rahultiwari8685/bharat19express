@@ -46,7 +46,8 @@ const Users = () => {
 
   const [editingUser, setEditingUser] = useState(null)
   const [visible, setVisible] = useState(false)
-
+  const [saving, setSaving] = useState(false)
+  const [deletingId, setDeletingId] = useState(null)
   const [currentPage, setCurrentPage] = useState(1)
   const itemsPerPage = 10
 
@@ -97,34 +98,94 @@ const Users = () => {
     allUserList()
   }, [])
 
+  // const saveUser = async (data) => {
+  //   const formData = new FormData()
+  //   formData.append('name', data.name)
+  //   formData.append('bio', data.bio)
+  //   formData.append('email', data.email)
+  //   formData.append('phone', data.phone)
+  //   formData.append('password', data.password)
+  //   formData.append('role', data.role)
+  //   formData.append('post_permission', data.post_permission)
+  //   formData.append('user_status', data.user_status)
+
+  //   if (data.image?.[0]) {
+  //     formData.append('profileImage', data.image[0])
+  //   }
+
+  //   let endpoint = '/api/users/saveUser'
+  //   let headers = {}
+
+  //   if (editingUser) {
+  //     endpoint = '/api/users/updateUser'
+  //     formData.append('id', editingUser._id)
+
+  //     headers = {
+  //       Authorization: 'Bearer ' + JSON.parse(secureLocalStorage.getItem('logininfo')).token,
+  //     }
+  //   }
+
+  //   try {
+  //     const res = await fetch(setting.api + endpoint, {
+  //       method: 'POST',
+  //       body: formData,
+  //       mode: 'cors',
+  //       headers,
+  //     })
+
+  //     const result = await res.json()
+  //     console.log('User API response:', result)
+
+  //     if (result.status === true) {
+  //       allUserList()
+  //       reset()
+  //       setEditingUser(null)
+  //       setVisible(false)
+  //     } else {
+  //       alert(result.message || 'Failed to save user')
+  //     }
+  //   } catch (error) {
+  //     console.error('Error saving user:', error)
+  //   }
+  // }
+
   const saveUser = async (data) => {
-    const formData = new FormData()
-    formData.append('name', data.name)
-    formData.append('bio', data.bio)
-    formData.append('email', data.email)
-    formData.append('phone', data.phone)
-    formData.append('password', data.password)
-    formData.append('role', data.role)
-    formData.append('post_permission', data.post_permission)
-    formData.append('user_status', data.user_status)
+    if (saving) return
 
-    if (data.image?.[0]) {
-      formData.append('profileImage', data.image[0])
-    }
-
-    let endpoint = '/api/users/saveUser'
-    let headers = {}
-
-    if (editingUser) {
-      endpoint = '/api/users/updateUser'
-      formData.append('id', editingUser._id)
-
-      headers = {
-        Authorization: 'Bearer ' + JSON.parse(secureLocalStorage.getItem('logininfo')).token,
-      }
-    }
+    setSaving(true)
 
     try {
+      const formData = new FormData()
+
+      formData.append('name', data.name)
+      formData.append('bio', data.bio)
+      formData.append('email', data.email)
+      formData.append('phone', data.phone)
+
+      if (data.password) {
+        formData.append('password', data.password)
+      }
+
+      formData.append('role', data.role)
+      formData.append('post_permission', data.post_permission)
+      formData.append('user_status', data.user_status)
+
+      if (data.image?.[0]) {
+        formData.append('profileImage', data.image[0])
+      }
+
+      let endpoint = '/api/users/saveUser'
+      const headers = {}
+
+      if (editingUser) {
+        endpoint = '/api/users/updateUser'
+        formData.append('id', editingUser._id)
+
+        const loginInfo = JSON.parse(secureLocalStorage.getItem('logininfo') || '{}')
+
+        headers.Authorization = 'Bearer ' + (loginInfo.token || '')
+      }
+
       const res = await fetch(setting.api + endpoint, {
         method: 'POST',
         body: formData,
@@ -133,10 +194,9 @@ const Users = () => {
       })
 
       const result = await res.json()
-      console.log('User API response:', result)
 
       if (result.status === true) {
-        allUserList()
+        await allUserList()
         reset()
         setEditingUser(null)
         setVisible(false)
@@ -145,6 +205,9 @@ const Users = () => {
       }
     } catch (error) {
       console.error('Error saving user:', error)
+      alert('Something went wrong while saving the user')
+    } finally {
+      setSaving(false)
     }
   }
 
@@ -162,31 +225,64 @@ const Users = () => {
     }
   }
 
+  // const deleteUser = async (id) => {
+  //   try {
+  //     const loginInfo = JSON.parse(secureLocalStorage.getItem('logininfo') || '{}')
+
+  //     const token = loginInfo?.token || ''
+
+  //     const response = await fetch(`${setting.api}/api/users/deleteUser/${id}`, {
+  //       method: 'POST',
+  //       mode: 'cors',
+  //       headers: {
+  //         Authorization: 'Bearer ' + token,
+  //         'Content-Type': 'application/json',
+  //       },
+  //     })
+
+  //     const result = await response.json()
+
+  //     if (!response.ok) {
+  //       console.error('Delete failed:', result)
+  //     } else {
+  //       console.log('User deleted:', result)
+  //       allUserList() // refresh
+  //     }
+  //   } catch (err) {
+  //     console.error('Error deleting user:', err)
+  //   }
+  // }
+
   const deleteUser = async (id) => {
+    if (deletingId !== null) return
+
+    setDeletingId(id)
+
     try {
       const loginInfo = JSON.parse(secureLocalStorage.getItem('logininfo') || '{}')
-
-      const token = loginInfo?.token || ''
 
       const response = await fetch(`${setting.api}/api/users/deleteUser/${id}`, {
         method: 'POST',
         mode: 'cors',
         headers: {
-          Authorization: 'Bearer ' + token,
+          Authorization: 'Bearer ' + (loginInfo.token || ''),
           'Content-Type': 'application/json',
         },
       })
 
       const result = await response.json()
 
-      if (!response.ok) {
-        console.error('Delete failed:', result)
-      } else {
-        console.log('User deleted:', result)
-        allUserList() // refresh
+      if (!response.ok || result.status === false) {
+        alert(result.message || 'Failed to delete user')
+        return
       }
-    } catch (err) {
-      console.error('Error deleting user:', err)
+
+      await allUserList()
+    } catch (error) {
+      console.error('Error deleting user:', error)
+      alert('Something went wrong while deleting the user')
+    } finally {
+      setDeletingId(null)
     }
   }
 
@@ -275,10 +371,33 @@ const Users = () => {
                         color="danger"
                         className="rounded-pill px-3 shadow-sm fw-semibold"
                         onClick={() => handleDelete(a._id)}
+                        disabled={deletingId !== null}
+                      >
+                        {deletingId === a._id ? (
+                          <>
+                            <span
+                              className="spinner-border spinner-border-sm me-1"
+                              role="status"
+                              aria-hidden="true"
+                            />
+                            Deleting...
+                          </>
+                        ) : (
+                          <>
+                            <CIcon icon={cilTrash} style={{ marginRight: '5px' }} />
+                            Delete
+                          </>
+                        )}
+                      </CButton>
+                      {/* <CButton
+                        size="sm"
+                        color="danger"
+                        className="rounded-pill px-3 shadow-sm fw-semibold"
+                        onClick={() => handleDelete(a._id)}
                       >
                         <CIcon icon={cilTrash} style={{ marginRight: '5px' }} />
                         Delete
-                      </CButton>
+                      </CButton> */}
                     </CTableDataCell>
                   </CTableRow>
                 )
@@ -431,9 +550,25 @@ const Users = () => {
                 type="submit"
                 color={editingUser ? 'warning' : 'success'}
                 className="rounded-pill px-4 shadow-sm fw-semibold"
+                disabled={saving}
               >
-                <i className={`bi ${editingUser ? 'bi-arrow-repeat' : 'bi-check-circle'} me-2`}></i>
-                {editingUser ? 'Update User' : 'Save User'}
+                {saving ? (
+                  <>
+                    <span
+                      className="spinner-border spinner-border-sm me-2"
+                      role="status"
+                      aria-hidden="true"
+                    />
+                    {editingUser ? 'Updating...' : 'Saving...'}
+                  </>
+                ) : (
+                  <>
+                    <i
+                      className={`bi ${editingUser ? 'bi-arrow-repeat' : 'bi-check-circle'} me-2`}
+                    />
+                    {editingUser ? 'Update User' : 'Save User'}
+                  </>
+                )}
               </CButton>
             </div>
           </CForm>

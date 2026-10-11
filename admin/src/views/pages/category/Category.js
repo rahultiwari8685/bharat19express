@@ -81,6 +81,8 @@ const Category = () => {
   }, [])
 
   const saveCategory = async (data) => {
+    if (loading) return
+
     setLoading(true)
     const db = {
       name: data.name,
@@ -261,8 +263,23 @@ const Category = () => {
                         color="danger"
                         className="rounded-pill px-3 shadow-sm fw-semibold"
                         onClick={() => handleDelete(cat._id)}
+                        disabled={loading}
                       >
-                        <CIcon icon={cilTrash} style={{ marginRight: '5px' }} /> Delete
+                        {loading ? (
+                          <>
+                            <span
+                              className="spinner-border spinner-border-sm me-1"
+                              role="status"
+                              aria-hidden="true"
+                            />
+                            Processing...
+                          </>
+                        ) : (
+                          <>
+                            <CIcon icon={cilTrash} style={{ marginRight: '5px' }} />
+                            Delete
+                          </>
+                        )}
                       </CButton>
                     </CTableDataCell>
                   </CTableRow>
@@ -400,11 +417,25 @@ const Category = () => {
                 type="submit"
                 color={editingCategory ? 'warning' : 'success'}
                 className="rounded-pill px-4 shadow-sm fw-semibold"
+                disabled={loading}
               >
-                <i
-                  className={`bi ${editingCategory ? 'bi-arrow-repeat' : 'bi-check-circle'} me-2`}
-                ></i>
-                {editingCategory ? 'Update Category' : 'Save Category'}
+                {loading ? (
+                  <>
+                    <span
+                      className="spinner-border spinner-border-sm me-2"
+                      role="status"
+                      aria-hidden="true"
+                    />
+                    {editingCategory ? 'Updating...' : 'Saving...'}
+                  </>
+                ) : (
+                  <>
+                    <i
+                      className={`bi ${editingCategory ? 'bi-arrow-repeat' : 'bi-check-circle'} me-2`}
+                    ></i>
+                    {editingCategory ? 'Update Category' : 'Save Category'}
+                  </>
+                )}
               </CButton>
             </div>
           </CForm>
