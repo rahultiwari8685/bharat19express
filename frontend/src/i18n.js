@@ -42,6 +42,10 @@ const resources = {
       appStore: "App Store",
       loading: "Loading...",
       showMore: "Show More",
+
+      uttarPradesh: "Uttar Pradesh",
+      latestNews: "Latest News",
+
       about: {
         title: "About Bharat 19 Express",
         heading: "Bharat 19 Express",
@@ -118,6 +122,9 @@ const resources = {
       appStore: "App Store",
       loading: "लोड हो रहा है...",
       showMore: "और दिखाएं",
+
+      uttarPradesh: "उत्तर प्रदेश",
+      latestNews: "ताज़ा खबरें",
 
       about: {
         title: "भारत 19 एक्सप्रेस के बारे में",
@@ -197,6 +204,9 @@ const resources = {
       loading: "لوڈ ہو رہا ہے...",
       showMore: "مزید دکھائیں",
 
+      uttarPradesh: "اتر پردیش",
+      latestNews: "تازہ خبریں",
+
       copyright: "کاپی رائٹ",
       allRightsReserved: "جملہ حقوق محفوظ ہیں",
 
@@ -267,6 +277,9 @@ const resources = {
       appStore: "App Store",
       loading: "লোড হচ্ছে...",
       showMore: "আরও দেখুন",
+
+      uttarPradesh: "উত্তর প্রদেশ",
+      latestNews: "সর্বশেষ খবর",
 
       about: {
         title: "ভারত ১৯ এক্সপ্রেস সম্পর্কে",
@@ -343,6 +356,9 @@ const resources = {
       appStore: "App Store",
       loading: "लोड होत आहे...",
       showMore: "अधिक दाखवा",
+
+      uttarPradesh: "उत्तर प्रदेश",
+      latestNews: "ताज्या बातम्या",
 
       about: {
         title: "भारत १९ एक्सप्रेसबद्दल",

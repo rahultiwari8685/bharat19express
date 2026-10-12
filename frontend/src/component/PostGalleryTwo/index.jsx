@@ -786,7 +786,7 @@ const PostGalleryTwo = () => {
                       fontWeight: "700",
                     }}
                   >
-                    Latest News
+                    {t("latestNews", "Latest News")}
                   </h4>
                 </div>
                 {textNews.length > 0 ? (
