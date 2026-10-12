@@ -15,7 +15,7 @@ const PostGalleryTwo = () => {
   const API = "https://api.iotaclasses.in";
 
   // Uttar Pradesh category ID
-  const UP_CATEGORY_ID = "YOUR_UP_CATEGORY_ID";
+  const UP_CATEGORY_ID = "6ab5133ae0146bb0a4a80e48";
 
   const [videoNews, setVideoNews] = useState(null);
   const [isVideoOpen, setIsVideoOpen] = useState(false);
