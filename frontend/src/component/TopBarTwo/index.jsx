@@ -347,19 +347,23 @@ const TopBarTwo = () => {
       className="topbar"
       id="top"
       style={{
-        background: "#a90000",
+        background: "#f1f1f1",
         color: "#fff",
-        minHeight: "42px",
+        minHeight: "45px",
         fontSize: "12px",
-        borderBottom: "3px solid #e4b8b8",
+        padding: 0,
       }}
     >
       <div
         className="container"
         style={{
-          maxWidth: "1400px",
+          maxWidth: "1200px",
+          width: "100%",
           margin: "0 auto",
           padding: "0 15px",
+          background: "#a90000",
+          borderBottom: "3px solid #e4b8b8",
+          boxSizing: "border-box",
         }}
       >
         <div
