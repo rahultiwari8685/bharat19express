@@ -148,7 +148,7 @@ import {
   CBadge,
 } from '@coreui/react'
 import { CChartBar, CChartLine } from '@coreui/react-chartjs'
-import { cilNewspaper, cilPencil, cilFolderOpen, cilTrash, cilEye, cilUser } from '@coreui/icons'
+import { cilNewspaper, cilPencil, cilFolderOpen, cilTrash, cilUser } from '@coreui/icons'
 import CIcon from '@coreui/icons-react'
 import setting from '../../setting.json'
 import secureLocalStorage from 'react-secure-storage'
@@ -410,7 +410,7 @@ const Dashboard = () => {
                 </div>
               ) : (
                 <div className="text-center text-body-secondary py-5">
-                  <CIcon icon={cilEye} size="3xl" className="mb-3" />
+                  <CIcon icon={cilNewspaper} size="3xl" className="mb-3" />
                   <p className="mb-1">No view analytics available</p>
                   <small>Add a view-count field and track views in the backend.</small>
                 </div>
