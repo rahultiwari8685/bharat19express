@@ -250,7 +250,7 @@ const Dashboard = () => {
     {
       title: 'Published News',
       count: publishedNews.length,
-      icon: cilEye,
+      icon: cilNewspaper,
       color: COLORS.green,
       detail: 'Live articles',
     },
@@ -278,7 +278,7 @@ const Dashboard = () => {
     {
       title: 'Total Views',
       count: totalViews,
-      icon: cilEye,
+      icon: cilNewspaper,
       color: '#0891b2',
       detail: 'Published news views',
     },
