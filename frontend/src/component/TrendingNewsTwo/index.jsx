@@ -76,16 +76,40 @@ const TrendingNewsTwo = () => {
 
   const category = featuredNews.categories?.[0];
 
+  const getCategoryName = (category) => {
+    if (!category) return t("uttarPradesh", "Uttar Pradesh");
+
+    const categoryTranslations = {
+      "Uttar Pradesh": "uttarPradesh",
+      "उत्तर प्रदेश": "uttarPradesh",
+      National: "national",
+      राष्ट्रीय: "national",
+      International: "international",
+      अंतरराष्ट्रीय: "international",
+      Politics: "politics",
+      राजनीति: "politics",
+      Entertainment: "entertainment",
+      मनोरंजन: "entertainment",
+      Sports: "sports",
+      खेल: "sports",
+      Business: "business",
+      व्यापार: "business",
+    };
+
+    const key = categoryTranslations[category.name];
+
+    return key ? t(key, category.name) : category.name;
+  };
+
   return (
     <div className="white_bg tranding3 padding20 border-radious5 mb30">
       {/* HEADING */}
       <div className="row">
         <div className="col-12">
           <div className="heading">
-            <h2 className="widget-title">
-              {featuredNews.categories?.[0]?.name ||
-                t("uttarPradesh", "Uttar Pradesh")}
-            </h2>
+            <Link to={category?.slug ? `/category/${category.slug}` : "#"}>
+              {getCategoryName(category)}
+            </Link>
           </div>
         </div>
       </div>
