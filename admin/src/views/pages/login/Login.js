@@ -19,10 +19,9 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm } from 'react-hook-form'
 import CIcon from '@coreui/icons-react'
 import toast from 'react-hot-toast'
-import newsroomBg from '../../../assets/images/B19_Admin.png'
+import newsroomBg from '../../../assets/images/Bharat19_Admin.png'
 import setting from '../../../setting.json'
 import secureLocalStorage from 'react-secure-storage'
-import bharat19Logo from '../../../assets/images/B19_logo.png'
 
 const schema = yup.object().shape({
   email: yup.string().email().required('Enter your valid email'),
@@ -107,12 +106,10 @@ const Login = () => {
             <CCard style={styles.card} className="border-0">
               <CCardBody>
                 {/* Logo */}
-
-                {/* Logo and Login Heading */}
                 <div className="text-center mb-4">
-                  <img src={bharat19Logo} alt="Bharat 19 Express" style={styles.logo} />
-
+                  <h1 style={styles.brand}>Bharat19Express</h1>
                   <div style={styles.divider}></div>
+                  <p style={styles.subtitle}>News Admin Login</p>
                 </div>
 
                 <CForm onSubmit={handleSubmit(login)}>
