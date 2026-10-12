@@ -34,20 +34,6 @@ const PostGalleryTwo = () => {
   const [latestNews, setLatestNews] = useState([]);
   const [latestNewsLoading, setLatestNewsLoading] = useState(false);
 
-  // useEffect(() => {
-  //   checkYoutubeLive();
-  //   getVideoNews();
-  //   getTextNews();
-  //   getSliderNews();
-  //   getActivePoll();
-
-  //   const interval = setInterval(() => {
-  //     checkYoutubeLive();
-  //   }, 60000);
-
-  //   return () => clearInterval(interval);
-  // }, []);
-
   useEffect(() => {
     checkYoutubeLive();
     getVideoNews();
@@ -180,25 +166,6 @@ const PostGalleryTwo = () => {
       console.error("Text News Error:", error);
     }
   };
-  // const getActivePoll = async () => {
-  //   try {
-  //     setPollLoading(true);
-
-  //     const res = await fetch(`${API}/api/polls/active`);
-  //     const data = await res.json();
-
-  //     if (data.success && data.data) {
-  //       setActivePoll(data.data);
-  //     } else {
-  //       setActivePoll(null);
-  //     }
-  //   } catch (error) {
-  //     console.error("Poll Error:", error);
-  //     setActivePoll(null);
-  //   } finally {
-  //     setPollLoading(false);
-  //   }
-  // };
 
   const getSliderNews = async () => {
     try {
@@ -913,10 +880,6 @@ const PostGalleryTwo = () => {
                   </>
                 ) : activePoll ? (
                   <>
-                    {/* =========================
-            ACTIVE POLL
-        ========================= */}
-
                     <div className="d-flex justify-content-between align-items-center mb-3">
                       <h4
                         style={{
@@ -1053,10 +1016,6 @@ const PostGalleryTwo = () => {
                   </>
                 ) : (
                   <>
-                    {/* =========================
-            LATEST NEWS
-        ========================= */}
-
                     <div className="d-flex justify-content-between align-items-center mb-3">
                       <h4
                         style={{
