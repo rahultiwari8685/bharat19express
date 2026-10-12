@@ -70,25 +70,14 @@ const MainMenuTwo = () => {
                   className="collapse navbar-collapse navbar-responsive-collapse"
                 >
                   <ul className="nav navbar-nav" id="scroll">
-                    <li className="nav-item">
+                    {/* HOME */}
+                    <li className="nav-item home-menu-item">
                       <NavLink
                         to="/"
                         end
-                        style={({ isActive }) => ({
-                          display: "inline-flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          gap: "6px",
-                          padding: "8px 13px",
-                          background: isActive ? "#e31e24" : "transparent",
-                          color: "#fff",
-                          borderRadius: "4px",
-                          fontWeight: 700,
-                          fontSize: "16px",
-                          lineHeight: 1.3,
-                          textDecoration: "none",
-                          transition: "background 0.2s ease",
-                        })}
+                        className={({ isActive }) =>
+                          `home-menu-link${isActive ? " active" : ""}`
+                        }
                       >
                         <FontAwesome name="home" />
                         <span>{t("home")}</span>
