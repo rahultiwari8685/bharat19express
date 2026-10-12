@@ -1,23 +1,29 @@
 // import React, { useEffect, useState } from "react";
+// import { useTranslation } from "react-i18next";
 // import FontAwesome from "../uiStyle/FontAwesome";
 // import { Link } from "react-router-dom";
 
 // const WidgetFinance = () => {
+//   const { i18n, t } = useTranslation();
+
 //   const [worldNews, setWorldNews] = useState([]);
 
 //   useEffect(() => {
 //     getWorldNews();
-//   }, []);
+//   }, [i18n.resolvedLanguage]);
 
 //   const getWorldNews = async () => {
 //     try {
+//       const language = i18n.resolvedLanguage || "en";
+
 //       const res = await fetch(
-//         "https://api.iotaclasses.in/api/news/category/6ab51bfc302ad805145eb3ad?limit=10",
+//         `https://api.iotaclasses.in/api/news/category/6ab51bfc302ad805145eb3ad?limit=10&lang=${language}`,
 //       );
 
 //       const data = await res.json();
 
 //       console.log("World News API:", data);
+//       console.log("Current Language:", language);
 
 //       if (data.status && Array.isArray(data.data)) {
 //         const news = data.data
@@ -38,7 +44,7 @@
 //     <div className="finance mb30 white_bg border-radious5 padding20 sm-mt30">
 //       {/* HEADING */}
 //       <div className="heading">
-//         <h3 className="widget-title">World</h3>
+//         <h3 className="widget-title">{t("world", "World")}</h3>
 //       </div>
 
 //       {/* WORLD NEWS */}
@@ -112,7 +118,7 @@
 //                   </Link>
 //                 </li>
 
-//                 {/* SHARES */}
+//                 {/* HEART */}
 //                 <li>
 //                   <Link to={newsUrl}>
 //                     <FontAwesome name="heart" /> {item.shares || 0}
@@ -133,7 +139,7 @@
 
 //       {/* SHOW MORE */}
 //       <Link to="/category/world" className="showmore">
-//         Show more
+//         {t("showMore", "Show more")}
 //       </Link>
 //     </div>
 //   );
@@ -163,6 +169,10 @@ const WidgetFinance = () => {
         `https://api.iotaclasses.in/api/news/category/6ab51bfc302ad805145eb3ad?limit=10&lang=${language}`,
       );
 
+      if (!res.ok) {
+        throw new Error(`API request failed: ${res.status}`);
+      }
+
       const data = await res.json();
 
       console.log("World News API:", data);
@@ -171,13 +181,19 @@ const WidgetFinance = () => {
       if (data.status && Array.isArray(data.data)) {
         const news = data.data
           .filter((item) => Number(item.videoType) === 2)
-          .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+          .sort(
+            (a, b) =>
+              new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+          )
           .slice(0, 4);
 
         setWorldNews(news);
+      } else {
+        setWorldNews([]);
       }
     } catch (error) {
       console.error("World News Error:", error);
+      setWorldNews([]);
     }
   };
 
@@ -185,7 +201,7 @@ const WidgetFinance = () => {
 
   return (
     <div className="finance mb30 white_bg border-radious5 padding20 sm-mt30">
-      {/* HEADING */}
+      {/* LANGUAGE-WISE HEADING */}
       <div className="heading">
         <h3 className="widget-title">{t("world", "World")}</h3>
       </div>
@@ -218,14 +234,17 @@ const WidgetFinance = () => {
                 </Link>
               </div>
 
-              {/* DATE */}
+              {/* LANGUAGE-BASED DATE */}
               <span className="batch3 date">
                 {item.createdAt
-                  ? new Date(item.createdAt).toLocaleDateString("en-US", {
-                      day: "numeric",
-                      month: "short",
-                      year: "numeric",
-                    })
+                  ? new Date(item.createdAt).toLocaleDateString(
+                      i18n.resolvedLanguage || "en",
+                      {
+                        day: "numeric",
+                        month: "short",
+                        year: "numeric",
+                      },
+                    )
                   : ""}
               </span>
             </div>
@@ -280,7 +299,7 @@ const WidgetFinance = () => {
         );
       })}
 
-      {/* SHOW MORE */}
+      {/* LANGUAGE-WISE SHOW MORE */}
       <Link to="/category/world" className="showmore">
         {t("showMore", "Show more")}
       </Link>

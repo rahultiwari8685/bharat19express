@@ -1,24 +1,30 @@
 // import React, { useEffect, useState } from "react";
 // import { Link } from "react-router-dom";
+// import { useTranslation } from "react-i18next";
 // import arrow3 from "../../assets/img/icon/arrow3.png";
 // import FontAwesome from "../uiStyle/FontAwesome";
 
 // const BusinessNewsTwo = () => {
+//   const { i18n, t } = useTranslation();
+
 //   const [businessNews, setBusinessNews] = useState([]);
 
 //   useEffect(() => {
 //     getTrendingNews();
-//   }, []);
+//   }, [i18n.resolvedLanguage]);
 
 //   const getTrendingNews = async () => {
 //     try {
+//       const language = i18n.resolvedLanguage || "en";
+
 //       const res = await fetch(
-//         "https://api.iotaclasses.in/api/news/popular?limit=6",
+//         `https://api.iotaclasses.in/api/news/popular?limit=6&lang=${language}`,
 //       );
 
 //       const data = await res.json();
 
 //       console.log("Trending News API:", data);
+//       console.log("Current Language:", language);
 
 //       if (data.status && Array.isArray(data.data)) {
 //         const news = data.data
@@ -37,7 +43,8 @@
 
 //   return (
 //     <div className="business3 padding20 mb20 white_bg border-radious5">
-//       <h4 className="widget-title">Trending News</h4>
+//       {/* HEADING */}
+//       <h4 className="widget-title">{t("trendingNews", "Trending News")}</h4>
 
 //       {businessNews.map((item, i) => {
 //         const newsUrl = `/news/${item.slug}`;
@@ -134,13 +141,15 @@
 //               {/* CATEGORY */}
 //               {category && (
 //                 <div className="meta_col">
-//                   <p>{category.name}</p>
+//                   <p>{category.name || t("trendingNews", "Trending News")}</p>
 //                 </div>
 //               )}
 
 //               {/* READ MORE */}
 //               <Link to={newsUrl} className="readmore3">
-//                 Read more <img src={arrow3} alt="arrow3" />
+//                 {t("readMore", "Read more")}
+
+//                 <img src={arrow3} alt="arrow3" />
 //               </Link>
 
 //               {/* SEPARATOR */}
@@ -156,8 +165,9 @@
 //         );
 //       })}
 
+//       {/* SHOW MORE */}
 //       <Link to="/category/trending" className="showmore">
-//         Show more
+//         {t("showMore", "Show more")}
 //       </Link>
 //     </div>
 //   );
@@ -176,6 +186,34 @@ const BusinessNewsTwo = () => {
 
   const [businessNews, setBusinessNews] = useState([]);
 
+  // Translate category names according to the selected language
+  const getCategoryName = (category) => {
+    if (!category) {
+      return t("trendingNews", "Trending News");
+    }
+
+    const categoryTranslations = {
+      "Uttar Pradesh": "uttarPradesh",
+      "उत्तर प्रदेश": "uttarPradesh",
+      National: "national",
+      राष्ट्रीय: "national",
+      International: "international",
+      अंतरराष्ट्रीय: "international",
+      Politics: "politics",
+      राजनीति: "politics",
+      Entertainment: "entertainment",
+      मनोरंजन: "entertainment",
+      Sports: "sports",
+      खेल: "sports",
+      Business: "business",
+      व्यापार: "business",
+    };
+
+    const key = categoryTranslations[category.name?.trim()];
+
+    return key ? t(key, category.name) : category.name;
+  };
+
   useEffect(() => {
     getTrendingNews();
   }, [i18n.resolvedLanguage]);
@@ -188,6 +226,10 @@ const BusinessNewsTwo = () => {
         `https://api.iotaclasses.in/api/news/popular?limit=6&lang=${language}`,
       );
 
+      if (!res.ok) {
+        throw new Error(`API request failed: ${res.status}`);
+      }
+
       const data = await res.json();
 
       console.log("Trending News API:", data);
@@ -196,13 +238,19 @@ const BusinessNewsTwo = () => {
       if (data.status && Array.isArray(data.data)) {
         const news = data.data
           .filter((item) => Number(item.videoType) === 2)
-          .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+          .sort(
+            (a, b) =>
+              new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+          )
           .slice(0, 6);
 
         setBusinessNews(news);
+      } else {
+        setBusinessNews([]);
       }
     } catch (error) {
       console.error("Trending News Error:", error);
+      setBusinessNews([]);
     }
   };
 
@@ -265,11 +313,14 @@ const BusinessNewsTwo = () => {
                   <div className="meta_col">
                     <p>
                       {item.createdAt
-                        ? new Date(item.createdAt).toLocaleDateString("en-US", {
-                            day: "numeric",
-                            month: "short",
-                            year: "numeric",
-                          })
+                        ? new Date(item.createdAt).toLocaleDateString(
+                            i18n.resolvedLanguage || "en",
+                            {
+                              day: "numeric",
+                              month: "short",
+                              year: "numeric",
+                            },
+                          )
                         : ""}
                     </p>
                   </div>
@@ -305,17 +356,16 @@ const BusinessNewsTwo = () => {
 
               <div className="space-10" />
 
-              {/* CATEGORY */}
+              {/* LANGUAGE-WISE CATEGORY */}
               {category && (
                 <div className="meta_col">
-                  <p>{category.name || t("trendingNews", "Trending News")}</p>
+                  <p>{getCategoryName(category)}</p>
                 </div>
               )}
 
               {/* READ MORE */}
               <Link to={newsUrl} className="readmore3">
                 {t("readMore", "Read more")}
-
                 <img src={arrow3} alt="arrow3" />
               </Link>
 
