@@ -74,6 +74,7 @@ const MainMenuTwo = () => {
                     <li className="nav-item">
                       {/* <NavLink to="/">Home</NavLink> */}
 
+                      {/* HOME */}
                       <li className="nav-item">
                         <NavLink
                           to="/"
