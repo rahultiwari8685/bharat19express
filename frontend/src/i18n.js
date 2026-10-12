@@ -49,6 +49,7 @@ const resources = {
 
       lucknow: "Lucknow",
       good: "Good",
+      videosNews: "Video News",
 
       about: {
         title: "About Bharat 19 Express",
@@ -133,6 +134,7 @@ const resources = {
 
       lucknow: "लखनऊ",
       good: "अच्छा",
+      videosNews: "वीडियो समाचार",
 
       about: {
         title: "भारत 19 एक्सप्रेस के बारे में",
@@ -222,6 +224,8 @@ const resources = {
       good: "اچھا",
       nationalNews: "قومی خبریں",
 
+      videosNews: "ویڈیو خبریں",
+
       about: {
         title: "بھارت 19 ایکسپریس کے بارے میں",
         heading: "بھارت 19 ایکسپریس",
@@ -296,6 +300,7 @@ const resources = {
 
       lucknow: "লখনউ",
       good: "ভালো",
+      videosNews: "ভিডিও সংবাদ",
 
       about: {
         title: "ভারত ১৯ এক্সপ্রেস সম্পর্কে",
@@ -375,6 +380,8 @@ const resources = {
 
       uttarPradesh: "उत्तर प्रदेश",
       latestNews: "ताज्या बातम्या",
+
+      videosNews: "व्हिडिओ बातम्या",
 
       lucknow: "लखनऊ",
       good: "चांगले",

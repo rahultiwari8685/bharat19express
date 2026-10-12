@@ -8,8 +8,6 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 
 const API_URL = "https://api.iotaclasses.in/api/youtube/videos";
-// Production:
-// const API_URL = "https://your-api-domain.com/api/youtube/videos";
 
 const YouTubeChannelSlider = () => {
   const { i18n, t } = useTranslation();
@@ -87,11 +85,20 @@ const YouTubeChannelSlider = () => {
     <>
       <section className="youtube-section">
         <div className="container">
-          <div className="youtube-heading">
+          {/* <div className="youtube-heading">
             <div>
-              {/* <span>WATCH NOW</span> */}
               <h2>{t("videosNews", "Videos News")}</h2>
             </div>
+          </div> */}
+
+          <div className="youtube-heading">
+            <div>
+              <h2>{t("videosNews", "Video News")}</h2>
+            </div>
+
+            <a href="/videos" className="youtube-see-more">
+              {t("seeMore", "और देखें")} <span>→</span>
+            </a>
           </div>
 
           <Swiper
@@ -225,6 +232,53 @@ const YouTubeStyles = () => {
           font-weight: 700;
           color: #111;
         }
+
+
+        
+.youtube-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.youtube-heading > div {
+  min-width: 0;
+}
+
+.youtube-see-more {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+  color: #e60000;
+  font-size: 13px;
+  font-weight: 700;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.youtube-see-more:hover {
+  color: #a80000;
+  text-decoration: underline;
+}
+
+.youtube-see-more span {
+  font-size: 17px;
+}
+
+@media (max-width: 575px) {
+  .youtube-heading {
+    margin-bottom: 16px;
+  }
+
+  .youtube-see-more {
+    font-size: 12px;
+  }
+}
+
 
 
 
