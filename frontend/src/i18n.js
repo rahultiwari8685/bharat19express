@@ -46,6 +46,9 @@ const resources = {
       uttarPradesh: "Uttar Pradesh",
       latestNews: "Latest News",
 
+      lucknow: "Lucknow",
+      good: "Good",
+
       about: {
         title: "About Bharat 19 Express",
         heading: "Bharat 19 Express",
@@ -125,6 +128,9 @@ const resources = {
 
       uttarPradesh: "उत्तर प्रदेश",
       latestNews: "ताज़ा खबरें",
+
+      lucknow: "लखनऊ",
+      good: "अच्छा",
 
       about: {
         title: "भारत 19 एक्सप्रेस के बारे में",
@@ -210,6 +216,9 @@ const resources = {
       copyright: "کاپی رائٹ",
       allRightsReserved: "جملہ حقوق محفوظ ہیں",
 
+      lucknow: "لکھنؤ",
+      good: "اچھا",
+
       about: {
         title: "بھارت 19 ایکسپریس کے بارے میں",
         heading: "بھارت 19 ایکسپریس",
@@ -280,6 +289,9 @@ const resources = {
 
       uttarPradesh: "উত্তর প্রদেশ",
       latestNews: "সর্বশেষ খবর",
+
+      lucknow: "লখনউ",
+      good: "ভালো",
 
       about: {
         title: "ভারত ১৯ এক্সপ্রেস সম্পর্কে",
@@ -359,6 +371,9 @@ const resources = {
 
       uttarPradesh: "उत्तर प्रदेश",
       latestNews: "ताज्या बातम्या",
+
+      lucknow: "लखनऊ",
+      good: "चांगले",
 
       about: {
         title: "भारत १९ एक्सप्रेसबद्दल",

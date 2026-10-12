@@ -389,22 +389,30 @@ const TopBarTwo = () => {
           >
             <span style={{ fontWeight: 600, whiteSpace: "nowrap" }}>
               <FontAwesome name="calendar" />{" "}
-              {new Date().toLocaleDateString("hi-IN", {
-                day: "2-digit",
-                month: "long",
-                year: "numeric",
-                weekday: "long",
-              })}
+              {new Date().toLocaleDateString(
+                {
+                  en: "en-IN",
+                  hi: "hi-IN",
+                  bn: "bn-BD",
+                  mr: "mr-IN",
+                }[i18n.resolvedLanguage] || "en-IN",
+                {
+                  day: "2-digit",
+                  month: "long",
+                  year: "numeric",
+                  weekday: "long",
+                },
+              )}
             </span>
 
             <span style={{ opacity: 0.8 }}>|</span>
 
             <span style={{ whiteSpace: "nowrap" }}>
-              <FontAwesome name="map-marker" /> लखनऊ 24°C
+              <FontAwesome name="map-marker" /> {t("lucknow", "लखनऊ")} 24°C
             </span>
 
             <span style={{ whiteSpace: "nowrap" }}>
-              <FontAwesome name="cloud" /> AQI 78 (अच्छा)
+              <FontAwesome name="cloud" /> AQI 78 ({t("good", "अच्छा")})
             </span>
           </div>
 
