@@ -403,41 +403,107 @@ const TopBarTwo = () => {
           </div>
 
           {/* RIGHT: Quick links and social icons */}
+
+          {/* RIGHT: Preserve previous header actions */}
           <div
             style={{
               display: "flex",
               alignItems: "center",
+              justifyContent: "flex-end",
               gap: "12px",
-              flexWrap: "wrap",
+              flexWrap: "nowrap",
+              marginLeft: "auto",
             }}
           >
-            {[
-              { label: "E-Paper", url: "/e-paper" },
-              { label: "वीडियो", url: "/videos" },
-              { label: "फोटो", url: "/photos" },
-            ].map((item) => (
-              <Link
-                key={item.label}
-                to={item.url}
+            {/* YouTube dropdown */}
+            <div
+              style={{ position: "relative", flexShrink: 0 }}
+              onMouseEnter={() => setShowYoutubeMenu(true)}
+              onMouseLeave={() => setShowYoutubeMenu(false)}
+            >
+              <button
+                type="button"
+                onClick={() => setShowYoutubeMenu((prev) => !prev)}
                 style={{
+                  border: "none",
+                  background: "transparent",
                   color: "#fff",
-                  textDecoration: "none",
+                  padding: 0,
+                  fontSize: "12px",
+                  cursor: "pointer",
                   whiteSpace: "nowrap",
                 }}
               >
-                {item.label}
-              </Link>
-            ))}
+                <FontAwesome name="youtube-play" /> YouTube
+              </button>
+
+              {showYoutubeMenu && (
+                <div
+                  style={{
+                    position: "absolute",
+                    top: "25px",
+                    right: 0,
+                    width: "230px",
+                    background: "#fff",
+                    borderRadius: "5px",
+                    boxShadow: "0 5px 20px rgba(0,0,0,0.25)",
+                    zIndex: 99999,
+                    overflow: "hidden",
+                    textAlign: "left",
+                  }}
+                >
+                  {[
+                    {
+                      label: t("channelNation", "Bharat 19 Express Nation"),
+                      url: "https://www.youtube.com/channel/UC0lg7tqrUdlky_u1Wug7uEw",
+                    },
+                    {
+                      label: t("channelRegional", "Bharat 19 Express Regional"),
+                      url: "https://www.youtube.com/channel/UC7_OlirbGWvmG0-0Nc3WedA",
+                    },
+                    {
+                      label: t(
+                        "channelEntertainment",
+                        "Bharat 19 Entertainment",
+                      ),
+                      url: "https://www.youtube.com/channel/UCkJQAejO5Zx1TaQzzA_3Hvg",
+                    },
+                    {
+                      label: t("channelMain", "Bharat 19 Express"),
+                      url: "https://www.youtube.com/channel/UCygk_AnahPPNje9H3NLK1tA",
+                    },
+                  ].map((channel) => (
+                    <a
+                      key={channel.url}
+                      href={channel.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{
+                        display: "block",
+                        padding: "10px 14px",
+                        color: "#333",
+                        textDecoration: "none",
+                        fontSize: "13px",
+                        borderBottom: "1px solid #eee",
+                      }}
+                    >
+                      {channel.label}
+                    </a>
+                  ))}
+                </div>
+              )}
+            </div>
 
             <Link
               to="/login"
               style={{
                 color: "#fff",
                 textDecoration: "none",
+                fontSize: "12px",
                 whiteSpace: "nowrap",
               }}
             >
-              Login
+              <FontAwesome name="user-circle" /> {t("login", "Login")}
             </Link>
 
             {[
@@ -456,11 +522,41 @@ const TopBarTwo = () => {
                   color: "#fff",
                   textDecoration: "none",
                   fontSize: "14px",
+                  flexShrink: 0,
                 }}
               >
                 <FontAwesome name={item.icon} />
               </a>
             ))}
+
+            {/* Language selector */}
+            <select
+              value={i18n.resolvedLanguage || "en"}
+              onChange={(e) => changeLanguage(e.target.value)}
+              aria-label="Select language"
+              style={{
+                border: "none",
+                background: "transparent",
+                color: "#fff",
+                cursor: "pointer",
+                outline: "none",
+                fontSize: "12px",
+                maxWidth: "85px",
+              }}
+            >
+              <option value="en" style={{ color: "#222" }}>
+                English
+              </option>
+              <option value="hi" style={{ color: "#222" }}>
+                हिन्दी
+              </option>
+              <option value="bn" style={{ color: "#222" }}>
+                বাংলা
+              </option>
+              <option value="mr" style={{ color: "#222" }}>
+                मराठी
+              </option>
+            </select>
           </div>
         </div>
       </div>
