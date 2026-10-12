@@ -107,9 +107,11 @@ const TrendingNewsTwo = () => {
       <div className="row">
         <div className="col-12">
           <div className="heading">
-            <Link to={category?.slug ? `/category/${category.slug}` : "#"}>
-              {getCategoryName(category)}
-            </Link>
+            <h2 className="widget-title">
+              <Link to={category?.slug ? `/category/${category.slug}` : "#"}>
+                {getCategoryName(category)}
+              </Link>
+            </h2>
           </div>
         </div>
       </div>
