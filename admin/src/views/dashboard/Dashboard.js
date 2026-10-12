@@ -1,142 +1,4 @@
-// import React, { useEffect, useState } from 'react'
-// import { CCard, CCardBody, CCol, CRow, CProgress, CProgressBar } from '@coreui/react'
-// import CIcon from '@coreui/icons-react'
-// import { cilPeople, cilUser, cilUserX, cilMoney, cilCalendar } from '@coreui/icons'
-// import setting from '../../setting.json'
-// import secureLocalStorage from 'react-secure-storage'
-
-// const Dashboard = () => {
-//   const [stats, setStats] = useState([
-//     {
-//       title: 'Total News',
-//       count: 0,
-//       goal: 100,
-//       icon: cilPeople,
-//       gradient: 'linear-gradient(135deg, #0d6efd 0%, #67b0fd 100%)',
-//     },
-//     {
-//       title: 'Draft News',
-//       count: 0,
-//       goal: 50,
-//       icon: cilUser,
-//       gradient: 'linear-gradient(135deg, #dc3545 0%, #ff6b81 100%)',
-//     },
-//     {
-//       title: 'Category',
-//       count: 0,
-//       goal: 40,
-//       icon: cilUserX,
-//       gradient: 'linear-gradient(135deg, #198754 0%, #66d9a4 100%)',
-//     },
-//     {
-//       title: 'Deleted News',
-//       count: 0,
-//       goal: 30,
-//       icon: cilMoney,
-//       gradient: 'linear-gradient(135deg, #fd7e14 0%, #ffae52 100%)',
-//     },
-//   ])
-
-//   useEffect(() => {
-//     const fetchDashboardData = async () => {
-//       try {
-//         const token = JSON.parse(secureLocalStorage.getItem('logininfo'))?.token
-
-//         // ✅ Fetch News
-//         const newsRes = await fetch(setting.api + '/api/news/getAllNews', {
-//           headers: {
-//             Authorization: 'Bearer ' + token,
-//           },
-//         })
-//         const newsData = await newsRes.json()
-
-//         const allNews = newsData.data || []
-
-//         // ✅ Calculate counts
-//         const totalNews = allNews.length
-//         const draftNews = allNews.filter((n) => n.type === 2).length
-//         const deletedNews = allNews.filter((n) => n.isDeleted === true).length
-
-//         // ✅ Fetch Categories
-//         const catRes = await fetch(setting.api + '/api/categories/getAllCategory')
-//         const catData = await catRes.json()
-
-//         const totalCategory = catData.data?.length || 0
-
-//         // ✅ Update Stats
-//         setStats((prev) => [
-//           { ...prev[0], count: totalNews },
-//           { ...prev[1], count: draftNews },
-//           { ...prev[2], count: totalCategory },
-//           { ...prev[3], count: deletedNews },
-//         ])
-//       } catch (error) {
-//         console.error('Dashboard Error:', error)
-//       }
-//     }
-
-//     fetchDashboardData()
-//   }, [])
-
-//   const maxCount = Math.max(...stats.map((s) => s.count), 1)
-
-//   return (
-//     <div className="p-4">
-//       <CRow className="g-4">
-//         {stats.map((item, index) => {
-//           const progress = Math.min((item.count / maxCount) * 100, 100)
-
-//           return (
-//             <CCol md={6} lg={3} sm={12} key={index}>
-//               <CCard
-//                 className="text-white shadow border-0 h-100"
-//                 style={{
-//                   background: item.gradient,
-//                   borderRadius: '1rem',
-//                 }}
-//               >
-//                 <CCardBody className="d-flex flex-column justify-content-between p-4">
-//                   <div className="d-flex align-items-center mb-3">
-//                     <div
-//                       className="icon-wrapper bg-white text-primary d-flex align-items-center justify-content-center rounded-circle me-3"
-//                       style={{ width: '50px', height: '50px' }}
-//                     >
-//                       <CIcon icon={item.icon} size="lg" />
-//                     </div>
-//                     <div>
-//                       <h5 className="fw-bold mb-1">{item.title}</h5>
-//                       <small>{item.count}</small>
-//                     </div>
-//                   </div>
-
-//                   <CProgress
-//                     className="rounded-pill"
-//                     style={{
-//                       height: '10px',
-//                       backgroundColor: 'rgba(255,255,255,0.3)',
-//                     }}
-//                   >
-//                     <CProgressBar
-//                       value={progress}
-//                       style={{
-//                         backgroundColor: '#fff',
-//                         transition: 'width 0.6s ease',
-//                       }}
-//                     />
-//                   </CProgress>
-//                 </CCardBody>
-//               </CCard>
-//             </CCol>
-//           )
-//         })}
-//       </CRow>
-//     </div>
-//   )
-// }
-
-// export default Dashboard
-
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import {
   CCard,
   CCardBody,
@@ -159,7 +21,59 @@ const COLORS = {
   green: '#059669',
   orange: '#ea580c',
   purple: '#7c3aed',
+  cyan: '#0891b2',
 }
+
+const cardStyle = {
+  border: 0,
+  borderRadius: 16,
+  overflow: 'hidden',
+  minWidth: 0,
+}
+
+const decodeText = (value = '') => {
+  const entities = {
+    '&amp;': '&',
+    '&quot;': '"',
+    '&#39;': "'",
+    '&#x27;': "'",
+    '&lt;': '<',
+    '&gt;': '>',
+    '&nbsp;': ' ',
+  }
+
+  return String(value).replace(
+    /&amp;|&quot;|&#39;|&#x27;|&lt;|&gt;|&nbsp;/gi,
+    (entity) => entities[entity] || entity,
+  )
+}
+
+const getTitle = (item) =>
+  decodeText(item.title || item.heading || item.newsTitle || 'Untitled News')
+
+const getViews = (item) => Number(item.views ?? item.viewCount ?? item.totalViews ?? 0) || 0
+
+const getAuthorName = (item) => {
+  if (item.author && typeof item.author === 'object') {
+    return item.author.name || item.author.username || item.author.fullName || 'Unknown Author'
+  }
+
+  return item.authorName || item.author || 'Unknown Author'
+}
+
+const getValidDate = (value) => {
+  if (!value) return null
+
+  const date = new Date(value)
+  return Number.isNaN(date.getTime()) ? null : date
+}
+
+const isSameDay = (first, second) =>
+  first.getFullYear() === second.getFullYear() &&
+  first.getMonth() === second.getMonth() &&
+  first.getDate() === second.getDate()
+
+const formatNumber = (number) => Number(number || 0).toLocaleString('en-IN')
 
 const Dashboard = () => {
   const [news, setNews] = useState([])
@@ -168,6 +82,8 @@ const Dashboard = () => {
   const [error, setError] = useState('')
 
   useEffect(() => {
+    let cancelled = false
+
     const fetchDashboardData = async () => {
       try {
         setLoading(true)
@@ -175,6 +91,7 @@ const Dashboard = () => {
 
         const loginInfo = secureLocalStorage.getItem('logininfo')
         const loginData = typeof loginInfo === 'string' ? JSON.parse(loginInfo) : loginInfo
+
         const token = loginData?.token
 
         const [newsResponse, categoryResponse] = await Promise.all([
@@ -193,70 +110,122 @@ const Dashboard = () => {
           categoryResponse.json(),
         ])
 
-        setNews(Array.isArray(newsResult.data) ? newsResult.data : [])
-        setCategories(Array.isArray(categoryResult.data) ? categoryResult.data : [])
+        if (newsResult.status === false) {
+          throw new Error(newsResult.message || 'Unable to load news.')
+        }
+
+        if (categoryResult.status === false) {
+          throw new Error(categoryResult.message || 'Unable to load categories.')
+        }
+
+        if (!cancelled) {
+          setNews(Array.isArray(newsResult.data) ? newsResult.data : [])
+          setCategories(Array.isArray(categoryResult.data) ? categoryResult.data : [])
+        }
       } catch (err) {
         console.error('Dashboard Error:', err)
-        setError(err.message || 'Something went wrong.')
+
+        if (!cancelled) {
+          setError(err.message || 'Something went wrong.')
+        }
       } finally {
-        setLoading(false)
+        if (!cancelled) {
+          setLoading(false)
+        }
       }
     }
 
     fetchDashboardData()
+
+    return () => {
+      cancelled = true
+    }
   }, [])
 
-  // Adjust these field names to match your backend schema.
-  const getViews = (item) => Number(item.views ?? item.viewCount ?? item.totalViews ?? 0)
+  const analytics = useMemo(() => {
+    const today = new Date()
 
-  const getAuthorName = (item) => {
-    if (item.author && typeof item.author === 'object') {
-      return item.author.name || item.author.username || 'Unknown Author'
+    const activeNews = news.filter((item) => item.isDeleted !== true)
+    const deletedNews = news.filter((item) => item.isDeleted === true)
+
+    const publishedNews = activeNews.filter((item) => Number(item.type) === 1)
+
+    const draftNews = activeNews.filter((item) => Number(item.type) === 2)
+
+    const todaysPublishedNews = publishedNews.filter((item) => {
+      const created = getValidDate(item.createdAt)
+      return created && isSameDay(created, today)
+    })
+
+    const mostViewedNews = [...publishedNews].sort((a, b) => getViews(b) - getViews(a)).slice(0, 7)
+
+    const authorsToday = Object.entries(
+      todaysPublishedNews.reduce((result, item) => {
+        const author = getAuthorName(item)
+        result[author] = (result[author] || 0) + 1
+        return result
+      }, {}),
+    )
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 7)
+
+    const totalViews = publishedNews.reduce((sum, item) => sum + getViews(item), 0)
+
+    const recentNews = [...activeNews]
+      .sort(
+        (a, b) =>
+          (getValidDate(b.createdAt)?.getTime() || 0) - (getValidDate(a.createdAt)?.getTime() || 0),
+      )
+      .slice(0, 6)
+
+    const lastSevenDays = Array.from({ length: 7 }, (_, index) => {
+      const date = new Date()
+      date.setHours(0, 0, 0, 0)
+      date.setDate(date.getDate() - (6 - index))
+      return date
+    })
+
+    const dailyPublishingCounts = lastSevenDays.map(
+      (day) =>
+        publishedNews.filter((item) => {
+          const created = getValidDate(item.createdAt)
+          return created && isSameDay(created, day)
+        }).length,
+    )
+
+    return {
+      activeNews,
+      publishedNews,
+      draftNews,
+      deletedNews,
+      todaysPublishedNews,
+      mostViewedNews,
+      authorsToday,
+      totalViews,
+      recentNews,
+      lastSevenDays,
+      dailyPublishingCounts,
     }
-
-    return item.authorName || 'Unknown Author'
-  }
-
-  const getTitle = (item) => item.title || item.heading || item.newsTitle || 'Untitled News'
-
-  const publishedNews = news.filter((item) => Number(item.type) === 1 && item.isDeleted !== true)
-
-  const draftNews = news.filter((item) => Number(item.type) === 2 && item.isDeleted !== true)
-
-  const deletedNews = news.filter((item) => item.isDeleted === true)
-
-  const mostViewedNews = [...publishedNews].sort((a, b) => getViews(b) - getViews(a)).slice(0, 7)
-
-  const authorCounts = publishedNews.reduce((result, item) => {
-    const author = getAuthorName(item)
-    result[author] = (result[author] || 0) + 1
-    return result
-  }, {})
-
-  const mostActiveAuthors = Object.entries(authorCounts)
-    .sort((a, b) => b[1] - a[1])
-    .slice(0, 7)
-
-  const totalViews = publishedNews.reduce((sum, item) => sum + getViews(item), 0)
+  }, [news])
 
   const stats = [
     {
       title: 'Total News',
-      count: news.filter((item) => item.isDeleted !== true).length,
+      count: analytics.activeNews.length,
       icon: cilNewspaper,
       color: COLORS.blue,
-      detail: 'All active news',
+      detail: 'All active articles',
     },
     {
       title: 'Published News',
-      count: publishedNews.length,
+      count: analytics.publishedNews.length,
       icon: cilNewspaper,
       color: COLORS.green,
       detail: 'Live articles',
     },
     {
       title: 'Draft News',
-      count: draftNews.length,
+      count: analytics.draftNews.length,
       icon: cilPencil,
       color: COLORS.orange,
       detail: 'Pending publication',
@@ -270,88 +239,128 @@ const Dashboard = () => {
     },
     {
       title: 'Deleted News',
-      count: deletedNews.length,
+      count: analytics.deletedNews.length,
       icon: cilTrash,
       color: COLORS.red,
-      detail: 'Items marked deleted',
+      detail: 'Deleted records',
     },
     {
       title: 'Total Views',
-      count: totalViews,
+      count: analytics.totalViews,
       icon: cilNewspaper,
-      color: '#0891b2',
-      detail: 'Published news views',
+      color: COLORS.cyan,
+      detail: 'Views on published articles',
     },
   ]
 
-  const formatNumber = (number) => Number(number || 0).toLocaleString('en-IN')
+  const maxStat = Math.max(...stats.map((item) => item.count), 1)
 
   const chartOptions = {
+    indexAxis: 'y',
     responsive: true,
     maintainAspectRatio: false,
-    indexAxis: 'y',
+    animation: {
+      duration: 500,
+    },
     plugins: {
-      legend: { display: false },
+      legend: {
+        display: false,
+      },
     },
     scales: {
       x: {
         beginAtZero: true,
-        grid: { color: 'rgba(148,163,184,0.15)' },
+        grid: {
+          color: 'rgba(148,163,184,0.15)',
+        },
+        ticks: {
+          precision: 0,
+        },
       },
       y: {
-        grid: { display: false },
+        grid: {
+          display: false,
+        },
       },
     },
   }
 
   if (loading) {
     return (
-      <div className="d-flex justify-content-center align-items-center p-5">
+      <div
+        className="d-flex justify-content-center align-items-center"
+        style={{ minHeight: '60vh' }}
+      >
         <CSpinner color="primary" />
-        <span className="ms-2">Loading dashboard...</span>
+        <span className="ms-3 text-body-secondary">Loading dashboard...</span>
       </div>
     )
   }
 
   return (
-    <div className="p-3 p-md-4" style={{ background: '#f5f7fb', minHeight: '100vh' }}>
-      <div className="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-2">
-        <div>
-          <h3 className="fw-bold mb-1">News Dashboard</h3>
+    <div
+      className="container-fluid p-3 p-md-4"
+      style={{
+        background: '#f5f7fb',
+        minHeight: '100vh',
+        width: '100%',
+        maxWidth: '100%',
+        overflowX: 'hidden',
+        boxSizing: 'border-box',
+      }}
+    >
+      {/* Dashboard header */}
+      <div className="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+        <div style={{ minWidth: 0 }}>
+          <h3 className="fw-bold mb-1" style={{ color: '#172033' }}>
+            News Dashboard
+          </h3>
           <p className="text-body-secondary mb-0">
             Bharat 19 Express · Content performance and analytics
           </p>
         </div>
 
         <CBadge color="success" className="px-3 py-2">
-          Live data
+          Dashboard Overview
         </CBadge>
       </div>
 
       {error && (
         <div className="alert alert-danger" role="alert">
           {error}
+          <button
+            type="button"
+            className="btn btn-sm btn-outline-danger ms-3"
+            onClick={() => window.location.reload()}
+          >
+            Retry
+          </button>
         </div>
       )}
 
+      {/* Summary cards */}
       <CRow className="g-3 mb-4">
         {stats.map((item) => (
           <CCol xs={12} sm={6} xl={4} key={item.title}>
-            <CCard className="border-0 shadow-sm h-100" style={{ borderRadius: 16 }}>
-              <CCardBody className="p-4">
-                <div className="d-flex align-items-center justify-content-between">
-                  <div>
+            <CCard className="shadow-sm h-100" style={cardStyle}>
+              <CCardBody className="p-3 p-md-4">
+                <div className="d-flex align-items-center justify-content-between gap-3">
+                  <div style={{ minWidth: 0 }}>
                     <div className="text-body-secondary small mb-2">{item.title}</div>
-                    <h3 className="fw-bold mb-1">{formatNumber(item.count)}</h3>
+
+                    <h3 className="fw-bold mb-1" style={{ color: '#172033' }}>
+                      {formatNumber(item.count)}
+                    </h3>
+
                     <small className="text-body-secondary">{item.detail}</small>
                   </div>
 
                   <div
-                    className="d-flex align-items-center justify-content-center rounded-3"
+                    className="d-flex align-items-center justify-content-center rounded-3 flex-shrink-0"
                     style={{
                       width: 52,
                       height: 52,
-                      background: `${item.color}18`,
+                      backgroundColor: `${item.color}18`,
                       color: item.color,
                     }}
                   >
@@ -361,14 +370,7 @@ const Dashboard = () => {
 
                 <CProgress className="mt-3" style={{ height: 5 }}>
                   <CProgressBar
-                    value={
-                      item.count > 0
-                        ? Math.min(
-                            (item.count / Math.max(...stats.map((stat) => stat.count), 1)) * 100,
-                            100,
-                          )
-                        : 0
-                    }
+                    value={Math.min((item.count / maxStat) * 100, 100)}
                     style={{ backgroundColor: item.color }}
                   />
                 </CProgress>
@@ -378,29 +380,31 @@ const Dashboard = () => {
         ))}
       </CRow>
 
+      {/* Main analytics */}
       <CRow className="g-4 mb-4">
+        {/* Most viewed news */}
         <CCol xs={12} xl={7}>
-          <CCard className="border-0 shadow-sm h-100" style={{ borderRadius: 16 }}>
-            <CCardBody className="p-4">
+          <CCard className="shadow-sm h-100" style={cardStyle}>
+            <CCardBody className="p-3 p-md-4">
               <h5 className="fw-bold mb-1">Most Viewed News</h5>
               <p className="text-body-secondary small mb-4">
-                Top published articles ranked by view count
+                Top published articles ranked by total views
               </p>
 
-              {mostViewedNews.length > 0 && mostViewedNews.some((item) => getViews(item) > 0) ? (
-                <div style={{ height: 320 }}>
+              {analytics.mostViewedNews.some((item) => getViews(item) > 0) ? (
+                <div style={{ height: 320, width: '100%', minWidth: 0 }}>
                   <CChartBar
                     data={{
-                      labels: mostViewedNews.map((item) => {
+                      labels: analytics.mostViewedNews.map((item) => {
                         const title = getTitle(item)
-                        return title.length > 38 ? `${title.slice(0, 38)}…` : title
+                        return title.length > 36 ? `${title.slice(0, 36)}…` : title
                       }),
                       datasets: [
                         {
                           label: 'Views',
                           backgroundColor: COLORS.blue,
                           borderRadius: 6,
-                          data: mostViewedNews.map(getViews),
+                          data: analytics.mostViewedNews.map(getViews),
                           barThickness: 22,
                         },
                       ],
@@ -411,34 +415,41 @@ const Dashboard = () => {
               ) : (
                 <div className="text-center text-body-secondary py-5">
                   <CIcon icon={cilNewspaper} size="3xl" className="mb-3" />
-                  <p className="mb-1">No view analytics available</p>
-                  <small>Add a view-count field and track views in the backend.</small>
+                  <p className="fw-semibold mb-1">No view analytics available</p>
+                  <small>Configure view tracking in the backend to display rankings.</small>
                 </div>
               )}
             </CCardBody>
           </CCard>
         </CCol>
 
+        {/* Most published today */}
         <CCol xs={12} xl={5}>
-          <CCard className="border-0 shadow-sm h-100" style={{ borderRadius: 16 }}>
-            <CCardBody className="p-4">
-              <h5 className="fw-bold mb-1">Most Published Authors</h5>
+          <CCard className="shadow-sm h-100" style={cardStyle}>
+            <CCardBody className="p-3 p-md-4">
+              <div className="d-flex flex-wrap justify-content-between align-items-start gap-2 mb-1">
+                <h5 className="fw-bold mb-0">Most Published Today</h5>
+                <CBadge color="primary">{analytics.todaysPublishedNews.length} articles</CBadge>
+              </div>
+
               <p className="text-body-secondary small mb-4">
-                Authors ranked by published article count
+                Authors ranked by published articles today
               </p>
 
-              {mostActiveAuthors.length > 0 ? (
+              {analytics.authorsToday.length > 0 ? (
                 <>
-                  <div style={{ height: 280 }}>
+                  <div style={{ height: 260, width: '100%', minWidth: 0 }}>
                     <CChartBar
                       data={{
-                        labels: mostActiveAuthors.map(([name]) => name),
+                        labels: analytics.authorsToday.map(([name]) =>
+                          name.length > 22 ? `${name.slice(0, 22)}…` : name,
+                        ),
                         datasets: [
                           {
                             label: 'Published articles',
                             backgroundColor: COLORS.green,
                             borderRadius: 6,
-                            data: mostActiveAuthors.map(([, count]) => count),
+                            data: analytics.authorsToday.map(([, count]) => count),
                             barThickness: 22,
                           },
                         ],
@@ -448,16 +459,43 @@ const Dashboard = () => {
                   </div>
 
                   <div className="mt-3">
-                    {mostActiveAuthors.slice(0, 3).map(([name, count], index) => (
+                    {analytics.authorsToday.slice(0, 5).map(([name, count], index) => (
                       <div
                         key={name}
-                        className="d-flex justify-content-between align-items-center py-2 border-bottom"
+                        className="d-flex justify-content-between align-items-center gap-2 py-3 border-bottom"
                       >
-                        <span>
-                          <span className="text-body-secondary me-2">#{index + 1}</span>
-                          {name}
-                        </span>
-                        <strong>{count} posts</strong>
+                        <div className="d-flex align-items-center gap-2" style={{ minWidth: 0 }}>
+                          <span
+                            className="d-flex align-items-center justify-content-center rounded-circle flex-shrink-0"
+                            style={{
+                              width: 30,
+                              height: 30,
+                              backgroundColor: index === 0 ? '#dcfce7' : '#f1f5f9',
+                              color: index === 0 ? '#166534' : '#475569',
+                              fontSize: 12,
+                              fontWeight: 700,
+                            }}
+                          >
+                            {index + 1}
+                          </span>
+
+                          <span
+                            className="fw-semibold"
+                            style={{
+                              minWidth: 0,
+                              overflowWrap: 'anywhere',
+                            }}
+                          >
+                            {name}
+                          </span>
+                        </div>
+
+                        <CBadge
+                          color={index === 0 ? 'success' : 'secondary'}
+                          className="flex-shrink-0"
+                        >
+                          {count} {count === 1 ? 'post' : 'posts'}
+                        </CBadge>
                       </div>
                     ))}
                   </div>
@@ -465,7 +503,8 @@ const Dashboard = () => {
               ) : (
                 <div className="text-center text-body-secondary py-5">
                   <CIcon icon={cilUser} size="3xl" className="mb-3" />
-                  <p>No published author data available.</p>
+                  <p className="fw-semibold mb-1">No articles published today</p>
+                  <small>Published articles will appear here automatically.</small>
                 </div>
               )}
             </CCardBody>
@@ -473,102 +512,127 @@ const Dashboard = () => {
         </CCol>
       </CRow>
 
+      {/* Publishing activity and recent news */}
       <CRow className="g-4">
         <CCol xs={12} xl={7}>
-          <CCard className="border-0 shadow-sm" style={{ borderRadius: 16 }}>
-            <CCardBody className="p-4">
+          <CCard className="shadow-sm h-100" style={cardStyle}>
+            <CCardBody className="p-3 p-md-4">
               <h5 className="fw-bold mb-1">News Publishing Activity</h5>
               <p className="text-body-secondary small mb-4">
                 Published articles created over the last seven days
               </p>
 
-              {(() => {
-                const days = Array.from({ length: 7 }, (_, index) => {
-                  const date = new Date()
-                  date.setHours(0, 0, 0, 0)
-                  date.setDate(date.getDate() - (6 - index))
-                  return date
-                })
-
-                const dailyCounts = days.map(
-                  (day) =>
-                    publishedNews.filter((item) => {
-                      if (!item.createdAt) return false
-                      const created = new Date(item.createdAt)
-                      return (
-                        created.getFullYear() === day.getFullYear() &&
-                        created.getMonth() === day.getMonth() &&
-                        created.getDate() === day.getDate()
-                      )
-                    }).length,
-                )
-
-                return (
-                  <div style={{ height: 260 }}>
-                    <CChartLine
-                      data={{
-                        labels: days.map((day) =>
-                          day.toLocaleDateString('en-IN', {
-                            day: 'numeric',
-                            month: 'short',
-                          }),
-                        ),
-                        datasets: [
-                          {
-                            label: 'Published news',
-                            data: dailyCounts,
-                            borderColor: COLORS.blue,
-                            backgroundColor: 'rgba(37,99,235,0.12)',
-                            fill: true,
-                            tension: 0.35,
-                          },
-                        ],
-                      }}
-                      options={{
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        plugins: { legend: { display: false } },
-                        scales: { y: { beginAtZero: true } },
-                      }}
-                    />
-                  </div>
-                )
-              })()}
+              <div style={{ height: 270, width: '100%', minWidth: 0 }}>
+                <CChartLine
+                  data={{
+                    labels: analytics.lastSevenDays.map((day) =>
+                      day.toLocaleDateString('en-IN', {
+                        day: 'numeric',
+                        month: 'short',
+                      }),
+                    ),
+                    datasets: [
+                      {
+                        label: 'Published news',
+                        data: analytics.dailyPublishingCounts,
+                        borderColor: COLORS.blue,
+                        backgroundColor: 'rgba(37,99,235,0.12)',
+                        pointBackgroundColor: COLORS.blue,
+                        pointRadius: 4,
+                        fill: true,
+                        tension: 0.35,
+                      },
+                    ],
+                  }}
+                  options={{
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                      legend: { display: false },
+                    },
+                    scales: {
+                      y: {
+                        beginAtZero: true,
+                        ticks: { precision: 0 },
+                      },
+                      x: {
+                        grid: { display: false },
+                      },
+                    },
+                  }}
+                />
+              </div>
             </CCardBody>
           </CCard>
         </CCol>
 
+        {/* Recent news - overflow fixed */}
         <CCol xs={12} xl={5}>
-          <CCard className="border-0 shadow-sm" style={{ borderRadius: 16 }}>
-            <CCardBody className="p-4">
-              <h5 className="fw-bold mb-3">Recent News</h5>
+          <CCard className="shadow-sm h-100" style={cardStyle}>
+            <CCardBody className="p-3 p-md-4">
+              <div className="d-flex justify-content-between align-items-center gap-2 mb-1">
+                <h5 className="fw-bold mb-0">Recent News</h5>
+                <CBadge color="secondary">{analytics.recentNews.length} articles</CBadge>
+              </div>
 
-              {[...news]
-                .filter((item) => item.isDeleted !== true)
-                .sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0))
-                .slice(0, 6)
-                .map((item) => (
+              <p className="text-body-secondary small mb-3">Latest content and publishing status</p>
+
+              {analytics.recentNews.length > 0 ? (
+                analytics.recentNews.map((item) => (
                   <div
                     key={item._id}
-                    className="d-flex justify-content-between align-items-start gap-3 py-3 border-bottom"
+                    className="py-3 border-bottom"
+                    style={{
+                      minWidth: 0,
+                      width: '100%',
+                      overflow: 'hidden',
+                    }}
                   >
-                    <div className="min-w-0">
-                      <div className="fw-semibold text-truncate">{getTitle(item)}</div>
-                      <small className="text-body-secondary">
-                        {getAuthorName(item)} ·{' '}
-                        {item.createdAt
-                          ? new Date(item.createdAt).toLocaleDateString('en-IN')
-                          : 'Date unavailable'}
-                      </small>
+                    <div
+                      className="fw-semibold mb-2"
+                      title={getTitle(item)}
+                      style={{
+                        fontSize: '0.93rem',
+                        lineHeight: 1.55,
+                        overflowWrap: 'anywhere',
+                        wordBreak: 'break-word',
+                        whiteSpace: 'normal',
+                        display: '-webkit-box',
+                        WebkitLineClamp: 2,
+                        WebkitBoxOrient: 'vertical',
+                        overflow: 'hidden',
+                      }}
+                    >
+                      {getTitle(item)}
                     </div>
 
-                    <CBadge color={Number(item.type) === 1 ? 'success' : 'warning'}>
-                      {Number(item.type) === 1 ? 'Published' : 'Draft'}
-                    </CBadge>
-                  </div>
-                ))}
+                    <div className="d-flex flex-wrap justify-content-between align-items-center gap-2">
+                      <small
+                        className="text-body-secondary"
+                        style={{
+                          minWidth: 0,
+                          overflowWrap: 'anywhere',
+                        }}
+                      >
+                        {getAuthorName(item)}
+                        {' · '}
+                        {getValidDate(item.createdAt)
+                          ? getValidDate(item.createdAt).toLocaleDateString('en-IN')
+                          : 'Date unavailable'}
+                      </small>
 
-              {news.length === 0 && <p className="text-body-secondary mb-0">No news found.</p>}
+                      <CBadge color={Number(item.type) === 1 ? 'success' : 'warning'}>
+                        {Number(item.type) === 1 ? 'Published' : 'Draft'}
+                      </CBadge>
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <div className="text-center text-body-secondary py-5">
+                  <CIcon icon={cilNewspaper} size="3xl" className="mb-3" />
+                  <p className="mb-0">No news found.</p>
+                </div>
+              )}
             </CCardBody>
           </CCard>
         </CCol>
