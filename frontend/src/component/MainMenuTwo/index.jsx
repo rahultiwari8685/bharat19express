@@ -73,7 +73,29 @@ const MainMenuTwo = () => {
                     {/* HOME */}
                     <li className="nav-item">
                       {/* <NavLink to="/">Home</NavLink> */}
-                      <NavLink to="/">{t("home")}</NavLink>
+
+                      <li className="nav-item">
+                        <NavLink
+                          to="/"
+                          end
+                          style={({ isActive }) => ({
+                            display: "inline-flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            gap: "7px",
+                            padding: "10px 16px",
+                            background: isActive ? "#e31e24" : "transparent",
+                            color: "#fff",
+                            borderRadius: "4px",
+                            fontWeight: 700,
+                            textDecoration: "none",
+                            transition: "background 0.2s ease",
+                          })}
+                        >
+                          <FontAwesome name="home" />
+                          <span>{t("home")}</span>
+                        </NavLink>
+                      </li>
                     </li>
 
                     {visibleMenus.map((parent) => {
@@ -245,20 +267,23 @@ const MainMenuTwo = () => {
                   <span>Epaper</span>
                 </NavLink>
 
-                {/* DATE */}
-                <p
+                <NavLink
+                  to="/search"
+                  aria-label="Search news"
+                  title="Search"
                   style={{
-                    margin: 0,
-                    whiteSpace: "nowrap",
+                    display: "inline-flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    width: "42px",
+                    height: "34px",
+                    color: "#fff",
+                    fontSize: "17px",
+                    textDecoration: "none",
                   }}
                 >
-                  {new Date().toLocaleDateString("en-IN", {
-                    weekday: "long",
-                    month: "long",
-                    day: "numeric",
-                    year: "numeric",
-                  })}
-                </p>
+                  <FontAwesome name="search" />
+                </NavLink>
               </div>
             </div>
           </div>
