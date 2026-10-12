@@ -85,19 +85,13 @@ const YouTubeChannelSlider = () => {
     <>
       <section className="youtube-section">
         <div className="container">
-          {/* <div className="youtube-heading">
-            <div>
-              <h2>{t("videosNews", "Videos News")}</h2>
-            </div>
-          </div> */}
-
           <div className="youtube-heading">
             <div>
               <h2>{t("videosNews", "Video News")}</h2>
             </div>
 
             <a href="/videos" className="youtube-see-more">
-              {t("seeMore", "और देखें")} <span>→</span>
+              {t("seeMore", "See More")} <span>→</span>
             </a>
           </div>
 

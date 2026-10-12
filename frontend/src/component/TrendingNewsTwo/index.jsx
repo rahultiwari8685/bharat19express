@@ -21,24 +21,52 @@ const TrendingNewsTwo = () => {
         `https://api.iotaclasses.in/api/news/category/6ab5133ae0146bb0a4a80e48?limit=10&lang=${language}`,
       );
 
+      if (!res.ok) {
+        throw new Error(`API request failed: ${res.status}`);
+      }
+
       const data = await res.json();
 
-      console.log("Uttar Pradesh News:", data);
+      console.log("UP News API response:", data);
 
       if (data.status && Array.isArray(data.data)) {
+        console.log("Available videoType values:", [
+          ...new Set(data.data.map((item) => item.videoType)),
+        ]);
+
         const news = data.data
+          .filter((item) => Number(item.type) === 1)
+          .filter((item) => item.isDeleted !== true)
           .filter((item) => Number(item.videoType) === 2)
-          .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+          .sort(
+            (a, b) =>
+              new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+          );
 
         setUpNews(news);
         setFeaturedNews(news[0] || null);
+      } else {
+        setUpNews([]);
+        setFeaturedNews(null);
+        console.error("Unexpected API response:", data);
       }
     } catch (error) {
       console.error("Uttar Pradesh News Error:", error);
+      setUpNews([]);
+      setFeaturedNews(null);
     }
   };
 
-  if (!featuredNews) return null;
+  if (!featuredNews) {
+    return (
+      <div className="white_bg tranding3 padding20 border-radious5 mb30">
+        <h2 className="widget-title">{t("uttarPradesh", "Uttar Pradesh")}</h2>
+        <p className="text-muted mb-0">
+          {t("noNewsAvailable", "No news available at the moment.")}
+        </p>
+      </div>
+    );
+  }
 
   const image = featuredNews.thumbnail
     ? `https://api.iotaclasses.in/uploads/images/${featuredNews.thumbnail}`

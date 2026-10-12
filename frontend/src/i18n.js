@@ -51,6 +51,8 @@ const resources = {
       good: "Good",
       videosNews: "Video News",
 
+      seeMore: "See More",
+
       about: {
         title: "About Bharat 19 Express",
         heading: "Bharat 19 Express",
@@ -131,7 +133,7 @@ const resources = {
       uttarPradesh: "उत्तर प्रदेश",
       latestNews: "ताज़ा खबरें",
       nationalNews: "राष्ट्रीय समाचार",
-
+      seeMore: "और देखें",
       lucknow: "लखनऊ",
       good: "अच्छा",
       videosNews: "वीडियो समाचार",
@@ -219,7 +221,7 @@ const resources = {
 
       copyright: "کاپی رائٹ",
       allRightsReserved: "جملہ حقوق محفوظ ہیں",
-
+      seeMore: "مزید دیکھیں",
       lucknow: "لکھنؤ",
       good: "اچھا",
       nationalNews: "قومی خبریں",
@@ -297,7 +299,7 @@ const resources = {
       uttarPradesh: "উত্তর প্রদেশ",
       latestNews: "সর্বশেষ খবর",
       nationalNews: "জাতীয় সংবাদ",
-
+      seeMore: "আরও দেখুন",
       lucknow: "লখনউ",
       good: "ভালো",
       videosNews: "ভিডিও সংবাদ",
@@ -377,7 +379,7 @@ const resources = {
       appStore: "App Store",
       loading: "लोड होत आहे...",
       showMore: "अधिक दाखवा",
-
+      seeMore: "आणखी पहा",
       uttarPradesh: "उत्तर प्रदेश",
       latestNews: "ताज्या बातम्या",
 
