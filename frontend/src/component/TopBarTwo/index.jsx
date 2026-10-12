@@ -355,7 +355,7 @@ const TopBarTwo = () => {
       }}
     >
       <div
-        className="container-fluid"
+        className="container"
         style={{
           maxWidth: "1400px",
           margin: "0 auto",
@@ -368,8 +368,10 @@ const TopBarTwo = () => {
             display: "flex",
             alignItems: "center",
             justifyContent: "space-between",
-            gap: "12px",
-            flexWrap: "wrap",
+            gap: "8px",
+            flexWrap: "nowrap",
+            width: "100%",
+            boxSizing: "border-box",
           }}
         >
           {/* LEFT: Date, weather and AQI */}
