@@ -43,6 +43,7 @@ const resources = {
       loading: "Loading...",
       showMore: "Show More",
       trendingNews: "Trending News",
+      mostView: "Most Viewed",
 
       uttarPradesh: "Uttar Pradesh",
       latestNews: "Latest News",
@@ -138,7 +139,7 @@ const resources = {
       lucknow: "लखनऊ",
       good: "अच्छा",
       videosNews: "वीडियो समाचार",
-
+      mostView: "सबसे ज्यादा देखे गए",
       about: {
         title: "भारत 19 एक्सप्रेस के बारे में",
         heading: "भारत 19 एक्सप्रेस",
@@ -219,7 +220,7 @@ const resources = {
       trendingNews: "اہم خبریں",
       uttarPradesh: "اتر پردیش",
       latestNews: "تازہ خبریں",
-
+      mostView: "سب سے زیادہ دیکھی گئی خبریں",
       copyright: "کاپی رائٹ",
       allRightsReserved: "جملہ حقوق محفوظ ہیں",
       seeMore: "مزید دیکھیں",
@@ -297,7 +298,7 @@ const resources = {
       loading: "লোড হচ্ছে...",
       showMore: "আরও দেখুন",
       trendingNews: "ট্রেন্ডিং খবর",
-
+      mostView: "সর্বাধিক দেখা",
       uttarPradesh: "উত্তর প্রদেশ",
       latestNews: "সর্বশেষ খবর",
       nationalNews: "জাতীয় সংবাদ",
@@ -386,7 +387,7 @@ const resources = {
       latestNews: "ताज्या बातम्या",
       trendingNews: "ट्रेंडिंग बातम्या",
       videosNews: "व्हिडिओ बातम्या",
-
+      mostView: "सर्वाधिक पाहिलेल्या बातम्या",
       lucknow: "लखनऊ",
       good: "चांगले",
       nationalNews: "राष्ट्रीय बातम्या",

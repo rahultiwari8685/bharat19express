@@ -241,9 +241,11 @@ const MostViewTwo = ({ title }) => {
     <div className="most_widget3 padding20 white_bg border-radious5 mb30 sm-mt30">
       {/* LANGUAGE-WISE HEADING */}
       <div className="heading">
-        <h2 className="widget-title">
+        {/* <h2 className="widget-title">
           {title || t("mostView", "Most Viewed")}
-        </h2>
+        </h2> */}
+
+        <h2 className="widget-title">{t("mostView", "Most Viewed")}</h2>
       </div>
 
       <div className="post_type2_carousel multipleRowCarousel pt12_wrapper nav_style1">
