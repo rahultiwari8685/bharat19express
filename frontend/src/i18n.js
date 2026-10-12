@@ -45,6 +45,7 @@ const resources = {
 
       uttarPradesh: "Uttar Pradesh",
       latestNews: "Latest News",
+      nationalNews: "National News",
 
       lucknow: "Lucknow",
       good: "Good",
@@ -128,6 +129,7 @@ const resources = {
 
       uttarPradesh: "उत्तर प्रदेश",
       latestNews: "ताज़ा खबरें",
+      nationalNews: "राष्ट्रीय समाचार",
 
       lucknow: "लखनऊ",
       good: "अच्छा",
@@ -218,6 +220,7 @@ const resources = {
 
       lucknow: "لکھنؤ",
       good: "اچھا",
+      nationalNews: "قومی خبریں",
 
       about: {
         title: "بھارت 19 ایکسپریس کے بارے میں",
@@ -289,6 +292,7 @@ const resources = {
 
       uttarPradesh: "উত্তর প্রদেশ",
       latestNews: "সর্বশেষ খবর",
+      nationalNews: "জাতীয় সংবাদ",
 
       lucknow: "লখনউ",
       good: "ভালো",
@@ -374,6 +378,7 @@ const resources = {
 
       lucknow: "लखनऊ",
       good: "चांगले",
+      nationalNews: "राष्ट्रीय बातम्या",
 
       about: {
         title: "भारत १९ एक्सप्रेसबद्दल",

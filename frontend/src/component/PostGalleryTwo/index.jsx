@@ -16,6 +16,7 @@ const PostGalleryTwo = () => {
 
   // Uttar Pradesh category ID
   const UP_CATEGORY_ID = "6ab5133ae0146bb0a4a80e48";
+  const NATIONAL_CATEGORY_ID = "6ab3e06740046655dd2db1e5";
 
   const [videoNews, setVideoNews] = useState(null);
   const [isVideoOpen, setIsVideoOpen] = useState(false);
@@ -144,7 +145,7 @@ const PostGalleryTwo = () => {
       const language = i18n.resolvedLanguage || "en";
 
       const res = await fetch(
-        `${API}/api/news/getAllNews?limit=15&lang=${language}`,
+        `${API}/api/news/category/${NATIONAL_CATEGORY_ID}?limit=10&lang=${language}`,
       );
       const data = await res.json();
 
@@ -786,7 +787,7 @@ const PostGalleryTwo = () => {
                       fontWeight: "700",
                     }}
                   >
-                    {t("latestNews", "Latest News")}
+                    {t("nationalNews", "National News")}
                   </h4>
                 </div>
                 {textNews.length > 0 ? (
