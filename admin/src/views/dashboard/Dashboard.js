@@ -8,27 +8,45 @@ import {
   CProgressBar,
   CSpinner,
   CBadge,
+  CButton,
 } from '@coreui/react'
 import { CChartBar, CChartLine } from '@coreui/react-chartjs'
-import { cilNewspaper, cilPencil, cilFolderOpen, cilTrash, cilUser } from '@coreui/icons'
+import {
+  cilNewspaper,
+  cilPencil,
+  cilFolderOpen,
+  cilTrash,
+  cilUser,
+  cilArrowRight,
+} from '@coreui/icons'
 import CIcon from '@coreui/icons-react'
 import setting from '../../setting.json'
 import secureLocalStorage from 'react-secure-storage'
 
 const COLORS = {
   blue: '#2563eb',
-  red: '#dc2626',
   green: '#059669',
   orange: '#ea580c',
   purple: '#7c3aed',
+  red: '#e11d48',
   cyan: '#0891b2',
 }
 
+const GRADIENTS = {
+  blue: 'linear-gradient(135deg, #2563eb, #0891b2)',
+  green: 'linear-gradient(135deg, #059669, #10b981)',
+  orange: 'linear-gradient(135deg, #ea580c, #f59e0b)',
+  purple: 'linear-gradient(135deg, #7c3aed, #a855f7)',
+  red: 'linear-gradient(135deg, #e11d48, #fb7185)',
+  cyan: 'linear-gradient(135deg, #0891b2, #06b6d4)',
+}
+
 const cardStyle = {
-  border: 0,
-  borderRadius: 16,
+  border: '1px solid rgba(226,232,240,0.8)',
+  borderRadius: 18,
   overflow: 'hidden',
   minWidth: 0,
+  boxShadow: '0 5px 20px rgba(15,23,42,0.045)',
 }
 
 const decodeText = (value = '') => {
@@ -58,22 +76,21 @@ const getAuthorName = (item) => {
     return item.author.name || item.author.username || item.author.fullName || 'Unknown Author'
   }
 
-  return item.authorName || item.author || 'Unknown Author'
+  return item.authorName || (typeof item.author === 'string' ? item.author : '') || 'Unknown Author'
 }
 
 const getValidDate = (value) => {
   if (!value) return null
-
   const date = new Date(value)
   return Number.isNaN(date.getTime()) ? null : date
 }
 
-const isSameDay = (first, second) =>
-  first.getFullYear() === second.getFullYear() &&
-  first.getMonth() === second.getMonth() &&
-  first.getDate() === second.getDate()
+const isSameDay = (a, b) =>
+  a.getDate() === b.getDate() &&
+  a.getMonth() === b.getMonth() &&
+  a.getFullYear() === b.getFullYear()
 
-const formatNumber = (number) => Number(number || 0).toLocaleString('en-IN')
+const formatNumber = (value) => Number(value || 0).toLocaleString('en-IN')
 
 const Dashboard = () => {
   const [news, setNews] = useState([])
@@ -91,7 +108,6 @@ const Dashboard = () => {
 
         const loginInfo = secureLocalStorage.getItem('logininfo')
         const loginData = typeof loginInfo === 'string' ? JSON.parse(loginInfo) : loginInfo
-
         const token = loginData?.token
 
         const [newsResponse, categoryResponse] = await Promise.all([
@@ -124,14 +140,9 @@ const Dashboard = () => {
         }
       } catch (err) {
         console.error('Dashboard Error:', err)
-
-        if (!cancelled) {
-          setError(err.message || 'Something went wrong.')
-        }
+        if (!cancelled) setError(err.message || 'Something went wrong.')
       } finally {
-        if (!cancelled) {
-          setLoading(false)
-        }
+        if (!cancelled) setLoading(false)
       }
     }
 
@@ -161,8 +172,8 @@ const Dashboard = () => {
 
     const authorsToday = Object.entries(
       todaysPublishedNews.reduce((result, item) => {
-        const author = getAuthorName(item)
-        result[author] = (result[author] || 0) + 1
+        const name = getAuthorName(item)
+        result[name] = (result[name] || 0) + 1
         return result
       }, {}),
     )
@@ -214,6 +225,7 @@ const Dashboard = () => {
       count: analytics.activeNews.length,
       icon: cilNewspaper,
       color: COLORS.blue,
+      gradient: GRADIENTS.blue,
       detail: 'All active articles',
     },
     {
@@ -221,6 +233,7 @@ const Dashboard = () => {
       count: analytics.publishedNews.length,
       icon: cilNewspaper,
       color: COLORS.green,
+      gradient: GRADIENTS.green,
       detail: 'Live articles',
     },
     {
@@ -228,6 +241,7 @@ const Dashboard = () => {
       count: analytics.draftNews.length,
       icon: cilPencil,
       color: COLORS.orange,
+      gradient: GRADIENTS.orange,
       detail: 'Pending publication',
     },
     {
@@ -235,6 +249,7 @@ const Dashboard = () => {
       count: categories.length,
       icon: cilFolderOpen,
       color: COLORS.purple,
+      gradient: GRADIENTS.purple,
       detail: 'Available categories',
     },
     {
@@ -242,6 +257,7 @@ const Dashboard = () => {
       count: analytics.deletedNews.length,
       icon: cilTrash,
       color: COLORS.red,
+      gradient: GRADIENTS.red,
       detail: 'Deleted records',
     },
     {
@@ -249,41 +265,58 @@ const Dashboard = () => {
       count: analytics.totalViews,
       icon: cilNewspaper,
       color: COLORS.cyan,
-      detail: 'Views on published articles',
+      gradient: GRADIENTS.cyan,
+      detail: 'Published article views',
     },
   ]
 
   const maxStat = Math.max(...stats.map((item) => item.count), 1)
 
-  const chartOptions = {
+  const horizontalChartOptions = {
     indexAxis: 'y',
     responsive: true,
     maintainAspectRatio: false,
-    animation: {
-      duration: 500,
-    },
     plugins: {
-      legend: {
-        display: false,
-      },
+      legend: { display: false },
     },
     scales: {
       x: {
         beginAtZero: true,
-        grid: {
-          color: 'rgba(148,163,184,0.15)',
-        },
-        ticks: {
-          precision: 0,
-        },
+        grid: { color: '#edf1f7' },
+        ticks: { precision: 0 },
       },
       y: {
-        grid: {
-          display: false,
+        grid: { display: false },
+        ticks: {
+          color: '#475569',
+          font: { size: 11 },
         },
       },
     },
   }
+
+  const panelHeading = (icon, title, subtitle, color) => (
+    <div className="d-flex align-items-center gap-3 mb-4">
+      <div
+        className="d-flex align-items-center justify-content-center rounded-circle flex-shrink-0"
+        style={{
+          width: 46,
+          height: 46,
+          color: '#fff',
+          background: `linear-gradient(135deg, ${color}, ${color}bb)`,
+          boxShadow: `0 5px 14px ${color}30`,
+        }}
+      >
+        <CIcon icon={icon} size="lg" />
+      </div>
+      <div style={{ minWidth: 0 }}>
+        <h5 className="fw-bold mb-1" style={{ color: '#172033' }}>
+          {title}
+        </h5>
+        <p className="text-body-secondary small mb-0">{subtitle}</p>
+      </div>
+    </div>
+  )
 
   if (loading) {
     return (
@@ -301,77 +334,145 @@ const Dashboard = () => {
     <div
       className="container-fluid p-3 p-md-4"
       style={{
-        background: '#f5f7fb',
+        background: '#f3f6fc',
         minHeight: '100vh',
-        width: '100%',
         maxWidth: '100%',
+        width: '100%',
         overflowX: 'hidden',
         boxSizing: 'border-box',
       }}
     >
-      {/* Dashboard header */}
-      <div className="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
-        <div style={{ minWidth: 0 }}>
-          <h3 className="fw-bold mb-1" style={{ color: '#172033' }}>
-            News Dashboard
-          </h3>
-          <p className="text-body-secondary mb-0">
-            Bharat 19 Express · Content performance and analytics
+      {/* Welcome banner */}
+      <div
+        className="d-flex flex-wrap align-items-center justify-content-between gap-3 p-4 mb-4"
+        style={{
+          borderRadius: 20,
+          color: '#fff',
+          background:
+            'radial-gradient(circle at 85% 20%, #2563eb 0, transparent 30%), linear-gradient(115deg, #101b3d, #172554 60%, #312e81)',
+          boxShadow: '0 12px 28px rgba(30,64,175,0.16)',
+          position: 'relative',
+          overflow: 'hidden',
+        }}
+      >
+        <div style={{ position: 'relative', zIndex: 1 }}>
+          <div className="small mb-2" style={{ color: '#bfdbfe' }}>
+            BHARAT 19 EXPRESS · ADMIN PANEL
+          </div>
+          <h2 className="fw-bold mb-2">
+            Welcome Back, <span style={{ color: '#fb7185' }}>Admin!</span>
+          </h2>
+          <p className="mb-0" style={{ color: '#dbeafe' }}>
+            Here&apos;s what&apos;s happening with your news portal today.
           </p>
         </div>
 
-        <CBadge color="success" className="px-3 py-2">
-          Dashboard Overview
-        </CBadge>
+        <div
+          className="d-flex align-items-center gap-3 p-3"
+          style={{
+            position: 'relative',
+            zIndex: 1,
+            background: 'rgba(255,255,255,0.1)',
+            border: '1px solid rgba(255,255,255,0.16)',
+            borderRadius: 14,
+            backdropFilter: 'blur(8px)',
+          }}
+        >
+          <CIcon icon={cilFolderOpen} size="xl" />
+          <div>
+            <div className="fw-semibold">
+              {new Date().toLocaleDateString('en-IN', {
+                weekday: 'short',
+                day: 'numeric',
+                month: 'short',
+                year: 'numeric',
+              })}
+            </div>
+            <small style={{ color: '#bfdbfe' }}>Today&apos;s overview</small>
+          </div>
+        </div>
       </div>
 
       {error && (
         <div className="alert alert-danger" role="alert">
           {error}
-          <button
-            type="button"
-            className="btn btn-sm btn-outline-danger ms-3"
+          <CButton
+            size="sm"
+            color="danger"
+            variant="outline"
+            className="ms-3"
             onClick={() => window.location.reload()}
           >
             Retry
-          </button>
+          </CButton>
         </div>
       )}
 
-      {/* Summary cards */}
+      {/* Colorful summary cards */}
       <CRow className="g-3 mb-4">
         {stats.map((item) => (
-          <CCol xs={12} sm={6} xl={4} key={item.title}>
-            <CCard className="shadow-sm h-100" style={cardStyle}>
-              <CCardBody className="p-3 p-md-4">
-                <div className="d-flex align-items-center justify-content-between gap-3">
-                  <div style={{ minWidth: 0 }}>
-                    <div className="text-body-secondary small mb-2">{item.title}</div>
-
-                    <h3 className="fw-bold mb-1" style={{ color: '#172033' }}>
-                      {formatNumber(item.count)}
-                    </h3>
-
-                    <small className="text-body-secondary">{item.detail}</small>
-                  </div>
-
+          <CCol xs={12} sm={6} lg={4} xxl={2} key={item.title}>
+            <CCard
+              className="h-100 border-0"
+              style={{
+                borderRadius: 18,
+                color: '#fff',
+                background: item.gradient,
+                overflow: 'hidden',
+                position: 'relative',
+                boxShadow: `0 8px 20px ${item.color}26`,
+              }}
+            >
+              <CCardBody className="p-3 p-xl-4">
+                <div className="d-flex justify-content-between align-items-start gap-2 mb-3">
                   <div
-                    className="d-flex align-items-center justify-content-center rounded-3 flex-shrink-0"
+                    className="d-flex align-items-center justify-content-center rounded-3"
                     style={{
-                      width: 52,
-                      height: 52,
-                      backgroundColor: `${item.color}18`,
-                      color: item.color,
+                      width: 46,
+                      height: 46,
+                      flexShrink: 0,
+                      background: 'rgba(255,255,255,0.2)',
+                      border: '1px solid rgba(255,255,255,0.22)',
                     }}
                   >
                     <CIcon icon={item.icon} size="xl" />
                   </div>
+                  <span
+                    className="rounded-pill px-2 py-1 small"
+                    style={{
+                      background: 'rgba(255,255,255,0.88)',
+                      color: item.color,
+                      fontWeight: 700,
+                      whiteSpace: 'nowrap',
+                    }}
+                  >
+                    LIVE
+                  </span>
                 </div>
 
-                <CProgress className="mt-3" style={{ height: 5 }}>
+                <div className="small mb-1" style={{ opacity: 0.9 }}>
+                  {item.title}
+                </div>
+
+                <h2 className="fw-bold mb-1">{formatNumber(item.count)}</h2>
+
+                <div className="small mb-3" style={{ minHeight: 20, opacity: 0.88 }}>
+                  {item.detail}
+                </div>
+
+                <CProgress
+                  style={{
+                    height: 5,
+                    background: 'rgba(255,255,255,0.25)',
+                    borderRadius: 20,
+                  }}
+                >
                   <CProgressBar
                     value={Math.min((item.count / maxStat) * 100, 100)}
-                    style={{ backgroundColor: item.color }}
+                    style={{
+                      background: '#fff',
+                      borderRadius: 20,
+                    }}
                   />
                 </CProgress>
               </CCardBody>
@@ -380,131 +481,165 @@ const Dashboard = () => {
         ))}
       </CRow>
 
-      {/* Main analytics */}
+      {/* Most viewed and today's authors */}
       <CRow className="g-4 mb-4">
-        {/* Most viewed news */}
         <CCol xs={12} xl={7}>
-          <CCard className="shadow-sm h-100" style={cardStyle}>
+          <CCard className="h-100" style={cardStyle}>
             <CCardBody className="p-3 p-md-4">
-              <h5 className="fw-bold mb-1">Most Viewed News</h5>
-              <p className="text-body-secondary small mb-4">
-                Top published articles ranked by total views
-              </p>
+              {panelHeading(
+                cilNewspaper,
+                'Most Viewed News',
+                'Top published articles ranked by total views',
+                COLORS.blue,
+              )}
 
               {analytics.mostViewedNews.some((item) => getViews(item) > 0) ? (
-                <div style={{ height: 320, width: '100%', minWidth: 0 }}>
+                <div style={{ height: 310, width: '100%', minWidth: 0 }}>
                   <CChartBar
                     data={{
                       labels: analytics.mostViewedNews.map((item) => {
                         const title = getTitle(item)
-                        return title.length > 36 ? `${title.slice(0, 36)}…` : title
+                        return title.length > 34 ? `${title.slice(0, 34)}…` : title
                       }),
                       datasets: [
                         {
                           label: 'Views',
-                          backgroundColor: COLORS.blue,
-                          borderRadius: 6,
                           data: analytics.mostViewedNews.map(getViews),
-                          barThickness: 22,
+                          backgroundColor: [
+                            '#2563eb',
+                            '#3b82f6',
+                            '#60a5fa',
+                            '#818cf8',
+                            '#a78bfa',
+                            '#38bdf8',
+                            '#0891b2',
+                          ],
+                          borderRadius: 7,
+                          barThickness: 23,
                         },
                       ],
                     }}
-                    options={chartOptions}
+                    options={horizontalChartOptions}
                   />
                 </div>
               ) : (
                 <div className="text-center text-body-secondary py-5">
                   <CIcon icon={cilNewspaper} size="3xl" className="mb-3" />
                   <p className="fw-semibold mb-1">No view analytics available</p>
-                  <small>Configure view tracking in the backend to display rankings.</small>
+                  <small>Configure view tracking in the backend to rank articles.</small>
                 </div>
               )}
             </CCardBody>
           </CCard>
         </CCol>
 
-        {/* Most published today */}
         <CCol xs={12} xl={5}>
-          <CCard className="shadow-sm h-100" style={cardStyle}>
+          <CCard className="h-100" style={cardStyle}>
             <CCardBody className="p-3 p-md-4">
-              <div className="d-flex flex-wrap justify-content-between align-items-start gap-2 mb-1">
-                <h5 className="fw-bold mb-0">Most Published Today</h5>
-                <CBadge color="primary">{analytics.todaysPublishedNews.length} articles</CBadge>
+              <div className="d-flex justify-content-between align-items-start gap-2">
+                {panelHeading(
+                  cilUser,
+                  'Most Published Today',
+                  'Authors ranked by articles published today',
+                  COLORS.purple,
+                )}
+                <CBadge
+                  className="px-3 py-2"
+                  style={{
+                    background: '#f3e8ff',
+                    color: COLORS.purple,
+                    whiteSpace: 'nowrap',
+                  }}
+                >
+                  {analytics.todaysPublishedNews.length} articles
+                </CBadge>
               </div>
 
-              <p className="text-body-secondary small mb-4">
-                Authors ranked by published articles today
-              </p>
-
               {analytics.authorsToday.length > 0 ? (
-                <>
-                  <div style={{ height: 260, width: '100%', minWidth: 0 }}>
-                    <CChartBar
-                      data={{
-                        labels: analytics.authorsToday.map(([name]) =>
-                          name.length > 22 ? `${name.slice(0, 22)}…` : name,
-                        ),
-                        datasets: [
-                          {
-                            label: 'Published articles',
-                            backgroundColor: COLORS.green,
-                            borderRadius: 6,
-                            data: analytics.authorsToday.map(([, count]) => count),
-                            barThickness: 22,
-                          },
-                        ],
-                      }}
-                      options={chartOptions}
-                    />
-                  </div>
+                <div>
+                  {analytics.authorsToday.map(([name, count], index) => {
+                    const maxAuthorCount = Math.max(
+                      ...analytics.authorsToday.map((author) => author[1]),
+                      1,
+                    )
 
-                  <div className="mt-3">
-                    {analytics.authorsToday.slice(0, 5).map(([name, count], index) => (
+                    return (
                       <div
                         key={name}
-                        className="d-flex justify-content-between align-items-center gap-2 py-3 border-bottom"
+                        className="d-flex align-items-center gap-3 py-3"
+                        style={{
+                          borderBottom: '1px solid #edf0f6',
+                          minWidth: 0,
+                        }}
                       >
-                        <div className="d-flex align-items-center gap-2" style={{ minWidth: 0 }}>
-                          <span
-                            className="d-flex align-items-center justify-content-center rounded-circle flex-shrink-0"
-                            style={{
-                              width: 30,
-                              height: 30,
-                              backgroundColor: index === 0 ? '#dcfce7' : '#f1f5f9',
-                              color: index === 0 ? '#166534' : '#475569',
-                              fontSize: 12,
-                              fontWeight: 700,
-                            }}
-                          >
-                            {index + 1}
-                          </span>
+                        <div
+                          className="d-flex align-items-center justify-content-center rounded-circle flex-shrink-0"
+                          style={{
+                            width: 32,
+                            height: 32,
+                            background:
+                              index === 0 ? '#fef3c7' : index === 1 ? '#e2e8f0' : '#f1f5f9',
+                            color: index === 0 ? '#92400e' : index === 1 ? '#334155' : '#64748b',
+                            fontWeight: 800,
+                            fontSize: 12,
+                          }}
+                        >
+                          {index + 1}
+                        </div>
 
-                          <span
+                        <div
+                          className="d-flex align-items-center justify-content-center rounded-circle flex-shrink-0"
+                          style={{
+                            width: 40,
+                            height: 40,
+                            color: '#fff',
+                            fontWeight: 700,
+                            background: index % 2 === 0 ? GRADIENTS.purple : GRADIENTS.blue,
+                          }}
+                        >
+                          {name.charAt(0).toUpperCase()}
+                        </div>
+
+                        <div style={{ minWidth: 0, flex: 1 }}>
+                          <div
                             className="fw-semibold"
                             style={{
-                              minWidth: 0,
+                              color: '#1e293b',
                               overflowWrap: 'anywhere',
                             }}
                           >
                             {name}
-                          </span>
-                        </div>
+                          </div>
+                          <small className="text-body-secondary">
+                            {count} {count === 1 ? 'post' : 'posts'} today
+                          </small>
 
-                        <CBadge
-                          color={index === 0 ? 'success' : 'secondary'}
-                          className="flex-shrink-0"
-                        >
-                          {count} {count === 1 ? 'post' : 'posts'}
-                        </CBadge>
+                          <CProgress
+                            className="mt-2"
+                            style={{
+                              height: 6,
+                              background: '#edf1f8',
+                              borderRadius: 20,
+                            }}
+                          >
+                            <CProgressBar
+                              value={(count / maxAuthorCount) * 100}
+                              style={{
+                                background: index % 2 === 0 ? GRADIENTS.purple : GRADIENTS.blue,
+                                borderRadius: 20,
+                              }}
+                            />
+                          </CProgress>
+                        </div>
                       </div>
-                    ))}
-                  </div>
-                </>
+                    )
+                  })}
+                </div>
               ) : (
                 <div className="text-center text-body-secondary py-5">
                   <CIcon icon={cilUser} size="3xl" className="mb-3" />
                   <p className="fw-semibold mb-1">No articles published today</p>
-                  <small>Published articles will appear here automatically.</small>
+                  <small>Today&apos;s author rankings will appear here.</small>
                 </div>
               )}
             </CCardBody>
@@ -515,14 +650,16 @@ const Dashboard = () => {
       {/* Publishing activity and recent news */}
       <CRow className="g-4">
         <CCol xs={12} xl={7}>
-          <CCard className="shadow-sm h-100" style={cardStyle}>
+          <CCard className="h-100" style={cardStyle}>
             <CCardBody className="p-3 p-md-4">
-              <h5 className="fw-bold mb-1">News Publishing Activity</h5>
-              <p className="text-body-secondary small mb-4">
-                Published articles created over the last seven days
-              </p>
+              {panelHeading(
+                cilPencil,
+                'News Publishing Activity',
+                'Published articles created over the last seven days',
+                COLORS.green,
+              )}
 
-              <div style={{ height: 270, width: '100%', minWidth: 0 }}>
+              <div style={{ height: 285, width: '100%', minWidth: 0 }}>
                 <CChartLine
                   data={{
                     labels: analytics.lastSevenDays.map((day) =>
@@ -537,10 +674,12 @@ const Dashboard = () => {
                         data: analytics.dailyPublishingCounts,
                         borderColor: COLORS.blue,
                         backgroundColor: 'rgba(37,99,235,0.12)',
-                        pointBackgroundColor: COLORS.blue,
-                        pointRadius: 4,
+                        pointBackgroundColor: '#fff',
+                        pointBorderColor: COLORS.blue,
+                        pointBorderWidth: 3,
+                        pointRadius: 5,
                         fill: true,
-                        tension: 0.35,
+                        tension: 0.4,
                       },
                     ],
                   }}
@@ -554,6 +693,7 @@ const Dashboard = () => {
                       y: {
                         beginAtZero: true,
                         ticks: { precision: 0 },
+                        grid: { color: '#edf1f7' },
                       },
                       x: {
                         grid: { display: false },
@@ -566,67 +706,86 @@ const Dashboard = () => {
           </CCard>
         </CCol>
 
-        {/* Recent news - overflow fixed */}
         <CCol xs={12} xl={5}>
-          <CCard className="shadow-sm h-100" style={cardStyle}>
+          <CCard className="h-100" style={cardStyle}>
             <CCardBody className="p-3 p-md-4">
-              <div className="d-flex justify-content-between align-items-center gap-2 mb-1">
-                <h5 className="fw-bold mb-0">Recent News</h5>
-                <CBadge color="secondary">{analytics.recentNews.length} articles</CBadge>
+              <div className="d-flex align-items-start justify-content-between gap-2">
+                {panelHeading(
+                  cilNewspaper,
+                  'Recent News',
+                  'Latest content and publishing status',
+                  COLORS.red,
+                )}
+                <span
+                  className="small fw-semibold"
+                  style={{ color: COLORS.red, whiteSpace: 'nowrap' }}
+                >
+                  Latest
+                  <CIcon icon={cilArrowRight} className="ms-1" />
+                </span>
               </div>
 
-              <p className="text-body-secondary small mb-3">Latest content and publishing status</p>
-
               {analytics.recentNews.length > 0 ? (
-                analytics.recentNews.map((item) => (
-                  <div
-                    key={item._id}
-                    className="py-3 border-bottom"
-                    style={{
-                      minWidth: 0,
-                      width: '100%',
-                      overflow: 'hidden',
-                    }}
-                  >
+                analytics.recentNews.map((item) => {
+                  const created = getValidDate(item.createdAt)
+                  const published = Number(item.type) === 1
+
+                  return (
                     <div
-                      className="fw-semibold mb-2"
-                      title={getTitle(item)}
+                      key={item._id}
+                      className="py-3"
                       style={{
-                        fontSize: '0.93rem',
-                        lineHeight: 1.55,
-                        overflowWrap: 'anywhere',
-                        wordBreak: 'break-word',
-                        whiteSpace: 'normal',
-                        display: '-webkit-box',
-                        WebkitLineClamp: 2,
-                        WebkitBoxOrient: 'vertical',
+                        borderBottom: '1px solid #edf0f6',
+                        minWidth: 0,
+                        width: '100%',
                         overflow: 'hidden',
                       }}
                     >
-                      {getTitle(item)}
-                    </div>
-
-                    <div className="d-flex flex-wrap justify-content-between align-items-center gap-2">
-                      <small
-                        className="text-body-secondary"
+                      <div
+                        className="fw-semibold mb-2"
+                        title={getTitle(item)}
                         style={{
-                          minWidth: 0,
+                          fontSize: '0.91rem',
+                          lineHeight: 1.55,
+                          color: '#1e293b',
                           overflowWrap: 'anywhere',
+                          wordBreak: 'break-word',
+                          display: '-webkit-box',
+                          WebkitLineClamp: 2,
+                          WebkitBoxOrient: 'vertical',
+                          overflow: 'hidden',
                         }}
                       >
-                        {getAuthorName(item)}
-                        {' · '}
-                        {getValidDate(item.createdAt)
-                          ? getValidDate(item.createdAt).toLocaleDateString('en-IN')
-                          : 'Date unavailable'}
-                      </small>
+                        {getTitle(item)}
+                      </div>
 
-                      <CBadge color={Number(item.type) === 1 ? 'success' : 'warning'}>
-                        {Number(item.type) === 1 ? 'Published' : 'Draft'}
-                      </CBadge>
+                      <div className="d-flex flex-wrap justify-content-between align-items-center gap-2">
+                        <div
+                          className="text-body-secondary small"
+                          style={{
+                            minWidth: 0,
+                            overflowWrap: 'anywhere',
+                          }}
+                        >
+                          {getAuthorName(item)}
+                          {' · '}
+                          {created ? created.toLocaleDateString('en-IN') : 'Date unavailable'}
+                        </div>
+
+                        <CBadge
+                          className="px-2 py-1"
+                          style={{
+                            color: published ? '#047857' : '#b45309',
+                            background: published ? '#d1fae5' : '#fef3c7',
+                            flexShrink: 0,
+                          }}
+                        >
+                          {published ? 'Published' : 'Draft'}
+                        </CBadge>
+                      </div>
                     </div>
-                  </div>
-                ))
+                  )
+                })
               ) : (
                 <div className="text-center text-body-secondary py-5">
                   <CIcon icon={cilNewspaper} size="3xl" className="mb-3" />
