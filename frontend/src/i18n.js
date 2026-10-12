@@ -42,6 +42,7 @@ const resources = {
       appStore: "App Store",
       loading: "Loading...",
       showMore: "Show More",
+      trendingNews: "Trending News",
 
       uttarPradesh: "Uttar Pradesh",
       latestNews: "Latest News",
@@ -129,7 +130,7 @@ const resources = {
       appStore: "App Store",
       loading: "लोड हो रहा है...",
       showMore: "और दिखाएं",
-
+      trendingNews: "ट्रेंडिंग न्यूज़",
       uttarPradesh: "उत्तर प्रदेश",
       latestNews: "ताज़ा खबरें",
       nationalNews: "राष्ट्रीय समाचार",
@@ -215,7 +216,7 @@ const resources = {
       appStore: "App Store",
       loading: "لوڈ ہو رہا ہے...",
       showMore: "مزید دکھائیں",
-
+      trendingNews: "اہم خبریں",
       uttarPradesh: "اتر پردیش",
       latestNews: "تازہ خبریں",
 
@@ -295,6 +296,7 @@ const resources = {
       appStore: "App Store",
       loading: "লোড হচ্ছে...",
       showMore: "আরও দেখুন",
+      trendingNews: "ট্রেন্ডিং খবর",
 
       uttarPradesh: "উত্তর প্রদেশ",
       latestNews: "সর্বশেষ খবর",
@@ -382,7 +384,7 @@ const resources = {
       seeMore: "आणखी पहा",
       uttarPradesh: "उत्तर प्रदेश",
       latestNews: "ताज्या बातम्या",
-
+      trendingNews: "ट्रेंडिंग बातम्या",
       videosNews: "व्हिडिओ बातम्या",
 
       lucknow: "लखनऊ",
