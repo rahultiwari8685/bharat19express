@@ -14,6 +14,9 @@ const PostGalleryTwo = () => {
 
   const API = "https://api.iotaclasses.in";
 
+  // Uttar Pradesh category ID
+  const UP_CATEGORY_ID = "YOUR_UP_CATEGORY_ID";
+
   const [videoNews, setVideoNews] = useState(null);
   const [isVideoOpen, setIsVideoOpen] = useState(false);
   const [videoId, setVideoId] = useState("");
@@ -243,19 +246,19 @@ const PostGalleryTwo = () => {
     try {
       setLatestNewsLoading(true);
 
-      // const res = await fetch(`${API}/api/news/getAllNews?limit=5`);
-
       const language = i18n.resolvedLanguage || "en";
 
       const res = await fetch(
-        `${API}/api/news/getAllNews?limit=5&lang=${language}`,
+        `${API}/api/news/category/${UP_CATEGORY_ID}?limit=10&lang=${language}`,
       );
 
       const data = await res.json();
 
       if (data.status && Array.isArray(data.data)) {
         const news = data.data
+          // Only published news
           .filter((item) => Number(item.type) === 1)
+          // Latest news first
           .sort(
             (a, b) =>
               new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
@@ -267,7 +270,7 @@ const PostGalleryTwo = () => {
         setLatestNews([]);
       }
     } catch (error) {
-      console.error("Latest News Error:", error);
+      console.error("Uttar Pradesh News API Error:", error);
       setLatestNews([]);
     } finally {
       setLatestNewsLoading(false);
@@ -1024,7 +1027,7 @@ const PostGalleryTwo = () => {
                           fontWeight: "700",
                         }}
                       >
-                        Top News
+                        {t("uttarPradesh", "Uttar Pradesh")}
                       </h4>
                     </div>
 
