@@ -154,7 +154,7 @@ const TrendingNewsTwo = () => {
 
               <div className="meta3">
                 <Link to={category?.slug ? `/category/${category.slug}` : "#"}>
-                  {category?.name || t("uttarPradesh", "Uttar Pradesh")}
+                  {getCategoryName(category)}
                 </Link>
 
                 <Link to={newsUrl}>
