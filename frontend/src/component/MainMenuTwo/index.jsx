@@ -71,13 +71,34 @@ const MainMenuTwo = () => {
                 >
                   <ul className="nav navbar-nav" id="scroll">
                     {/* HOME */}
-                    <li className="nav-item home-menu-item">
+
+                    {/* HOME */}
+                    <li
+                      className="nav-item"
+                      style={{
+                        margin: 0,
+                        padding: 0,
+                        listStyle: "none",
+                      }}
+                    >
                       <NavLink
                         to="/"
                         end
-                        className={({ isActive }) =>
-                          `home-menu-link${isActive ? " active" : ""}`
-                        }
+                        style={({ isActive }) => ({
+                          display: "inline-flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          gap: "6px",
+                          padding: "8px 13px",
+                          backgroundColor: isActive ? "#e31e24" : "transparent",
+                          color: "#fff",
+                          borderRadius: "4px",
+                          fontSize: "16px",
+                          fontWeight: 700,
+                          lineHeight: 1.3,
+                          textDecoration: "none",
+                          whiteSpace: "nowrap",
+                        })}
                       >
                         <FontAwesome name="home" />
                         <span>{t("home")}</span>
