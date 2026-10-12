@@ -20,7 +20,7 @@ const PostGalleryTwo = () => {
   const [videoNews, setVideoNews] = useState(null);
   const [isVideoOpen, setIsVideoOpen] = useState(false);
   const [videoId, setVideoId] = useState("");
-  const { i18n } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [isYoutubeLive, setIsYoutubeLive] = useState(false);
   const [youtubeLiveId, setYoutubeLiveId] = useState("");
   const [youtubeLiveTitle, setYoutubeLiveTitle] = useState("");
