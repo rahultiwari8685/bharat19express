@@ -56,7 +56,10 @@ const MainMenuTwo = () => {
       <div className="main-menu">
         <div className="main-nav clearfix is-ts-sticky">
           <div className="row justify-content-between">
-            <nav className="navbar navbar-expand-lg col-lg-8 align-self-center">
+            <nav
+              className="navbar navbar-expand-lg col-lg-8 align-self-center"
+              style={{ paddingTop: "4px", paddingBottom: "4px" }}
+            >
               <div className="site-nav-inner">
                 <button
                   className="navbar-toggler"
@@ -69,7 +72,11 @@ const MainMenuTwo = () => {
                   id="navbarSupportedContent"
                   className="collapse navbar-collapse navbar-responsive-collapse"
                 >
-                  <ul className="nav navbar-nav" id="scroll">
+                  <ul
+                    className="nav navbar-nav"
+                    id="scroll"
+                    style={{ alignItems: "center", minHeight: "42px" }}
+                  >
                     {/* HOME */}
 
                     {/* HOME */}
