@@ -15,6 +15,7 @@ import customerAuth from "./routes/customerAuth.js";
 import advertisementRoutes from "./routes/advertisementRoutes.js";
 import rateLimit from "express-rate-limit";
 import goldRoutes from "./routes/gold.js";
+
 import "./cron/publishScheduledNews.js";
 import siteSettingRoutes from "./routes/siteSettingRoutes.js";
 import uploadRoutes from "./routes/uploadRoutes.js";
@@ -25,7 +26,7 @@ import sitemapRoutes from "./routes/sitemapRoutes.js";
 import pollRoutes from "./routes/pollRoutes.js";
 import youtubeRoutes from "./routes/youtubeRoutes.js";
 import { checkLiveStatus } from "./services/youtubeService.js";
-const galleryRoutes = require("./routes/gallery");
+import galleryRoutes from "./routes/gallery.js";
 const app = express();
 
 const __filename = fileURLToPath(import.meta.url);
@@ -88,8 +89,6 @@ app.use(
 app.use(express.json({ limit: "300mb" }));
 app.use(express.urlencoded({ extended: true, limit: "300mb" }));
 
-app.use("/uploads", express.static("uploads"));
-
 app.use("/api/users", userRoutes);
 app.use("/api/categories", categoryRoutes);
 app.use("/api/news", newsRoutes);
@@ -107,7 +106,7 @@ app.use("/api/magazines", magazineRoutes);
 app.use("/api/polls", pollRoutes);
 app.use("/api/youtube", youtubeRoutes);
 
-app.use("/uploads/gallery", express.static("uploads/gallery"));
+app.use("/uploads", express.static(path.join(__dirname, "../uploads")));
 
 app.use("/api/gallery", galleryRoutes);
 app.get("/api/youtube/live", async (req, res) => {
