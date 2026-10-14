@@ -1,57 +1,52 @@
-// backend/routes/gallery.js
-const express = require("express");
-const multer = require("multer");
-const path = require("path");
-const fs = require("fs");
-const Gallery = require("../models/Gallery");
+import express from "express";
+import multer from "multer";
+import path from "path";
+import fs from "fs";
+import { fileURLToPath } from "url";
+import Gallery from "../models/Gallery.js";
 
 const router = express.Router();
 
-const uploadDir = path.join(process.cwd(), "uploads", "gallery");
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const uploadDir = path.join(__dirname, "../../uploads/gallery");
 
 fs.mkdirSync(uploadDir, { recursive: true });
 
 const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, uploadDir);
-  },
+  destination: (req, file, cb) => cb(null, uploadDir),
   filename: (req, file, cb) => {
     const ext = path.extname(file.originalname).toLowerCase();
-    const uniqueName = `${Date.now()}-${Math.round(Math.random() * 1e9)}${ext}`;
-
-    cb(null, uniqueName);
+    cb(null, `${Date.now()}-${Math.round(Math.random() * 1e9)}${ext}`);
   },
 });
 
 const upload = multer({
   storage,
-  limits: {
-    fileSize: 200 * 1024 * 1024, // 200 MB
-  },
+  limits: { fileSize: 200 * 1024 * 1024 },
   fileFilter: (req, file, cb) => {
     const allowed = ["video/mp4", "video/webm", "video/ogg", "video/quicktime"];
 
     if (!allowed.includes(file.mimetype)) {
-      return cb(new Error("Only MP4, WebM, OGG or MOV videos are allowed"));
+      return cb(new Error("Unsupported video format"));
     }
 
     cb(null, true);
   },
 });
 
-// GET /api/gallery — published videos for website
 router.get("/", async (req, res) => {
   try {
     const videos = await Gallery.find({ isPublished: true })
       .sort({ createdAt: -1 })
-      .select("title filename originalName mimeType createdAt");
+      .lean();
 
-    const baseUrl = "https://api.bharat19express.com";
     res.json({
       success: true,
       data: videos.map((video) => ({
-        ...video.toObject(),
-        videoUrl: `${baseUrl}/uploads/gallery/${encodeURIComponent(video.filename)}`,
+        ...video,
+        videoUrl: `https://api.bharat19express.com/uploads/gallery/${encodeURIComponent(video.filename)}`,
       })),
     });
   } catch (error) {
@@ -63,18 +58,15 @@ router.get("/", async (req, res) => {
   }
 });
 
-// POST /api/gallery — upload video from admin
-// IMPORTANT: Add your existing admin-auth middleware here.
+// IMPORTANT: Add your existing admin-auth middleware before upload.
 router.post("/", upload.single("video"), async (req, res) => {
   try {
     const title = req.body.title?.trim();
 
     if (!title || !req.file) {
-      if (req.file) fs.unlinkSync(req.file.path);
-
       return res.status(400).json({
         success: false,
-        message: "Video title and file are required",
+        message: "Title and video are required",
       });
     }
 
@@ -93,7 +85,6 @@ router.post("/", upload.single("video"), async (req, res) => {
     });
   } catch (error) {
     console.error("Gallery upload error:", error);
-
     res.status(500).json({
       success: false,
       message: "Video upload failed",
@@ -101,4 +92,4 @@ router.post("/", upload.single("video"), async (req, res) => {
   }
 });
 
-module.exports = router;
+export default router;
