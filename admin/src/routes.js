@@ -1,4 +1,5 @@
 import React from 'react'
+import GalleryManager from './views/pages/galleryManager/GalleryManager'
 
 const Dashboard = React.lazy(() => import('./views/dashboard/Dashboard'))
 const News = React.lazy(() => import('./views/pages/news/News'))
@@ -30,6 +31,7 @@ const routes = [
   { path: '/DeletedNews', name: 'Deleted News', element: DeletedNews },
   { path: '/ScheduleNews', name: 'Scheduled News', element: ScheduleNews },
   { path: '/siteSetting', name: 'Site Setting', element: SiteSetting },
+  { path: '/gallery', name: 'Gallery', element: GalleryManager },
   // { path: '/plans', name: 'Plans', element: Plans },
 
   { path: '/subscription', name: 'Subscription', element: Subscriptions },

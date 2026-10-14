@@ -25,7 +25,7 @@ import sitemapRoutes from "./routes/sitemapRoutes.js";
 import pollRoutes from "./routes/pollRoutes.js";
 import youtubeRoutes from "./routes/youtubeRoutes.js";
 import { checkLiveStatus } from "./services/youtubeService.js";
-
+const galleryRoutes = require("./routes/gallery");
 const app = express();
 
 const __filename = fileURLToPath(import.meta.url);
@@ -106,6 +106,10 @@ app.use("/", sitemapRoutes);
 app.use("/api/magazines", magazineRoutes);
 app.use("/api/polls", pollRoutes);
 app.use("/api/youtube", youtubeRoutes);
+
+app.use("/uploads/gallery", express.static("uploads/gallery"));
+
+app.use("/api/gallery", galleryRoutes);
 app.get("/api/youtube/live", async (req, res) => {
   try {
     const result = await checkLiveStatus();

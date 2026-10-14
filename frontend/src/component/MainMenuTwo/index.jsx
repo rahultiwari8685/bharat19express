@@ -282,7 +282,29 @@ const MainMenuTwo = () => {
                 </NavLink>
 
                 <NavLink
-                  to="/epaper"
+                  to="/gallery"
+                  style={{
+                    display: "inline-flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    gap: "6px",
+                    minHeight: "34px",
+                    padding: "0 13px",
+                    borderRadius: "5px",
+                    background: "#130d0d",
+                    color: "#fff",
+                    fontSize: "12px",
+                    fontWeight: "800",
+                    textDecoration: "none",
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  <FontAwesome name="newspaper-o" />
+                  <span>Gallery</span>
+                </NavLink>
+
+                <NavLink
+                  to="/login"
                   style={{
                     display: "inline-flex",
                     alignItems: "center",
