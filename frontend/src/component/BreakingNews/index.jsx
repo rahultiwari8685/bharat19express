@@ -425,3 +425,4 @@ const BreakingNews = () => {
 };
 
 export default BreakingNews;
+                          
