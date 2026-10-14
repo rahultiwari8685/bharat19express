@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
-const API = "https://api.iotaclasses.in";
+const API = "https://api.bharat19express.com";
 
 const Epaper = () => {
   const [epapers, setEpapers] = useState([]);

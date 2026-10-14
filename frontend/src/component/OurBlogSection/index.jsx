@@ -4,7 +4,7 @@
 // import { Link } from "react-router-dom";
 
 // const OurBlogSection = ({ dark }) => {
-//   const API = "https://api.iotaclasses.in";
+//   const API = "https://api.bharat19express.com";
 
 //   const [blogs, setBlogs] = useState([]);
 
@@ -105,7 +105,7 @@ import ProtoTypes from "prop-types";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
-const API = "https://api.iotaclasses.in";
+const API = "https://api.bharat19express.com";
 
 const OurBlogSection = ({ dark }) => {
   const { i18n, t } = useTranslation();

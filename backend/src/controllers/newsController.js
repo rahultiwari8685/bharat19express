@@ -1351,11 +1351,11 @@ export const shareNews = async (req, res) => {
 
       description: news.subtitle || news.metaDescription || "",
 
-      image: `https://api.iotaclasses.in/uploads/images/${news.thumbnail}`,
+      image: `https://api.bharat19express.com/uploads/images/${news.thumbnail}`,
 
-      url: `https://api.iotaclasses.in/api/news/share/${news.slug}`,
+      url: `https://api.bharat19express.com/api/news/share/${news.slug}`,
 
-      frontendUrl: `https://iotaclasses.in/news/${news.slug}`,
+      frontendUrl: `https://bharat19express.com/news/${news.slug}`,
     });
   } catch (error) {
     res.status(500).send(error.message);
@@ -1442,9 +1442,9 @@ export const newsMeta = async (req, res) => {
       return res.status(404).send("News not found");
     }
 
-    const image = `https://api.iotaclasses.in/uploads/images/${news.thumbnail}`;
+    const image = `https://api.bharat19express.com/uploads/images/${news.thumbnail}`;
 
-    const url = `https://iotaclasses.in/news/${news.slug}`;
+    const url = `https://bharat19express.com/news/${news.slug}`;
 
     res.send(`
 <!DOCTYPE html>

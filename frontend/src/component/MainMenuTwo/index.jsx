@@ -5,7 +5,7 @@ import SidebarMenu from "../SidebarMenu";
 import { useTranslation } from "react-i18next";
 
 const MainMenuTwo = () => {
-  const API = "https://api.iotaclasses.in";
+  const API = "https://api.bharat19express.com";
 
   const { t, i18n } = useTranslation();
 

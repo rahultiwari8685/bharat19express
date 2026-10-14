@@ -5,7 +5,7 @@ import FontAwesome from "../uiStyle/FontAwesome";
 import Slider from "../Slider";
 
 const TopBarTwo = () => {
-  const API = "https://api.iotaclasses.in";
+  const API = "https://api.bharat19express.com";
 
   const { t, i18n } = useTranslation();
 

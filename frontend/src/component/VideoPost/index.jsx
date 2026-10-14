@@ -5,7 +5,7 @@ import FontAwesome from "../uiStyle/FontAwesome";
 import ModalVideo from "react-modal-video";
 import PopularPosts from "../PopularPosts";
 
-const API = "https://api.iotaclasses.in";
+const API = "https://api.bharat19express.com";
 
 const VideoPost = ({ className, dark }) => {
   const [vModal, setvModal] = useState(false);

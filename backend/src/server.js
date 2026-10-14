@@ -58,9 +58,9 @@ app.use(
 app.use("/api", limiter);
 
 const allowedOrigins = [
-  "https://iotaclasses.in",
-  "https://www.iotaclasses.in",
-  "https://admin.iotaclasses.in",
+  "https://bharat19express.com",
+  "https://www.bharat19express.com",
+  "https://admin.bharat19express.com",
 ];
 
 app.use(

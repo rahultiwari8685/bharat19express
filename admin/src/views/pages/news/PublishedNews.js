@@ -271,7 +271,7 @@ const PublishedNews = () => {
 
                   <CTableDataCell>
                     <a
-                      href={`https://api.iotaclasses.in/${news.categories?.[0]?.slug}/${news.slug}`}
+                      href={`https://api.bharat19express.com/${news.categories?.[0]?.slug}/${news.slug}`}
                       target="_blank"
                       rel="noopener noreferrer"
                       style={{

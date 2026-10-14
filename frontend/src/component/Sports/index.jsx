@@ -2,7 +2,7 @@
 // import FontAwesome from "../uiStyle/FontAwesome";
 // import { Link } from "react-router-dom";
 
-// const API = "https://api.iotaclasses.in";
+// const API = "https://api.bharat19express.com";
 
 // const Sports = () => {
 //   const [sports, setSports] = useState([]);
@@ -204,7 +204,7 @@ import { useTranslation } from "react-i18next";
 import FontAwesome from "../uiStyle/FontAwesome";
 import { Link } from "react-router-dom";
 
-const API = "https://api.iotaclasses.in";
+const API = "https://api.bharat19express.com";
 
 const Sports = () => {
   const { i18n, t } = useTranslation();

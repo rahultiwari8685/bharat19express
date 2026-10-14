@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://iotaclasses.in/sitemap.xml
+Sitemap: https://bharat19express.com/sitemap.xml

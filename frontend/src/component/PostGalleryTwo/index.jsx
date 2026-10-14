@@ -12,7 +12,7 @@ import col21 from "../../assets/img/post-news/1.jpg";
 const PostGalleryTwo = () => {
   const navigate = useNavigate();
 
-  const API = "https://api.iotaclasses.in";
+  const API = "https://api.bharat19express.com";
 
   // Uttar Pradesh category ID
   const UP_CATEGORY_ID = "6ab5133ae0146bb0a4a80e48";

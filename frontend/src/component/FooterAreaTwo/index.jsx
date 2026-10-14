@@ -136,7 +136,7 @@ import { useTranslation } from "react-i18next";
 import FooterCopyright from "../FooterCopyright";
 import FontAwesome from "../uiStyle/FontAwesome";
 
-const API = "https://api.iotaclasses.in";
+const API = "https://api.bharat19express.com";
 
 const FooterAreaTwo = () => {
   const { t } = useTranslation();

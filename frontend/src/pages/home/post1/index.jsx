@@ -39,7 +39,7 @@ import OurBlogSection from "../../../component/OurBlogSection";
 import BlogComment from "../../../component/BlogComment";
 
 function Post1() {
-  const API = "https://api.iotaclasses.in";
+  const API = "https://api.bharat19express.com";
 
   const { categorySlug, slug } = useParams();
   const [news, setNews] = useState(null);
@@ -76,7 +76,9 @@ function Post1() {
 
   const getAdvertisements = async () => {
     try {
-      const res = await fetch("https://api.iotaclasses.in/api/advertisements");
+      const res = await fetch(
+        "https://api.bharat19express.com/api/advertisements",
+      );
 
       const data = await res.json();
 
@@ -104,7 +106,7 @@ function Post1() {
     return <h2 className="text-center mt-5">{t("loading") || "Loading..."}</h2>;
   }
 
-  const shareUrl = `https://api.iotaclasses.in/api/news/share/${news?.slug || ""}`;
+  const shareUrl = `https://api.bharat19express.com/api/news/share/${news?.slug || ""}`;
 
   const shareTitle = news?.title || "";
 
@@ -309,7 +311,7 @@ function Post1() {
                     rel="noopener noreferrer"
                   >
                     <img
-                      src={`https://api.iotaclasses.in/uploads/advertisements/${banners.sidebar.image}`}
+                      src={`https://api.bharat19express.com/uploads/advertisements/${banners.sidebar.image}`}
                       alt={banners.sidebar.title}
                       className="img-fluid"
                     />

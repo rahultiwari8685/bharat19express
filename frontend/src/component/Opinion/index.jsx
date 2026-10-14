@@ -1,7 +1,7 @@
 // import React, { useEffect, useState } from "react";
 // import { Link } from "react-router-dom";
 
-// const API = "https://api.iotaclasses.in";
+// const API = "https://api.bharat19express.com";
 
 // const OPINION_CATEGORY_ID = "OPINION_CATEGORY_ID";
 
@@ -133,7 +133,7 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
-const API = "https://api.iotaclasses.in";
+const API = "https://api.bharat19express.com";
 
 const Opinion = () => {
   const { i18n, t } = useTranslation();

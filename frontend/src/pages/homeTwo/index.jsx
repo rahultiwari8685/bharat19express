@@ -33,7 +33,9 @@ function HomeTwo() {
 
   const getBanner = async () => {
     try {
-      const res = await fetch("https://api.iotaclasses.in/api/advertisements");
+      const res = await fetch(
+        "https://api.bharat19express.com/api/advertisements",
+      );
 
       const result = await res.json();
 
@@ -51,7 +53,9 @@ function HomeTwo() {
   };
   const getBannerMiddle = async () => {
     try {
-      const res = await fetch("https://api.iotaclasses.in/api/advertisements");
+      const res = await fetch(
+        "https://api.bharat19express.com/api/advertisements",
+      );
 
       const result = await res.json();
 
@@ -98,7 +102,7 @@ function HomeTwo() {
                         rel="noopener noreferrer"
                       >
                         <img
-                          src={`https://api.iotaclasses.in/uploads/advertisements/${banner.image}`}
+                          src={`https://api.bharat19express.com/uploads/advertisements/${banner.image}`}
                           alt={banner.title || "Advertisement"}
                           style={{
                             width: "100%",
@@ -180,7 +184,7 @@ function HomeTwo() {
                     }}
                   >
                     <img
-                      src={`https://api.iotaclasses.in/uploads/advertisements/${bannerMiddle.image}`}
+                      src={`https://api.bharat19express.com/uploads/advertisements/${bannerMiddle.image}`}
                       alt={bannerMiddle.title || "Advertisement"}
                       style={{
                         width: "100%",

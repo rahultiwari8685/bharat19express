@@ -1,12 +1,10 @@
-
-
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import FontAwesome from "../uiStyle/FontAwesome";
 import ModalVideo from "react-modal-video";
 
-const API = "https://api.iotaclasses.in";
+const API = "https://api.bharat19express.com";
 
 const VideoNews = () => {
   const { i18n, t } = useTranslation();
@@ -142,31 +140,30 @@ const VideoNews = () => {
 
   const featuredCategory = videoNews.categories?.[0];
 
-
   const getCategoryName = (category) => {
-  if (!category) return t("video", "Video");
+    if (!category) return t("video", "Video");
 
-  const categoryTranslations = {
-    "Uttar Pradesh": "uttarPradesh",
-    "उत्तर प्रदेश": "uttarPradesh",
-    National: "national",
-    "राष्ट्रीय": "national",
-    International: "international",
-    "अंतरराष्ट्रीय": "international",
-    Politics: "politics",
-    "राजनीति": "politics",
-    Entertainment: "entertainment",
-    "मनोरंजन": "entertainment",
-    Sports: "sports",
-    "खेल": "sports",
-    Business: "business",
-    "व्यापार": "business",
+    const categoryTranslations = {
+      "Uttar Pradesh": "uttarPradesh",
+      "उत्तर प्रदेश": "uttarPradesh",
+      National: "national",
+      राष्ट्रीय: "national",
+      International: "international",
+      अंतरराष्ट्रीय: "international",
+      Politics: "politics",
+      राजनीति: "politics",
+      Entertainment: "entertainment",
+      मनोरंजन: "entertainment",
+      Sports: "sports",
+      खेल: "sports",
+      Business: "business",
+      व्यापार: "business",
+    };
+
+    const key = categoryTranslations[category.name?.trim()];
+
+    return key ? t(key, category.name) : category.name;
   };
-
-  const key = categoryTranslations[category.name?.trim()];
-
-  return key ? t(key, category.name) : category.name;
-};
 
   return (
     <>
@@ -177,9 +174,9 @@ const VideoNews = () => {
             <div className="row">
               <div className="col-12">
                 <div className="heading">
-                 <h2 className="widget-title">
-  {t("videoNews", "Video News")}
-</h2>
+                  <h2 className="widget-title">
+                    {t("videoNews", "Video News")}
+                  </h2>
                 </div>
               </div>
             </div>
@@ -227,8 +224,8 @@ const VideoNews = () => {
                     {/* CATEGORY + DATE */}
                     <div className="sport_meta_ab inline">
                       <ul>
-                     <li>{getCategoryName(featuredCategory)}</li>   <li>{featuredCategory?.name || t("video", "VIDEO")}</li>
-
+                        <li>{getCategoryName(featuredCategory)}</li>{" "}
+                        <li>{featuredCategory?.name || t("video", "VIDEO")}</li>
                         <li>{formatDate(videoNews.createdAt)}</li>
                       </ul>
                     </div>
