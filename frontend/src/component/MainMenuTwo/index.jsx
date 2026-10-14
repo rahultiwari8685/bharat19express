@@ -282,6 +282,28 @@ const MainMenuTwo = () => {
                 </NavLink>
 
                 <NavLink
+                  to="/epaper"
+                  style={{
+                    display: "inline-flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    gap: "6px",
+                    minHeight: "34px",
+                    padding: "0 13px",
+                    borderRadius: "5px",
+                    background: "#e31e24",
+                    color: "#fff",
+                    fontSize: "12px",
+                    fontWeight: "800",
+                    textDecoration: "none",
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  <FontAwesome name="newspaper-o" />
+                  <span>Subscribe</span>
+                </NavLink>
+
+                <NavLink
                   to="/search"
                   aria-label="Search news"
                   title="Search"
