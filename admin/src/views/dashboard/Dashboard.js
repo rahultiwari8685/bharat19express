@@ -43,7 +43,7 @@ const GRADIENTS = {
 
 const cardStyle = {
   border: '1px solid rgba(226,232,240,0.8)',
-  borderRadius: 18,
+  borderRadius: 12,
   overflow: 'hidden',
   minWidth: 0,
   boxShadow: '0 5px 20px rgba(15,23,42,0.045)',
@@ -415,7 +415,7 @@ const Dashboard = () => {
             <CCard
               className="h-100 border-0"
               style={{
-                borderRadius: 18,
+                borderRadius: 12,
                 color: '#fff',
                 background: item.gradient,
                 overflow: 'hidden',
@@ -423,19 +423,19 @@ const Dashboard = () => {
                 boxShadow: `0 8px 20px ${item.color}26`,
               }}
             >
-              <CCardBody className="p-3 p-xl-4">
-                <div className="d-flex justify-content-between align-items-start gap-2 mb-3">
+              <CCardBody className="p-2">
+                <div className="d-flex justify-content-between align-items-start gap-2 mb-2">
                   <div
                     className="d-flex align-items-center justify-content-center rounded-3"
                     style={{
-                      width: 46,
-                      height: 46,
+                      width: 32,
+                      height: 32,
                       flexShrink: 0,
                       background: 'rgba(255,255,255,0.2)',
                       border: '1px solid rgba(255,255,255,0.22)',
                     }}
                   >
-                    <CIcon icon={item.icon} size="xl" />
+                    <CIcon icon={item.icon} size="sm" />
                   </div>
                   <span
                     className="rounded-pill px-2 py-1 small"
@@ -454,15 +454,17 @@ const Dashboard = () => {
                   {item.title}
                 </div>
 
-                <h2 className="fw-bold mb-1">{formatNumber(item.count)}</h2>
+                <h4 className="fw-bold mb-1" style={{ fontSize: '1.25rem' }}>
+                  {formatNumber(item.count)}
+                </h4>
 
-                <div className="small mb-3" style={{ minHeight: 20, opacity: 0.88 }}>
+                <div className="small mb-2" style={{ minHeight: 0, opacity: 0.88 }}>
                   {item.detail}
                 </div>
 
                 <CProgress
                   style={{
-                    height: 5,
+                    height: 4,
                     background: 'rgba(255,255,255,0.25)',
                     borderRadius: 20,
                   }}
