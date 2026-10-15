@@ -413,7 +413,7 @@ const Dashboard = () => {
         {stats.map((item) => (
           <CCol xs={12} sm={6} lg={4} xxl={2} key={item.title}>
             <CCard
-              className="h-50 border-0"
+              className="h-100 border-0"
               style={{
                 borderRadius: 18,
                 color: '#fff',
@@ -428,8 +428,8 @@ const Dashboard = () => {
                   <div
                     className="d-flex align-items-center justify-content-center rounded-3"
                     style={{
-                      width: 26,
-                      height: 26,
+                      width: 46,
+                      height: 46,
                       flexShrink: 0,
                       background: 'rgba(255,255,255,0.2)',
                       border: '1px solid rgba(255,255,255,0.22)',
