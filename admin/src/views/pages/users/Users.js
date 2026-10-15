@@ -69,6 +69,9 @@ const Users = () => {
     resolver: yupResolver(schema, undefined, {
       context: { isEditing: Boolean(editingUser) },
     }),
+    defaultValues: {
+      isVerified: false,
+    },
   })
 
   useEffect(() => {
@@ -80,7 +83,7 @@ const Users = () => {
         password: '',
         role: editingUser.role || '',
         post_permission: editingUser.post_permission || '',
-        status: editingUser.status || '',
+        user_status: editingUser.user_status || '',
         isVerified:
           editingUser.isVerified === true ||
           editingUser.isVerified === 'true' ||
@@ -211,7 +214,7 @@ const Users = () => {
 
       const result = await res.json()
 
-      if (result.status === true) {
+      if (res.ok && (result.success === true || result.status === true)) {
         await allUserList()
         reset()
         setEditingUser(null)
@@ -579,14 +582,13 @@ const Users = () => {
                     type="switch"
                     id="isVerified"
                     label="Verified Author (Blue Tick)"
-                    {...register('isVerified')}
-                    checked={Boolean(watch('isVerified'))}
-                    onChange={(e) =>
+                    checked={watch('isVerified') === true}
+                    onChange={(e) => {
                       setValue('isVerified', e.target.checked, {
                         shouldDirty: true,
                         shouldValidate: true,
                       })
-                    }
+                    }}
                   />
 
                   <small className="text-body-secondary">
