@@ -9,6 +9,16 @@ const TopBarTwo = () => {
 
   const { t, i18n } = useTranslation();
 
+  useEffect(() => {
+    const savedLanguage = localStorage.getItem("i18nextLng");
+
+    if (!savedLanguage) {
+      i18n.changeLanguage("hi");
+      document.documentElement.lang = "hi";
+      document.documentElement.dir = "ltr";
+    }
+  }, [i18n]);
+
   const [trendingNews, setTrendingNews] = useState([]);
   const [showYoutubeMenu, setShowYoutubeMenu] = useState(false);
 
@@ -18,7 +28,7 @@ const TopBarTwo = () => {
 
   const getTrendingNews = async () => {
     try {
-      const language = i18n.resolvedLanguage || "en";
+      const language = i18n.resolvedLanguage || "hi";
 
       const res = await fetch(
         `${API}/api/news/trending?limit=10&lang=${language}`,
@@ -283,7 +293,7 @@ const TopBarTwo = () => {
 
             {/* Language selector */}
             <select
-              value={i18n.resolvedLanguage || "en"}
+              value={i18n.resolvedLanguage || "hi"}
               onChange={(e) => changeLanguage(e.target.value)}
               aria-label="Select language"
               style={{
