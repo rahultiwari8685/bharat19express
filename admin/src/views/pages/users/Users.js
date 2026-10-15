@@ -5,7 +5,6 @@ import {
   CCardHeader,
   CForm,
   CFormInput,
-  CFormCheck,
   CFormSelect,
   CButton,
   CRow,
@@ -579,24 +578,53 @@ const Users = () => {
             <CRow className="mb-3">
               <CCol md={12}>
                 <div className="border rounded-3 p-3">
+                  <div className="mb-3">
+                    <div className="fw-semibold mb-1">Author Verification</div>
+                    <small className="text-body-secondary">
+                      Choose whether this author should display the blue verification tick.
+                    </small>
+                  </div>
+
                   <Controller
                     name="isVerified"
                     control={control}
                     defaultValue={false}
-                    render={({ field }) => (
-                      <CFormCheck
-                        type="switch"
-                        id="isVerified"
-                        label="Verified Author (Blue Tick)"
-                        checked={field.value === true}
-                        onChange={(e) => field.onChange(e.target.checked)}
-                      />
-                    )}
-                  />
+                    render={({ field }) => {
+                      const isVerified = field.value === true
 
-                  <small className="text-body-secondary">
-                    Enable to show the blue verification tick beside the author's name.
-                  </small>
+                      return (
+                        <div
+                          className="d-flex gap-2 flex-wrap"
+                          role="group"
+                          aria-label="Author verification status"
+                        >
+                          <CButton
+                            type="button"
+                            color={isVerified ? 'primary' : 'secondary'}
+                            variant={isVerified ? undefined : 'outline'}
+                            className="rounded-pill px-3"
+                            aria-pressed={isVerified}
+                            onClick={() => field.onChange(true)}
+                          >
+                            <i className="bi bi-patch-check-fill me-2" />
+                            Verified
+                          </CButton>
+
+                          <CButton
+                            type="button"
+                            color={!isVerified ? 'secondary' : 'secondary'}
+                            variant={!isVerified ? undefined : 'outline'}
+                            className="rounded-pill px-3"
+                            aria-pressed={!isVerified}
+                            onClick={() => field.onChange(false)}
+                          >
+                            <i className="bi bi-patch-minus me-2" />
+                            Not Verified
+                          </CButton>
+                        </div>
+                      )
+                    }}
+                  />
                 </div>
               </CCol>
             </CRow>
