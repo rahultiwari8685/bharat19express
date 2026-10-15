@@ -413,7 +413,7 @@ const Dashboard = () => {
         {stats.map((item) => (
           <CCol xs={12} sm={6} lg={4} xxl={2} key={item.title}>
             <CCard
-              className="h-100 border-0"
+              className="h-50 border-0"
               style={{
                 borderRadius: 18,
                 color: '#fff',
