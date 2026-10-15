@@ -594,7 +594,7 @@ export default function GalleryManager() {
         }
       `}</style>
 
-      <header className="gm-header">
+      {/* <header className="gm-header">
         <div>
           <div className="gm-eyebrow">Media management</div>
           <h1>Gallery Manager</h1>
@@ -604,7 +604,7 @@ export default function GalleryManager() {
         <div className="gm-header-icon" aria-hidden="true">
           ▧
         </div>
-      </header>
+      </header> */}
 
       <section className="gm-card">
         <div className="gm-card-head">

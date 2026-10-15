@@ -255,11 +255,16 @@ export default function Gallery() {
           font-size: 13px;
         }
 
-        .bm-gallery-grid {
-          display: grid;
-          grid-template-columns: repeat(3, minmax(0, 1fr));
-          gap: 22px;
-        }
+    .bm-gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 22px;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  align-items: start;
+}
 
         .bm-gallery-card {
           min-width: 0;
@@ -276,22 +281,27 @@ export default function Gallery() {
           box-shadow: 0 12px 28px rgba(16,24,40,.09);
         }
 
-        .bm-gallery-media {
-          position: relative;
-          width: 100%;
-          aspect-ratio: 4 / 3;
-          overflow: hidden;
-          background: #f2f4f7;
-        }
+       .bm-gallery-media {
+  position: relative;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  background: #f2f4f7;
+  box-sizing: border-box;
+}
 
-        .bm-gallery-image,
-        .bm-gallery-video {
-          display: block;
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-          background: #111;
-        }
+      .bm-gallery-image,
+.bm-gallery-video {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: 100%;
+  object-fit: cover;
+  background: #111;
+  box-sizing: border-box;
+}
 
         .bm-gallery-image {
           transition: transform .35s;
@@ -463,7 +473,7 @@ export default function Gallery() {
         }
       `}</style>
 
-      <header className="bm-gallery-hero">
+      {/* <header className="bm-gallery-hero">
         <div className="bm-gallery-kicker">
           <span className="bm-gallery-dot" />
           Bharat19Express · Media
@@ -474,7 +484,7 @@ export default function Gallery() {
           Explore the latest photographs, news moments and video stories from
           across the headlines.
         </p>
-      </header>
+      </header> */}
 
       <div className="bm-gallery-toolbar">
         <div
