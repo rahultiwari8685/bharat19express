@@ -45,6 +45,7 @@ const schema = yup.object().shape({
   phone: yup.string().required('Status is required'),
   post_permission: yup.string().required('Status is required'),
   image: yup.file,
+  isVerified: yup.boolean().default(false),
 })
 
 const Users = () => {
@@ -80,7 +81,10 @@ const Users = () => {
         role: editingUser.role || '',
         post_permission: editingUser.post_permission || '',
         status: editingUser.status || '',
-        isVerified: editingUser.isVerified === true,
+        isVerified:
+          editingUser.isVerified === true ||
+          editingUser.isVerified === 'true' ||
+          editingUser.isVerified === 1,
       })
     }
   }, [editingUser, reset])
@@ -576,7 +580,15 @@ const Users = () => {
                     id="isVerified"
                     label="Verified Author (Blue Tick)"
                     {...register('isVerified')}
+                    checked={Boolean(watch('isVerified'))}
+                    onChange={(e) =>
+                      setValue('isVerified', e.target.checked, {
+                        shouldDirty: true,
+                        shouldValidate: true,
+                      })
+                    }
                   />
+
                   <small className="text-body-secondary">
                     Enable to show the blue verification tick beside the author's name.
                   </small>
