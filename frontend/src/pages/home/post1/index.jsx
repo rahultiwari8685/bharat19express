@@ -38,6 +38,14 @@ import single_post1 from "../../../assets/img/post-thumb-5.png";
 import OurBlogSection from "../../../component/OurBlogSection";
 import BlogComment from "../../../component/BlogComment";
 
+const decodeHtmlEntities = (value = "") => {
+  if (typeof document === "undefined") return value;
+
+  const textarea = document.createElement("textarea");
+  textarea.innerHTML = value;
+  return textarea.value;
+};
+
 function Post1() {
   const API = "https://api.bharat19express.com";
 
@@ -108,7 +116,7 @@ function Post1() {
 
   const shareUrl = `https://api.bharat19express.com/api/news/share/${news?.slug || ""}`;
 
-  const shareTitle = news?.title || "";
+  const shareTitle = decodeHtmlEntities(news?.title || "");
 
   const shareImage = news?.thumbnail
     ? `${API}/uploads/images/${news.thumbnail}`
@@ -155,7 +163,7 @@ function Post1() {
         <BreadCrumb
           className="shadow5 padding-top-10"
           // title={`${news.categories?.[0]?.name || "News"} / ${news.title}`}
-          title={`${news.categories?.[0]?.name || t("latest")} / ${news.title}`}
+          title={`${news.categories?.[0]?.name || t("latest")} / ${decodeHtmlEntities(news.title)}`}
         />
         <span className="space-10" />
         <div className="container">
@@ -173,7 +181,7 @@ function Post1() {
               </div>
 
               <div className="single_post_heading">
-                <h1>{news.title}</h1>
+                <h1>{decodeHtmlEntities(news.title)}</h1>
                 <div className="space-10" />
                 {/* <p>{news.subtitle}</p> */}
               </div>
