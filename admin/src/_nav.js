@@ -96,6 +96,12 @@ export const adminNav = [
   },
   {
     component: CNavItem,
+    name: 'Gallery',
+    to: '/gallery',
+    icon: <CIcon icon={cilFolder} customClassName="nav-icon" />,
+  },
+  {
+    component: CNavItem,
     name: 'Poll',
     to: '/polls',
     icon: <CIcon icon={cilNewspaper} customClassName="nav-icon" />,
