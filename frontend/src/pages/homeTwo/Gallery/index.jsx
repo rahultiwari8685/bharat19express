@@ -188,21 +188,31 @@ export default function Gallery() {
           line-height: 1.7;
         }
 
-        .bm-gallery-toolbar {
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          gap: 16px;
-          margin: 28px 0 22px;
-          flex-wrap: wrap;
-        }
+      .bm-gallery-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  gap: 16px;
+  margin: 28px 0 22px;
+  flex-wrap: wrap;
+}
 
-        .bm-gallery-filters {
-          display: flex;
-          align-items: center;
-          gap: 8px;
-          flex-wrap: wrap;
-        }
+.bm-gallery-filters {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.bm-gallery-summary {
+  position: absolute;
+  right: 0;
+  color: var(--bm-muted);
+  font-size: 13px;
+}
 
         .bm-gallery-filter {
           display: inline-flex;
@@ -255,9 +265,10 @@ export default function Gallery() {
           font-size: 13px;
         }
 
-    .bm-gallery-grid {
+  .bm-gallery-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 400px));
+  justify-content: center;
   gap: 22px;
   width: 100%;
   max-width: 100%;
@@ -292,15 +303,23 @@ export default function Gallery() {
   box-sizing: border-box;
 }
 
-      .bm-gallery-image,
+ .bm-gallery-image,
 .bm-gallery-video {
   display: block;
   width: 100%;
   max-width: 100%;
   height: 100%;
+  box-sizing: border-box;
+  background: #fff;
+}
+
+.bm-gallery-image {
+  object-fit: contain;
+}
+
+.bm-gallery-video {
   object-fit: cover;
   background: #111;
-  box-sizing: border-box;
 }
 
         .bm-gallery-image {
@@ -425,11 +444,25 @@ export default function Gallery() {
 
           .bm-gallery-hero p { font-size: 13px; }
 
+          // .bm-gallery-toolbar {
+          //   align-items: flex-start;
+          //   flex-direction: column;
+          //   margin: 22px 0 17px;
+          // }
+
           .bm-gallery-toolbar {
-            align-items: flex-start;
-            flex-direction: column;
-            margin: 22px 0 17px;
-          }
+  flex-direction: column;
+  align-items: center;
+}
+
+.bm-gallery-filters {
+  width: 100%;
+}
+
+.bm-gallery-summary {
+  position: static;
+  text-align: center;
+}
 
           .bm-gallery-filters { width: 100%; }
 
