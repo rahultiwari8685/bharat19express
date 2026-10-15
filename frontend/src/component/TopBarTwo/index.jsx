@@ -11,11 +11,17 @@ const TopBarTwo = () => {
 
   useEffect(() => {
     const savedLanguage = localStorage.getItem("i18nextLng");
+    const language = savedLanguage || "hi";
+
+    if (i18n.resolvedLanguage !== language) {
+      i18n.changeLanguage(language);
+    }
+
+    document.documentElement.lang = language;
+    document.documentElement.dir = language === "ur" ? "rtl" : "ltr";
 
     if (!savedLanguage) {
-      i18n.changeLanguage("hi");
-      document.documentElement.lang = "hi";
-      document.documentElement.dir = "ltr";
+      localStorage.setItem("i18nextLng", "hi");
     }
   }, [i18n]);
 

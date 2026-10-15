@@ -436,7 +436,9 @@ i18n
   .init({
     resources,
 
-    fallbackLng: "en",
+    // Hindi is the default language for new visitors.
+    lng: "hi",
+    fallbackLng: "hi",
 
     supportedLngs: ["en", "hi", "ur", "bn", "mr"],
 
@@ -444,6 +446,7 @@ i18n
 
     detection: {
       order: ["localStorage"],
+      lookupLocalStorage: "i18nextLng",
       caches: ["localStorage"],
     },
 
