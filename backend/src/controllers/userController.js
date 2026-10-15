@@ -14,6 +14,7 @@ export const saveUser = async (req, res) => {
       post_permission,
       user_status,
       bio,
+      isVerified,
     } = req.body;
 
     if (!name || !email || !password) {
@@ -45,6 +46,7 @@ export const saveUser = async (req, res) => {
       post_permission,
       password: hashedPassword,
       profileImage,
+      isVerified: isVerified === "true" || isVerified === true,
     });
 
     const userData = user.toObject();
@@ -129,11 +131,12 @@ export const updateUser = async (req, res) => {
       bio,
     };
 
-    // Update verification only when the field is provided.
     if (isVerified !== undefined) {
-      if (isVerified === true || isVerified === "true") {
+      const value = String(isVerified).toLowerCase();
+
+      if (value === "true" || value === "1") {
         updateData.isVerified = true;
-      } else if (isVerified === false || isVerified === "false") {
+      } else if (value === "false" || value === "0") {
         updateData.isVerified = false;
       } else {
         return res.status(400).json({
