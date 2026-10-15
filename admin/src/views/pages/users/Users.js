@@ -22,7 +22,7 @@ import {
   CPagination,
   CPaginationItem,
 } from '@coreui/react'
-import { useForm } from 'react-hook-form'
+import { useForm, Controller } from 'react-hook-form'
 import setting from '../../../setting.json'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
@@ -64,6 +64,7 @@ const Users = () => {
     reset,
     setValue,
     watch,
+    control,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(schema, undefined, {
@@ -578,17 +579,19 @@ const Users = () => {
             <CRow className="mb-3">
               <CCol md={12}>
                 <div className="border rounded-3 p-3">
-                  <CFormCheck
-                    type="switch"
-                    id="isVerified"
-                    label="Verified Author (Blue Tick)"
-                    checked={watch('isVerified') === true}
-                    onChange={(e) => {
-                      setValue('isVerified', e.target.checked, {
-                        shouldDirty: true,
-                        shouldValidate: true,
-                      })
-                    }}
+                  <Controller
+                    name="isVerified"
+                    control={control}
+                    defaultValue={false}
+                    render={({ field }) => (
+                      <CFormCheck
+                        type="switch"
+                        id="isVerified"
+                        label="Verified Author (Blue Tick)"
+                        checked={field.value === true}
+                        onChange={(e) => field.onChange(e.target.checked)}
+                      />
+                    )}
                   />
 
                   <small className="text-body-secondary">
