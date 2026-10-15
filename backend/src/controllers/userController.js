@@ -99,6 +99,8 @@ export const updateUser = async (req, res) => {
       role,
       post_permission,
       user_status,
+      bio,
+      isVerified,
     } = req.body;
 
     if (!id || !mongoose.Types.ObjectId.isValid(id)) {
@@ -109,6 +111,7 @@ export const updateUser = async (req, res) => {
     }
 
     const existingUser = await User.findById(id);
+
     if (!existingUser) {
       return res.status(404).json({
         success: false,
@@ -120,38 +123,121 @@ export const updateUser = async (req, res) => {
       name,
       email,
       phone,
-      password,
       role,
       post_permission,
       user_status,
+      bio,
     };
 
-    // ✅ Hash password if updated
-    if (password) {
+    // Update verification only when the field is provided.
+    if (isVerified !== undefined) {
+      if (isVerified === true || isVerified === "true") {
+        updateData.isVerified = true;
+      } else if (isVerified === false || isVerified === "false") {
+        updateData.isVerified = false;
+      } else {
+        return res.status(400).json({
+          success: false,
+          message: "isVerified must be true or false",
+        });
+      }
+    }
+
+    // Update password only when a new password is provided.
+    if (password && password.trim()) {
       updateData.password = await bcrypt.hash(password, 10);
     }
 
-    // ✅ File update
+    // Update profile image only when a new file is uploaded.
     if (req.file) {
       updateData.profileImage = req.file.filename;
     }
 
     const updatedUser = await User.findByIdAndUpdate(id, updateData, {
       new: true,
+      runValidators: true,
     }).select("-password");
 
-    res.status(200).json({
+    return res.status(200).json({
       success: true,
       message: "User updated successfully",
       data: updatedUser,
     });
   } catch (error) {
-    res.status(500).json({
+    console.error("Update User Error:", error);
+
+    return res.status(500).json({
       success: false,
+      message: "Failed to update user",
       error: error.message,
     });
   }
 };
+
+// export const updateUser = async (req, res) => {
+//   try {
+//     const {
+//       id,
+//       name,
+//       email,
+//       phone,
+//       password,
+//       role,
+//       post_permission,
+//       user_status,
+//     } = req.body;
+
+//     if (!id || !mongoose.Types.ObjectId.isValid(id)) {
+//       return res.status(400).json({
+//         success: false,
+//         message: "Valid user ID is required",
+//       });
+//     }
+
+//     const existingUser = await User.findById(id);
+//     if (!existingUser) {
+//       return res.status(404).json({
+//         success: false,
+//         message: "User not found",
+//       });
+//     }
+
+//     const updateData = {
+//       name,
+//       email,
+//       phone,
+//       password,
+//       role,
+//       post_permission,
+//       user_status,
+//     };
+
+//     // ✅ Hash password if updated
+//     if (password) {
+//       updateData.password = await bcrypt.hash(password, 10);
+//     }
+
+//     // ✅ File update
+//     if (req.file) {
+//       updateData.profileImage = req.file.filename;
+//     }
+
+//     const updatedUser = await User.findByIdAndUpdate(id, updateData, {
+//       new: true,
+//     }).select("-password");
+
+//     res.status(200).json({
+//       success: true,
+//       message: "User updated successfully",
+//       data: updatedUser,
+//     });
+//   } catch (error) {
+//     res.status(500).json({
+//       success: false,
+//       error: error.message,
+//     });
+//   }
+// };
 
 export const getUserDetailsById = async (req, res) => {
   try {

@@ -194,7 +194,36 @@ function Post1() {
                       </div>
                     </div>
 
-                    <Link to="#">{news.author?.name || "Admin"}</Link>
+                    {/* <Link to="#">{news.author?.name || "Admin"}</Link> */}
+
+                    <Link to="#" className="author-name-link">
+                      <span>{news.author?.name || "Admin"}</span>
+
+                      {news.author?.isVerified === true && (
+                        <svg
+                          className="verified-author-badge"
+                          viewBox="0 0 24 24"
+                          width="19"
+                          height="19"
+                          aria-label="Verified author"
+                          role="img"
+                          title="Verified author"
+                        >
+                          <path
+                            fill="currentColor"
+                            d="M12 1.5 14.8 3l3.2-.1 1.4 2.9 2.9 1.4-.1 3.2 1.5 2.8-1.5 2.8.1 3.2-2.9 1.4-1.4 2.9-3.2-.1-2.8 1.5-2.8-1.5-3.2.1-1.4-2.9-2.9-1.4.1-3.2L1.5 12l1.5-2.8-.1-3.2 2.9-1.4 1.4-2.9 3.2.1z"
+                          />
+                          <path
+                            d="m7.5 12.2 3 3 6-6"
+                            fill="none"
+                            stroke="#fff"
+                            strokeWidth="2.2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                        </svg>
+                      )}
+                    </Link>
                   </div>
                 </div>
                 <div className="col-lg-8 ">
@@ -359,6 +388,29 @@ function Post1() {
 
 .share-section .d-flex > * {
   flex: 0 0 auto;
+}
+
+.author-name-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.verified-author-badge {
+  display: inline-block;
+  flex: 0 0 19px;
+  width: 19px;
+  height: 19px;
+  color: #1877f2;
+  vertical-align: middle;
+  filter: drop-shadow(0 1px 1px rgba(24, 119, 242, 0.15));
+  transition: transform 0.18s ease;
+}
+
+.author-name-link:hover .verified-author-badge {
+  transform: scale(1.08);
 }
 
 .share-section button {

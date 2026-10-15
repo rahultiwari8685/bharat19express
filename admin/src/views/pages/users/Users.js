@@ -5,6 +5,7 @@ import {
   CCardHeader,
   CForm,
   CFormInput,
+  CFormCheck,
   CFormSelect,
   CButton,
   CRow,
@@ -33,7 +34,12 @@ const schema = yup.object().shape({
   name: yup.string().required('Name is required'),
   bio: yup.string().required('Bio is required'),
   email: yup.string().required('Phone is required'),
-  password: yup.string().required('Enter HSN Code'),
+  // password: yup.string().required('Enter HSN Code'),
+  password: yup.string().when('$isEditing', {
+    is: true,
+    then: (schema) => schema.notRequired(),
+    otherwise: (schema) => schema.required('Password is required'),
+  }),
   role: yup.string().required('Status is required'),
   user_status: yup.string().required('Status is required'),
   phone: yup.string().required('Status is required'),
@@ -58,7 +64,11 @@ const Users = () => {
     setValue,
     watch,
     formState: { errors },
-  } = useForm({ resolver: yupResolver(schema) })
+  } = useForm({
+    resolver: yupResolver(schema, undefined, {
+      context: { isEditing: Boolean(editingUser) },
+    }),
+  })
 
   useEffect(() => {
     if (editingUser) {
@@ -70,6 +80,7 @@ const Users = () => {
         role: editingUser.role || '',
         post_permission: editingUser.post_permission || '',
         status: editingUser.status || '',
+        isVerified: editingUser.isVerified === true,
       })
     }
   }, [editingUser, reset])
@@ -169,6 +180,7 @@ const Users = () => {
       formData.append('role', data.role)
       formData.append('post_permission', data.post_permission)
       formData.append('user_status', data.user_status)
+      formData.append('isVerified', String(data.isVerified === true))
 
       if (data.image?.[0]) {
         formData.append('profileImage', data.image[0])
@@ -321,6 +333,7 @@ const Users = () => {
               <CTableRow>
                 <CTableHeaderCell>#</CTableHeaderCell>
                 <CTableHeaderCell>Name</CTableHeaderCell>
+                <CTableHeaderCell>Verification</CTableHeaderCell>
                 <CTableHeaderCell>Phone</CTableHeaderCell>
                 <CTableHeaderCell>Email</CTableHeaderCell>
                 <CTableHeaderCell>Role</CTableHeaderCell>
@@ -335,6 +348,16 @@ const Users = () => {
                   <CTableRow key={a.id}>
                     <CTableDataCell>{actualIndex + 1}</CTableDataCell>
                     <CTableDataCell>{a.name}</CTableDataCell>
+                    <CTableDataCell>
+                      {a.isVerified === true ? (
+                        <span className="badge bg-primary">
+                          <i className="bi bi-patch-check-fill me-1" />
+                          Verified
+                        </span>
+                      ) : (
+                        <span className="badge bg-secondary">Not Verified</span>
+                      )}
+                    </CTableDataCell>
                     <CTableDataCell>{a.phone}</CTableDataCell>
                     <CTableDataCell>{a.email}</CTableDataCell>
 
@@ -542,6 +565,22 @@ const Users = () => {
                   accept="image/*"
                   {...register('image')}
                 />
+              </CCol>
+            </CRow>
+
+            <CRow className="mb-3">
+              <CCol md={12}>
+                <div className="border rounded-3 p-3">
+                  <CFormCheck
+                    type="switch"
+                    id="isVerified"
+                    label="Verified Author (Blue Tick)"
+                    {...register('isVerified')}
+                  />
+                  <small className="text-body-secondary">
+                    Enable to show the blue verification tick beside the author's name.
+                  </small>
+                </div>
               </CCol>
             </CRow>
 
