@@ -50,7 +50,15 @@ const PublishedNews = () => {
     try {
       const token = JSON.parse(secureLocalStorage.getItem('logininfo')).token
 
-      const res = await fetch(setting.api + '/api/news/getAllNews', {
+      // const res = await fetch(setting.api + '/api/news/getAllNews', {
+
+      //   method: 'GET',
+      //   headers: {
+      //     Authorization: 'Bearer ' + token,
+      //   },
+      // })
+
+      const res = await fetch(`${setting.api}/api/news/getAllNews?lang=hi`, {
         method: 'GET',
         headers: {
           Authorization: 'Bearer ' + token,
@@ -271,7 +279,7 @@ const PublishedNews = () => {
 
                   <CTableDataCell>
                     <a
-                      href={`https://api.bharat19express.com/${news.categories?.[0]?.slug}/${news.slug}`}
+                      href={`https://bharat19express.com/${news.categories?.[0]?.slug}/${news.slug}`}
                       target="_blank"
                       rel="noopener noreferrer"
                       style={{
