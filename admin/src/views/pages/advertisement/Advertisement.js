@@ -121,23 +121,79 @@ const Advertisement = () => {
     getAdvertisements()
   }, [])
 
+  const validateImageDimensions = (file, position) => {
+    return new Promise((resolve, reject) => {
+      const required = imageDimensions[position]
+
+      if (!required) {
+        reject(new Error('Please select a valid advertisement position'))
+        return
+      }
+
+      const image = new Image()
+      const objectUrl = URL.createObjectURL(file)
+
+      image.onload = () => {
+        const { width, height } = image
+        URL.revokeObjectURL(objectUrl)
+
+        if (width !== required.width || height !== required.height) {
+          reject(
+            new Error(
+              `Invalid image dimensions.\n` +
+                `Required: ${required.width} × ${required.height}px\n` +
+                `Selected: ${width} × ${height}px`,
+            ),
+          )
+          return
+        }
+
+        resolve(true)
+      }
+
+      image.onerror = () => {
+        URL.revokeObjectURL(objectUrl)
+        reject(new Error('Unable to read image. Please select a valid image.'))
+      }
+
+      image.src = objectUrl
+    })
+  }
+
   const saveAdvertisement = async (data) => {
     if (saving) return
 
-    setSaving(true)
-    setUploadProgress(0)
-
     try {
-      const formData = new FormData()
+      const file = data.image?.[0]
 
+      // Validate the image before uploading
+      if (file) {
+        const MAX_SIZE = 2 * 1024 * 1024 // 2 MB
+
+        if (file.size > MAX_SIZE) {
+          alert('Image must be less than 2 MB')
+          return
+        }
+
+        await validateImageDimensions(file, data.position)
+      } else if (!editingAdvertisement) {
+        alert('Please select an advertisement image')
+        return
+      }
+
+      // Upload starts only after validation succeeds
+      setSaving(true)
+      setUploadProgress(0)
+
+      const formData = new FormData()
       formData.append('title', data.title)
       formData.append('position', data.position)
       formData.append('priority', data.priority)
       formData.append('redirectUrl', data.redirectUrl || '')
       formData.append('status', data.status)
 
-      if (data.image?.[0]) {
-        formData.append('image', data.image[0])
+      if (file) {
+        formData.append('image', file)
       }
 
       const token = JSON.parse(secureLocalStorage.getItem('logininfo') || '{}')?.token
@@ -155,8 +211,7 @@ const Advertisement = () => {
         data: formData,
         onUploadProgress: (event) => {
           if (event.total) {
-            const percent = Math.round((event.loaded * 100) / event.total)
-            setUploadProgress(percent)
+            setUploadProgress(Math.round((event.loaded * 100) / event.total))
           }
         },
       })
@@ -174,12 +229,77 @@ const Advertisement = () => {
       }
     } catch (error) {
       console.error('Error saving advertisement:', error)
-      alert(error.response?.data?.message || 'Something went wrong while saving advertisement')
+
+      alert(
+        error.response?.data?.message ||
+          error.message ||
+          'Something went wrong while saving advertisement',
+      )
     } finally {
       setSaving(false)
       setUploadProgress(0)
     }
   }
+
+  // const saveAdvertisement = async (data) => {
+  //   if (saving) return
+
+  //   setSaving(true)
+  //   setUploadProgress(0)
+
+  //   try {
+  //     const formData = new FormData()
+
+  //     formData.append('title', data.title)
+  //     formData.append('position', data.position)
+  //     formData.append('priority', data.priority)
+  //     formData.append('redirectUrl', data.redirectUrl || '')
+  //     formData.append('status', data.status)
+
+  //     if (data.image?.[0]) {
+  //       formData.append('image', data.image[0])
+  //     }
+
+  //     const token = JSON.parse(secureLocalStorage.getItem('logininfo') || '{}')?.token
+
+  //     const endpoint = editingAdvertisement
+  //       ? `/api/advertisements/update/${editingAdvertisement._id}`
+  //       : '/api/advertisements/create'
+
+  //     const response = await axios({
+  //       url: setting.api + endpoint,
+  //       method: editingAdvertisement ? 'PUT' : 'POST',
+  //       headers: {
+  //         Authorization: `Bearer ${token}`,
+  //       },
+  //       data: formData,
+  //       onUploadProgress: (event) => {
+  //         if (event.total) {
+  //           const percent = Math.round((event.loaded * 100) / event.total)
+  //           setUploadProgress(percent)
+  //         }
+  //       },
+  //     })
+
+  //     const result = response.data
+
+  //     if (result.success) {
+  //       await getAdvertisements()
+  //       setVisible(false)
+  //       reset()
+  //       setPreview('')
+  //       setEditingAdvertisement(null)
+  //     } else {
+  //       alert(result.message || 'Failed to save advertisement')
+  //     }
+  //   } catch (error) {
+  //     console.error('Error saving advertisement:', error)
+  //     alert(error.response?.data?.message || 'Something went wrong while saving advertisement')
+  //   } finally {
+  //     setSaving(false)
+  //     setUploadProgress(0)
+  //   }
+  // }
 
   // const saveAdvertisement = async (data) => {
   //   const formData = new FormData()
