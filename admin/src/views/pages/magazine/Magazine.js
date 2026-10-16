@@ -162,10 +162,6 @@ const Magazine = () => {
     }
   }
 
-  // ==========================================
-  // SAVE / UPDATE MAGAZINE
-  // ==========================================
-
   const saveMagazine = async (data) => {
     const formData = new FormData()
 
@@ -193,10 +189,6 @@ const Magazine = () => {
     let headers = {
       Authorization: 'Bearer ' + JSON.parse(secureLocalStorage.getItem('logininfo')).token,
     }
-
-    // ==========================================
-    // UPDATE
-    // ==========================================
 
     if (editingMagazine) {
       endpoint = `/api/magazines/${editingMagazine._id}`
@@ -247,18 +239,10 @@ const Magazine = () => {
     }
   }
 
-  // ==========================================
-  // EDIT
-  // ==========================================
-
   const handleEdit = (magazine) => {
     setEditingMagazine(magazine)
     setVisible(true)
   }
-
-  // ==========================================
-  // DELETE CONFIRMATION
-  // ==========================================
 
   function handleDelete(id) {
     var ans = confirm('Are you sure For Delete?')
@@ -269,10 +253,6 @@ const Magazine = () => {
       deleteMagazine(id)
     }
   }
-
-  // ==========================================
-  // DELETE MAGAZINE
-  // ==========================================
 
   const deleteMagazine = async (id) => {
     try {
@@ -303,20 +283,12 @@ const Magazine = () => {
     }
   }
 
-  // ==========================================
-  // PAGINATION
-  // ==========================================
-
   const totalPages = Math.ceil(magazineList.length / itemsPerPage)
 
   const paginatedItems = magazineList.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage,
   )
-
-  // ==========================================
-  // RETURN
-  // ==========================================
 
   return (
     <div>
@@ -325,7 +297,7 @@ const Magazine = () => {
           <div className="d-flex justify-content-between align-items-center">
             <h5 className="mb-0">
               <i className="bi bi-newspaper me-2 text-warning"></i>
-              Magazine / E-Paper
+              E-Paper
             </h5>
 
             <CButton
@@ -370,7 +342,7 @@ const Magazine = () => {
                 <CTableHeaderCell>Featured</CTableHeaderCell>
 
                 <CTableHeaderCell>Status</CTableHeaderCell>
-
+                <CTableHeaderCell>Download</CTableHeaderCell>
                 <CTableHeaderCell>Action</CTableHeaderCell>
               </CTableRow>
             </CTableHead>
@@ -440,6 +412,23 @@ const Magazine = () => {
                       <span className={`badge ${magazine.status ? 'bg-success' : 'bg-dark'}`}>
                         {magazine.status ? 'Published' : 'Inactive'}
                       </span>
+                    </CTableDataCell>
+
+                    <CTableDataCell>
+                      {magazine.pdfFile ? (
+                        <a
+                          href={`${setting.api}/uploads/magazines/${magazine.pdfFile}`}
+                          download
+                          target="_blank"
+                          rel="noreferrer"
+                          className="btn btn-sm btn-success rounded-pill px-3"
+                        >
+                          <i className="bi bi-download me-1"></i>
+                          Download PDF
+                        </a>
+                      ) : (
+                        <span className="text-muted">No PDF</span>
+                      )}
                     </CTableDataCell>
 
                     {/* ACTION */}
