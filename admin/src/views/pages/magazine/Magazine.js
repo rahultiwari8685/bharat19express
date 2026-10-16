@@ -424,7 +424,7 @@ const Magazine = () => {
                           className="btn btn-sm btn-success rounded-pill px-3"
                         >
                           <i className="bi bi-download me-1"></i>
-                          Download PDF
+                          PDF
                         </a>
                       ) : (
                         <span className="text-muted">No PDF</span>
