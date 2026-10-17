@@ -58,7 +58,7 @@ const MainMenuTwo = () => {
           <div className="row justify-content-between">
             <nav
               className="navbar navbar-expand-lg col-lg-11 align-self-center"
-              style={{ paddingTop: "4px", paddingBottom: "4px" }}
+              style={{ paddingTop: "0px", paddingBottom: "0px" }}
             >
               <div className="site-nav-inner">
                 <button
@@ -75,7 +75,12 @@ const MainMenuTwo = () => {
                   <ul
                     className="nav navbar-nav"
                     id="scroll"
-                    style={{ alignItems: "center", minHeight: "42px" }}
+                    style={{
+                      alignItems: "center",
+                      minHeight: "32px",
+                      padding: 0,
+                      margin: 0,
+                    }}
                   >
                     {/* HOME */}
 
@@ -96,7 +101,7 @@ const MainMenuTwo = () => {
                           alignItems: "center",
                           justifyContent: "center",
                           gap: "5px",
-                          padding: "5px 10px",
+                          padding: "3px 8px",
                           backgroundColor: isActive ? "#e31e24" : "transparent",
                           color: "#fff",
                           borderRadius: "4px",
