@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import FontAwesome from "../uiStyle/FontAwesome";
 import Slider from "../Slider";
-
+import { FaXTwitter } from "react-icons/fa6";
 const TopBarTwo = () => {
   const API = "https://api.bharat19express.com";
 
@@ -178,7 +178,7 @@ const TopBarTwo = () => {
                   whiteSpace: "nowrap",
                 }}
               >
-                <FontAwesome name="youtube-play" /> YouTube
+                <FontAwesome name="youtube-play" />
               </button>
 
               {showYoutubeMenu && (
@@ -243,7 +243,7 @@ const TopBarTwo = () => {
               style={{
                 color: "#fff",
                 textDecoration: "none",
-                fontSize: "12px",
+                fontSize: "14px",
                 whiteSpace: "nowrap",
               }}
             >
@@ -269,12 +269,16 @@ const TopBarTwo = () => {
                   flexShrink: 0,
                 }}
               >
-                <FontAwesome name={item.icon} />
+              {item.icon === "x-twitter" ? (
+  <FaXTwitter />
+) : (
+  <FontAwesome name={item.icon} />
+)}
               </a>
             ))} */}
 
             {[
-              { icon: "youtube-play", url: "https://www.youtube.com/" },
+              // { icon: "youtube-play", url: "https://www.youtube.com/" },
               { icon: "facebook-f", url: "https://www.facebook.com/" },
               { icon: "instagram", url: "https://www.instagram.com/" },
               { icon: "x-twitter", url: "https://x.com/" },
