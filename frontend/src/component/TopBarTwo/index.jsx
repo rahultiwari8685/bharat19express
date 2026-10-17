@@ -173,7 +173,7 @@ const TopBarTwo = () => {
                   background: "transparent",
                   color: "#fff",
                   padding: 0,
-                  fontSize: "12px",
+                  fontSize: "14px",
                   cursor: "pointer",
                   whiteSpace: "nowrap",
                 }}
