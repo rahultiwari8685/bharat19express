@@ -19,6 +19,7 @@ const Shorts = React.lazy(() => import('./views/pages/shorts/Shorts'))
 const Magazine = React.lazy(() => import('./views/pages/magazine/Magazine'))
 const Subscriptions = React.lazy(() => import('./views/pages/subscription/Subscriptions'))
 const Polls = React.lazy(() => import('./views/pages/polls/Polls'))
+const Subscriber = React.lazy(() => import('./views/pages/subscriber/Subscriber'))
 
 const routes = [
   { path: '/', exact: true, name: 'Home' },
@@ -32,6 +33,7 @@ const routes = [
   { path: '/ScheduleNews', name: 'Scheduled News', element: ScheduleNews },
   { path: '/siteSetting', name: 'Site Setting', element: SiteSetting },
   { path: '/gallery', name: 'Gallery', element: GalleryManager },
+  { path: '/subscriber', name: 'Subscriber', element: Subscriber },
   // { path: '/plans', name: 'Plans', element: Plans },
 
   { path: '/subscription', name: 'Subscription', element: Subscriptions },
