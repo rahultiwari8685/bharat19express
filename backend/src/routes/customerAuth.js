@@ -5,11 +5,6 @@ import Customer from "../models/Customer.js";
 
 const router = express.Router();
 
-/*
-|--------------------------------------------------------------------------
-| CUSTOMER REGISTER
-|--------------------------------------------------------------------------
-*/
 router.post("/register", async (req, res) => {
   try {
     const { name, email, password, phone } = req.body;
@@ -78,11 +73,6 @@ router.post("/register", async (req, res) => {
   }
 });
 
-/*
-|--------------------------------------------------------------------------
-| CUSTOMER LOGIN
-|--------------------------------------------------------------------------
-*/
 router.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
