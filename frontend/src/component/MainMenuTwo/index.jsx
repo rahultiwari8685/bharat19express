@@ -48,7 +48,7 @@ const MainMenuTwo = () => {
     return menuItems.filter((item) => item.parentCategory?._id === parentId);
   };
 
-  const visibleMenus = parentMenus.slice(0, 10);
+  const visibleMenus = parentMenus.slice(0, 8);
   const moreMenus = parentMenus.slice(10);
 
   return (
