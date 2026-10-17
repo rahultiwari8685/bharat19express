@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import FontAwesome from "../uiStyle/FontAwesome";
 import Slider from "../Slider";
+import { NavLink } from "react-router-dom";
 import { FaXTwitter } from "react-icons/fa6";
 const TopBarTwo = () => {
   const API = "https://api.bharat19express.com";
