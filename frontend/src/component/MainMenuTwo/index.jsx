@@ -57,7 +57,7 @@ const MainMenuTwo = () => {
         <div className="main-nav clearfix is-ts-sticky">
           <div className="row justify-content-between">
             <nav
-              className="navbar navbar-expand-lg col-lg-8 align-self-center"
+              className="navbar navbar-expand-lg col-lg-11 align-self-center"
               style={{ paddingTop: "4px", paddingBottom: "4px" }}
             >
               <div className="site-nav-inner">
@@ -243,7 +243,7 @@ const MainMenuTwo = () => {
               </div>
             </nav>
             <div
-              className="col-lg-3 text-right align-self-center"
+              className="col-lg-1 text-right align-self-center"
               style={{
                 background: "transparent",
               }}
