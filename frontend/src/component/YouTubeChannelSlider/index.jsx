@@ -13,6 +13,7 @@ const YouTubeChannelSlider = () => {
   const { i18n, t } = useTranslation();
   const [channels, setChannels] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [showAllVideos, setShowAllVideos] = useState(false);
 
   useEffect(() => {
     fetchVideos();
@@ -90,99 +91,67 @@ const YouTubeChannelSlider = () => {
               <h2>{t("videosNews", "Video News")}</h2>
             </div>
 
-            <a href="/videos" className="youtube-see-more">
+            {/* <a href="/videos" className="youtube-see-more">
               {t("seeMore", "See More")} <span>→</span>
-            </a>
+            </a> */}
+
+            <button
+              type="button"
+              className="youtube-see-more"
+              onClick={() => setShowAllVideos((prev) => !prev)}
+            >
+              {showAllVideos ? "Show Less" : t("seeMore", "See More")}
+              <span>{showAllVideos ? "↑" : "→"}</span>
+            </button>
           </div>
 
-          <Swiper
-            modules={[Navigation, Pagination]}
-            navigation
-            pagination={{
-              clickable: true,
-            }}
-            spaceBetween={20}
-            slidesPerView={4}
-            slidesPerGroup={4}
-            loop={false}
-            breakpoints={{
-              0: {
-                slidesPerView: 1,
-                slidesPerGroup: 1,
-                spaceBetween: 15,
-              },
-
-              576: {
-                slidesPerView: 2,
-                slidesPerGroup: 2,
-                spaceBetween: 15,
-              },
-
-              992: {
-                slidesPerView: 3,
-                slidesPerGroup: 3,
-                spaceBetween: 20,
-              },
-
-              1200: {
-                slidesPerView: 4,
-                slidesPerGroup: 4,
-                spaceBetween: 20,
-              },
-            }}
-          >
-            {videos.map((video, index) => (
-              <SwiperSlide key={`${video.videoId}-${index}`}>
-                <div className="youtube-card">
-                  {/* CHANNEL NAME - TOP */}
-
-                  <div className="youtube-channel-top">
-                    <div className="youtube-channel-icon">▶</div>
-
-                    <div className="youtube-channel-title">
-                      {video.channelName}
-                    </div>
-                  </div>
-
-                  <a
-                    href={`https://www.youtube.com/watch?v=${video.videoId}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="youtube-thumbnail-link"
-                  >
-                    <div className="youtube-thumbnail">
-                      <img
-                        src={video.thumbnail}
-                        alt={video.title}
-                        loading="lazy"
-                      />
-
-                      <div className="youtube-play">
-                        <span>▶</span>
-                      </div>
-                    </div>
-                  </a>
-
-                  <div className="youtube-content">
-                    <h3>{video.title}</h3>
-
-                    {video.publishedAt && (
-                      <div className="youtube-date">
-                        {new Date(video.publishedAt).toLocaleDateString(
-                          "en-IN",
-                          {
-                            day: "numeric",
-                            month: "short",
-                            year: "numeric",
-                          },
-                        )}
-                      </div>
-                    )}
-                  </div>
+          {showAllVideos ? (
+            <div className="youtube-video-grid">
+              {videos.map((video, index) => (
+                <div key={`${video.videoId}-${index}`}>
+                  {/* Yahan apna existing youtube-card JSX rakhein */}
                 </div>
-              </SwiperSlide>
-            ))}
-          </Swiper>
+              ))}
+            </div>
+          ) : (
+            <Swiper
+              modules={[Navigation, Pagination]}
+              navigation
+              pagination={{ clickable: true }}
+              spaceBetween={20}
+              slidesPerView={4}
+              slidesPerGroup={4}
+              loop={false}
+              breakpoints={{
+                0: {
+                  slidesPerView: 1,
+                  slidesPerGroup: 1,
+                  spaceBetween: 15,
+                },
+                576: {
+                  slidesPerView: 2,
+                  slidesPerGroup: 2,
+                  spaceBetween: 15,
+                },
+                992: {
+                  slidesPerView: 3,
+                  slidesPerGroup: 3,
+                  spaceBetween: 20,
+                },
+                1200: {
+                  slidesPerView: 4,
+                  slidesPerGroup: 4,
+                  spaceBetween: 20,
+                },
+              }}
+            >
+              {videos.map((video, index) => (
+                <SwiperSlide key={`${video.videoId}-${index}`}>
+                  {/* Yahan apna existing youtube-card JSX rakhein */}
+                </SwiperSlide>
+              ))}
+            </Swiper>
+          )}
         </div>
       </section>
 
