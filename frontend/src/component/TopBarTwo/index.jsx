@@ -115,7 +115,7 @@ const TopBarTwo = () => {
             style={{
               display: "flex",
               alignItems: "center",
-              gap: "12px",
+              gap: "8px",
               flexWrap: "wrap",
             }}
           >
@@ -159,6 +159,71 @@ const TopBarTwo = () => {
               marginLeft: "auto",
             }}
           >
+            <NavLink
+              to="/epaper"
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: "6px",
+                minHeight: "34px",
+                padding: "0 13px",
+                borderRadius: "5px",
+                background: "#e31e24",
+                color: "#fff",
+                fontSize: "12px",
+                fontWeight: "800",
+                textDecoration: "none",
+                whiteSpace: "nowrap",
+              }}
+            >
+              <FontAwesome name="newspaper-o" />
+              <span>Epaper</span>
+            </NavLink>
+
+            <NavLink
+              to="/gallery"
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: "6px",
+                minHeight: "34px",
+                padding: "0 13px",
+                borderRadius: "5px",
+                background: "#130d0d",
+                color: "#fff",
+                fontSize: "12px",
+                fontWeight: "800",
+                textDecoration: "none",
+                whiteSpace: "nowrap",
+              }}
+            >
+              <FontAwesome name="newspaper-o" />
+              <span>Gallery</span>
+            </NavLink>
+
+            <NavLink
+              to="/login"
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: "6px",
+                minHeight: "34px",
+                padding: "0 13px",
+                borderRadius: "5px",
+                background: "#e31e24",
+                color: "#fff",
+                fontSize: "12px",
+                fontWeight: "800",
+                textDecoration: "none",
+                whiteSpace: "nowrap",
+              }}
+            >
+              <FontAwesome name="newspaper-o" />
+              <span>Subscribe</span>
+            </NavLink>
             {/* YouTube dropdown */}
             <div
               style={{ position: "relative", flexShrink: 0 }}

@@ -259,7 +259,7 @@ const MainMenuTwo = () => {
                 }}
               >
                 {/* EPAPER */}
-                <NavLink
+                {/* <NavLink
                   to="/epaper"
                   style={{
                     display: "inline-flex",
@@ -323,7 +323,7 @@ const MainMenuTwo = () => {
                 >
                   <FontAwesome name="newspaper-o" />
                   <span>Subscribe</span>
-                </NavLink>
+                </NavLink> */}
 
                 <NavLink
                   to="/search"
