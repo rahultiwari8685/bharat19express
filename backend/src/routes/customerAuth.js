@@ -5,6 +5,27 @@ import Customer from "../models/Customer.js";
 
 const router = express.Router();
 
+router.get("/getAllCustomer", async (req, res) => {
+  try {
+    const customers = await Customer.find()
+      .select("-password")
+      .sort({ createdAt: -1 });
+
+    return res.json({
+      success: true,
+      count: customers.length,
+      data: customers,
+    });
+  } catch (error) {
+    console.error("Get Customers Error:", error);
+
+    return res.status(500).json({
+      success: false,
+      message: "Failed to fetch customers",
+    });
+  }
+});
+
 router.post("/register", async (req, res) => {
   try {
     const { name, email, password, phone } = req.body;

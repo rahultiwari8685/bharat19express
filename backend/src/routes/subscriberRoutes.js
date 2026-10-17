@@ -15,7 +15,7 @@ const router = express.Router();
 router.get("/dashboard", verifySubscriber, getSubscriberDashboard);
 
 router.post("/saveCustomer", createCustomer);
-router.get("/", getCustomers);
+router.get("/getAllCustomer", getCustomers);
 router.put("/updateCustomer/:id", updateSubscriber);
 
 router.get("/my-reports", verifySubscriber, getMyReports);
