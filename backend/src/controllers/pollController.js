@@ -1,6 +1,6 @@
 import Poll from "../models/Poll.js";
 import PollVote from "../models/PollVote.js";
-import Subscriber from "../models/Subscriber.js";
+import Customer from "../models/Customer.js";
 
 export const createPoll = async (req, res) => {
   try {
@@ -115,7 +115,7 @@ export const getPollVoters = async (req, res) => {
 
     const customerIds = votes.map((vote) => vote.customer_id);
 
-    const subscribers = await Subscriber.find({
+    const subscribers = await Customer.find({
       _id: { $in: customerIds },
     })
       .select("name email phone")
