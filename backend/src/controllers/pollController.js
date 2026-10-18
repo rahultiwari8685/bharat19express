@@ -1,4 +1,6 @@
 import Poll from "../models/Poll.js";
+import PollVote from "../models/PollVote.js";
+import Subscriber from "../models/Subscriber.js";
 
 export const createPoll = async (req, res) => {
   try {
