@@ -4,6 +4,7 @@ import {
   createPoll,
   getAllPolls,
   updatePoll,
+  getPollVoters,
 } from "../controllers/pollController.js";
 
 import {
@@ -21,6 +22,7 @@ router.post("/savePoll", createPoll);
 router.get("/admin", getAllPolls);
 
 router.put("/admin/:id", updatePoll);
+router.get("/admin/:id/voters", getPollVoters);
 
 router.get("/active", getActivePoll);
 
