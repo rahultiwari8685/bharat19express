@@ -37,7 +37,7 @@ const Subscriber = () => {
 
       const token = loginInfo?.token
 
-      const response = await fetch(`${setting.api}api/customer/getAllCustomer`, {
+      const response = await fetch(`${setting.api}/api/customer/getAllCustomer`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
