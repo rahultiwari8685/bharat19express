@@ -47,19 +47,11 @@ const Polls = () => {
 
   const [loading, setLoading] = useState(false)
 
-  // ==========================================
-  // GET TOKEN
-  // ==========================================
-
   const getToken = () => {
     const loginInfo = JSON.parse(secureLocalStorage.getItem('logininfo') || '{}')
 
     return loginInfo?.token || ''
   }
-
-  // ==========================================
-  // GET ALL POLLS
-  // ==========================================
 
   const allPollList = async () => {
     try {
