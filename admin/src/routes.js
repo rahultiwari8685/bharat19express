@@ -11,6 +11,7 @@ const ChangePassword = React.lazy(() => import('./views/pages/changePassword/Cha
 const ScheduleNews = React.lazy(() => import('./views/pages/news/ScheduleNews'))
 
 const Users = React.lazy(() => import('./views/pages/users/Users'))
+const Profile = React.lazy(() => import('./views/pages/users/Profile'))
 const Category = React.lazy(() => import('./views/pages/category/Category'))
 const Advertisement = React.lazy(() => import('./views/pages/advertisement/Advertisement'))
 const SiteSetting = React.lazy(() => import('./views/pages/siteSetting/SiteSetting'))
@@ -43,6 +44,7 @@ const routes = [
   { path: '/advertisement', name: 'Advertisement', element: Advertisement },
   { path: '/shorts', name: 'Shorts', element: Shorts },
   { path: '/magazine', name: 'Magazine', element: Magazine },
+  { path: '/profile', name: 'Profile', element: Profile },
   { path: '/polls', name: 'Polls', element: Polls },
 ]
 export default routes

@@ -326,7 +326,7 @@ const MainMenuTwo = () => {
                 </NavLink> */}
 
                 <NavLink
-                  to="/search"
+                  to="/"
                   aria-label="Search news"
                   title="Search"
                   style={{

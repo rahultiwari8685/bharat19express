@@ -232,22 +232,10 @@ export const correspondenceNav = [
     ],
   },
 
-  // {
-  //   component: CNavItem,
-  //   name: 'Users',
-  //   to: '/Users',
-  //   icon: <CIcon icon={cilPeople} customClassName="nav-icon" />,
-  // },
-  // {
-  //   component: CNavItem,
-  //   name: 'Category',
-  //   to: '/Category',
-  //   icon: <CIcon icon={cilTags} customClassName="nav-icon" />,
-  // },
   {
     component: CNavItem,
     name: 'Profile',
-    to: '/Profile',
+    to: '/profile',
     icon: <CIcon icon={cilUser} customClassName="nav-icon" />,
   },
 ]
