@@ -31,7 +31,7 @@ import {
 
 import setting from '../../../setting.json'
 import secureLocalStorage from 'react-secure-storage'
-import { cilPencil, cilPeople, cilChart } from '@coreui/icons'
+import { cilPencil, cilPeople, cilChart, cilTrash } from '@coreui/icons'
 import CIcon from '@coreui/icons-react'
 
 const Polls = () => {
@@ -129,10 +129,6 @@ const Polls = () => {
     allPollList()
   }, [])
 
-  // ==========================================
-  // RESET FORM
-  // ==========================================
-
   const resetForm = () => {
     setQuestion('')
     setOptions(['', ''])
@@ -141,19 +137,11 @@ const Polls = () => {
     setShowResult(true)
   }
 
-  // ==========================================
-  // CREATE POLL
-  // ==========================================
-
   const openCreate = () => {
     setEditingPoll(null)
     resetForm()
     setVisible(true)
   }
-
-  // ==========================================
-  // EDIT POLL
-  // ==========================================
 
   const handleEdit = (poll) => {
     setEditingPoll(poll)
@@ -173,9 +161,37 @@ const Polls = () => {
     setVisible(true)
   }
 
-  // ==========================================
-  // ADD OPTION
-  // ==========================================
+  const handleDelete = async (poll) => {
+    const confirmed = window.confirm(
+      `Are you sure you want to delete "${poll.question}"? This will also delete its votes.`,
+    )
+
+    if (!confirmed) return
+
+    try {
+      const response = await fetch(`${setting.api}/api/polls/admin/${poll._id}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${getToken()}`,
+        },
+      })
+
+      const result = await response.json()
+
+      if (!response.ok || result.success !== true) {
+        throw new Error(result.message || 'Failed to delete poll')
+      }
+
+      alert('Poll deleted successfully')
+
+      // Refresh the poll list
+      await allPollList()
+    } catch (error) {
+      console.error('Delete Poll Error:', error)
+      alert(error.message || 'Failed to delete poll')
+    }
+  }
 
   const addOption = () => {
     setOptions([...options, ''])
@@ -475,6 +491,15 @@ const Polls = () => {
                           >
                             <CIcon icon={cilPencil} className="me-1" />
                             Edit
+                          </CButton>
+                          <CButton
+                            size="sm"
+                            color="danger"
+                            className="rounded-pill px-3 fw-semibold"
+                            onClick={() => handleDelete(poll)}
+                          >
+                            <CIcon icon={cilTrash} className="me-1" />
+                            Delete
                           </CButton>
 
                           <CButton

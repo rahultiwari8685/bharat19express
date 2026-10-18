@@ -94,6 +94,39 @@ export const updatePoll = async (req, res) => {
   }
 };
 
+export const deletePoll = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const poll = await Poll.findById(id);
+
+    if (!poll) {
+      return res.status(404).json({
+        success: false,
+        message: "Poll not found",
+      });
+    }
+
+    // Delete all votes associated with this poll
+    await PollVote.deleteMany({ poll_id: poll._id });
+
+    // Delete the poll
+    await Poll.findByIdAndDelete(id);
+
+    return res.status(200).json({
+      success: true,
+      message: "Poll deleted successfully",
+    });
+  } catch (error) {
+    console.error("Delete Poll Error:", error);
+
+    return res.status(500).json({
+      success: false,
+      message: "Failed to delete poll",
+    });
+  }
+};
+
 export const getPollVoters = async (req, res) => {
   try {
     const { id } = req.params;
