@@ -171,12 +171,6 @@ export const createNews = async (req, res) => {
       scheduledAt,
     } = req.body;
 
-    /*
-    |--------------------------------------------------------------------------
-    | Categories
-    |--------------------------------------------------------------------------
-    */
-
     let categories = [];
 
     try {
@@ -189,23 +183,11 @@ export const createNews = async (req, res) => {
       .filter((id) => mongoose.Types.ObjectId.isValid(id))
       .map((id) => new mongoose.Types.ObjectId(id));
 
-    /*
-    |--------------------------------------------------------------------------
-    | Schedule Date
-    |--------------------------------------------------------------------------
-    */
-
     let scheduledDate = null;
 
     if (scheduledAt) {
       scheduledDate = new Date(new Date(scheduledAt).getTime() - 19800000);
     }
-
-    /*
-    |--------------------------------------------------------------------------
-    | Duplicate News Check
-    |--------------------------------------------------------------------------
-    */
 
     const existingNews = await News.findOne({
       title: title.trim(),
@@ -222,12 +204,6 @@ export const createNews = async (req, res) => {
       });
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | Duplicate Slug Check
-    |--------------------------------------------------------------------------
-    */
-
     if (slug && slug.trim()) {
       const existingSlug = await News.findOne({
         slug: slug.trim(),
@@ -241,61 +217,44 @@ export const createNews = async (req, res) => {
       }
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | GOOGLE TRANSLATION
-    |--------------------------------------------------------------------------
-    |
-    | Hindi is the source.
-    |
-    */
-
     console.log("========================================");
 
-    console.log("Generating automatic translations...");
+    // console.log("Generating automatic translations...");
 
-    const translations = await generateGoogleTranslations({
-      title,
-      subtitle: sub_title,
-      content,
-    });
+    // const translations = await generateGoogleTranslations({
+    //   title,
+    //   subtitle: sub_titconsole.log("Generating automatic translations...");
 
-    console.log("Automatic translations completed.");
+    let translations = {};
+
+    try {
+      translations = await generateGoogleTranslations({
+        title: title || "",
+        subtitle: sub_title || "",
+        content: content || "",
+      });
+    } catch (translationError) {
+      console.error("Translation failed:", translationError.message);
+
+      // Allow news creation even if translation fails
+      translations = {};
+    }
+    (le,
+      //   content,
+      // });
+
+      console.log("Automatic translations completed."));
 
     console.log("========================================");
-
-    /*
-    |--------------------------------------------------------------------------
-    | Create News
-    |--------------------------------------------------------------------------
-    */
 
     const createdNews = await News.create({
-      /*
-      |--------------------------------------------------------------------------
-      | Hindi Source
-      |--------------------------------------------------------------------------
-      */
-
       title: title || "",
 
       subtitle: sub_title || "",
 
       content: content || "",
 
-      /*
-      |--------------------------------------------------------------------------
-      | Automatic Translations
-      |--------------------------------------------------------------------------
-      */
-
       translations,
-
-      /*
-      |--------------------------------------------------------------------------
-      | Other Fields
-      |--------------------------------------------------------------------------
-      */
 
       author: req.body.author,
 
@@ -319,12 +278,6 @@ export const createNews = async (req, res) => {
 
       thumbnail: req.file?.filename || "",
     });
-
-    /*
-    |--------------------------------------------------------------------------
-    | Push Notification
-    |--------------------------------------------------------------------------
-    */
 
     if (Number(createdNews.type) === 1) {
       console.log("=================================");
@@ -351,21 +304,9 @@ export const createNews = async (req, res) => {
       console.log("=================================");
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | Populate
-    |--------------------------------------------------------------------------
-    */
-
     const news = await News.findById(createdNews._id)
       .populate("author", "name email")
       .populate("categories", "name slug");
-
-    /*
-    |--------------------------------------------------------------------------
-    | Response
-    |--------------------------------------------------------------------------
-    */
 
     return res.status(201).json({
       status: true,
@@ -408,12 +349,6 @@ export const getNews = async (req, res) => {
         createdAt: -1,
       });
 
-    /*
-    |--------------------------------------------------------------------------
-    | Pagination
-    |--------------------------------------------------------------------------
-    */
-
     if (limit) {
       const pageNumber = parseInt(page);
 
@@ -425,12 +360,6 @@ export const getNews = async (req, res) => {
     }
 
     const news = await newsQuery;
-
-    /*
-    |--------------------------------------------------------------------------
-    | Translation
-    |--------------------------------------------------------------------------
-    */
 
     const translatedNews = news.map((item) => applyTranslation(item, lang));
 
@@ -610,12 +539,6 @@ export const getNewsBySlug = async (req, res) => {
 
     const oldSlug = req.params.slug;
 
-    /*
-      |--------------------------------------------------------------------------
-      | Old Slug Redirects
-      |--------------------------------------------------------------------------
-      */
-
     const slugRedirects = {
       "-2": "haryana-ko-mili-badi-jimmedari-cpa-zone-2-ki-karegi-mezbani",
 
@@ -631,12 +554,6 @@ export const getNewsBySlug = async (req, res) => {
 
       return res.redirect(301, `/news/${newSlug}`);
     }
-
-    /*
-      |--------------------------------------------------------------------------
-      | Find News
-      |--------------------------------------------------------------------------
-      */
 
     const news = await News.findOne({
       slug: oldSlug,

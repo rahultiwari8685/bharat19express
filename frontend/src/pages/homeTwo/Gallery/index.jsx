@@ -4,7 +4,7 @@ const API = "https://api.bharat19express.com";
 
 const FILTERS = [
   { label: "Images", value: "image", icon: "▧" },
-  { label: "All Media", value: "all", icon: "▦" },
+  // { label: "All Media", value: "all", icon: "▦" },
   { label: "Videos", value: "video", icon: "▶" },
 ];
 
@@ -73,7 +73,6 @@ export default function Gallery() {
     return filter === "all" || getMediaType(item) === filter;
   });
 
-  // Autoplay videos only while visible; pause when they leave the viewport.
   useEffect(() => {
     const videos = [...videoRefs.current.values()].filter(Boolean);
 
@@ -112,7 +111,6 @@ export default function Gallery() {
     };
   }, [filteredMedia, loading]);
 
-  // Stop and remove references when switching filters.
   useEffect(() => {
     return () => {
       videoRefs.current.forEach((video) => video?.pause());
