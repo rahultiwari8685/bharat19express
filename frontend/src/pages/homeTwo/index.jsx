@@ -19,9 +19,10 @@ import Sports from "../../component/Sports";
 import International from "../../component/International";
 import BannerSection from "../../component/BannerSection";
 import YouTubeChannelSlider from "../../component/YouTubeChannelSlider";
-
+import { useTranslation } from "react-i18next";
 function HomeTwo() {
   const categoryId = "6ab5133ae0146bb0a4a80e48";
+  const { t, i18n } = useTranslation();
 
   const [banner, setBanner] = useState(null);
   const [bannerMiddle, setBannerMiddle] = useState(null);
