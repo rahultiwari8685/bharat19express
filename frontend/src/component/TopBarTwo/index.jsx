@@ -121,25 +121,6 @@ const TopBarTwo = () => {
               flexWrap: "wrap",
             }}
           >
-            {/* <span style={{ fontWeight: 600, whiteSpace: "nowrap" }}>
-              <FontAwesome name="calendar" />{" "}
-              {new Date().toLocaleDateString(
-                {
-                  en: "en-IN",
-                  hi: "hi-IN",
-                  bn: "bn-BD",
-                  mr: "mr-IN",
-                }[i18n.resolvedLanguage] || "en-IN",
-                {
-                  day: "2-digit",
-                  month: "long",
-                  year: "numeric",
-                  weekday: "long",
-                },
-              )}
-            </span> */}
-
-            {/* Date with hover calendar */}
             <div
               style={{ position: "relative", display: "inline-block" }}
               onMouseEnter={() => setShowCalendar(true)}
@@ -440,35 +421,7 @@ const TopBarTwo = () => {
               <FontAwesome name="user-circle" /> {t("login", "Login")}
             </Link>
 
-            {/* {[
-              { icon: "youtube-play", url: "https://www.youtube.com/" },
-              { icon: "facebook-f", url: "https://www.facebook.com/" },
-              { icon: "instagram", url: "https://www.instagram.com/" },
-              { icon: "twitter", url: "https://x.com/" },
-            ].map((item) => (
-              <a
-                key={item.icon}
-                href={item.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label={item.icon}
-                style={{
-                  color: "#fff",
-                  textDecoration: "none",
-                  fontSize: "14px",
-                  flexShrink: 0,
-                }}
-              >
-              {item.icon === "x-twitter" ? (
-  <FaXTwitter />
-) : (
-  <FontAwesome name={item.icon} />
-)}
-              </a>
-            ))} */}
-
             {[
-              // { icon: "youtube-play", url: "https://www.youtube.com/" },
               { icon: "facebook-f", url: "https://www.facebook.com/" },
               { icon: "instagram", url: "https://www.instagram.com/" },
               { icon: "x-twitter", url: "https://x.com/" },
@@ -485,9 +438,15 @@ const TopBarTwo = () => {
                   textDecoration: "none",
                   fontSize: "14px",
                   flexShrink: 0,
+                  display: "inline-flex",
+                  alignItems: "center",
                 }}
               >
-                <FontAwesome name={item.icon} />
+                {item.icon === "x-twitter" ? (
+                  <FaXTwitter />
+                ) : (
+                  <FontAwesome name={item.icon} />
+                )}
               </a>
             ))}
 
