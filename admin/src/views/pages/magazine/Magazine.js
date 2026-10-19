@@ -320,7 +320,7 @@ const Magazine = () => {
               }}
             >
               <i className="bi bi-plus-circle me-2"></i>
-              Create Magazine
+              Add
             </CButton>
           </div>
         </CCardHeader>
@@ -489,10 +489,6 @@ const Magazine = () => {
         </CCardBody>
       </CCard>
 
-      {/* ==========================================
-          CREATE / EDIT OFFCANVAS
-      ========================================== */}
-
       <COffcanvas
         placement="end"
         visible={visible}
@@ -503,7 +499,7 @@ const Magazine = () => {
         }}
       >
         <COffcanvasHeader className="bg-dark text-white fw-bold" closeButton>
-          {editingMagazine ? 'Update Magazine' : 'Create Magazine'}
+          {editingMagazine ? 'Update ' : 'Add'}
         </COffcanvasHeader>
 
         <COffcanvasBody>
@@ -530,7 +526,7 @@ const Magazine = () => {
               <CCol md={12}>
                 <CFormInput
                   type="text"
-                  placeholder="magazine-title"
+                  placeholder="Magazine / Newspaper-title"
                   label="Slug"
                   {...register('slug')}
                 />
@@ -722,7 +718,7 @@ const Magazine = () => {
                         editingMagazine ? 'bi-arrow-repeat' : 'bi-check-circle'
                       } me-2`}
                     />
-                    {editingMagazine ? 'Update Magazine' : 'Save Magazine'}
+                    {editingMagazine ? 'Update' : 'Save'}
                   </>
                 )}
               </CButton>

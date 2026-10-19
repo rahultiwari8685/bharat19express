@@ -131,7 +131,7 @@ function HomeTwo() {
           </div>
         </div>
       </div>
-      <VideoNews />
+      {/* <VideoNews /> */}
       <div className="mix3 mb30">
         <div className="container">
           <div className="row">
