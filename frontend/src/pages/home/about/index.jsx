@@ -1,367 +1,465 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import BreadCrumb from "../../../component/BreadCrumb";
-import FontAwesome from "../../../component/uiStyle/FontAwesome";
-import { Link } from "react-router-dom";
-import WidgetTab from "../../../component/WidgetTab";
-import WidgetTrendingNews from "../../../component/WidgetTrendingNews";
-import NewsLetter from "../../../component/NewsLetter";
-import EntertainmentNews from "../../../component/EntertainmentNews";
-import { Fade, Nav, NavItem, TabContent, TabPane } from "reactstrap";
-import MostShareWidget from "../../../component/MostShareWidget";
 import BannerSection from "../../../component/BannerSection";
 
-import banner2 from "../../../assets/img/ad/ad-2.jpg";
-import author1 from "../../../assets/img/author.png";
-import calendar from "../../../assets/img/icon/calendar.png";
-import { entertainments2 } from "../../../data/entertainments";
-import { useTranslation } from "react-i18next";
 function About() {
-  const { t, i18n } = useTranslation();
-  const [activeTab, setActiveTab] = useState("1");
-
-  const API = "https://api.bharat19express.com";
-
-  const [latestNews, setLatestNews] = useState([]);
-  const [popularNews, setPopularNews] = useState([]);
-  const [banner, setBanner] = useState(null);
-
-  useEffect(() => {
-    getLatestNews();
-    getPopularNews();
-    getBanner();
-  }, [i18n.resolvedLanguage]);
-
-  const getBanner = async () => {
-    try {
-      const res = await fetch(
-        "https://api.bharat19express.com/api/advertisements",
-      );
-
-      const result = await res.json();
-
-      if (result.success) {
-        const ads = result.data
-          .filter((item) => item.status === true && item.position === "sidebar")
-          .sort((a, b) => (a.priority || 0) - (b.priority || 0));
-
-        setBanner(ads[0] || null);
-      }
-    } catch (err) {
-      console.error("Advertisement Error:", err);
-      setBanner(null);
-    }
-  };
-
-  const getLatestNews = async () => {
-    try {
-      const res = await fetch(
-        `${API}/api/news/getAllNews?limit=6&lang=${i18n.resolvedLanguage || i18n.language}`,
-      );
-      const data = await res.json();
-
-      if (data.status) {
-        setLatestNews(data.data);
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  const getPopularNews = async () => {
-    try {
-      const res = await fetch(
-        `${API}/api/news/popular?limit=6&lang=${i18n.resolvedLanguage || i18n.language}`,
-      );
-      const data = await res.json();
-
-      if (data.status) {
-        setPopularNews(data.data);
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  const toggle = (tab) => {
-    if (activeTab !== tab) setActiveTab(tab);
-  };
   return (
     <>
-      <BreadCrumb
-        className="shadow5"
-        title={t("about.title", "About Bharat 19 Express")}
-      >
-        <>
-          <div className="space-50" />
-          <div className="row">
-            <div className="col-12">
-              <div className="about_company">
-                <h2>{t("about.heading", "Bharat 19 Express")}</h2>
-
-                <p>
-                  {t(
-                    "about.intro",
-                    "Bharat 19 Express is a trusted Hindi news platform. Our aim is to deliver important news to you in a simple, clear and fast way.",
-                  )}
-                </p>
-
-                <div className="space-20" />
-
-                <h4>{t("about.missionTitle", "Our Mission")}</h4>
-
-                <p>
-                  {t(
-                    "about.mission",
-                    "Our mission is to provide trustworthy journalism, factual reporting and real-time updates covering Politics, National, International, Sports, Entertainment, Business, Technology and Local News.",
-                  )}
-                </p>
-
-                <div className="space-20" />
-
-                <h4>{t("about.visionTitle", "Our Vision")}</h4>
-
-                <p>
-                  {t(
-                    "about.vision",
-                    "To become one of India's most trusted digital news organizations by delivering quality journalism with speed, transparency and credibility.",
-                  )}
-                </p>
-
-                <div className="space-20" />
-
-                <h4>{t("about.coverTitle", "What We Cover")}</h4>
-
-                <ul className="about-list">
-                  <li>{t("about.politics")}</li>
-                  <li>{t("about.national")}</li>
-                  <li>{t("about.states")}</li>
-                  <li>{t("about.business")}</li>
-                  <li>{t("about.sports")}</li>
-                  <li>{t("about.entertainment")}</li>
-                  <li>{t("about.technology")}</li>
-                  <li>{t("about.health")}</li>
-                  <li>{t("about.world")}</li>
-                </ul>
-              </div>
-
-              <div className="space-50" />
-            </div>
-          </div>
-          <div className="space-50" />
-        </>
+      <BreadCrumb className="shadow5" title="About Us">
+        <div className="space-50" />
       </BreadCrumb>
-      <div className="archives padding-top-30">
+
+      <section className="about-page-section padding-top-30">
         <div className="container">
-          <div className="row">
-            <div className="col-md-6 col-lg-8">
-              <div className="row">
-                <div className="col-10 align-self-center">
-                  <div className="about_post_list">
-                    <Nav tabs>
-                      <NavItem>
-                        <div
-                          className={activeTab === "1" ? "active" : ""}
-                          onClick={() => toggle("1")}
-                        >
-                          {t("about.latestNews")}
-                        </div>
-                      </NavItem>
+          <article className="about-page-content">
+            <header className="about-page-header">
+              <h1>About Us – Bharat 19 Express</h1>
+              <p className="about-tagline">
+                Independent Journalism | Credible Information | Connecting
+                Communities
+              </p>
+            </header>
 
-                      <NavItem>
-                        <div
-                          className={activeTab === "2" ? "active" : ""}
-                          onClick={() => toggle("2")}
-                        >
-                          {t("about.popularNews")}
-                        </div>
-                      </NavItem>
-                    </Nav>
-                  </div>
-                </div>
-                <div className="col-2 text-right align-self-center">
-                  <div className="calender mb20">
-                    <img src={calendar} alt="calendar" />
-                  </div>
-                </div>
-              </div>
-              <div className="about_posts_tab">
-                <TabContent activeTab={activeTab}>
-                  <TabPane tabId="1">
-                    <Fade in={activeTab === "1"}>
-                      <div className="row justify-content-center">
-                        <EntertainmentNews
-                          headerHide={true}
-                          entertainments={latestNews}
-                        />
-                      </div>
-                    </Fade>
-                  </TabPane>
-                  <TabPane tabId="2">
-                    <Fade in={activeTab === "2"}>
-                      <div className="row justify-content-center">
-                        <EntertainmentNews
-                          headerHide={true}
-                          entertainments={popularNews}
-                        />
-                      </div>
-                    </Fade>
-                  </TabPane>
-                </TabContent>
-              </div>
-              <div className="row">
-                <div className="col-12">
-                  <div className="cpagination">
-                    <nav aria-label="Page navigation example">
-                      <ul className="pagination">
-                        <li className="page-item">
-                          <Link
-                            className="page-link"
-                            to="/"
-                            aria-label="Previous"
-                          >
-                            <span aria-hidden="true">
-                              <FontAwesome name="caret-left" />
-                            </span>
-                          </Link>
-                        </li>
-                        <li className="page-item">
-                          <Link className="page-link" to="/">
-                            1
-                          </Link>
-                        </li>
-                        <li className="page-item">
-                          <Link className="page-link" to="/">
-                            ..
-                          </Link>
-                        </li>
-                        <li className="page-item">
-                          <Link className="page-link" to="/">
-                            5
-                          </Link>
-                        </li>
-                        <li className="page-item">
-                          <Link className="page-link" to="/" aria-label="Next">
-                            <span aria-hidden="true">
-                              <FontAwesome name="caret-right" />
-                            </span>
-                          </Link>
-                        </li>
-                      </ul>
-                    </nav>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="col-md-6 col-lg-4">
-              <WidgetTab />
-              <WidgetTrendingNews />
-              {/* <div className="banner2 mb30">
-                <Link to="/">
-                  <img src={banner2} alt="thumb" />
-                </Link>
-              </div> */}
+            <p>
+              Welcome to Bharat 19 Express, a Hindi news and digital media
+              platform dedicated to delivering timely, relevant and responsible
+              journalism.
+            </p>
 
-              {banner && (
-                <div className="col-md-6 col-lg-12 d-md-none d-lg-block">
-                  <div className="banner2 mb30 border-radious5">
-                    <a
-                      href={banner.link || "#"}
-                      target={banner.link ? "_blank" : "_self"}
-                      rel="noopener noreferrer"
-                    >
-                      <img
-                        src={`https://api.bharat19express.com/uploads/advertisements/${banner.image}`}
-                        alt={banner.title || "Advertisement"}
-                        style={{
-                          width: "100%",
-                          height: "auto",
-                          display: "block",
-                        }}
-                      />
-                    </a>
-                  </div>
+            <p>
+              Bharat 19 Express is a media initiative of Page 19 Express Media
+              &amp; Advertisement Private Limited. Our objective is to inform,
+              educate and engage audiences through credible news reporting,
+              meaningful analysis and public-interest journalism.
+            </p>
+
+            <p>
+              With a strong focus on Uttar Pradesh and coverage of important
+              developments across India and the world, Bharat 19 Express aims to
+              connect local communities with regional, national and
+              international news.
+            </p>
+
+            <section>
+              <h2>Our Vision</h2>
+              <p>
+                To become a trusted Hindi news and information platform that
+                promotes transparency, public awareness, informed discussion and
+                responsible journalism.
+              </p>
+            </section>
+
+            <section>
+              <h2>Our Mission</h2>
+              <p>Our mission is to:</p>
+              <ul>
+                <li>Deliver timely, accurate and relevant news.</li>
+                <li>
+                  Highlight public-interest issues and community concerns.
+                </li>
+                <li>
+                  Report on government policies, development programmes and
+                  their impact on citizens.
+                </li>
+                <li>
+                  Encourage awareness of education, employment, agriculture,
+                  health, business and technology.
+                </li>
+                <li>
+                  Provide opportunities for local voices and emerging
+                  journalists.
+                </li>
+                <li>
+                  Maintain editorial responsibility, fairness and transparency.
+                </li>
+              </ul>
+            </section>
+
+            <section>
+              <h2>What We Cover</h2>
+
+              <div className="about-coverage-grid">
+                <div className="about-coverage-item">
+                  <h3>Politics and Governance</h3>
+                  <p>
+                    Political developments, public administration, government
+                    policies and democratic institutions.
+                  </p>
                 </div>
-              )}
-              {/* <MostShareWidget title="Most Share" /> */}
-              {/* <NewsLetter /> */}
-            </div>
-          </div>
+
+                <div className="about-coverage-item">
+                  <h3>Uttar Pradesh and Regional News</h3>
+                  <p>
+                    District-level reporting, local developments, civic issues
+                    and regional affairs.
+                  </p>
+                </div>
+
+                <div className="about-coverage-item">
+                  <h3>National and International News</h3>
+                  <p>
+                    Important events, public affairs and developments affecting
+                    India and the wider world.
+                  </p>
+                </div>
+
+                <div className="about-coverage-item">
+                  <h3>Business and Economy</h3>
+                  <p>
+                    Financial developments, entrepreneurship, industries,
+                    markets and economic policies.
+                  </p>
+                </div>
+
+                <div className="about-coverage-item">
+                  <h3>Agriculture and Rural Development</h3>
+                  <p>
+                    Farming, agricultural technology, rural infrastructure and
+                    government initiatives.
+                  </p>
+                </div>
+
+                <div className="about-coverage-item">
+                  <h3>Education and Employment</h3>
+                  <p>
+                    Academic developments, career opportunities, skills and
+                    employment-related information.
+                  </p>
+                </div>
+
+                <div className="about-coverage-item">
+                  <h3>Sports and Youth</h3>
+                  <p>
+                    Sporting achievements, competitions, emerging talent and
+                    youth initiatives.
+                  </p>
+                </div>
+
+                <div className="about-coverage-item">
+                  <h3>Health, Science and Technology</h3>
+                  <p>
+                    Public-health awareness, scientific developments and digital
+                    innovation.
+                  </p>
+                </div>
+
+                <div className="about-coverage-item">
+                  <h3>Culture and Society</h3>
+                  <p>
+                    Festivals, heritage, social initiatives and community
+                    stories.
+                  </p>
+                </div>
+              </div>
+            </section>
+
+            <section>
+              <h2>Our Media Platforms</h2>
+              <p>
+                Bharat 19 Express reaches its audience through multiple
+                publishing and communication platforms:
+              </p>
+
+              <ul>
+                <li>
+                  Official news website:{" "}
+                  <a
+                    href="https://www.bharat19express.com"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    www.bharat19express.com
+                  </a>
+                </li>
+                <li>Digital news and e-paper content</li>
+                <li>Monthly news magazine</li>
+                <li>YouTube news and video coverage</li>
+                <li>
+                  Facebook, Instagram and other official social media channels
+                </li>
+              </ul>
+
+              <p>
+                The availability of individual publications, subscriptions and
+                digital services may vary. Relevant details will be communicated
+                through official channels.
+              </p>
+            </section>
+
+            <section>
+              <h2>Our Editorial Commitment</h2>
+              <p>
+                We aim to uphold responsible journalistic practices by
+                distinguishing news from opinion, checking information before
+                publication and correcting significant factual errors when
+                identified.
+              </p>
+
+              <p>
+                We seek to present relevant perspectives fairly and avoid
+                publishing misleading or deliberately manipulated information.
+              </p>
+
+              <p>
+                Advertising, sponsored content and promotional partnerships
+                should be appropriately identified and distinguished from
+                independent editorial coverage.
+              </p>
+            </section>
+
+            <section>
+              <h2>Advertising and Business Collaboration</h2>
+              <p>
+                Bharat 19 Express provides opportunities for businesses,
+                institutions and organisations to enquire about advertising and
+                promotional collaborations across its available media platforms.
+              </p>
+
+              <p>
+                Advertising proposals are subject to internal review, applicable
+                laws and company policies.
+              </p>
+            </section>
+
+            <section>
+              <h2>Connect With Us</h2>
+              <p>
+                We welcome news tips, feedback, corrections, advertising
+                enquiries and professional collaboration proposals.
+              </p>
+
+              <div className="about-contact-card">
+                <h3>Bharat 19 Express</h3>
+
+                <p>
+                  A media initiative of Page 19 Express Media &amp;
+                  Advertisement Private Limited
+                </p>
+
+                <p>
+                  <strong>Website:</strong>{" "}
+                  <a
+                    href="https://www.bharat19express.com"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    https://www.bharat19express.com
+                  </a>
+                </p>
+
+                <p>
+                  <strong>Email:</strong>{" "}
+                  <a href="mailto:bharat19express@gmail.com">
+                    bharat19express@gmail.com
+                  </a>
+                </p>
+
+                <p>
+                  <strong>Contact:</strong>{" "}
+                  <a href="tel:+918542822407">+91 8542822407</a>
+                  {", "}
+                  <a href="tel:+918707386745">+91 8707386745</a>
+                </p>
+              </div>
+            </section>
+
+            <footer className="about-page-footer">
+              <p>Bharat 19 Express – खबरों से आगे, जनसरोकारों के साथ।</p>
+            </footer>
+          </article>
         </div>
-      </div>
+      </section>
+
       <div className="space-70" />
+
       <BannerSection />
 
-      {/* <style>{`
-    .about_company{
-      background:#fff;
-      padding:40px;
-      border-radius:10px;
-      box-shadow:0 10px 25px rgba(0,0,0,.08);
-      margin-bottom:40px;
-    }
+      <style>{`
+        .about-page-content {
+          background: #fff;
+          padding: 35px;
+          border-radius: 10px;
+          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+          color: #444;
+          overflow-wrap: anywhere;
+        }
 
-    .about_company h2{
-      font-size:36px;
-      font-weight:700;
-      color:#111;
-      margin-bottom:20px;
-    }
+        .about-page-header {
+          padding-bottom: 22px;
+          margin-bottom: 25px;
+          border-bottom: 1px solid #eee;
+        }
 
-    .about_company h4{
-      font-size:22px;
-      font-weight:600;
-      margin-top:25px;
-      margin-bottom:15px;
-      color:#d10000;
-    }
+        .about-page-header h1 {
+          color: #b00000;
+          font-size: 32px;
+          font-weight: 700;
+          line-height: 1.4;
+          margin-bottom: 12px;
+        }
 
-    .about_company p{
-      font-size:16px;
-      line-height:32px;
-      color:#555;
-      margin-bottom:15px;
-      text-align:justify;
-    }
+        .about-tagline {
+          color: #777 !important;
+          font-size: 15px !important;
+          font-weight: 600;
+          line-height: 1.7 !important;
+          margin-bottom: 0 !important;
+          text-align: left !important;
+        }
 
-    .about-list{
-      margin:20px 0;
-      padding-left:20px;
-    }
+        .about-page-content section {
+          margin-top: 30px;
+        }
 
-    .about-list li{
-      font-size:16px;
-      line-height:32px;
-      color:#444;
-      list-style:disc;
-    }
+        .about-page-content h2 {
+          color: #b00000;
+          font-size: 23px;
+          font-weight: 700;
+          line-height: 1.4;
+          margin-bottom: 15px;
+          padding-bottom: 8px;
+          border-bottom: 1px solid #eee;
+        }
 
-    .about_company .highlight{
-      color:#d10000;
-      font-weight:600;
-    }
+        .about-page-content h3 {
+          color: #222;
+          font-size: 17px;
+          font-weight: 700;
+          line-height: 1.5;
+          margin-bottom: 10px;
+        }
 
-    @media(max-width:768px){
-      .about_company{
-        padding:25px;
-      }
+        .about-page-content p,
+        .about-page-content li {
+          color: #555;
+          font-size: 16px;
+          line-height: 1.8;
+        }
 
-      .about_company h2{
-        font-size:28px;
-      }
+        .about-page-content p {
+          margin-bottom: 15px;
+          text-align: justify;
+        }
 
-      .about_company h4{
-        font-size:20px;
-      }
+        .about-page-content ul {
+          padding-left: 25px;
+          margin-bottom: 18px;
+        }
 
-      .about_company p,
-      .about-list li{
-        font-size:15px;
-        line-height:28px;
-      }
-    }
-  `}</style> */}
+        .about-page-content li {
+          list-style: disc;
+          margin-bottom: 8px;
+        }
 
-      {/* Rest of your JSX */}
+        .about-page-content a {
+          color: #b00000;
+          text-decoration: none;
+          overflow-wrap: anywhere;
+        }
+
+        .about-page-content a:hover {
+          text-decoration: underline;
+        }
+
+        .about-coverage-grid {
+          display: grid;
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          gap: 18px;
+          margin-top: 20px;
+        }
+
+        .about-coverage-item {
+          padding: 20px;
+          background: #fafafa;
+          border: 1px solid #eee;
+          border-radius: 8px;
+          transition: box-shadow 0.2s ease,
+                      transform 0.2s ease;
+        }
+
+        .about-coverage-item:hover {
+          box-shadow: 0 5px 16px rgba(0, 0, 0, 0.07);
+          transform: translateY(-2px);
+        }
+
+        .about-coverage-item h3 {
+          color: #b00000;
+        }
+
+        .about-coverage-item p {
+          font-size: 15px;
+          margin-bottom: 0;
+          text-align: left;
+        }
+
+        .about-contact-card {
+          padding: 22px;
+          background: #fafafa;
+          border-left: 4px solid #b00000;
+          border-radius: 6px;
+          margin-top: 18px;
+        }
+
+        .about-contact-card h3 {
+          font-size: 20px;
+          margin-bottom: 12px;
+        }
+
+        .about-contact-card p:last-child {
+          margin-bottom: 0;
+        }
+
+        .about-page-footer {
+          margin-top: 30px;
+          padding-top: 20px;
+          border-top: 1px solid #eee;
+        }
+
+        .about-page-footer p {
+          color: #b00000;
+          font-size: 18px;
+          font-weight: 700;
+          text-align: center;
+          margin-bottom: 0;
+        }
+
+        @media (max-width: 768px) {
+          .about-page-content {
+            padding: 22px 18px;
+          }
+
+          .about-page-header h1 {
+            font-size: 26px;
+          }
+
+          .about-page-content h2 {
+            font-size: 21px;
+          }
+
+          .about-page-content p,
+          .about-page-content li {
+            font-size: 15px;
+            line-height: 1.75;
+          }
+
+          .about-coverage-grid {
+            grid-template-columns: 1fr;
+            gap: 12px;
+          }
+
+          .about-coverage-item {
+            padding: 16px;
+          }
+
+          .about-contact-card {
+            padding: 16px;
+          }
+
+          .about-page-footer p {
+            font-size: 16px;
+          }
+        }
+      `}</style>
     </>
   );
 }
