@@ -255,10 +255,10 @@ const FooterAreaTwo = () => {
               </div>
             </div>
 
-            <div className="space-30" />
-            <div className="space-30" />
+            {/* <div className="space-30" />
+            <div className="space-30" /> */}
 
-            <div className="download_btn">
+            {/* <div className="download_btn">
               <div className="space-15" />
 
               <div className="border_black" />
@@ -281,14 +281,14 @@ const FooterAreaTwo = () => {
 
                 <div className="col-lg-6">
                   <div className="download_btn_group">
-                    {/* GOOGLE PLAY */}
+                 
                     <Link className="app_btn" to="/">
                       <FontAwesome name="google-play" />
                       {t("downloadOnThe", "Download on the")}{" "}
                       <span>{t("googlePlay", "Google Play")}</span>
                     </Link>
 
-                    {/* APP STORE */}
+                  
                     <Link className="app_btn" to="/">
                       <FontAwesome name="apple" />
                       {t("downloadOnThe", "Download on the")}{" "}
@@ -297,7 +297,7 @@ const FooterAreaTwo = () => {
                   </div>
                 </div>
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>
