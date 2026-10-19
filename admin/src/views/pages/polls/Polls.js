@@ -9,6 +9,12 @@ import {
   CButton,
   CRow,
   CCol,
+  CModal,
+  CModalHeader,
+  CModalTitle,
+  CModalBody,
+  CSpinner,
+  CProgress,
   CTable,
   CTableBody,
   CTableHead,
@@ -25,10 +31,15 @@ import {
 
 import setting from '../../../setting.json'
 import secureLocalStorage from 'react-secure-storage'
-import { cilPencil } from '@coreui/icons'
+import { cilPencil, cilPeople, cilChart, cilTrash } from '@coreui/icons'
 import CIcon from '@coreui/icons-react'
 
 const Polls = () => {
+  const [detailsVisible, setDetailsVisible] = useState(false)
+  const [detailsLoading, setDetailsLoading] = useState(false)
+  const [detailsType, setDetailsType] = useState('voters')
+  const [detailsData, setDetailsData] = useState(null)
+
   const [pollList, setPollList] = useState([])
 
   const [editingPoll, setEditingPoll] = useState(null)
@@ -78,13 +89,45 @@ const Polls = () => {
     }
   }
 
+  const openPollDetails = async (poll, type) => {
+    setDetailsType(type)
+    setDetailsVisible(true)
+    setDetailsLoading(true)
+    setDetailsData(null)
+
+    try {
+      const endpoint =
+        type === 'voters'
+          ? `${setting.api}/api/polls/admin/${poll._id}/voters`
+          : `${setting.api}/api/polls/${poll._id}/results`
+
+      const response = await fetch(endpoint, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${getToken()}`,
+        },
+      })
+
+      const result = await response.json()
+
+      if (!response.ok || result.success !== true) {
+        throw new Error(result.message || 'Failed to load poll details')
+      }
+
+      setDetailsData(result.data)
+    } catch (error) {
+      console.error('Poll Details Error:', error)
+      alert(error.message || 'Failed to load poll details')
+      setDetailsVisible(false)
+    } finally {
+      setDetailsLoading(false)
+    }
+  }
+
   useEffect(() => {
     allPollList()
   }, [])
-
-  // ==========================================
-  // RESET FORM
-  // ==========================================
 
   const resetForm = () => {
     setQuestion('')
@@ -94,19 +137,11 @@ const Polls = () => {
     setShowResult(true)
   }
 
-  // ==========================================
-  // CREATE POLL
-  // ==========================================
-
   const openCreate = () => {
     setEditingPoll(null)
     resetForm()
     setVisible(true)
   }
-
-  // ==========================================
-  // EDIT POLL
-  // ==========================================
 
   const handleEdit = (poll) => {
     setEditingPoll(poll)
@@ -126,9 +161,37 @@ const Polls = () => {
     setVisible(true)
   }
 
-  // ==========================================
-  // ADD OPTION
-  // ==========================================
+  const handleDelete = async (poll) => {
+    const confirmed = window.confirm(
+      `Are you sure you want to delete "${poll.question}"? This will also delete its votes.`,
+    )
+
+    if (!confirmed) return
+
+    try {
+      const response = await fetch(`${setting.api}/api/polls/admin/${poll._id}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${getToken()}`,
+        },
+      })
+
+      const result = await response.json()
+
+      if (!response.ok || result.success !== true) {
+        throw new Error(result.message || 'Failed to delete poll')
+      }
+
+      alert('Poll deleted successfully')
+
+      // Refresh the poll list
+      await allPollList()
+    } catch (error) {
+      console.error('Delete Poll Error:', error)
+      alert(error.message || 'Failed to delete poll')
+    }
+  }
 
   const addOption = () => {
     setOptions([...options, ''])
@@ -419,6 +482,49 @@ const Polls = () => {
                       </CTableDataCell>
 
                       <CTableDataCell>
+                        <div className="d-flex flex-wrap gap-2">
+                          <CButton
+                            size="sm"
+                            color="warning"
+                            className="rounded-pill px-3 fw-semibold"
+                            onClick={() => handleEdit(poll)}
+                          >
+                            <CIcon icon={cilPencil} className="me-1" />
+                            Edit
+                          </CButton>
+                          <CButton
+                            size="sm"
+                            color="danger"
+                            className="rounded-pill px-3 fw-semibold"
+                            onClick={() => handleDelete(poll)}
+                          >
+                            <CIcon icon={cilTrash} className="me-1" />
+                            Delete
+                          </CButton>
+
+                          <CButton
+                            size="sm"
+                            color="primary"
+                            className="rounded-pill px-3 fw-semibold"
+                            onClick={() => openPollDetails(poll, 'results')}
+                          >
+                            <CIcon icon={cilChart} className="me-1" />
+                            Results
+                          </CButton>
+
+                          <CButton
+                            size="sm"
+                            color="success"
+                            className="rounded-pill px-3 fw-semibold"
+                            onClick={() => openPollDetails(poll, 'voters')}
+                          >
+                            <CIcon icon={cilPeople} className="me-1" />
+                            Voters
+                          </CButton>
+                        </div>
+                      </CTableDataCell>
+
+                      {/* <CTableDataCell>
                         <CButton
                           size="sm"
                           color="warning"
@@ -433,7 +539,7 @@ const Polls = () => {
                           />
                           Edit
                         </CButton>
-                      </CTableDataCell>
+                      </CTableDataCell> */}
                     </CTableRow>
                   )
                 })
@@ -588,6 +694,114 @@ const Polls = () => {
           </CForm>
         </COffcanvasBody>
       </COffcanvas>
+
+      <CModal
+        visible={detailsVisible}
+        onClose={() => setDetailsVisible(false)}
+        size="xl"
+        alignment="center"
+        scrollable
+      >
+        <CModalHeader>
+          <CModalTitle className="fw-bold">
+            {detailsType === 'voters' ? 'Poll Voter Details' : 'Poll Results'}
+          </CModalTitle>
+        </CModalHeader>
+
+        <CModalBody>
+          {detailsLoading ? (
+            <div className="text-center py-5">
+              <CSpinner color="primary" />
+              <p className="mt-3 mb-0">Loading poll details...</p>
+            </div>
+          ) : detailsData ? (
+            <>
+              <div className="p-3 mb-4 bg-light rounded-3">
+                <h5 className="fw-bold mb-2">
+                  {detailsData.poll?.question || detailsData.question}
+                </h5>
+
+                <div className="text-muted">
+                  Total votes:{' '}
+                  <strong>
+                    {detailsType === 'voters'
+                      ? (detailsData.totalVoters ?? 0)
+                      : (detailsData.totalVotes ?? 0)}
+                  </strong>
+                </div>
+              </div>
+
+              {detailsType === 'voters' ? (
+                <CTable responsive bordered hover striped>
+                  <CTableHead color="dark">
+                    <CTableRow>
+                      <CTableHeaderCell>#</CTableHeaderCell>
+                      <CTableHeaderCell>Voter Name</CTableHeaderCell>
+                      <CTableHeaderCell>Email</CTableHeaderCell>
+                      <CTableHeaderCell>Phone</CTableHeaderCell>
+                      <CTableHeaderCell>Selected Option</CTableHeaderCell>
+                      <CTableHeaderCell>Voted At</CTableHeaderCell>
+                    </CTableRow>
+                  </CTableHead>
+
+                  <CTableBody>
+                    {detailsData.voters?.length ? (
+                      detailsData.voters.map((voter, index) => (
+                        <CTableRow key={voter.vote_id || voter.customer_id || index}>
+                          <CTableDataCell>{index + 1}</CTableDataCell>
+                          <CTableDataCell>{voter.name || 'Unknown voter'}</CTableDataCell>
+                          <CTableDataCell>{voter.email || '-'}</CTableDataCell>
+                          <CTableDataCell>{voter.phone || '-'}</CTableDataCell>
+                          <CTableDataCell>
+                            <CBadge color="primary">{voter.option_text || 'Unknown option'}</CBadge>
+                          </CTableDataCell>
+                          <CTableDataCell>
+                            {voter.voted_at
+                              ? new Date(voter.voted_at).toLocaleString('en-IN')
+                              : '-'}
+                          </CTableDataCell>
+                        </CTableRow>
+                      ))
+                    ) : (
+                      <CTableRow>
+                        <CTableDataCell colSpan={6} className="text-center py-4">
+                          No votes have been submitted yet.
+                        </CTableDataCell>
+                      </CTableRow>
+                    )}
+                  </CTableBody>
+                </CTable>
+              ) : (
+                <div className="d-flex flex-column gap-3">
+                  {detailsData.options?.map((option, index) => {
+                    const votes = Number(option.votes || 0)
+                    const percentage = Number(option.percentage || 0)
+
+                    return (
+                      <div key={index} className="border rounded-3 p-3">
+                        <div className="d-flex justify-content-between gap-3 mb-2">
+                          <strong>{option.text || `Option ${index + 1}`}</strong>
+                          <span className="text-nowrap">
+                            {votes} votes ({percentage}%)
+                          </span>
+                        </div>
+
+                        <CProgress
+                          height={10}
+                          value={percentage}
+                          color={index % 2 === 0 ? 'primary' : 'success'}
+                        />
+                      </div>
+                    )
+                  })}
+                </div>
+              )}
+            </>
+          ) : (
+            <p className="text-center py-4 mb-0">No poll details available.</p>
+          )}
+        </CModalBody>
+      </CModal>
     </div>
   )
 }

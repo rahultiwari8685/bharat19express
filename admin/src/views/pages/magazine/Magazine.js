@@ -67,10 +67,6 @@ const Magazine = () => {
     resolver: yupResolver(schema),
   })
 
-  // ==========================================
-  // EDIT DATA LOAD
-  // ==========================================
-
   useEffect(() => {
     if (editingMagazine) {
       reset({
@@ -92,10 +88,6 @@ const Magazine = () => {
       }
     }
   }, [editingMagazine, reset])
-
-  // ==========================================
-  // GET ALL MAGAZINES
-  // ==========================================
 
   const allMagazineList = async () => {
     try {
@@ -126,10 +118,6 @@ const Magazine = () => {
     allMagazineList()
   }, [])
 
-  // ==========================================
-  // GENERATE SLUG
-  // ==========================================
-
   const generateSlug = (value) => {
     return value
       .toString()
@@ -149,10 +137,6 @@ const Magazine = () => {
       setValue('slug', generateSlug(value))
     }
   }
-
-  // ==========================================
-  // COVER PREVIEW
-  // ==========================================
 
   const handleCoverChange = (e) => {
     const file = e.target.files?.[0]

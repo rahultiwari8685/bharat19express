@@ -80,12 +80,6 @@ const UpdateNews = () => {
 
   const formDataValues = watch()
 
-  /*
-  |--------------------------------------------------------------------------
-  | LOGIN INFO
-  |--------------------------------------------------------------------------
-  */
-
   useEffect(() => {
     try {
       const storedLogin = secureLocalStorage.getItem('logininfo')
@@ -103,12 +97,6 @@ const UpdateNews = () => {
       navigate('/login')
     }
   }, [navigate])
-
-  /*
-  |--------------------------------------------------------------------------
-  | GET CATEGORIES
-  |--------------------------------------------------------------------------
-  */
 
   const getAllCategory = async () => {
     try {
@@ -154,12 +142,6 @@ const UpdateNews = () => {
     getAllCategory()
   }, [loginInfo?.token])
 
-  /*
-  |--------------------------------------------------------------------------
-  | CATEGORY SELECT
-  |--------------------------------------------------------------------------
-  */
-
   const toggleCategory = (categoryId) => {
     const currentCategories = formDataValues.categories || []
 
@@ -173,12 +155,6 @@ const UpdateNews = () => {
       shouldDirty: true,
     })
   }
-
-  /*
-  |--------------------------------------------------------------------------
-  | YOUTUBE ID
-  |--------------------------------------------------------------------------
-  */
 
   const getYouTubeId = (url) => {
     try {
@@ -201,18 +177,6 @@ const UpdateNews = () => {
       return null
     }
   }
-
-  /*
-  |--------------------------------------------------------------------------
-  | FETCH NEWS
-  |--------------------------------------------------------------------------
-  |
-  | IMPORTANT:
-  |
-  | ?lang=hi ensures that the admin receives
-  | the Hindi source content.
-  |
-  */
 
   const fetchNewsById = async () => {
     try {
@@ -312,12 +276,6 @@ const UpdateNews = () => {
     fetchNewsById()
   }, [id, loginInfo?.token])
 
-  /*
-  |--------------------------------------------------------------------------
-  | THUMBNAIL PREVIEW
-  |--------------------------------------------------------------------------
-  */
-
   useEffect(() => {
     const file = formDataValues.thumbnail?.[0]
 
@@ -335,22 +293,6 @@ const UpdateNews = () => {
       URL.revokeObjectURL(objectUrl)
     }
   }, [formDataValues.thumbnail])
-
-  /*
-  |--------------------------------------------------------------------------
-  | UPDATE NEWS
-  |--------------------------------------------------------------------------
-  |
-  | Hindi is sent as the source language.
-  |
-  | Backend automatically generates:
-  |
-  | English
-  | Bengali
-  | Marathi
-  | Tamil
-  |
-  */
 
   const updateNews = async (data) => {
     if (loading) {
@@ -509,12 +451,6 @@ const UpdateNews = () => {
     }
   }
 
-  /*
-  |--------------------------------------------------------------------------
-  | RENDER
-  |--------------------------------------------------------------------------
-  */
-
   return (
     <div className="d-flex flex-column flex-lg-row gap-4">
       <CCol lg={formDataValues.videoType === '1' ? 8 : 12}>
@@ -524,21 +460,13 @@ const UpdateNews = () => {
           </CCardHeader>
 
           <CCardBody>
-            {/* =====================================================
-                AUTOMATIC TRANSLATION NOTICE
-            ====================================================== */}
-
-            <div className="alert alert-info mb-4">
+            {/* <div className="alert alert-info mb-4">
               <strong>Automatic Translation:</strong> Hindi is the source language. English,
               Bengali, Marathi and Tamil translations are generated automatically when the news is
               updated.
-            </div>
+            </div> */}
 
             <CForm onSubmit={handleSubmit(updateNews)}>
-              {/* ===================================================
-                  HINDI TITLE
-              ==================================================== */}
-
               <CRow className="mb-3">
                 <CCol md={12}>
                   <CFormInput
@@ -557,10 +485,6 @@ const UpdateNews = () => {
                   {errors.title && <small className="text-danger">{errors.title.message}</small>}
                 </CCol>
               </CRow>
-
-              {/* ===================================================
-                  SLUG + HINDI SUBTITLE
-              ==================================================== */}
 
               <CRow className="mb-3">
                 <CCol md={6}>

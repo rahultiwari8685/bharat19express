@@ -1,4 +1,6 @@
 import Poll from "../models/Poll.js";
+import PollVote from "../models/PollVote.js";
+import Customer from "../models/Customer.js";
 
 export const createPoll = async (req, res) => {
   try {
@@ -88,6 +90,108 @@ export const updatePoll = async (req, res) => {
     return res.status(500).json({
       success: false,
       message: error.message,
+    });
+  }
+};
+
+export const deletePoll = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const poll = await Poll.findById(id);
+
+    if (!poll) {
+      return res.status(404).json({
+        success: false,
+        message: "Poll not found",
+      });
+    }
+
+    // Delete all votes associated with this poll
+    await PollVote.deleteMany({ poll_id: poll._id });
+
+    // Delete the poll
+    await Poll.findByIdAndDelete(id);
+
+    return res.status(200).json({
+      success: true,
+      message: "Poll deleted successfully",
+    });
+  } catch (error) {
+    console.error("Delete Poll Error:", error);
+
+    return res.status(500).json({
+      success: false,
+      message: "Failed to delete poll",
+    });
+  }
+};
+
+export const getPollVoters = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const poll = await Poll.findById(id).lean();
+
+    if (!poll) {
+      return res.status(404).json({
+        success: false,
+        message: "Poll not found",
+      });
+    }
+
+    const votes = await PollVote.find({
+      poll_id: poll._id,
+    })
+      .sort({ createdAt: -1 })
+      .lean();
+
+    const customerIds = votes.map((vote) => vote.customer_id);
+
+    const subscribers = await Customer.find({
+      _id: { $in: customerIds },
+    })
+      .select("name email phone")
+      .lean();
+
+    const subscriberMap = new Map(
+      subscribers.map((subscriber) => [String(subscriber._id), subscriber]),
+    );
+
+    const voters = votes.map((vote) => {
+      const subscriber = subscriberMap.get(String(vote.customer_id));
+
+      return {
+        vote_id: vote._id,
+        customer_id: vote.customer_id,
+        name: subscriber?.name || "Unknown voter",
+        email: subscriber?.email || "",
+        phone: subscriber?.phone || "",
+        option_index: vote.option_index,
+        option_text:
+          poll.options?.[vote.option_index]?.text || "Unknown option",
+        voted_at: vote.createdAt || null,
+      };
+    });
+
+    return res.json({
+      success: true,
+      data: {
+        poll: {
+          _id: poll._id,
+          question: poll.question,
+          options: poll.options,
+        },
+        totalVoters: voters.length,
+        voters,
+      },
+    });
+  } catch (error) {
+    console.error("Get Poll Voters Error:", error);
+
+    return res.status(500).json({
+      success: false,
+      message: "Failed to fetch poll voters",
     });
   }
 };
