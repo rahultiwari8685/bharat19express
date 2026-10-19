@@ -282,6 +282,8 @@ const News = () => {
 
   const author = loginInfo?.user?.id
 
+  const userRole = String(loginInfo?.role ?? loginInfo?.user?.role ?? '')
+
   const saveNews = async (data) => {
     if (loading) return
 
@@ -809,7 +811,28 @@ const News = () => {
                     )}
                   </CButton>
 
-                  <CButton
+                  {userRole !== '3' && (
+                    <CButton
+                      color="info"
+                      type="button"
+                      disabled={loading}
+                      onClick={() => {
+                        setValue('type', '3')
+                        handleSubmit(saveNews)()
+                      }}
+                    >
+                      {loading ? (
+                        <>
+                          <span className="spinner-border spinner-border-sm me-2" />
+                          {uploadProgress >= 100 ? 'Processing...' : `${uploadProgress}%`}
+                        </>
+                      ) : (
+                        'Schedule'
+                      )}
+                    </CButton>
+                  )}
+
+                  {/* <CButton
                     color="info"
                     type="button"
                     disabled={loading}
@@ -826,9 +849,30 @@ const News = () => {
                     ) : (
                       'Schedule'
                     )}
-                  </CButton>
+                  </CButton> */}
 
-                  <CButton
+                  {userRole !== '3' && (
+                    <CButton
+                      color="primary"
+                      type="button"
+                      disabled={loading}
+                      onClick={() => {
+                        setValue('type', '1')
+                        handleSubmit(saveNews)()
+                      }}
+                    >
+                      {loading ? (
+                        <>
+                          <span className="spinner-border spinner-border-sm me-2" />
+                          {uploadProgress >= 100 ? 'Processing...' : `${uploadProgress}%`}
+                        </>
+                      ) : (
+                        'Publish Now'
+                      )}
+                    </CButton>
+                  )}
+
+                  {/* <CButton
                     color="primary"
                     type="button"
                     disabled={loading}
@@ -845,7 +889,7 @@ const News = () => {
                     ) : (
                       'Publish Now'
                     )}
-                  </CButton>
+                  </CButton> */}
                 </div>
               </div>
             </CForm>
