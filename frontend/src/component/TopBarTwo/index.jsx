@@ -303,7 +303,7 @@ const TopBarTwo = () => {
               }}
             >
               <FontAwesome name="newspaper-o" />
-              <span>Epaper</span>
+              <span>{t("epaper", "Epaper")}</span>
             </NavLink>
 
             <NavLink
@@ -325,7 +325,7 @@ const TopBarTwo = () => {
               }}
             >
               <FontAwesome name="newspaper-o" />
-              <span>Gallery</span>
+              <span>{t("gallery", "Gallery")}</span>
             </NavLink>
 
             <NavLink
@@ -347,7 +347,7 @@ const TopBarTwo = () => {
               }}
             >
               <FontAwesome name="newspaper-o" />
-              <span>Subscribe</span>
+              <span>{t("subscribe", "Subscribe")}</span>
             </NavLink>
             {/* YouTube dropdown */}
             <div
