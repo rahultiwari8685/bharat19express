@@ -50,14 +50,6 @@ const PublishedNews = () => {
     try {
       const token = JSON.parse(secureLocalStorage.getItem('logininfo')).token
 
-      // const res = await fetch(setting.api + '/api/news/getAllNews', {
-
-      //   method: 'GET',
-      //   headers: {
-      //     Authorization: 'Bearer ' + token,
-      //   },
-      // })
-
       const res = await fetch(`${setting.api}/api/news/getAllNews?lang=hi`, {
         method: 'GET',
         headers: {
@@ -71,11 +63,29 @@ const PublishedNews = () => {
       const oneMonthAgo = new Date()
       oneMonthAgo.setMonth(oneMonthAgo.getMonth() - 1)
 
+      // const filteredNews = (data.data || []).filter((item) => {
+      //   const newsDate = new Date(item.createdAt)
+
+      //   return item.type === 1 && newsDate >= oneMonthAgo
+      // })
+
+      const currentUserId = String(loginInfo?.user?.id || '')
+
       const filteredNews = (data.data || []).filter((item) => {
         const newsDate = new Date(item.createdAt)
 
-        return item.type === 1 && newsDate >= oneMonthAgo
+        const isPublished = Number(item.type) === 1
+        const isWithinOneMonth = newsDate >= oneMonthAgo
+
+        const authorId =
+          typeof item.author === 'object' ? item.author?._id || item.author?.id : item.author
+
+        const authorMatch = String(userRole) !== '3' || String(authorId || '') === currentUserId
+
+        return isPublished && isWithinOneMonth && authorMatch
       })
+
+      setNewsList(filteredNews)
 
       setNewsList(filteredNews)
     } catch (error) {
