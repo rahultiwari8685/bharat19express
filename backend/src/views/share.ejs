@@ -71,16 +71,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <title><%= title %></title>
-
   <meta name="description" content="<%= description %>" />
 
   <meta property="og:title" content="<%= title %>" />
   <meta property="og:description" content="<%= description %>" />
   <meta property="og:image" content="<%= image %>" />
   <meta property="og:image:secure_url" content="<%= image %>" />
-  <meta property="og:image:alt" content="<%= title %>" />
   <meta property="og:url" content="<%= url %>" />
   <meta property="og:type" content="article" />
+  <meta property="og:image:alt" content="<%= title %>" />
 
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="<%= title %>" />
@@ -91,8 +90,6 @@
   <h1><%= title %></h1>
   <p><%= description %></p>
   <img src="<%= image %>" alt="<%= title %>" />
-  <p>
-    <a href="<%= frontendUrl %>">Read the full news</a>
-  </p>
+  <a href="<%= frontendUrl %>">Read full news</a>
 </body>
 </html>

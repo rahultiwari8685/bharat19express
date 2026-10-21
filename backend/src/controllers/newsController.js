@@ -1279,7 +1279,6 @@ export const previousNextNews = async (req, res) => {
   }
 }; */
 
-
 export const shareNews = async (req, res) => {
   try {
     const news = await News.findOne({
@@ -1301,17 +1300,18 @@ export const shareNews = async (req, res) => {
     return res.render("share", {
       title: news.title || "Bharat 19 Express",
       description:
-        news.subtitle || news.metaDescription || "Latest news from Bharat 19 Express",
+        news.subtitle ||
+        news.metaDescription ||
+        "Latest news from Bharat 19 Express",
       image,
       url: frontendUrl,
       frontendUrl,
     });
   } catch (error) {
-    console.error("Share news error:", error);
-    return res.status(500).send("Unable to load news sharing page");
+    console.error("shareNews error:", error);
+    return res.status(500).send("Unable to load news");
   }
 };
-
 
 export const getLiveStatus = async (req, res) => {
   try {
