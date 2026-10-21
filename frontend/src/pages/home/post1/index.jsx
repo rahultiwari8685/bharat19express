@@ -114,13 +114,21 @@ function Post1() {
     return <h2 className="text-center mt-5">{t("loading") || "Loading..."}</h2>;
   }
 
-  const shareUrl = `https://api.bharat19express.com/api/news/share/${news?.slug || ""}`;
+ /*  const shareUrl = `https://api.bharat19express.com/api/news/share/${news?.slug || ""}`;
 
   const shareTitle = decodeHtmlEntities(news?.title || "");
 
   const shareImage = news?.thumbnail
     ? `${API}/uploads/images/${news.thumbnail}`
-    : "";
+    : ""; */
+
+    const shareUrl = `https://api.bharat19express.com/api/news/share/${news?.slug || ""}`;
+
+    const shareTitle = decodeHtmlEntities(news?.title || "");
+
+    const shareImage = news?.thumbnail
+      ? `${API}/uploads/images/${news.thumbnail}`
+      : "https://bharat19express.com/default-news-image.jpg";
 
   const cleanContent = news?.content
     ?.replace(/style="[^"]*"/g, "")
