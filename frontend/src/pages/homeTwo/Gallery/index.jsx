@@ -4,13 +4,11 @@ const API = "https://api.bharat19express.com";
 
 const FILTERS = [
   { label: "Images", value: "image", icon: "▧" },
-  // { label: "All Media", value: "all", icon: "▦" },
   { label: "Videos", value: "video", icon: "▶" },
 ];
 
 export default function Gallery() {
   const [media, setMedia] = useState([]);
-  // Images are shown by default.
   const [filter, setFilter] = useState("image");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -503,19 +501,6 @@ export default function Gallery() {
           .bm-gallery-skeleton { animation: none; }
         }
       `}</style>
-
-      {/* <header className="bm-gallery-hero">
-        <div className="bm-gallery-kicker">
-          <span className="bm-gallery-dot" />
-          Bharat19Express · Media
-        </div>
-
-        <h1>Photo & Video Gallery</h1>
-        <p>
-          Explore the latest photographs, news moments and video stories from
-          across the headlines.
-        </p>
-      </header> */}
 
       <div className="bm-gallery-toolbar">
         <div
