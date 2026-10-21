@@ -1251,7 +1251,7 @@ export const previousNextNews = async (req, res) => {
   }
 };
 
-export const shareNews = async (req, res) => {
+/* export const shareNews = async (req, res) => {
   try {
     const news = await News.findOne({
       slug: req.params.slug,
@@ -1277,7 +1277,41 @@ export const shareNews = async (req, res) => {
   } catch (error) {
     res.status(500).send(error.message);
   }
+}; */
+
+
+export const shareNews = async (req, res) => {
+  try {
+    const news = await News.findOne({
+      slug: req.params.slug,
+      type: 1,
+    });
+
+    if (!news) {
+      return res.status(404).send("News not found");
+    }
+
+    const frontendUrl =
+      `https://www.bharat19express.com/news/${news.slug}`;
+
+    const image = news.thumbnail
+      ? `https://api.bharat19express.com/uploads/images/${news.thumbnail}`
+      : "";
+
+    return res.render("share", {
+      title: news.title || "Bharat 19 Express",
+      description:
+        news.subtitle || news.metaDescription || "Latest news from Bharat 19 Express",
+      image,
+      url: frontendUrl,
+      frontendUrl,
+    });
+  } catch (error) {
+    console.error("Share news error:", error);
+    return res.status(500).send("Unable to load news sharing page");
+  }
 };
+
 
 export const getLiveStatus = async (req, res) => {
   try {
