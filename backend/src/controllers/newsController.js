@@ -1251,34 +1251,6 @@ export const previousNextNews = async (req, res) => {
   }
 };
 
-/* export const shareNews = async (req, res) => {
-  try {
-    const news = await News.findOne({
-      slug: req.params.slug,
-
-      type: 1,
-    });
-
-    if (!news) {
-      return res.status(404).send("News not found");
-    }
-
-    res.render("share", {
-      title: news.title,
-
-      description: news.subtitle || news.metaDescription || "",
-
-      image: `https://api.bharat19express.com/uploads/images/${news.thumbnail}`,
-
-      url: `https://api.bharat19express.com/api/news/share/${news.slug}`,
-
-      frontendUrl: `https://bharat19express.com/news/${news.slug}`,
-    });
-  } catch (error) {
-    res.status(500).send(error.message);
-  }
-}; */
-
 export const shareNews = async (req, res) => {
   try {
     const news = await News.findOne({
@@ -1290,8 +1262,7 @@ export const shareNews = async (req, res) => {
       return res.status(404).send("News not found");
     }
 
-    const frontendUrl =
-      `https://www.bharat19express.com/news/${news.slug}`;
+    const frontendUrl = `https://www.bharat19express.com/news/${news.slug}`;
 
     const image = news.thumbnail
       ? `https://api.bharat19express.com/uploads/images/${news.thumbnail}`
@@ -1473,5 +1444,45 @@ Redirecting...
 `);
   } catch (error) {
     res.status(500).send(error.message);
+  }
+};
+
+export const searchNews = async (req, res) => {
+  try {
+    const q = req.query.q?.trim();
+
+    if (!q) {
+      return res.status(400).json({
+        success: false,
+        message: "Search keyword is required",
+        data: [],
+      });
+    }
+
+    const news = await News.find({
+      status: "published",
+      $or: [
+        { title: { $regex: q, $options: "i" } },
+        { sub_title: { $regex: q, $options: "i" } },
+      ],
+    })
+      .select("title sub_title slug image createdAt")
+      .sort({ createdAt: -1 })
+      .limit(20)
+      .lean();
+
+    return res.status(200).json({
+      success: true,
+      count: news.length,
+      data: news,
+    });
+  } catch (error) {
+    console.error("Search news error:", error);
+
+    return res.status(500).json({
+      success: false,
+      message: "Failed to search news",
+      data: [],
+    });
   }
 };

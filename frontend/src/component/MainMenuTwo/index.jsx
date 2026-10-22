@@ -8,7 +8,6 @@ const MainMenuTwo = () => {
   const API = "https://api.bharat19express.com";
 
   const { t, i18n } = useTranslation();
-
   const [menuItems, setMenuItems] = useState([]);
   const [sideShow, setSideShow] = useState(false);
 
@@ -77,9 +76,6 @@ const MainMenuTwo = () => {
                     id="scroll"
                     style={{ alignItems: "center", minHeight: "42px" }}
                   >
-                    {/* HOME */}
-
-                    {/* HOME */}
                     <li
                       className="nav-item"
                       style={{
@@ -209,28 +205,7 @@ const MainMenuTwo = () => {
                       style={{
                         marginLeft: "10px",
                       }}
-                    >
-                      {/* <NavLink
-                        to="/epaper"
-                        style={{
-                          display: "inline-flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          gap: "7px",
-                          minHeight: "36px",
-                          padding: "0 14px",
-                          borderRadius: "5px",
-                          background: "#e31e24",
-                          color: "#fff",
-                          fontSize: "12px",
-                          fontWeight: "800",
-                          textDecoration: "none",
-                        }}
-                      >
-                        <FontAwesome name="newspaper-o" />
-                        <span>Epaper</span>
-                      </NavLink> */}
-                    </li>
+                    ></li>
                   </ul>
                 </div>
 
@@ -258,75 +233,8 @@ const MainMenuTwo = () => {
                   background: "transparent",
                 }}
               >
-                {/* EPAPER */}
-                {/* <NavLink
-                  to="/epaper"
-                  style={{
-                    display: "inline-flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    gap: "6px",
-                    minHeight: "34px",
-                    padding: "0 13px",
-                    borderRadius: "5px",
-                    background: "#e31e24",
-                    color: "#fff",
-                    fontSize: "12px",
-                    fontWeight: "800",
-                    textDecoration: "none",
-                    whiteSpace: "nowrap",
-                  }}
-                >
-                  <FontAwesome name="newspaper-o" />
-                  <span>Epaper</span>
-                </NavLink>
-
                 <NavLink
-                  to="/gallery"
-                  style={{
-                    display: "inline-flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    gap: "6px",
-                    minHeight: "34px",
-                    padding: "0 13px",
-                    borderRadius: "5px",
-                    background: "#130d0d",
-                    color: "#fff",
-                    fontSize: "12px",
-                    fontWeight: "800",
-                    textDecoration: "none",
-                    whiteSpace: "nowrap",
-                  }}
-                >
-                  <FontAwesome name="newspaper-o" />
-                  <span>Gallery</span>
-                </NavLink>
-
-                <NavLink
-                  to="/login"
-                  style={{
-                    display: "inline-flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    gap: "6px",
-                    minHeight: "34px",
-                    padding: "0 13px",
-                    borderRadius: "5px",
-                    background: "#e31e24",
-                    color: "#fff",
-                    fontSize: "12px",
-                    fontWeight: "800",
-                    textDecoration: "none",
-                    whiteSpace: "nowrap",
-                  }}
-                >
-                  <FontAwesome name="newspaper-o" />
-                  <span>Subscribe</span>
-                </NavLink> */}
-
-                <NavLink
-                  to="/"
+                  to="/search"
                   aria-label="Search news"
                   title="Search"
                   style={{
