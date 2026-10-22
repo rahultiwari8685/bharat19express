@@ -1451,36 +1451,54 @@ export const searchNews = async (req, res) => {
   try {
     const q = req.query.q?.trim();
 
+    const lang = getLanguage(req);
+
     if (!q) {
-      return res.status(400).json({
-        success: false,
-        message: "Search keyword is required",
+      return res.status(200).json({
+        status: true,
+        total: 0,
         data: [],
       });
     }
 
-    const news = await News.find({
-      status: "published",
+    // Escape special regex characters in the search keyword
+    const escapedQuery = q.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+
+    const searchRegex = {
+      $regex: escapedQuery,
+      $options: "i",
+    };
+
+    const query = {
+      type: 1,
       $or: [
-        { title: { $regex: q, $options: "i" } },
-        { sub_title: { $regex: q, $options: "i" } },
+        { title: searchRegex },
+        { subtitle: searchRegex },
+        { [`translations.${lang}.title`]: searchRegex },
+        { [`translations.${lang}.subtitle`]: searchRegex },
+        { "translations.hi.title": searchRegex },
+        { "translations.hi.subtitle": searchRegex },
       ],
-    })
-      .select("title sub_title slug image createdAt")
+    };
+
+    const news = await News.find(query)
+      .populate("author", "name")
+      .populate("categories", "name slug")
       .sort({ createdAt: -1 })
-      .limit(20)
-      .lean();
+      .limit(20);
+
+    const translatedNews = news.map((item) => applyTranslation(item, lang));
 
     return res.status(200).json({
-      success: true,
-      count: news.length,
-      data: news,
+      status: true,
+      total: translatedNews.length,
+      data: translatedNews,
     });
   } catch (error) {
     console.error("Search news error:", error);
 
     return res.status(500).json({
-      success: false,
+      status: false,
       message: "Failed to search news",
       data: [],
     });
