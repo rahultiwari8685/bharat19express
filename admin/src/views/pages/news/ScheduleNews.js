@@ -26,7 +26,7 @@ import { useNavigate } from 'react-router-dom'
 
 import toast from 'react-hot-toast'
 
-const DraftNews = () => {
+const ScheduleNews = () => {
   const [newsList, setNewsList] = useState([])
   const navigate = useNavigate()
   const [searchText, setSearchText] = useState('')
@@ -50,34 +50,40 @@ const DraftNews = () => {
   const fetchNews = async () => {
     try {
       setLoading(true)
-      const token = JSON.parse(secureLocalStorage.getItem('logininfo')).token
+
+      const loginInfo = secureLocalStorage.getItem('logininfo')
+      const parsedLogin = typeof loginInfo === 'string' ? JSON.parse(loginInfo) : loginInfo
 
       const res = await fetch(setting.api + '/api/news/getAllNews', {
         method: 'GET',
         headers: {
-          Authorization: 'Bearer ' + token,
+          Authorization: 'Bearer ' + parsedLogin?.token,
         },
       })
 
       const data = await res.json()
 
-      const now = new Date().getTime()
+      if (!res.ok || data.status === false) {
+        throw new Error(data.message || 'Failed to fetch news')
+      }
 
-      const threeMonths = 10 * 24 * 60 * 60 * 1000
+      const allNews = data.data || []
 
-      const filteredNews = (data.data || [])
-        .filter((item) => {
-          const newsTime = new Date(item.createdAt).getTime()
+      const filteredNews = allNews
+        .filter((item) => Number(item.type) === 3)
+        .sort(
+          (a, b) =>
+            new Date(a.scheduledAt || a.createdAt).getTime() -
+            new Date(b.scheduledAt || b.createdAt).getTime(),
+        )
 
-          return Number(item.type) === 3 && now - newsTime <= threeMonths
-        })
-        .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
-
-      console.log('Filtered News:', filteredNews.length)
+      console.log('Total news from API:', allNews.length)
+      console.log('Scheduled news:', filteredNews.length)
 
       setNewsList(filteredNews)
     } catch (error) {
-      console.error('Error fetching news:', error)
+      console.error('Error fetching scheduled news:', error)
+      toast.error(error.message || 'Failed to fetch scheduled news')
     } finally {
       setLoading(false)
     }
@@ -280,7 +286,7 @@ const DraftNews = () => {
                   <CTableHeaderCell scope="col">Title</CTableHeaderCell>
                   <CTableHeaderCell scope="col">Category</CTableHeaderCell>
                   <CTableHeaderCell scope="col">Author</CTableHeaderCell>
-                  <CTableHeaderCell scope="col">Published At</CTableHeaderCell>
+                  <CTableHeaderCell scope="col">Scheduled At</CTableHeaderCell>
                   <CTableHeaderCell scope="col">Action</CTableHeaderCell>
                 </CTableRow>
               </CTableHead>
@@ -302,15 +308,17 @@ const DraftNews = () => {
                       <CTableDataCell> {news.author?.name || 'N/A'}</CTableDataCell>
 
                       <CTableDataCell>
-                        {new Date(news.createdAt).toLocaleString('en-IN', {
-                          timeZone: 'Asia/Kolkata',
-                          day: '2-digit',
-                          month: 'short',
-                          year: 'numeric',
-                          hour: '2-digit',
-                          minute: '2-digit',
-                          hour12: true,
-                        })}
+                        {news.scheduledAt
+                          ? new Date(news.scheduledAt).toLocaleString('en-IN', {
+                              timeZone: 'Asia/Kolkata',
+                              day: '2-digit',
+                              month: 'short',
+                              year: 'numeric',
+                              hour: '2-digit',
+                              minute: '2-digit',
+                              hour12: true,
+                            })
+                          : 'Not scheduled'}
                       </CTableDataCell>
 
                       <CTableDataCell>
@@ -383,4 +391,4 @@ const DraftNews = () => {
   )
 }
 
-export default DraftNews
+export default ScheduleNews
