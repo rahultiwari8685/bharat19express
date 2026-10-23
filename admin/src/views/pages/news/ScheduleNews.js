@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react'
 import {
   CCard,
@@ -51,15 +50,12 @@ const ScheduleNews = () => {
 
       const loginInfo = getLoginInfo()
 
-      const res = await fetch(
-        setting.api + '/api/news/getScheduleNews',
-        {
-          method: 'GET',
-          headers: {
-            Authorization: 'Bearer ' + loginInfo?.token,
-          },
+      const res = await fetch(setting.api + '/api/news/getScheduleNews', {
+        method: 'GET',
+        headers: {
+          Authorization: 'Bearer ' + loginInfo?.token,
         },
-      )
+      })
 
       const data = await res.json()
 
@@ -78,9 +74,7 @@ const ScheduleNews = () => {
 
   const fetchCategories = async () => {
     try {
-      const res = await fetch(
-        setting.api + '/api/categories/getAllCategory',
-      )
+      const res = await fetch(setting.api + '/api/categories/getAllCategory')
 
       const data = await res.json()
 
@@ -96,16 +90,13 @@ const ScheduleNews = () => {
     try {
       const loginInfo = getLoginInfo()
 
-      const response = await fetch(
-        setting.api + '/api/users/getAllUser',
-        {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: 'Bearer ' + loginInfo?.token,
-          },
+      const response = await fetch(setting.api + '/api/users/getAllUser', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + loginInfo?.token,
         },
-      )
+      })
 
       const data = await response.json()
 
@@ -136,15 +127,12 @@ const ScheduleNews = () => {
     }
 
     try {
-      const response = await fetch(
-        `${setting.api}/api/news/deleteNews/${id}`,
-        {
-          method: 'DELETE',
-          headers: {
-            'Content-Type': 'application/json',
-          },
+      const response = await fetch(`${setting.api}/api/news/deleteNews/${id}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
         },
-      )
+      })
 
       const data = await response.json()
 
@@ -161,32 +149,22 @@ const ScheduleNews = () => {
   }
 
   const filteredNews = newsList.filter((news) => {
-    const titleMatch = (news.title || '')
-      .toLowerCase()
-      .includes(searchText.toLowerCase())
+    const titleMatch = (news.title || '').toLowerCase().includes(searchText.toLowerCase())
 
-    const authorId =
-      typeof news.author === 'object' ? news.author?._id : news.author
+    const authorId = typeof news.author === 'object' ? news.author?._id : news.author
 
-    const authorMatch =
-      !selectedAuthor || String(authorId) === String(selectedAuthor)
+    const authorMatch = !selectedAuthor || String(authorId) === String(selectedAuthor)
 
     const categoryMatch =
       !selectedCategory ||
-      news.categories?.some(
-        (category) => String(category._id) === String(selectedCategory),
-      )
+      news.categories?.some((category) => String(category._id) === String(selectedCategory))
 
     const dateValue = news.scheduledAt || news.createdAt
     const newsDate = dateValue ? new Date(dateValue) : null
 
-    const fromMatch =
-      !fromDate ||
-      (newsDate && newsDate >= new Date(`${fromDate}T00:00:00`))
+    const fromMatch = !fromDate || (newsDate && newsDate >= new Date(`${fromDate}T00:00:00`))
 
-    const toMatch =
-      !toDate ||
-      (newsDate && newsDate <= new Date(`${toDate}T23:59:59.999`))
+    const toMatch = !toDate || (newsDate && newsDate <= new Date(`${toDate}T23:59:59.999`))
 
     return titleMatch && authorMatch && categoryMatch && fromMatch && toMatch
   })
@@ -243,11 +221,7 @@ const ScheduleNews = () => {
             </CCol>
 
             <CCol md={3}>
-              <CFormInput
-                type="date"
-                value={toDate}
-                onChange={(e) => setToDate(e.target.value)}
-              />
+              <CFormInput type="date" value={toDate} onChange={(e) => setToDate(e.target.value)} />
             </CCol>
 
             <CCol md={3}>
@@ -320,19 +294,13 @@ const ScheduleNews = () => {
 
                       <CTableDataCell>
                         {news.categories?.length
-                          ? news.categories
-                              .map((category) => category.name)
-                              .join(', ')
+                          ? news.categories.map((category) => category.name).join(', ')
                           : '-'}
                       </CTableDataCell>
 
-                      <CTableDataCell>
-                        {news.author?.name || 'N/A'}
-                      </CTableDataCell>
+                      <CTableDataCell>{news.author?.name || 'N/A'}</CTableDataCell>
 
-                      <CTableDataCell>
-                        {formatScheduledDate(news.scheduledAt)}
-                      </CTableDataCell>
+                      <CTableDataCell>{formatScheduledDate(news.scheduledAt)}</CTableDataCell>
 
                       <CTableDataCell>
                         <CButton
@@ -343,7 +311,6 @@ const ScheduleNews = () => {
                         >
                           <CIcon icon={cilPencil} /> Edit
                         </CButton>{' '}
-
                         <CButton
                           size="sm"
                           color="danger"
