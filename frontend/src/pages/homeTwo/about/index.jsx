@@ -10,8 +10,6 @@ import FollowUs from "../../../component/FollowUs";
 import classnames from "classnames";
 import WidgetTrendingNewsThree from "../../../component/WidgetTrendingNewsThree";
 
-// images
-
 import sd_banner_img from "../../../assets/img/ad/ad-3.png";
 import author1 from "../../../assets/img/author.png";
 import { news } from "../../../data/news";
