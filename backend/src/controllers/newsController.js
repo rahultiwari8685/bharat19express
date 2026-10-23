@@ -490,7 +490,6 @@ export const getAllNewsByCategory = async (req, res) => {
       type: 1,
     };
 
-
     const news = await News.find(query)
       .populate("categories", "name slug _id")
       .sort({
@@ -498,7 +497,6 @@ export const getAllNewsByCategory = async (req, res) => {
       })
       .skip(skip)
       .limit(limitNumber);
-
 
     const translatedNews = news.map((item) => applyTranslation(item, lang));
 

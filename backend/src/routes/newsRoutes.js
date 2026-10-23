@@ -59,7 +59,7 @@ router.get("/news/:slug", newsMeta);
 router.get("/:slug/meta", newsMeta);
 router.get("/search", searchNews);
 export default router;
-  import cors from "cors";
+import cors from "cors";
 import dotenv from "dotenv";
 import path from "path";
 import { fileURLToPath } from "url";
@@ -202,6 +202,6 @@ app.get("/", (req, res) => {
   res.send("API is working!");
 });
 
-app.listen(PORT, () => {
-  console.log(✅ Server running on port ${PORT});
-});
+// app.listen(PORT, () => {
+//   console.log("✅ Server running on port" , ${PORT});
+// });
