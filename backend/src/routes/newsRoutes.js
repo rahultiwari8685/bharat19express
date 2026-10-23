@@ -66,7 +66,7 @@ import { fileURLToPath } from "url";
 dotenv.config();
 
 import mongoose from "mongoose";
-import userRoutes from "./routes/userRoutes.js";
+import userRoutes from "../routes/userRoutes.js";
 import categoryRoutes from "./routes/categoryRoutes.js";
 import newsRoutes from "./routes/newsRoutes.js";
 import authRoutes from "./routes/auth.js";
