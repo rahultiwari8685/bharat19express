@@ -1,54 +1,6 @@
 import axios from "axios";
 
-// export const checkLiveStatus = async () => {
-//   if (!process.env.YOUTUBE_API_KEY || !process.env.YOUTUBE_CHANNEL_ID) {
-//     console.error("Missing YouTube config");
-//     return { isLive: false };
-//   }
 
-//   const now = Date.now();
-
-//   if (cache && now - lastFetch < 60000) {
-//     return cache;
-//   }
-
-//   try {
-//     const res = await axios.get(
-//       "https://www.googleapis.com/youtube/v3/search",
-//       {
-//         timeout: 5000,
-//         params: {
-//           part: "snippet",
-//           channelId: process.env.YOUTUBE_CHANNEL_ID,
-//           eventType: "live",
-//           type: "video",
-//           key: process.env.YOUTUBE_API_KEY,
-//         },
-//       },
-//     );
-
-//     let result = { isLive: false };
-
-//     if (res?.data?.items?.length > 0) {
-//       const liveVideo = res.data.items[0];
-
-//       result = {
-//         isLive: true,
-//         videoId: liveVideo.id?.videoId,
-//         title: liveVideo.snippet?.title,
-//       };
-//     }
-
-//     cache = result;
-//     lastFetch = now;
-
-//     return result;
-//   } catch (err) {
-//     console.error("YouTube API error:", err.message);
-
-//     return cache || { isLive: false };
-//   }
-// };
 
 let liveCache = null;
 let liveLastFetch = 0;
@@ -78,61 +30,175 @@ const YOUTUBE_CHANNELS = [
   },
 ];
 
-export const checkLiveStatus = async () => {
-  if (!process.env.YOUTUBE_API_KEY || !process.env.YOUTUBE_CHANNEL_ID) {
-    console.error("Missing YouTube config");
+// export const checkLiveStatus = async () => {
+//   if (!process.env.YOUTUBE_API_KEY || !process.env.YOUTUBE_CHANNEL_ID) {
+//     console.error("Missing YouTube config");
 
-    return {
-      isLive: false,
-    };
+//     return {
+//       isLive: false,
+//     };
+//   }
+
+//   const now = Date.now();
+
+//   if (liveCache && now - liveLastFetch < 60000) {
+//     return liveCache;
+//   }
+
+//   try {
+//     const res = await axios.get(`${YOUTUBE_API_URL}/search`, {
+//       timeout: 5000,
+//       params: {
+//         part: "snippet",
+//         channelId: process.env.YOUTUBE_CHANNEL_ID,
+//         eventType: "live",
+//         type: "video",
+//         key: process.env.YOUTUBE_API_KEY,
+//       },
+//     });
+
+//     let result = {
+//       isLive: false,
+//     };
+
+//     if (res?.data?.items?.length > 0) {
+//       const liveVideo = res.data.items[0];
+
+//       result = {
+//         isLive: true,
+//         videoId: liveVideo.id?.videoId,
+//         title: liveVideo.snippet?.title,
+//       };
+//     }
+
+//     liveCache = result;
+//     liveLastFetch = now;
+
+//     return result;
+//   } catch (err) {
+//     console.error("YouTube Live API error:", err.message);
+
+//     return (
+//       liveCache || {
+//         isLive: false,
+//       }
+//     );
+//   }
+// };
+
+
+export const checkLiveStatus = async () => {
+  if (!process.env.YOUTUBE_API_KEY) {
+    console.error("Missing YOUTUBE_API_KEY");
+
+    return { isLive: false, videoId: null, title: null };
+  }
+
+  // Read all four channel IDs from .env
+  const channelIds = (
+    process.env.YOUTUBE_CHANNEL_IDS || ""
+  )
+    .split(",")
+    .map((id) => id.trim())
+    .filter(Boolean);
+
+  if (channelIds.length === 0) {
+    console.error("Missing YOUTUBE_CHANNEL_IDS");
+
+    return { isLive: false, videoId: null, title: null };
   }
 
   const now = Date.now();
 
-  if (liveCache && now - liveLastFetch < 60000) {
+  // Reuse the previous result to reduce YouTube API quota usage.
+  // The cache duration below is 60 minutes.
+  if (liveCache && now - liveLastFetch < 60 * 60 * 1000) {
     return liveCache;
   }
 
   try {
-    const res = await axios.get(`${YOUTUBE_API_URL}/search`, {
-      timeout: 5000,
-      params: {
-        part: "snippet",
-        channelId: process.env.YOUTUBE_CHANNEL_ID,
-        eventType: "live",
-        type: "video",
-        key: process.env.YOUTUBE_API_KEY,
-      },
-    });
+    const results = await Promise.all(
+      channelIds.map(async (channelId) => {
+        try {
+          const response = await axios.get(
+            `${YOUTUBE_API_URL}/search`,
+            {
+              timeout: 10000,
+              params: {
+                part: "snippet",
+                channelId,
+                eventType: "live",
+                type: "video",
+                maxResults: 1,
+                key: process.env.YOUTUBE_API_KEY,
+              },
+            },
+          );
 
-    let result = {
+          const item = response.data?.items?.[0];
+
+          if (!item?.id?.videoId) {
+            return null;
+          }
+
+          return {
+            isLive: true,
+            videoId: item.id.videoId,
+            title: item.snippet?.title || "Live Now",
+            channelId,
+            channelTitle: item.snippet?.channelTitle || "",
+            thumbnail:
+              item.snippet?.thumbnails?.high?.url ||
+              item.snippet?.thumbnails?.medium?.url ||
+              item.snippet?.thumbnails?.default?.url ||
+              "",
+            url: `https://www.youtube.com/watch?v=${item.id.videoId}`,
+          };
+        } catch (error) {
+          console.error(
+            `Live check failed for channel ${channelId}:`,
+            error.response?.data || error.message,
+          );
+
+          return null;
+        }
+      }),
+    );
+
+    // If ANY channel is live, return its stream.
+    const liveStream = results.find((result) => result !== null);
+
+    const result = liveStream || {
       isLive: false,
+      videoId: null,
+      title: null,
+      channelId: null,
+      channelTitle: null,
+      thumbnail: null,
+      url: null,
     };
-
-    if (res?.data?.items?.length > 0) {
-      const liveVideo = res.data.items[0];
-
-      result = {
-        isLive: true,
-        videoId: liveVideo.id?.videoId,
-        title: liveVideo.snippet?.title,
-      };
-    }
 
     liveCache = result;
     liveLastFetch = now;
 
     return result;
-  } catch (err) {
-    console.error("YouTube Live API error:", err.message);
+  } catch (error) {
+    console.error(
+      "YouTube live status error:",
+      error.response?.data || error.message,
+    );
 
     return (
       liveCache || {
         isLive: false,
+        videoId: null,
+        title: null,
       }
     );
   }
 };
+
+
 
 export const getLatestYouTubeVideos = async () => {
   if (!process.env.YOUTUBE_API_KEY) {
