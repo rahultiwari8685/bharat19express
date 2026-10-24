@@ -315,7 +315,7 @@ const getAqiLabel = (value) => {
             <span style={{ opacity: 0.8 }}>|</span>
 
           
-<span
+{/* <span
   style={{ whiteSpace: "nowrap" }}
   title={
     weather
@@ -328,6 +328,33 @@ const getAqiLabel = (value) => {
     ? `${Math.round(weather.temperature_2m)}°C`
     : "--°C"}
 
+</span> */}
+
+<span
+  style={{ whiteSpace: "nowrap" }}
+  title={
+    weather
+      ? t(
+          `weather.${weather.weather_code}`,
+          getWeatherDescription(weather.weather_code)
+        )
+      : t("weather.loading", "Loading weather")
+  }
+>
+  <FontAwesome name="map-marker" />{" "}
+  {t("lucknow", "लखनऊ")}{" "}
+  {weather?.temperature_2m != null
+    ? `${Math.round(weather.temperature_2m)}°C`
+    : "--°C"}
+  {weather && (
+    <span>
+      {" · "}
+      {t(
+        `weather.${weather.weather_code}`,
+        getWeatherDescription(weather.weather_code)
+      )}
+    </span>
+  )}
 </span>
 
 <span
