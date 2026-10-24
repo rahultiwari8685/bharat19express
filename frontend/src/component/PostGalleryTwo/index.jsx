@@ -438,7 +438,7 @@ const PostGalleryTwo = () => {
                           width="100%"
                           height="350"
                           src={`https://www.youtube.com/embed/${youtubeLiveId}?autoplay=1&mute=1&rel=0&playsinline=1`}
-                          // title={youtubeLiveTitle || "Live News"}
+                          title={youtubeLiveTitle || "Live News"}
                           frameBorder="0"
                           allow="autoplay; encrypted-media; picture-in-picture"
                           allowFullScreen
@@ -598,7 +598,7 @@ const PostGalleryTwo = () => {
                                       </div>
 
                                       {/* TITLE */}
-                                      {/* <h2
+                                      <h2
                                         style={{
                                           margin: "0 0 8px 0",
                                           padding: 0,
@@ -616,7 +616,7 @@ const PostGalleryTwo = () => {
                                         }}
                                       >
                                         {item.title || "Latest News"}
-                                      </h2> */}
+                                      </h2>
 
                                       {/* SHORT DESCRIPTION */}
                                       {item.description && (
@@ -737,9 +737,9 @@ const PostGalleryTwo = () => {
 
                 {isYoutubeLive && (
                   <div className="single_post_text">
-                    <h4>
+                    {/* <h4>
                       <span>🔴 {youtubeLiveTitle || "Live News"}</span>
-                    </h4>
+                    </h4> */}
 
                  
                   </div>
