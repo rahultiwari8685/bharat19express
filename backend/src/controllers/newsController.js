@@ -169,6 +169,7 @@ export const createNews = async (req, res) => {
       slug,
       type,
       scheduledAt,
+       thumbnailCaption,
     } = req.body;
 
     let categories = [];
@@ -277,6 +278,7 @@ export const createNews = async (req, res) => {
       isScheduled: Number(type) === 3,
 
       thumbnail: req.file?.filename || "",
+      thumbnailCaption: thumbnailCaption || '',
     });
 
     if (Number(createdNews.type) === 1) {
@@ -638,6 +640,7 @@ export const updateNews = async (req, res) => {
       slug,
       type,
       scheduledAt,
+        thumbnailCaption,
     } = req.body;
 
     if (!mongoose.Types.ObjectId.isValid(id)) {
@@ -718,6 +721,7 @@ export const updateNews = async (req, res) => {
     news.youtubeUrl = youtube_url || "";
 
     news.translations = automaticTranslations;
+    news.thumbnailCaption = req.body.thumbnailCaption || ''
 
     if (slug && slug.trim()) {
       news.slug = slug.trim();

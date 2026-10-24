@@ -109,6 +109,7 @@ const News = () => {
       title: '',
       subtitle: '',
       description: '',
+        thumbnailCaption: '',
       slug: '',
       categories: [],
       videoType: '',
@@ -298,6 +299,7 @@ const News = () => {
     const formData = new FormData()
     formData.append('title', data.title)
     formData.append('sub_title', data.subtitle)
+    formData.append('thumbnailCaption', data.thumbnailCaption || '')
     formData.append('video_type', data.videoType)
     formData.append('type', data.type)
     formData.append('slug', data.slug)
@@ -732,12 +734,29 @@ const News = () => {
                         )}
 
                         <CCol md={12} className="mb-3">
-                          <CFormInput
+                          {/* <CFormInput
                             type="file"
                             label="Thumbnail"
                             accept="image/*"
                             {...register('thumbnail')}
-                          />
+                          /> */}
+
+<CFormInput
+  type="file"
+  label="Thumbnail"
+  accept="image/*"
+  {...register('thumbnail')}
+/>
+
+<CFormInput
+  type="text"
+  label="Thumbnail Caption"
+  placeholder="Enter image caption"
+  className="mt-3"
+  {...register('thumbnailCaption')}
+/>
+
+
                           {errors.thumbnail && (
                             <small className="text-danger">{errors.thumbnail.message}</small>
                           )}

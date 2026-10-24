@@ -274,7 +274,7 @@ function Post1() {
 
     <div className="space-40" />
 
-    <img
+    {/* <img
       src={
         news.thumbnail
           ? `${API}/uploads/images/${news.thumbnail}`
@@ -283,7 +283,26 @@ function Post1() {
             )}/hqdefault.jpg`
       }
       alt={news.title}
-    />
+    /> */}
+
+    <div className="news-thumbnail">
+  <img
+    src={
+      news.thumbnail
+        ? `${API}/uploads/images/${news.thumbnail}`
+        : `https://img.youtube.com/vi/${getYoutubeId(
+            news.youtubeUrl,
+          )}/hqdefault.jpg`
+    }
+    alt={news.title}
+  />
+
+  {news.thumbnailCaption && (
+    <p className="thumbnail-caption">
+      {news.thumbnailCaption}
+    </p>
+  )}
+</div>
 
     <div
       className="article-content mt-4"
@@ -345,6 +364,29 @@ function Post1() {
       <BannerSection />
 
       <style>{`
+
+      .news-thumbnail {
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.news-thumbnail img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 6px;
+}
+
+.thumbnail-caption {
+  margin: 0;
+  padding: 8px 10px;
+  background: #f5f5f5;
+  color: #555;
+  font-size: 14px;
+  line-height: 1.6;
+  text-align: center;
+  font-style: italic;
+}
 
 
 /* Author and social icons: always one horizontal row */
