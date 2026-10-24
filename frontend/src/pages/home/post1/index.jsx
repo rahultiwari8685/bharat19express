@@ -168,198 +168,175 @@ function Post1() {
         />
         <span className="space-10" />
         <div className="container">
-          <div className="row">
-            <div className="col-md-6 col-lg-8">
-              <div className="row">
-                <div className="col-11">
-                  <div className="page_category">
-                    {/* <h4>{news.categories?.[0]?.name}</h4> */}
-                    <div className="share-section mt-1">
-                      {/* <h5>Share this article</h5> */}
-                    </div>
-                  </div>
-                </div>
-              </div>
+       
+<div className="row">
+  <div className="col-md-6 col-lg-8">
+    <div className="row">
+      <div className="col-11">
+        <div className="page_category">
+          <div className="share-section mt-1" />
+        </div>
+      </div>
+    </div>
 
-              <div className="single_post_heading">
-                <h1>{decodeHtmlEntities(news.title)}</h1>
-                <div className="space-10" />
-                {/* <p>{news.subtitle}</p> */}
-              </div>
+    <div className="single_post_heading">
+      <h1>{decodeHtmlEntities(news.title)}</h1>
+      <div className="space-10" />
+    </div>
 
-              <div className="row">
-                <div className="col-lg-4 align-self-center">
-                  <div className="author">
-                    <div className="author_img">
-                      <div className="author_img_wrap">
-                        <img
-                          src={
-                            news.author?.profileImage
-                              ? `${API}/uploads/images/${news.author.profileImage}`
-                              : author2
-                          }
-                          alt={news.author?.name || "Author"}
-                        />
-                      </div>
-                    </div>
-
-                    {/* <Link to="#">{news.author?.name || "Admin"}</Link> */}
-
-                    <Link to="#" className="author-name-link">
-                      <span>{news.author?.name || "Admin"}</span>
-
-                      {news.author?.isVerified === true && (
-                        <svg
-                          className="verified-author-badge"
-                          viewBox="0 0 24 24"
-                          width="19"
-                          height="19"
-                          aria-label="Verified author"
-                          role="img"
-                          title="Verified author"
-                        >
-                          <path
-                            fill="currentColor"
-                            d="M12 1.5 14.8 3l3.2-.1 1.4 2.9 2.9 1.4-.1 3.2 1.5 2.8-1.5 2.8.1 3.2-2.9 1.4-1.4 2.9-3.2-.1-2.8 1.5-2.8-1.5-3.2.1-1.4-2.9-2.9-1.4.1-3.2L1.5 12l1.5-2.8-.1-3.2 2.9-1.4 1.4-2.9 3.2.1z"
-                          />
-                          <path
-                            d="m7.5 12.2 3 3 6-6"
-                            fill="none"
-                            stroke="#fff"
-                            strokeWidth="2.2"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          />
-                        </svg>
-                      )}
-                    </Link>
-                  </div>
-                </div>
-                <div className="col-lg-8 ">
-                  <div className="d-flex gap-2 flex-right">
-                    <FacebookShareButton
-                      url={shareUrl}
-                      quote={shareTitle}
-                      onClick={increaseShare}
-                      hashtag="#hindustantvlive"
-                    >
-                      <FacebookIcon size={42} round />
-                    </FacebookShareButton>
-
-                    <TwitterShareButton
-                      url={shareUrl}
-                      title={shareTitle}
-                      onClick={increaseShare}
-                    >
-                      <TwitterIcon size={42} round />
-                    </TwitterShareButton>
-
-                    <WhatsappShareButton
-                      url={shareUrl}
-                      title={shareTitle}
-                      onClick={increaseShare}
-                    >
-                      <WhatsappIcon size={42} round />
-                    </WhatsappShareButton>
-
-                    <TelegramShareButton
-                      url={shareUrl}
-                      title={shareTitle}
-                      onClick={increaseShare}
-                    >
-                      <TelegramIcon size={42} round />
-                    </TelegramShareButton>
-
-                    {/* <LinkedinShareButton
-                      url={shareUrl}
-                      title={shareTitle}
-                      onClick={increaseShare}
-                      summary={news.subtitle}
-                    >
-                      <LinkedinIcon size={42} round />
-                    </LinkedinShareButton>
-
-                    <RedditShareButton
-                      url={shareUrl}
-                      title={shareTitle}
-                      onClick={increaseShare}
-                    >
-                      <RedditIcon size={42} round />
-                    </RedditShareButton>
-
-                    <EmailShareButton
-                      url={shareUrl}
-                      subject={shareTitle}
-                      body={shareTitle}
-                      onClick={increaseShare}
-                    >
-                      <EmailIcon size={42} round />
-                    </EmailShareButton> */}
-                  </div>
-                </div>
-              </div>
-              <div className="space-40" />
+    {/* Author profile + social icons in the same row */}
+    <div className="author-social-row">
+      <div className="author-social-profile">
+        <div className="author">
+          <div className="author_img">
+            <div className="author_img_wrap">
               <img
                 src={
-                  news.thumbnail
-                    ? `${API}/uploads/images/${news.thumbnail}`
-                    : `https://img.youtube.com/vi/${getYoutubeId(
-                        news.youtubeUrl,
-                      )}/hqdefault.jpg`
+                  news.author?.profileImage
+                    ? `${API}/uploads/images/${news.author.profileImage}`
+                    : author2
                 }
-                alt={news.title}
+                alt={news.author?.name || "Author"}
               />
-
-              <div
-                className="article-content mt-4"
-                dangerouslySetInnerHTML={{
-                  __html: cleanContent,
-                }}
-              />
-
-              <div className="tags">
-                <ul className="inline">
-                  <li className="tag_list">
-                    {/* <FontAwesome name="tag" /> tags */}
-                    <FontAwesome name="tag" /> {t("categories")}
-                  </li>
-                  {news.categories?.map((cat) => (
-                    <li key={cat._id}>
-                      <Link to={`/category/${cat._id}`}>{cat.name}</Link>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-              <div className="space-40" />
-              <div className="border_black" />
-              <div className="space-40" />
-              <PostOnePagination newsId={news._id} />
-            </div>
-            <div className="col-md-6 col-lg-4">
-              {/* <WidgetTab /> */}
-              <WidgetTab categoryId={news.categories?.[0]?._id} />
-
-              <FollowUs title="Follow Us" />
-              <WidgetTrendingNews />
-              <div className="banner2 mb30">
-                {banners.sidebar && (
-                  <a
-                    href={banners.sidebar.redirectUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <img
-                      src={`https://api.bharat19express.com/uploads/advertisements/${banners.sidebar.image}`}
-                      alt={banners.sidebar.title}
-                      className="img-fluid"
-                    />
-                  </a>
-                )}
-              </div>
-              {/* <MostShareWidget title="Most Share" /> */}
-              {/* <NewsLetter /> */}
             </div>
           </div>
+
+          <Link to="#" className="author-name-link">
+            <span>{news.author?.name || "Admin"}</span>
+
+            {news.author?.isVerified === true && (
+              <svg
+                className="verified-author-badge"
+                viewBox="0 0 24 24"
+                width="19"
+                height="19"
+                aria-label="Verified author"
+                role="img"
+                title="Verified author"
+              >
+                <path
+                  fill="currentColor"
+                  d="M12 1.5 14.8 3l3.2-.1 1.4 2.9 2.9 1.4-.1 3.2 1.5 2.8-1.5 2.8.1 3.2-2.9 1.4-1.4 2.9-3.2-.1-2.8 1.5-2.8-1.5-3.2.1-1.4-2.9-2.9-1.4.1-3.2L1.5 12l1.5-2.8-.1-3.2 2.9-1.4 1.4-2.9 3.2.1z"
+                />
+                <path
+                  d="m7.5 12.2 3 3 6-6"
+                  fill="none"
+                  stroke="#fff"
+                  strokeWidth="2.2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            )}
+          </Link>
+        </div>
+      </div>
+
+      <div className="author-social-icons">
+        <FacebookShareButton
+          url={shareUrl}
+          quote={shareTitle}
+          onClick={increaseShare}
+          hashtag="#hindustantvlive"
+          aria-label="Share on Facebook"
+        >
+          <FacebookIcon size={42} round />
+        </FacebookShareButton>
+
+        <TwitterShareButton
+          url={shareUrl}
+          title={shareTitle}
+          onClick={increaseShare}
+          aria-label="Share on X"
+        >
+          <TwitterIcon size={42} round />
+        </TwitterShareButton>
+
+        <WhatsappShareButton
+          url={shareUrl}
+          title={shareTitle}
+          onClick={increaseShare}
+          aria-label="Share on WhatsApp"
+        >
+          <WhatsappIcon size={42} round />
+        </WhatsappShareButton>
+
+        <TelegramShareButton
+          url={shareUrl}
+          title={shareTitle}
+          onClick={increaseShare}
+          aria-label="Share on Telegram"
+        >
+          <TelegramIcon size={42} round />
+        </TelegramShareButton>
+      </div>
+    </div>
+
+    <div className="space-40" />
+
+    <img
+      src={
+        news.thumbnail
+          ? `${API}/uploads/images/${news.thumbnail}`
+          : `https://img.youtube.com/vi/${getYoutubeId(
+              news.youtubeUrl,
+            )}/hqdefault.jpg`
+      }
+      alt={news.title}
+    />
+
+    <div
+      className="article-content mt-4"
+      dangerouslySetInnerHTML={{
+        __html: cleanContent,
+      }}
+    />
+
+    <div className="tags">
+      <ul className="inline">
+        <li className="tag_list">
+          <FontAwesome name="tag" /> {t("categories")}
+        </li>
+
+        {news.categories?.map((cat) => (
+          <li key={cat._id}>
+            <Link to={`/category/${cat._id}`}>{cat.name}</Link>
+          </li>
+        ))}
+      </ul>
+    </div>
+
+    <div className="space-40" />
+    <div className="border_black" />
+    <div className="space-40" />
+
+    <PostOnePagination newsId={news._id} />
+  </div>
+
+  <div className="col-md-6 col-lg-4">
+    <WidgetTab categoryId={news.categories?.[0]?._id} />
+
+    <FollowUs title="Follow Us" />
+    <WidgetTrendingNews />
+
+    <div className="banner2 mb30">
+      {banners.sidebar && (
+        <a
+          href={banners.sidebar.redirectUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <img
+            src={`https://api.bharat19express.com/uploads/advertisements/${banners.sidebar.image}`}
+            alt={banners.sidebar.title}
+            className="img-fluid"
+          />
+        </a>
+      )}
+    </div>
+  </div>
+</div>
+
         </div>
       </div>
 
@@ -369,9 +346,120 @@ function Post1() {
 
       <style>{`
 
+
+/* Author and social icons: always one horizontal row */
+.author-social-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  width: 100%;
+  margin-top: 10px;
+  margin-bottom: 20px;
+  box-sizing: border-box;
+}
+
+.author-social-profile {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.author-social-profile .author {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  margin: 0;
+}
+
+.author-social-profile .author-name-link {
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 5px;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.author-social-icons {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 5px;
+  flex: 0 0 auto;
+}
+
+.author-social-icons button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  padding: 0;
+  margin: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.author-social-icons svg {
+  display: block;
+}
+
+/* Mobile */
+@media (max-width: 767px) {
+  .author-social-row {
+    flex-direction: row;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .author-social-profile {
+    flex: 1 1 0;
+  }
+
+  .author-social-profile .author {
+    gap: 5px;
+  }
+
+  .author-social-icons {
+    flex: 0 0 auto;
+    gap: 3px;
+  }
+
+  .author-social-icons svg {
+    width: 32px;
+    height: 32px;
+  }
+}
+
+/* Very narrow screens */
+@media (max-width: 360px) {
+  .author-social-row {
+    gap: 4px;
+  }
+
+  .author-social-profile .author {
+    gap: 4px;
+  }
+
+  .author-social-icons {
+    gap: 2px;
+  }
+
+  .author-social-icons svg {
+    width: 27px;
+    height: 27px;
+  }
+}
+
 .share-section {
   margin: 35px 0;
 }
+
+
 
 .share-section .d-flex {
   display: flex;
