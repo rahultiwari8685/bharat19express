@@ -767,11 +767,7 @@ const PostGalleryTwo = () => {
                       <span>🔴 {youtubeLiveTitle || "Live News"}</span>
                     </h4>
 
-                    <div className="space-5" />
-
-                    <p className="post-p">
-                      Live news is currently streaming on YouTube.
-                    </p>
+                 
                   </div>
                 )}
               </div>
