@@ -438,7 +438,7 @@ const PostGalleryTwo = () => {
                           width="100%"
                           height="350"
                           src={`https://www.youtube.com/embed/${youtubeLiveId}?autoplay=1&mute=1&rel=0&playsinline=1`}
-                          title={youtubeLiveTitle || "Live News"}
+                          // title={youtubeLiveTitle || "Live News"}
                           frameBorder="0"
                           allow="autoplay; encrypted-media; picture-in-picture"
                           allowFullScreen
@@ -598,7 +598,7 @@ const PostGalleryTwo = () => {
                                       </div>
 
                                       {/* TITLE */}
-                                      <h2
+                                      {/* <h2
                                         style={{
                                           margin: "0 0 8px 0",
                                           padding: 0,
@@ -616,7 +616,7 @@ const PostGalleryTwo = () => {
                                         }}
                                       >
                                         {item.title || "Latest News"}
-                                      </h2>
+                                      </h2> */}
 
                                       {/* SHORT DESCRIPTION */}
                                       {item.description && (
@@ -731,33 +731,7 @@ const PostGalleryTwo = () => {
                       </div>
                     )}
 
-                    {/* {videoNews && youtubeId ? (
-                      <iframe
-                        width="100%"
-                        height="350"
-                        src={`https://www.youtube.com/embed/${youtubeId}?autoplay=1&mute=1&rel=0&playsinline=1`}
-                        title={videoNews.title}
-                        frameBorder="0"
-                        allow="autoplay; encrypted-media; picture-in-picture"
-                        allowFullScreen
-                        style={{
-                          width: "100%",
-                          height: "350px",
-                          objectFit: "cover",
-                          display: "block",
-                        }}
-                      />
-                    ) : (
-                      <img
-                        src={big_img}
-                        alt="Video News"
-                        style={{
-                          width: "100%",
-                          height: "350px",
-                          objectFit: "cover",
-                        }}
-                      />
-                    )} */}
+                  
                   </div>
                 </div>
 
@@ -1073,7 +1047,6 @@ const PostGalleryTwo = () => {
                                 </Link>
                               </div>
 
-                              {/* CONTENT */}
 
                               <div>
                                 <p
