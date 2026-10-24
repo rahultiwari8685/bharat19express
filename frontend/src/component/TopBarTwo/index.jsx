@@ -30,6 +30,75 @@ const TopBarTwo = () => {
   const [showYoutubeMenu, setShowYoutubeMenu] = useState(false);
   const [showCalendar, setShowCalendar] = useState(false);
 
+
+  
+const [weather, setWeather] = useState(null);
+const [aqi, setAqi] = useState(null);
+
+useEffect(() => {
+  let cancelled = false;
+
+  const fetchWeatherAndAQI = async () => {
+    try {
+      const [weatherResponse, airResponse] = await Promise.all([
+        fetch(
+          "https://api.open-meteo.com/v1/forecast?latitude=26.8467&longitude=80.9462&current=temperature_2m,relative_humidity_2m,apparent_temperature,weather_code&timezone=Asia%2FKolkata"
+        ),
+        fetch(
+          "https://air-quality-api.open-meteo.com/v1/air-quality?latitude=26.8467&longitude=80.9462&current=us_aqi,pm2_5&timezone=Asia%2FKolkata"
+        ),
+      ]);
+
+      if (!weatherResponse.ok || !airResponse.ok) {
+        throw new Error("Weather or AQI API request failed");
+      }
+
+      const weatherData = await weatherResponse.json();
+      const airData = await airResponse.json();
+
+      if (cancelled) return;
+
+      setWeather(weatherData.current || null);
+      setAqi(airData.current || null);
+    } catch (error) {
+      console.error("Weather/AQI Error:", error);
+    }
+  };
+
+  fetchWeatherAndAQI();
+
+  // Refresh every 10 minutes.
+  const intervalId = setInterval(fetchWeatherAndAQI, 10 * 60 * 1000);
+
+  return () => {
+    cancelled = true;
+    clearInterval(intervalId);
+  };
+}, []);
+
+const getWeatherDescription = (code) => {
+  if (code === 0) return "Clear sky";
+  if ([1, 2, 3].includes(code)) return "Partly cloudy";
+  if ([45, 48].includes(code)) return "Fog";
+  if ([51, 53, 55, 56, 57].includes(code)) return "Drizzle";
+  if ([61, 63, 65, 66, 67, 80, 81, 82].includes(code)) return "Rain";
+  if ([71, 73, 75, 77, 85, 86].includes(code)) return "Snow";
+  if ([95, 96, 99].includes(code)) return "Thunderstorm";
+  return "Current weather";
+};
+
+const getAqiLabel = (value) => {
+  if (value == null) return "";
+
+  if (value <= 50) return "Good";
+  if (value <= 100) return "Moderate";
+  if (value <= 150) return "Unhealthy for sensitive groups";
+  if (value <= 200) return "Unhealthy";
+  if (value <= 300) return "Very unhealthy";
+  return "Hazardous";
+};
+
+
   useEffect(() => {
     getTrendingNews();
   }, [i18n.resolvedLanguage]);
@@ -245,13 +314,43 @@ const TopBarTwo = () => {
 
             <span style={{ opacity: 0.8 }}>|</span>
 
-            <span style={{ whiteSpace: "nowrap" }}>
-              <FontAwesome name="map-marker" /> {t("lucknow", "लखनऊ")} 24°C
-            </span>
+          
+<span
+  style={{ whiteSpace: "nowrap" }}
+  title={
+    weather
+      ? getWeatherDescription(weather.weather_code)
+      : "Loading weather"
+  }
+>
+  <FontAwesome name="map-marker" /> {t("lucknow", "लखनऊ")}{" "}
+  {weather?.temperature_2m != null
+    ? `${Math.round(weather.temperature_2m)}°C`
+    : "--°C"}
+  {weather && (
+    <span>
+      {" "}· {getWeatherDescription(weather.weather_code)}
+    </span>
+  )}
+</span>
 
-            <span style={{ whiteSpace: "nowrap" }}>
-              <FontAwesome name="cloud" /> AQI 78 ({t("good", "अच्छा")})
-            </span>
+<span
+  style={{ whiteSpace: "nowrap" }}
+  title={
+    aqi?.us_aqi != null
+      ? `US AQI: ${aqi.us_aqi}; PM2.5: ${
+          aqi.pm2_5 ?? "Unavailable"
+        } µg/m³`
+      : "Loading air quality"
+  }
+>
+  <FontAwesome name="cloud" /> AQI{" "}
+  {aqi?.us_aqi != null ? Math.round(aqi.us_aqi) : "--"}
+  {aqi?.us_aqi != null && (
+    <span> ({getAqiLabel(aqi.us_aqi)})</span>
+  )}
+</span>
+
           </div>
 
           {/* RIGHT: Preserve previous header actions */}
