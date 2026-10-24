@@ -327,11 +327,7 @@ const getAqiLabel = (value) => {
   {weather?.temperature_2m != null
     ? `${Math.round(weather.temperature_2m)}°C`
     : "--°C"}
-  {weather && (
-    <span>
-      {" "}· {getWeatherDescription(weather.weather_code)}
-    </span>
-  )}
+
 </span>
 
 <span
