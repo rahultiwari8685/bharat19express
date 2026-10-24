@@ -311,6 +311,19 @@ function Post1() {
       }}
     />
 
+    {/* Edit News Button */}
+<div className="edit-news-wrapper">
+  <a
+    href={`https://admin.bharat19express.com/UpdateNews/${news._id}`}
+    className="edit-news-button"
+    target="_blank"
+    rel="noopener noreferrer"
+  >
+    <i className="bi bi-pencil-square"></i>
+    Edit News
+  </a>
+</div>
+
     <div className="tags">
       <ul className="inline">
         <li className="tag_list">
@@ -386,6 +399,35 @@ function Post1() {
   line-height: 1.6;
   text-align: center;
   font-style: italic;
+}
+
+.edit-news-wrapper {
+  display: flex;
+  justify-content: flex-end;
+  margin: 20px 0 30px;
+}
+
+.edit-news-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  background: #8b0000;
+  color: #fff !important;
+  text-decoration: none !important;
+  border-radius: 6px;
+  font-size: 15px;
+  font-weight: 600;
+  transition: background 0.2s ease;
+}
+
+.edit-news-button:hover {
+  background: #650000;
+  color: #fff !important;
+}
+
+.edit-news-button i {
+  font-size: 16px;
 }
 
 
