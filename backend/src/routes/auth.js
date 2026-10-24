@@ -34,4 +34,46 @@ router.post("/login", async (req, res) => {
   }
 });
 
+// Verify admin/editor token
+router.get("/verify-editor", async (req, res) => {
+  try {
+    const authHeader = req.headers.authorization;
+
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      return res.status(401).json({
+        authenticated: false,
+      });
+    }
+
+    const token = authHeader.split(" ")[1];
+
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+    const user = await User.findById(decoded.userId).select("role");
+
+    if (!user) {
+      return res.status(401).json({
+        authenticated: false,
+      });
+    }
+
+    // Adjust these role names to match your database
+    const allowedRoles = ["admin", "editor"];
+
+    if (!allowedRoles.includes(user.role)) {
+      return res.status(403).json({
+        authenticated: false,
+      });
+    }
+
+    return res.json({
+      authenticated: true,
+    });
+  } catch (error) {
+    return res.status(401).json({
+      authenticated: false,
+    });
+  }
+});
+
 export default router;

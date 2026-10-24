@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+
 import { Link, useParams } from "react-router-dom";
 import BreadCrumb from "../../../component/BreadCrumb";
 import FontAwesome from "../../../component/uiStyle/FontAwesome";
@@ -53,6 +54,39 @@ function Post1() {
   const [news, setNews] = useState(null);
   const { t, i18n } = useTranslation();
   const [banners, setBanners] = useState({});
+
+  const [canEditNews, setCanEditNews] = useState(false);
+
+useEffect(() => {
+  const verifyEditor = async () => {
+    try {
+      // This token must be available to the public site.
+      // The admin's secureLocalStorage is not shared across domains.
+      const token = localStorage.getItem("adminToken");
+
+      if (!token) {
+        setCanEditNews(false);
+        return;
+      }
+
+      const response = await fetch(
+        "https://api.bharat19express.com/api/auth/verify-editor",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      const result = await response.json();
+      setCanEditNews(response.ok && result.authenticated === true);
+    } catch (error) {
+      setCanEditNews(false);
+    }
+  };
+
+  verifyEditor();
+}, []);
 
   useEffect(() => {
     const loadNews = async () => {
@@ -311,18 +345,18 @@ function Post1() {
       }}
     />
 
-    {/* Edit News Button */}
-<div className="edit-news-wrapper">
-  <a
-    href={`https://admin.bharat19express.com/UpdateNews/${news._id}`}
-    className="edit-news-button"
-    target="_blank"
-    rel="noopener noreferrer"
-  >
-    <i className="bi bi-pencil-square"></i>
-    Edit News
-  </a>
-</div>
+{canEditNews && (
+  <div className="edit-news-wrapper">
+    <a
+      href={`https://admin.bharat19express.com/UpdateNews/${news._id}`}
+      className="edit-news-button"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      ✏️ Edit News
+    </a>
+  </div>
+)}
 
     <div className="tags">
       <ul className="inline">
