@@ -4,12 +4,31 @@
     <meta charset="UTF-8" />
     <link
       rel="icon"
-      type="image/svg+xml"
-      href="./src/assets/img/Bharat19_Logo.png"
+      type="image/png"
+      href="/src/assets/img/Bharat19_Logo.png"
     />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Bharat 19 Express</title>
+
+    <!-- Google Analytics 4 -->
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-7ZLPHFSXWP"
+    ></script>
+
+    <script>
+      window.dataLayer = window.dataLayer || [];
+
+      function gtag() {
+        window.dataLayer.push(arguments);
+      }
+
+      window.gtag = gtag;
+      window.gtag("js", new Date());
+      window.gtag("config", "G-7ZLPHFSXWP");
+    </script>
   </head>
+
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>

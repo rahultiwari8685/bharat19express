@@ -88,6 +88,7 @@ import Epaper from "./pages/homeTwo/epaper/Epaper";
 import EpaperReader from "./pages/homeTwo/epaper/EpaperReader";
 import Gallery from "./pages/homeTwo/Gallery";
 import Privacy from "./pages/homeTwo/privacy";
+import SearchNews from "./pages/homeTwo/searchNews";
 const router = createBrowserRouter([
   // {
   //   path: "/",
@@ -195,6 +196,7 @@ const router = createBrowserRouter([
       },
       { path: "/login", element: <SubscriberLogin /> },
       { path: "/register", element: <SubscriberRegister /> },
+      { path: "/search", element: <SearchNews /> },
       { path: "/epaper", element: <Epaper /> },
       { path: "/gallery", element: <Gallery /> },
       { path: "/privacy", element: <Privacy /> },

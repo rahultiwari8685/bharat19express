@@ -376,7 +376,11 @@ const News = () => {
         setTranslations(emptyTranslations)
         setActiveTranslationLanguage('hi')
         setEditingNews(null)
-        navigate('/PublishedNews')
+        if (data.type === '3') {
+          navigate('/ScheduleNews')
+        } else {
+          navigate('/PublishedNews')
+        }
       } else {
         toast.error(result.message || 'Failed to save news')
       }

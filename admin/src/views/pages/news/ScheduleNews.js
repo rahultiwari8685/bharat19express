@@ -6,7 +6,6 @@ import {
   CCol,
   CRow,
   CFormInput,
-  CFormLabel,
   CForm,
   CTable,
   CTableBody,
@@ -23,61 +22,51 @@ import CIcon from '@coreui/icons-react'
 import setting from '../../../setting.json'
 import secureLocalStorage from 'react-secure-storage'
 import { useNavigate } from 'react-router-dom'
-
 import toast from 'react-hot-toast'
 
-const DraftNews = () => {
+const ScheduleNews = () => {
   const [newsList, setNewsList] = useState([])
-  const navigate = useNavigate()
   const [searchText, setSearchText] = useState('')
   const [userList, setUserList] = useState([])
   const [currentPage, setCurrentPage] = useState(1)
-
   const [loading, setLoading] = useState(false)
-
   const [fromDate, setFromDate] = useState('')
   const [toDate, setToDate] = useState('')
   const [selectedCategory, setSelectedCategory] = useState('')
   const [selectedAuthor, setSelectedAuthor] = useState('')
-
   const [categoryList, setCategoryList] = useState([])
+
+  const navigate = useNavigate()
   const itemsPerPage = 30
 
-  const userRole = JSON.parse(secureLocalStorage.getItem('logininfo')).role
-
-  console.log('User role from storage:', userRole)
+  const getLoginInfo = () => {
+    const loginInfo = secureLocalStorage.getItem('logininfo')
+    return typeof loginInfo === 'string' ? JSON.parse(loginInfo) : loginInfo
+  }
 
   const fetchNews = async () => {
     try {
       setLoading(true)
-      const token = JSON.parse(secureLocalStorage.getItem('logininfo')).token
 
-      const res = await fetch(setting.api + '/api/news/getAllNews', {
+      const loginInfo = getLoginInfo()
+
+      const res = await fetch(setting.api + '/api/news/getScheduleNews', {
         method: 'GET',
         headers: {
-          Authorization: 'Bearer ' + token,
+          Authorization: 'Bearer ' + loginInfo?.token,
         },
       })
 
       const data = await res.json()
 
-      const now = new Date().getTime()
+      if (!res.ok || data.status === false) {
+        throw new Error(data.message || 'Failed to fetch scheduled news')
+      }
 
-      const threeMonths = 10 * 24 * 60 * 60 * 1000
-
-      const filteredNews = (data.data || [])
-        .filter((item) => {
-          const newsTime = new Date(item.createdAt).getTime()
-
-          return Number(item.type) === 3 && now - newsTime <= threeMonths
-        })
-        .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
-
-      console.log('Filtered News:', filteredNews.length)
-
-      setNewsList(filteredNews)
+      setNewsList(data.data || [])
     } catch (error) {
-      console.error('Error fetching news:', error)
+      console.error('Error fetching scheduled news:', error)
+      toast.error(error.message || 'Failed to fetch scheduled news')
     } finally {
       setLoading(false)
     }
@@ -90,65 +79,53 @@ const DraftNews = () => {
       const data = await res.json()
 
       if (data.success) {
-        setCategoryList(data.data)
+        setCategoryList(data.data || [])
       }
     } catch (error) {
-      console.error(error)
+      console.error('Error fetching categories:', error)
+    }
+  }
+
+  const allUserList = async () => {
+    try {
+      const loginInfo = getLoginInfo()
+
+      const response = await fetch(setting.api + '/api/users/getAllUser', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + loginInfo?.token,
+        },
+      })
+
+      const data = await response.json()
+
+      if (data.status === false) {
+        navigate('/login')
+        return
+      }
+
+      setUserList(data.data || [])
+    } catch (error) {
+      console.error('Error fetching users:', error)
     }
   }
 
   useEffect(() => {
-    fetchCategories()
-  }, [])
-
-  useEffect(() => {
     fetchNews()
-  }, [])
-
-  const allUserList = async () => {
-    await fetch(setting.api + '/api/users/getAllUser', {
-      method: 'GET',
-      mode: 'cors',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: 'Bearer ' + JSON.parse(secureLocalStorage.getItem('logininfo')).token,
-      },
-    })
-      .then((response) => response.json())
-      .then((u) => {
-        if (u.status == false) {
-          // secureLocalStorage.clear();
-          navigate('/login')
-        } else {
-          setUserList(u.data)
-        }
-      })
-  }
-
-  useEffect(() => {
+    fetchCategories()
     allUserList()
   }, [])
-
-  const getUserName = (id) => {
-    console.log(id)
-    const user = userList.find((c) => String(c.id) === String(id))
-    return user ? user.name : 'N/A'
-  }
 
   const handleEdit = (news) => {
     navigate(`/UpdateNews/${news._id}`)
   }
 
-  function handleDelete(id) {
-    var ans = confirm('Are you sure For Delete?')
-    console.log(ans)
-
-    if (ans == true) {
-      deleteNews(id)
+  const handleDelete = async (id) => {
+    if (!window.confirm('Are you sure you want to delete this scheduled news?')) {
+      return
     }
-  }
 
-  const deleteNews = async (id) => {
     try {
       const response = await fetch(`${setting.api}/api/news/deleteNews/${id}`, {
         method: 'DELETE',
@@ -158,33 +135,36 @@ const DraftNews = () => {
       })
 
       const data = await response.json()
-      fetchNews()
 
-      if (data.status === true) {
-        toast.success('Draft deleted successfully')
-
-        setNewsList((prev) => prev.filter((item) => item._id !== id))
-        fetchNews()
+      if (!response.ok || data.status !== true) {
+        throw new Error(data.message || 'Delete failed')
       }
-      toast.error(data.message || 'Delete failed')
+
+      setNewsList((prev) => prev.filter((item) => item._id !== id))
+      toast.success('Scheduled news deleted successfully')
     } catch (error) {
-      toast.error('Something went wrong')
+      console.error('Delete scheduled news error:', error)
+      toast.error(error.message || 'Something went wrong')
     }
   }
 
   const filteredNews = newsList.filter((news) => {
-    const titleMatch = news.title?.toLowerCase().includes(searchText.toLowerCase())
+    const titleMatch = (news.title || '').toLowerCase().includes(searchText.toLowerCase())
 
-    const authorMatch = !selectedAuthor || news.author?._id === selectedAuthor
+    const authorId = typeof news.author === 'object' ? news.author?._id : news.author
+
+    const authorMatch = !selectedAuthor || String(authorId) === String(selectedAuthor)
 
     const categoryMatch =
-      !selectedCategory || news.categories?.some((cat) => cat._id === selectedCategory)
+      !selectedCategory ||
+      news.categories?.some((category) => String(category._id) === String(selectedCategory))
 
-    const newsDate = new Date(news.createdAt)
+    const dateValue = news.scheduledAt || news.createdAt
+    const newsDate = dateValue ? new Date(dateValue) : null
 
-    const fromMatch = !fromDate || newsDate >= new Date(fromDate)
+    const fromMatch = !fromDate || (newsDate && newsDate >= new Date(`${fromDate}T00:00:00`))
 
-    const toMatch = !toDate || newsDate <= new Date(new Date(toDate).setHours(23, 59, 59))
+    const toMatch = !toDate || (newsDate && newsDate <= new Date(`${toDate}T23:59:59.999`))
 
     return titleMatch && authorMatch && categoryMatch && fromMatch && toMatch
   })
@@ -199,6 +179,25 @@ const DraftNews = () => {
   useEffect(() => {
     setCurrentPage(1)
   }, [searchText, selectedAuthor, selectedCategory, fromDate, toDate])
+
+  const formatScheduledDate = (date) => {
+    if (!date) return 'Not scheduled'
+
+    const parsedDate = new Date(date)
+
+    if (Number.isNaN(parsedDate.getTime())) return 'Invalid date'
+
+    return parsedDate.toLocaleString('en-IN', {
+      timeZone: 'Asia/Kolkata',
+      day: '2-digit',
+      month: 'short',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: true,
+    })
+  }
+
   return (
     <CCard className="shadow-sm border-0 rounded-4">
       <CCardHeader className="bg-dark text-white fw-bold px-4 py-3 shadow-sm">
@@ -232,10 +231,9 @@ const DraftNews = () => {
                 onChange={(e) => setSelectedCategory(e.target.value)}
               >
                 <option value="">All Categories</option>
-
-                {categoryList.map((cat) => (
-                  <option key={cat._id} value={cat._id}>
-                    {cat.name}
+                {categoryList.map((category) => (
+                  <option key={category._id} value={category._id}>
+                    {category.name}
                   </option>
                 ))}
               </select>
@@ -248,9 +246,8 @@ const DraftNews = () => {
                 onChange={(e) => setSelectedAuthor(e.target.value)}
               >
                 <option value="">All Authors</option>
-
                 {userList.map((user) => (
-                  <option key={user._id} value={user._id}>
+                  <option key={user._id || user.id} value={user._id || user.id}>
                     {user.name}
                   </option>
                 ))}
@@ -276,42 +273,34 @@ const DraftNews = () => {
             <CTable align="middle" hover responsive bordered>
               <CTableHead color="light">
                 <CTableRow>
-                  <CTableHeaderCell scope="col">#</CTableHeaderCell>
-                  <CTableHeaderCell scope="col">Title</CTableHeaderCell>
-                  <CTableHeaderCell scope="col">Category</CTableHeaderCell>
-                  <CTableHeaderCell scope="col">Author</CTableHeaderCell>
-                  <CTableHeaderCell scope="col">Published At</CTableHeaderCell>
-                  <CTableHeaderCell scope="col">Action</CTableHeaderCell>
+                  <CTableHeaderCell>#</CTableHeaderCell>
+                  <CTableHeaderCell>Title</CTableHeaderCell>
+                  <CTableHeaderCell>Category</CTableHeaderCell>
+                  <CTableHeaderCell>Author</CTableHeaderCell>
+                  <CTableHeaderCell>Scheduled At</CTableHeaderCell>
+                  <CTableHeaderCell>Action</CTableHeaderCell>
                 </CTableRow>
               </CTableHead>
 
               <CTableBody>
-                {paginatedItems.map((news, index) => {
-                  const actualIndex = (currentPage - 1) * itemsPerPage + index
-                  return (
+                {paginatedItems.length > 0 ? (
+                  paginatedItems.map((news, index) => (
                     <CTableRow key={news._id}>
-                      <CTableDataCell>{actualIndex + 1}</CTableDataCell>
+                      <CTableDataCell>
+                        {(currentPage - 1) * itemsPerPage + index + 1}
+                      </CTableDataCell>
+
                       <CTableDataCell>{news.title}</CTableDataCell>
 
                       <CTableDataCell>
-                        {news.categories && news.categories.length > 0
-                          ? news.categories.map((cat) => cat.name).join(', ')
+                        {news.categories?.length
+                          ? news.categories.map((category) => category.name).join(', ')
                           : '-'}
                       </CTableDataCell>
 
-                      <CTableDataCell> {news.author?.name || 'N/A'}</CTableDataCell>
+                      <CTableDataCell>{news.author?.name || 'N/A'}</CTableDataCell>
 
-                      <CTableDataCell>
-                        {new Date(news.createdAt).toLocaleString('en-IN', {
-                          timeZone: 'Asia/Kolkata',
-                          day: '2-digit',
-                          month: 'short',
-                          year: 'numeric',
-                          hour: '2-digit',
-                          minute: '2-digit',
-                          hour12: true,
-                        })}
-                      </CTableDataCell>
+                      <CTableDataCell>{formatScheduledDate(news.scheduledAt)}</CTableDataCell>
 
                       <CTableDataCell>
                         <CButton
@@ -332,50 +321,58 @@ const DraftNews = () => {
                         </CButton>
                       </CTableDataCell>
                     </CTableRow>
-                  )
-                })}
+                  ))
+                ) : (
+                  <CTableRow>
+                    <CTableDataCell colSpan={6} className="text-center py-4">
+                      No scheduled news found.
+                    </CTableDataCell>
+                  </CTableRow>
+                )}
               </CTableBody>
             </CTable>
 
-            <div className="d-flex justify-content-center mt-4">
-              <CPagination align="center">
-                <CPaginationItem
-                  disabled={currentPage === 1}
-                  onClick={() => setCurrentPage(currentPage - 1)}
-                >
-                  Previous
-                </CPaginationItem>
+            {totalPages > 1 && (
+              <div className="d-flex justify-content-center mt-4">
+                <CPagination align="center">
+                  <CPaginationItem
+                    disabled={currentPage === 1}
+                    onClick={() => setCurrentPage((page) => page - 1)}
+                  >
+                    Previous
+                  </CPaginationItem>
 
-                {Array.from({ length: totalPages }, (_, i) => i + 1)
-                  .filter(
-                    (page) =>
-                      page === 1 ||
-                      page === totalPages ||
-                      (page >= currentPage - 2 && page <= currentPage + 2),
-                  )
-                  .map((page, idx, arr) => (
-                    <React.Fragment key={page}>
-                      {idx > 0 && page - arr[idx - 1] > 1 && (
-                        <CPaginationItem disabled>...</CPaginationItem>
-                      )}
+                  {Array.from({ length: totalPages }, (_, index) => index + 1)
+                    .filter(
+                      (page) =>
+                        page === 1 ||
+                        page === totalPages ||
+                        (page >= currentPage - 2 && page <= currentPage + 2),
+                    )
+                    .map((page, index, pages) => (
+                      <React.Fragment key={page}>
+                        {index > 0 && page - pages[index - 1] > 1 && (
+                          <CPaginationItem disabled>...</CPaginationItem>
+                        )}
 
-                      <CPaginationItem
-                        active={currentPage === page}
-                        onClick={() => setCurrentPage(page)}
-                      >
-                        {page}
-                      </CPaginationItem>
-                    </React.Fragment>
-                  ))}
+                        <CPaginationItem
+                          active={currentPage === page}
+                          onClick={() => setCurrentPage(page)}
+                        >
+                          {page}
+                        </CPaginationItem>
+                      </React.Fragment>
+                    ))}
 
-                <CPaginationItem
-                  disabled={currentPage === totalPages}
-                  onClick={() => setCurrentPage(currentPage + 1)}
-                >
-                  Next
-                </CPaginationItem>
-              </CPagination>
-            </div>
+                  <CPaginationItem
+                    disabled={currentPage === totalPages}
+                    onClick={() => setCurrentPage((page) => page + 1)}
+                  >
+                    Next
+                  </CPaginationItem>
+                </CPagination>
+              </div>
+            )}
           </>
         )}
       </CCardBody>
@@ -383,4 +380,4 @@ const DraftNews = () => {
   )
 }
 
-export default DraftNews
+export default ScheduleNews

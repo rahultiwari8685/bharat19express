@@ -22,6 +22,7 @@ import {
   newsMeta,
   getLiveStatus,
   getAllDraftNews,
+  searchNews,
 } from "../controllers/newsController.js";
 
 const router = express.Router();
@@ -56,4 +57,5 @@ router.get("/previous-next/:id", previousNextNews);
 router.get("/share/:slug", shareNews);
 router.get("/news/:slug", newsMeta);
 router.get("/:slug/meta", newsMeta);
+router.get("/search", searchNews);
 export default router;

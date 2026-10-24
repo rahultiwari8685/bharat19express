@@ -490,12 +490,6 @@ export const getAllNewsByCategory = async (req, res) => {
       type: 1,
     };
 
-    /*
-      |--------------------------------------------------------------------------
-      | Get News
-      |--------------------------------------------------------------------------
-      */
-
     const news = await News.find(query)
       .populate("categories", "name slug _id")
       .sort({
@@ -503,12 +497,6 @@ export const getAllNewsByCategory = async (req, res) => {
       })
       .skip(skip)
       .limit(limitNumber);
-
-    /*
-      |--------------------------------------------------------------------------
-      | Translation
-      |--------------------------------------------------------------------------
-      */
 
     const translatedNews = news.map((item) => applyTranslation(item, lang));
 
@@ -1251,34 +1239,6 @@ export const previousNextNews = async (req, res) => {
   }
 };
 
-/* export const shareNews = async (req, res) => {
-  try {
-    const news = await News.findOne({
-      slug: req.params.slug,
-
-      type: 1,
-    });
-
-    if (!news) {
-      return res.status(404).send("News not found");
-    }
-
-    res.render("share", {
-      title: news.title,
-
-      description: news.subtitle || news.metaDescription || "",
-
-      image: `https://api.bharat19express.com/uploads/images/${news.thumbnail}`,
-
-      url: `https://api.bharat19express.com/api/news/share/${news.slug}`,
-
-      frontendUrl: `https://bharat19express.com/news/${news.slug}`,
-    });
-  } catch (error) {
-    res.status(500).send(error.message);
-  }
-}; */
-
 export const shareNews = async (req, res) => {
   try {
     const news = await News.findOne({
@@ -1290,8 +1250,7 @@ export const shareNews = async (req, res) => {
       return res.status(404).send("News not found");
     }
 
-    const frontendUrl =
-      `https://www.bharat19express.com/news/${news.slug}`;
+    const frontendUrl = `https://www.bharat19express.com/news/${news.slug}`;
 
     const image = news.thumbnail
       ? `https://api.bharat19express.com/uploads/images/${news.thumbnail}`
@@ -1473,5 +1432,63 @@ Redirecting...
 `);
   } catch (error) {
     res.status(500).send(error.message);
+  }
+};
+
+export const searchNews = async (req, res) => {
+  try {
+    const q = req.query.q?.trim();
+
+    const lang = getLanguage(req);
+
+    if (!q) {
+      return res.status(200).json({
+        status: true,
+        total: 0,
+        data: [],
+      });
+    }
+
+    // Escape special regex characters in the search keyword
+    const escapedQuery = q.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+
+    const searchRegex = {
+      $regex: escapedQuery,
+      $options: "i",
+    };
+
+    const query = {
+      type: 1,
+      $or: [
+        { title: searchRegex },
+        { subtitle: searchRegex },
+        { [`translations.${lang}.title`]: searchRegex },
+        { [`translations.${lang}.subtitle`]: searchRegex },
+        { "translations.hi.title": searchRegex },
+        { "translations.hi.subtitle": searchRegex },
+      ],
+    };
+
+    const news = await News.find(query)
+      .populate("author", "name")
+      .populate("categories", "name slug")
+      .sort({ createdAt: -1 })
+      .limit(20);
+
+    const translatedNews = news.map((item) => applyTranslation(item, lang));
+
+    return res.status(200).json({
+      status: true,
+      total: translatedNews.length,
+      data: translatedNews,
+    });
+  } catch (error) {
+    console.error("Search news error:", error);
+
+    return res.status(500).json({
+      status: false,
+      message: "Failed to search news",
+      data: [],
+    });
   }
 };
