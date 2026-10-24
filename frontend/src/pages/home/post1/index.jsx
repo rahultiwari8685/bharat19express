@@ -160,22 +160,12 @@ function Post1() {
 
   return (
     <>
-     <div
-  className="archives post post1"
-  style={{
-    backgroundColor: "#ffffff",
-    color: "#111111",
-    width: "100%",
-    maxWidth: "100%",
-    overflowX: "hidden",
-  }}
->
-      <div style={{ backgroundColor: "#ffffff", color: "#111111" }}>
-  <BreadCrumb
-    className="shadow5 padding-top-10"
-    title={`${news.categories?.[0]?.name || t("latest")} / ${decodeHtmlEntities(news.title)}`}
-  />
-</div>
+      <div className="archives post post1">
+        <BreadCrumb
+          className="shadow5 padding-top-10"
+          // title={`${news.categories?.[0]?.name || "News"} / ${news.title}`}
+          title={`${news.categories?.[0]?.name || t("latest")} / ${decodeHtmlEntities(news.title)}`}
+        />
         <span className="space-10" />
         <div className="container">
           <div className="row">
@@ -191,13 +181,7 @@ function Post1() {
                 </div>
               </div>
 
-            <div
-  className="single_post_heading"
-  style={{
-    backgroundColor: "#ffffff",
-    color: "#111111",
-  }}
->
+              <div className="single_post_heading">
                 <h1>{decodeHtmlEntities(news.title)}</h1>
                 <div className="space-10" />
                 {/* <p>{news.subtitle}</p> */}
@@ -205,13 +189,7 @@ function Post1() {
 
               <div className="row">
                 <div className="col-lg-4 align-self-center">
-              <div
-  className="author"
-  style={{
-    backgroundColor: "#ffffff",
-    color: "#111111",
-  }}
->
+                  <div className="author">
                     <div className="author_img">
                       <div className="author_img_wrap">
                         <img
@@ -515,58 +493,10 @@ function Post1() {
     padding-left:25px;
 }
 
-/* Article page background and mobile layout */
-.archives.post.post1 {
-  width: 100%;
-  max-width: 100%;
-  background: #ffffff !important;
-  color: #111111;
-  box-sizing: border-box;
-}
-
-.archives.post.post1 .container {
-  width: 100%;
-  max-width: 1200px;
-  box-sizing: border-box;
-}
-
-.archives.post.post1 .single_post_heading,
-.archives.post.post1 .author,
-.archives.post.post1 .article-content {
-  background-color: #ffffff;
-  color: #111111;
-}
-
-.archives.post.post1 .single_post_heading h1 {
-  color: #111111;
-}
-
-@media (max-width: 767px) {
-  .archives.post.post1 {
-    overflow-x: hidden;
-  }
-
-  .archives.post.post1 .container {
-    width: 100%;
-    max-width: 100%;
-    padding-left: 15px;
-    padding-right: 15px;
-  }
-
-  .archives.post.post1 img {
-    max-width: 100%;
-    height: auto;
-  }
-}
-
 .article-content li{
     margin-bottom:10px;
 }
-`}
-
-
-
-</style>
+`}</style>
     </>
   );
 }
