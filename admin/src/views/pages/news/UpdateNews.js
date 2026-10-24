@@ -75,6 +75,7 @@ const UpdateNews = () => {
       youtubeUrl: '',
       videoFile: null,
       thumbnail: null,
+        thumbnailCaption: '',
     },
   })
 
@@ -239,6 +240,7 @@ const UpdateNews = () => {
         videoFile: null,
 
         thumbnail: null,
+         thumbnailCaption: selected.thumbnailCaption || '',
       })
 
       /*
@@ -359,6 +361,7 @@ const UpdateNews = () => {
        */
 
       formData.append('categories', JSON.stringify(data.categories || []))
+      formData.append('thumbnailCaption', data.thumbnailCaption || '')
 
       /*
        * Hindi content
@@ -719,6 +722,13 @@ const UpdateNews = () => {
                       accept="image/*"
                       {...register('thumbnail')}
                     />
+                    <CFormInput
+  type="text"
+  label="Thumbnail Caption"
+  placeholder="Enter image caption"
+  className="mt-3"
+  {...register('thumbnailCaption')}
+/>
 
                     {/* New thumbnail */}
 
