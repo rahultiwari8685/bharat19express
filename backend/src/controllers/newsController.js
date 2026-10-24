@@ -455,6 +455,31 @@ export const getAllDraftNews = async (req, res) => {
   }
 };
 
+export const getScheduleNews = async (req, res) => {
+  try {
+    const news = await News.find({
+      type: 3,
+    })
+      .populate("author", "name email")
+      .populate("categories", "name slug")
+      .sort({ scheduledAt: 1, createdAt: -1 });
+
+    return res.status(200).json({
+      status: true,
+      total: news.length,
+      data: news,
+    });
+  } catch (error) {
+    console.error("Get Scheduled News Error:", error);
+
+    return res.status(500).json({
+      status: false,
+      message: error.message,
+      data: [],
+    });
+  }
+};
+
 export const getAllNewsByCategory = async (req, res) => {
   try {
     const { categoryId } = req.params;

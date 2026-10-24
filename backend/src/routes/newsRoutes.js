@@ -23,6 +23,7 @@ import {
   getLiveStatus,
   getAllDraftNews,
   searchNews,
+  getScheduleNews,
 } from "../controllers/newsController.js";
 
 const router = express.Router();
@@ -33,6 +34,7 @@ router.post("/updateNews", upload.single("thumbnail"), updateNews);
 
 router.get("/getAllNews", getNews);
 router.get("/getAllDraftNews", getAllDraftNews);
+router.get("/getScheduleNews", getScheduleNews);
 // router.get("/news/category/:categoryId", getAllNewsByCategory);
 router.get("/category/:categoryId", getAllNewsByCategory);
 // router.get("/:slug", getNewsBySlug);
