@@ -64,7 +64,7 @@ function HomeTwo() {
         const ads = result.data
           .filter(
             (item) =>
-              item.status === true && item.position === "homepage_middle",
+              item.status === true && item.position === "homepage_bottom",
           )
           .sort((a, b) => (a.priority || 0) - (b.priority || 0));
 
