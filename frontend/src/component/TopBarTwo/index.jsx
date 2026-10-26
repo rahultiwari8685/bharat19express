@@ -5,6 +5,39 @@ import FontAwesome from "../uiStyle/FontAwesome";
 import Slider from "../Slider";
 import { NavLink } from "react-router-dom";
 import { FaXTwitter } from "react-icons/fa6";
+
+const topBarResponsiveStyles = `
+  @media (max-width: 767px) {
+    .topbar-inner {
+      flex-direction: column !important;
+      align-items: stretch !important;
+      gap: 8px !important;
+      padding-top: 8px;
+      padding-bottom: 8px;
+    }
+
+    .topbar-left {
+      width: 100%;
+      justify-content: center;
+      flex-wrap: wrap;
+      font-size: 11px;
+    }
+
+    .topbar-right {
+      width: 100%;
+      margin-left: 0 !important;
+      justify-content: center !important;
+      flex-wrap: wrap;
+      gap: 10px !important;
+    }
+
+    .topbar-right a,
+    .topbar-right button,
+    .topbar-right select {
+      font-size: 12px !important;
+    }
+  }
+`;
 const TopBarTwo = () => {
   const API = "https://api.bharat19express.com";
 
@@ -169,7 +202,7 @@ const getAqiLabel = (value) => {
           boxSizing: "border-box",
         }}
       >
-        <div
+        {/* <div
           style={{
             minHeight: "42px",
             display: "flex",
@@ -180,16 +213,31 @@ const getAqiLabel = (value) => {
             width: "100%",
             boxSizing: "border-box",
           }}
-        >
+        > */}
+
+        <div
+  className="topbar-inner"
+  style={{
+    minHeight: "42px",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+    gap: "8px",
+    flexWrap: "wrap",
+    width: "100%",
+    boxSizing: "border-box",
+  }}
+>
           {/* LEFT: Date, weather and AQI */}
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "8px",
-              flexWrap: "wrap",
-            }}
-          >
+       <div
+  className="topbar-left"
+  style={{
+    display: "flex",
+    alignItems: "center",
+    gap: "8px",
+    flexWrap: "wrap",
+  }}
+>
             <div
               style={{ position: "relative", display: "inline-block" }}
               onMouseEnter={() => setShowCalendar(true)}
@@ -377,16 +425,17 @@ const getAqiLabel = (value) => {
           </div>
 
           {/* RIGHT: Preserve previous header actions */}
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "flex-end",
-              gap: "12px",
-              flexWrap: "nowrap",
-              marginLeft: "auto",
-            }}
-          >
+       <div
+  className="topbar-right"
+  style={{
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "flex-end",
+    gap: "12px",
+    flexWrap: "wrap",
+    marginLeft: "auto",
+  }}
+>
             <NavLink
               to="/epaper"
               style={{
