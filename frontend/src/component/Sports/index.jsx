@@ -434,7 +434,7 @@ const Sports = () => {
         );
       })}
 
-      <div className="space-20" />
+      {/* <div className="space-20" /> */}
 
       {/* SHOW MORE */}
       <Link to="/category/sports" className="showmore">
