@@ -337,7 +337,7 @@ const Sports = () => {
             <Link to={featuredUrl}>{featured.title}</Link>
           </h4>
 
-          <div className="space-20" />
+          <div className="space20" />
 
           {/* DESCRIPTION */}
           <p className="post-p">
