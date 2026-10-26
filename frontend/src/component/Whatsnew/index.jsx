@@ -24,7 +24,7 @@ const Whatsnew = ({ className, title }) => {
       const language = i18n.resolvedLanguage || "en";
 
       const res = await fetch(
-        `${API}/api/news/getAllNews?limit=14&lang=${language}`,
+        `${API}/api/news/getAllNews?limit=10&lang=${language}`,
       );
 
       const data = await res.json();
