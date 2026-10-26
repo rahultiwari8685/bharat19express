@@ -205,7 +205,7 @@ const FooterAreaTwo = () => {
 
               {/* DESCRIPTION */}
               <p>
-                <span>{settings?.siteName || "Bharat 19 Express"}</span>{" "}
+                {/* <span>{settings?.siteName || "Bharat 19 Express"}</span>{" "} */}
                 {t(
                   "footerDescription",
                   "एक भरोसेमंद हिंदी न्यूज़ प्लेटफॉर्म है, हमारा उद्देश्य महत्वपूर्ण खबरों को सरल, स्पष्ट और तेज़ तरीके से आप तक पहुँचाना है।",

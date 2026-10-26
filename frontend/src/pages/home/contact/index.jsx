@@ -103,8 +103,7 @@ class Contact extends Component {
                     </div>
                     <p>LOCATION:</p>
                     <h6>
-                      Shop No. 8, Rail Nagar, Sector J, Ashiyana,
-                      Lucknow(UP)-226012
+                      08, LDA Marketing Complex, Rail Nagar, Sector-J, Ashiyana, Lucknow–226012, Uttar Pradesh
                     </h6>
                   </div>
                 </div>
