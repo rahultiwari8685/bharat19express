@@ -185,7 +185,7 @@ const WidgetFinance = () => {
             (a, b) =>
               new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
           )
-          .slice(0, 4);
+          .slice(0, 5);
 
         setWorldNews(news);
       } else {
