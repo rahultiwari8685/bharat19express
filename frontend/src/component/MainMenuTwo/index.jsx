@@ -4,6 +4,66 @@ import { NavLink } from "react-router-dom";
 import SidebarMenu from "../SidebarMenu";
 import { useTranslation } from "react-i18next";
 
+
+const mainMenuResponsiveCSS = `
+  @media (max-width: 767px) {
+    .main-menu > .main-nav {
+      width: 100%;
+    }
+
+    .main-menu .main-nav > .row {
+      display: flex;
+      align-items: center;
+      margin: 0;
+    }
+
+    .main-menu .main-nav nav.navbar {
+      width: 75%;
+      flex: 0 0 75%;
+      max-width: 75%;
+      padding: 8px 10px !important;
+    }
+
+    .main-menu .site-nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      width: 100%;
+    }
+
+    .main-menu .navbar-toggler {
+      display: inline-flex !important;
+      align-items: center;
+      justify-content: center;
+      width: 46px;
+      height: 42px;
+      padding: 8px;
+      margin: 0;
+    }
+
+    .main-menu .main-nav > .row > .col-lg-1 {
+      width: 25%;
+      flex: 0 0 25%;
+      max-width: 25%;
+      padding: 0 10px;
+    }
+
+    .main-menu .date3 {
+      justify-content: center !important;
+      gap: 0 !important;
+    }
+
+    .main-menu .date3 a {
+      width: 42px !important;
+      height: 42px !important;
+    }
+
+    .main-menu .navbar-responsive-collapse {
+      display: none !important;
+    }
+  }
+`;
+
 const MainMenuTwo = () => {
   const API = "https://api.bharat19express.com";
 
@@ -50,7 +110,10 @@ const MainMenuTwo = () => {
   const visibleMenus = parentMenus.slice(0, 8);
   const moreMenus = parentMenus.slice(10);
 
-  return (
+return (
+  <>
+    <style>{mainMenuResponsiveCSS}</style>
+
     <div className="container">
       <div className="main-menu">
         <div className="main-nav clearfix is-ts-sticky">
@@ -256,6 +319,7 @@ const MainMenuTwo = () => {
         </div>
       </div>
     </div>
+  </>
   );
 };
 

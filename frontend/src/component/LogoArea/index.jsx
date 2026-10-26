@@ -2,6 +2,62 @@ import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 
+
+const logoAreaResponsiveCSS = `
+  .logo_area .logo img {
+    max-width: 100%;
+    height: auto;
+    object-fit: contain;
+  }
+
+  .logo_area .banner1 img {
+    max-width: 100%;
+    height: auto;
+    object-fit: contain;
+  }
+
+  @media (max-width: 767px) {
+    .logo_area {
+      padding: 15px 0 !important;
+    }
+
+    .logo_area .container > .row {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .logo_area .col-lg-4,
+    .logo_area .col-lg-8 {
+      width: 100%;
+      max-width: 100%;
+      text-align: center;
+    }
+
+    .logo_area .logo {
+      text-align: center;
+      margin: 0 auto;
+    }
+
+    .logo_area .logo img {
+      width: 220px !important;
+      max-width: 90%;
+      height: 100px !important;
+    }
+
+    .logo_area .banner1 {
+      margin-top: 10px;
+      text-align: center;
+    }
+
+    .logo_area .banner1 img {
+      width: 100% !important;
+      max-width: 100%;
+      height: auto !important;
+    }
+  }
+`;
+
 const LogoArea = ({ className, dark }) => {
   const [banner, setBanner] = useState(null);
   const [siteSetting, setSiteSetting] = useState(null);
@@ -50,6 +106,9 @@ const LogoArea = ({ className, dark }) => {
   };
 
   return (
+  <>
+    <style>{logoAreaResponsiveCSS}</style>
+
     <div className={`logo_area ${className || ""}`}>
       <div className="container">
         <div className="row">
@@ -97,6 +156,7 @@ const LogoArea = ({ className, dark }) => {
         </div>
       </div>
     </div>
+  </>
   );
 };
 
