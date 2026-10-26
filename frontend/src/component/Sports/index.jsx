@@ -242,7 +242,7 @@ const Sports = () => {
             (a, b) =>
               new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
           )
-          .slice(0, 6);
+          .slice(0, 7);
 
         setSports(news);
       } else {
@@ -337,7 +337,7 @@ const Sports = () => {
             <Link to={featuredUrl}>{featured.title}</Link>
           </h4>
 
-          <div className="space20" />
+          <div className="space-10" />
 
           {/* DESCRIPTION */}
           <p className="post-p">
