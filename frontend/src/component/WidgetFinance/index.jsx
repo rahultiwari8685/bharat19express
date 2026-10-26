@@ -260,7 +260,7 @@ const WidgetFinance = () => {
                 </Link>
               </h4>
 
-              <div className="space-10" />
+              {/* <div className="space-10" /> */}
 
               {/* DESCRIPTION */}
               <p className="post-p">
@@ -300,9 +300,9 @@ const WidgetFinance = () => {
       })}
 
       {/* LANGUAGE-WISE SHOW MORE */}
-      <Link to="/category/world" className="showmore">
+      {/* <Link to="/category/world" className="showmore">
         {t("showMore", "Show more")}
-      </Link>
+      </Link> */}
     </div>
   );
 };
