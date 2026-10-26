@@ -7,37 +7,76 @@ import { NavLink } from "react-router-dom";
 import { FaXTwitter } from "react-icons/fa6";
 
 const topBarResponsiveStyles = `
+  /* Keep top bar visible on all screen sizes */
+  .topbar {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
+
   @media (max-width: 767px) {
+    .topbar {
+      display: block !important;
+      visibility: visible !important;
+      opacity: 1 !important;
+      position: relative !important;
+      height: auto !important;
+      min-height: 45px !important;
+      max-height: none !important;
+      overflow: visible !important;
+    }
+
+    .topbar > .container {
+      display: block !important;
+      width: 100% !important;
+      max-width: 100% !important;
+      padding: 0 10px !important;
+      overflow: visible !important;
+    }
+
     .topbar-inner {
+      display: flex !important;
       flex-direction: column !important;
       align-items: stretch !important;
+      justify-content: center !important;
       gap: 8px !important;
-      padding-top: 8px;
-      padding-bottom: 8px;
+      width: 100% !important;
+      min-height: 45px !important;
+      padding: 8px 0 !important;
+      box-sizing: border-box !important;
     }
 
     .topbar-left {
-      width: 100%;
-      justify-content: center;
-      flex-wrap: wrap;
-      font-size: 11px;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      flex-wrap: wrap !important;
+      width: 100% !important;
+      gap: 6px !important;
+      font-size: 11px !important;
+      line-height: 1.5 !important;
     }
 
     .topbar-right {
-      width: 100%;
-      margin-left: 0 !important;
+      display: flex !important;
+      align-items: center !important;
       justify-content: center !important;
-      flex-wrap: wrap;
-      gap: 10px !important;
+      flex-wrap: wrap !important;
+      width: 100% !important;
+      margin-left: 0 !important;
+      gap: 8px !important;
     }
 
     .topbar-right a,
     .topbar-right button,
     .topbar-right select {
-      font-size: 12px !important;
+      font-size: 11px !important;
     }
   }
 `;
+
+
+
 const TopBarTwo = () => {
   const API = "https://api.bharat19express.com";
 
@@ -178,7 +217,10 @@ const getAqiLabel = (value) => {
     }
   };
 
-  return (
+ return (
+  <>
+    <style>{topBarResponsiveStyles}</style>
+
     <div
       className="topbar"
       id="top"
@@ -654,7 +696,8 @@ border: "1px solid #dddddd",
           </div>
         </div>
       </div>
-    </div>
+ </div>
+  </>
   );
 };
 
