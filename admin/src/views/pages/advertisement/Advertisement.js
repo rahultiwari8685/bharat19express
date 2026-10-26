@@ -56,12 +56,12 @@ const Advertisement = () => {
 
   const imageDimensions = {
     homepage_top: { width: 640, height: 85 },
-    homepage_middle: { width: 670, height: 85 },
-    homepage_bottom: { width: 1200, height: 300 },
+    homepage_middle: { width: 1200, height: 300 },
+    homepage_bottom: { width: 670, height: 85 },
 
     article_top: { width: 900, height: 250 },
     article_middle: { width: 900, height: 250 },
-    article_bottom: { width: 690, height: 100 },
+    article_bottom: { width: 1200, height: 300 },
 
     sidebar: { width: 390, height: 312 },
 
