@@ -313,6 +313,7 @@ const MostViewThree = () => {
 
                   {/* DESCRIPTION */}
                   <p className="post-p">{getDescription(item)}</p>
+                     <div className="space-10" />
 
                   {/* AUTHOR / DATE */}
                   <div className="view_author_details">
