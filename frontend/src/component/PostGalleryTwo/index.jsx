@@ -9,6 +9,23 @@ import big_img from "../../assets/img/gallery-post-2.jpg";
 import col26 from "../../assets/img/post-news-thumb-1.png";
 import col21 from "../../assets/img/post-news/1.jpg";
 
+const equalNewsHeightCSS = `
+  @media (min-width: 992px) {
+    .national-news-card,
+    .uttar-pradesh-card {
+      height: 100% !important;
+      min-height: 100% !important;
+      box-sizing: border-box;
+    }
+
+    .national-news-card,
+    .uttar-pradesh-card {
+      display: flex;
+      flex-direction: column;
+    }
+  }
+`;
+
 const PostGalleryTwo = () => {
   const navigate = useNavigate();
 
@@ -377,6 +394,7 @@ const PostGalleryTwo = () => {
 
   return (
     <>
+     <style>{equalNewsHeightCSS}</style>
       <ModalVideo
         channel="youtube"
         youtube={{ autoplay: 1 }}
@@ -387,7 +405,7 @@ const PostGalleryTwo = () => {
 
       <div className="post_gallary_area theme3_bg mb10 padding-top-10">
         <div className="container">
-          <div className="row">
+        <div className="row align-items-stretch">
             <div className="col-lg-8 col-xl-6">
               <div className="single_post post_type6 border-radious7 xs-mb30">
                 <div className="post_img gradient1">
