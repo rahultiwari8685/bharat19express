@@ -92,29 +92,36 @@ const FooterCopyright = () => {
       <div className="container">
         <div className="row">
         
-<div className="col-lg-6 align-self-center">
-  <p style={{ color: "#ffffff", margin: 0 }}>
-    &copy; {new Date().getFullYear()}{" "}
-    {t("copyright", "Copyright")},{" "}
-    {t("allRightsReserved", "All Rights Reserved")}
-  </p>
 
-  <p style={{ color: "#ffffff", margin: "5px 0 0" }}>
-    {t("developedBy", "Developed By")}:{" "}
-    <a
-      href="https://techaiindia.com/"
-      target="_blank"
-      rel="noopener noreferrer"
-      style={{
-        color: "#ffffff",
-        textDecoration: "none",
-        fontWeight: 600,
-      }}
-    >
-      TechAiIndia
-    </a>
-  </p>
+<div className="col-lg-6 align-self-center">
+  <div
+    className="d-flex align-items-center flex-wrap"
+    style={{ gap: "25px" }}
+  >
+    <p style={{ color: "#ffffff", margin: 0 }}>
+      &copy; {new Date().getFullYear()}{" "}
+      {t("copyright", "Copyright")},{" "}
+      {t("allRightsReserved", "All Rights Reserved")}
+    </p>
+
+    <p style={{ color: "#ffffff", margin: 0 }}>
+      {t("developedBy", "Developed By")}:{" "}
+      <a
+        href="https://techaiindia.com/"
+        target="_blank"
+        rel="noopener noreferrer"
+        style={{
+          color: "#ffffff",
+          textDecoration: "none",
+          fontWeight: 600,
+        }}
+      >
+        TechAiIndia
+      </a>
+    </p>
+  </div>
 </div>
+
 
 
           <div className="col-lg-6 align-self-center">
