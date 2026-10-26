@@ -360,7 +360,7 @@ const Sports = () => {
           </p>
 
           {/* META */}
-          <ul className="mt20 like_cm">
+          {/* <ul className="mt20 like_cm">
             <li>
               <Link to={featuredUrl}>
                 <FontAwesome name="eye" /> {featured.views || 0}
@@ -372,7 +372,7 @@ const Sports = () => {
                 <FontAwesome name="heart" /> {featured.likes || 0}
               </Link>
             </li>
-          </ul>
+          </ul> */}
         </div>
       </div>
 
