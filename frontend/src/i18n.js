@@ -118,6 +118,7 @@ videosNews: "Video News",
       channelMain: "Bharat 19 Express",
       copyright: "Copyright",
       allRightsReserved: "All Rights Reserved",
+      developedBy: "Developed By",
     },
   },
 
@@ -232,6 +233,7 @@ videosNews: "वीडियो समाचार",
       channelMain: "भारत 19 एक्सप्रेस",
       copyright: "कॉपीराइट",
       allRightsReserved: "सर्वाधिकार सुरक्षित",
+      developedBy: "विकसितकर्ता",
     },
   },
 
@@ -285,6 +287,7 @@ videosNews: "वीडियो समाचार",
       mostView: "سب سے زیادہ دیکھی گئی خبریں",
       copyright: "کاپی رائٹ",
       allRightsReserved: "جملہ حقوق محفوظ ہیں",
+      developedBy: "تیار کردہ",
       seeMore: "مزید دیکھیں",
       lucknow: "لکھنؤ",
       weather: {
@@ -418,7 +421,7 @@ videosNews: "वीडियो समाचार",
       lucknow: "লখনউ",
       good: "ভালো",
       videosNews: "ভিডিও সংবাদ",
-
+developedBy: "নির্মাতা",
       about: {
         title: "ভারত ১৯ এক্সপ্রেস সম্পর্কে",
         heading: "ভারত ১৯ এক্সপ্রেস",
@@ -507,7 +510,7 @@ videosNews: "वीडियो समाचार",
       lucknow: "लखनऊ",
       good: "चांगले",
       nationalNews: "राष्ट्रीय बातम्या",
-
+developedBy: "विकसित केले",
 
       weather: {
   loading: "हवामान लोड होत आहे",
