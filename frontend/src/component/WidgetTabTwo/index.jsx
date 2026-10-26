@@ -465,9 +465,6 @@ const getYoutubeId = (url) => {
   return match && match[1].length === 11 ? match[1] : "";
 };
 
-/* =========================================================
-   TAB CONTENT
-========================================================= */
 
 const WidgetTabPane = ({ arr, a_id, id, dark }) => {
   const { i18n, t } = useTranslation();
@@ -727,9 +724,7 @@ const WidgetTabTwo = ({ categoryId, className, dark }) => {
         className ? className : ""
       }`}
     >
-      {/* =====================================================
-          TABS
-      ===================================================== */}
+    
 
       <Nav tabs className="white_bg">
         {/* RELATED */}
@@ -781,9 +776,7 @@ const WidgetTabTwo = ({ categoryId, className, dark }) => {
         </NavItem>
       </Nav>
 
-      {/* =====================================================
-          TAB CONTENT
-      ===================================================== */}
+    
 
       <TabContent activeTab={activeTab} className="padding15 white_bg">
         {/* RELATED */}
