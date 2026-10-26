@@ -833,7 +833,7 @@ const PostGalleryTwo = () => {
 
             <div className="d-none d-lg-block col-lg-4 col-xl-3">
               <div
-                className="white_bg padding15 border-radious5 sm-mt10"
+                className="white_bg padding14 border-radious5 sm-mt10"
                 style={{
                   border: "1px solid #e5e5e5",
                 }}
