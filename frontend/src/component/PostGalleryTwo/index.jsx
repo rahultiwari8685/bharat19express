@@ -596,9 +596,8 @@ const PostGalleryTwo = () => {
                                             : ""}
                                         </span>
                                       </div>
-
                                       {/* TITLE */}
-                                      <h2
+                                      {/* <h2
                                         style={{
                                           margin: "0 0 8px 0",
                                           padding: 0,
@@ -610,14 +609,35 @@ const PostGalleryTwo = () => {
                                           textShadow:
                                             "0 2px 5px rgba(0,0,0,0.5)",
                                           display: "-webkit-box",
-                                          // WebkitLineClamp: 3,
+                                          WebkitLineClamp: 3,
                                           WebkitBoxOrient: "vertical",
                                           overflow: "hidden",
                                         }}
                                       >
                                         {item.title || "Latest News"}
+                                      </h2> */}
+                                      ```jsx
+                                      <h2
+                                        style={{
+                                          margin: "0 0 8px 0",
+                                          padding: "4px 0 2px",
+                                          color: "#fff",
+                                          fontSize: "clamp(20px, 2.2vw, 28px)",
+                                          lineHeight: "1.3",
+                                          fontWeight: "800",
+                                          letterSpacing: "0",
+                                          textShadow:
+                                            "0 2px 5px rgba(0,0,0,0.5)",
+                                          display: "-webkit-box",
+                                          WebkitLineClamp: 3,
+                                          WebkitBoxOrient: "vertical",
+                                          lineClamp: 3,
+                                          overflow: "hidden",
+                                        }}
+                                      >
+                                        {item.title || "Latest News"}
                                       </h2>
-
+                                      ```
                                       {/* SHORT DESCRIPTION */}
                                       {item.description && (
                                         <p
