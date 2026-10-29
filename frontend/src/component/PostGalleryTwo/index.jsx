@@ -616,7 +616,7 @@ const PostGalleryTwo = () => {
                                       >
                                         {item.title || "Latest News"}
                                       </h2> */}
-                                      ```jsx
+
                                       <h2
                                         style={{
                                           margin: "0 0 8px 0",
@@ -637,7 +637,7 @@ const PostGalleryTwo = () => {
                                       >
                                         {item.title || "Latest News"}
                                       </h2>
-                                      ```
+
                                       {/* SHORT DESCRIPTION */}
                                       {item.description && (
                                         <p
