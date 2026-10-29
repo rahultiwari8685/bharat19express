@@ -9,8 +9,6 @@ import big_img from "../../assets/img/gallery-post-2.jpg";
 import col26 from "../../assets/img/post-news-thumb-1.png";
 import col21 from "../../assets/img/post-news/1.jpg";
 
-
-
 const PostGalleryTwo = () => {
   const navigate = useNavigate();
 
@@ -612,7 +610,7 @@ const PostGalleryTwo = () => {
                                           textShadow:
                                             "0 2px 5px rgba(0,0,0,0.5)",
                                           display: "-webkit-box",
-                                          WebkitLineClamp: 3,
+                                          // WebkitLineClamp: 3,
                                           WebkitBoxOrient: "vertical",
                                           overflow: "hidden",
                                         }}
@@ -732,8 +730,6 @@ const PostGalleryTwo = () => {
                         )}
                       </div>
                     )}
-
-                  
                   </div>
                 </div>
 
@@ -742,8 +738,6 @@ const PostGalleryTwo = () => {
                     {/* <h4>
                       <span>🔴 {youtubeLiveTitle || "Live News"}</span>
                     </h4> */}
-
-                 
                   </div>
                 )}
               </div>
@@ -1048,7 +1042,6 @@ const PostGalleryTwo = () => {
                                   />
                                 </Link>
                               </div>
-
 
                               <div>
                                 <p
