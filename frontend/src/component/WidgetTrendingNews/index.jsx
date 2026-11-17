@@ -257,7 +257,7 @@ const WidgetTrendingNews = ({ dark }) => {
     day: "2-digit",
     month: "2-digit",
     year: "numeric",
-  })}
+  }).replaceAll("/", "")}
 </Link>
           </div>
 
@@ -316,9 +316,13 @@ const WidgetTrendingNews = ({ dark }) => {
                   {item.categories?.[0]?.name}
                 </Link>
 
-                <Link to="#">
-                  {new Date(item.createdAt).toLocaleDateString()}
-                </Link>
+               <Link to="#">
+  {new Date(item.createdAt).toLocaleDateString("en-GB", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+  })}
+</Link>
               </div>
 
               <h4>
