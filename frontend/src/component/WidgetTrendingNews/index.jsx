@@ -252,8 +252,8 @@ const WidgetTrendingNews = ({ dark }) => {
               {firstNews.categories?.[0]?.name}
             </Link>
 
-    <Link to="#">
-  {new Date(firstNews.createdAt).toLocaleDateString("en-GB", {
+<Link to="#">
+  {new Date(item.createdAt).toLocaleDateString("en-GB", {
     day: "2-digit",
     month: "2-digit",
     year: "numeric",
