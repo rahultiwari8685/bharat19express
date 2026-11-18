@@ -57,36 +57,36 @@ function Post1() {
 
   const [canEditNews, setCanEditNews] = useState(false);
 
-  useEffect(() => {
-    const verifyEditor = async () => {
-      try {
-        // This token must be available to the public site.
-        // The admin's secureLocalStorage is not shared across domains.
-        const token = localStorage.getItem("adminToken");
+useEffect(() => {
+  const verifyEditor = async () => {
+    try {
+      // This token must be available to the public site.
+      // The admin's secureLocalStorage is not shared across domains.
+      const token = localStorage.getItem("adminToken");
 
-        if (!token) {
-          setCanEditNews(false);
-          return;
-        }
-
-        const response = await fetch(
-          "https://api.bharat19express.com/api/auth/verify-editor",
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-
-        const result = await response.json();
-        setCanEditNews(response.ok && result.authenticated === true);
-      } catch (error) {
+      if (!token) {
         setCanEditNews(false);
+        return;
       }
-    };
 
-    verifyEditor();
-  }, []);
+      const response = await fetch(
+        "https://api.bharat19express.com/api/auth/verify-editor",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      const result = await response.json();
+      setCanEditNews(response.ok && result.authenticated === true);
+    } catch (error) {
+      setCanEditNews(false);
+    }
+  };
+
+  verifyEditor();
+}, []);
 
   useEffect(() => {
     const loadNews = async () => {
@@ -149,13 +149,13 @@ function Post1() {
   }
 
 
-  const shareUrl = `https://api.bharat19express.com/api/news/share/${news?.slug || ""}`;
+    const shareUrl = `https://api.bharat19express.com/api/news/share/${news?.slug || ""}`;
 
-  const shareTitle = decodeHtmlEntities(news?.title || "");
+    const shareTitle = decodeHtmlEntities(news?.title || "");
 
-  const shareImage = news?.thumbnail
-    ? `${API}/uploads/images/${news.thumbnail}`
-    : "https://bharat19express.com/default-news-image.jpg";
+    const shareImage = news?.thumbnail
+      ? `${API}/uploads/images/${news.thumbnail}`
+      : "https://bharat19express.com/default-news-image.jpg";
 
   const cleanContent = news?.content
     ?.replace(/style="[^"]*"/g, "")
@@ -202,197 +202,206 @@ function Post1() {
         />
         <span className="space-10" />
         <div className="container">
+       
+<div className="row">
+  <div className="col-md-6 col-lg-8">
+    <div className="row">
+      <div className="col-11">
+        <div className="page_category">
+          <div className="share-section mt-1" />
+        </div>
+      </div>
+    </div>
 
-          <div className="row">
-            <div className="col-md-6 col-lg-8">
-              <div className="row">
-                <div className="col-11">
-                  <div className="page_category">
-                    <div className="share-section mt-1" />
-                  </div>
-                </div>
-              </div>
+    <div className="single_post_heading">
+      <h1>{decodeHtmlEntities(news.title)}</h1>
+      <div className="space-10" />
+    </div>
 
-              <div className="single_post_heading">
-                <h1>{decodeHtmlEntities(news.title)}</h1>
-                <div className="space-10" />
-              </div>
-
-              {/* Author profile + social icons in the same row */}
-              <div className="author-social-row">
-                <div className="author-social-profile">
-                  <div className="author">
-                    <div className="author_img">
-                      <div className="author_img_wrap">
-                        <img
-                          src={
-                            news.author?.profileImage
-                              ? `${API}/uploads/images/${news.author.profileImage}`
-                              : author2
-                          }
-                          alt={news.author?.name || "Author"}
-                        />
-                      </div>
-                    </div>
-
-                    <Link to="#" className="author-name-link">
-                      <span>{news.author?.name || "Admin"}</span>
-
-                      {news.author?.isVerified === true && (
-                        <svg
-                          className="verified-author-badge"
-                          viewBox="0 0 24 24"
-                          width="19"
-                          height="19"
-                          aria-label="Verified author"
-                          role="img"
-                          title="Verified author"
-                        >
-                          <path
-                            fill="currentColor"
-                            d="M12 1.5 14.8 3l3.2-.1 1.4 2.9 2.9 1.4-.1 3.2 1.5 2.8-1.5 2.8.1 3.2-2.9 1.4-1.4 2.9-3.2-.1-2.8 1.5-2.8-1.5-3.2.1-1.4-2.9-2.9-1.4.1-3.2L1.5 12l1.5-2.8-.1-3.2 2.9-1.4 1.4-2.9 3.2.1z"
-                          />
-                          <path
-                            d="m7.5 12.2 3 3 6-6"
-                            fill="none"
-                            stroke="#fff"
-                            strokeWidth="2.2"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          />
-                        </svg>
-                      )}
-                    </Link>
-                  </div>
-                </div>
-
-                <div className="author-social-icons">
-                  <FacebookShareButton
-                    url={shareUrl}
-                    quote={shareTitle}
-                    onClick={increaseShare}
-                    hashtag="#hindustantvlive"
-                    aria-label="Share on Facebook"
-                  >
-                    <FacebookIcon size={42} round />
-                  </FacebookShareButton>
-
-                  <TwitterShareButton
-                    url={shareUrl}
-                    title={shareTitle}
-                    onClick={increaseShare}
-                    aria-label="Share on X"
-                  >
-                    <TwitterIcon size={42} round />
-                  </TwitterShareButton>
-
-                  <WhatsappShareButton
-                    url={shareUrl}
-                    title={shareTitle}
-                    onClick={increaseShare}
-                    aria-label="Share on WhatsApp"
-                  >
-                    <WhatsappIcon size={42} round />
-                  </WhatsappShareButton>
-
-                  <TelegramShareButton
-                    url={shareUrl}
-                    title={shareTitle}
-                    onClick={increaseShare}
-                    aria-label="Share on Telegram"
-                  >
-                    <TelegramIcon size={42} round />
-                  </TelegramShareButton>
-                </div>
-              </div>
-
-              <div className="space-40" />
-
-
-
-              <div className="news-thumbnail">
-                <img
-                  src={
-                    news.thumbnail
-                      ? `${API}/uploads/images/${news.thumbnail}`
-                      : `https://img.youtube.com/vi/${getYoutubeId(
-                        news.youtubeUrl,
-                      )}/hqdefault.jpg`
-                  }
-                  alt={news.title}
-                />
-
-                {news.thumbnailCaption && (
-                  <p className="thumbnail-caption">
-                    {news.thumbnailCaption}
-                  </p>
-                )}
-              </div>
-
-              <div
-                className="article-content mt-4"
-                dangerouslySetInnerHTML={{
-                  __html: cleanContent,
-                }}
+    {/* Author profile + social icons in the same row */}
+    <div className="author-social-row">
+      <div className="author-social-profile">
+        <div className="author">
+          <div className="author_img">
+            <div className="author_img_wrap">
+              <img
+                src={
+                  news.author?.profileImage
+                    ? `${API}/uploads/images/${news.author.profileImage}`
+                    : author2
+                }
+                alt={news.author?.name || "Author"}
               />
-
-              {canEditNews && (
-                <div className="edit-news-wrapper">
-                  <a
-                    href={`https://admin.bharat19express.com/UpdateNews/${news._id}`}
-                    className="edit-news-button"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    ✏️ Edit News
-                  </a>
-                </div>
-              )}
-
-              <div className="tags">
-                <ul className="inline">
-                  <li className="tag_list">
-                    <FontAwesome name="tag" /> {t("categories")}
-                  </li>
-
-                  {news.categories?.map((cat) => (
-                    <li key={cat._id}>
-                      <Link to={`/category/${cat._id}`}>{cat.name}</Link>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-              <div className="space-40" />
-              <div className="border_black" />
-              <div className="space-40" />
-
-              <PostOnePagination newsId={news._id} />
-            </div>
-
-            <div className="col-md-6 col-lg-4">
-              <WidgetTab categoryId={news.categories?.[0]?._id} />
-
-              <FollowUs title="Follow Us" />
-              <WidgetTrendingNews />
-
-              <div className="banner2 mb30">
-                {banners.sidebar && (
-                  <a
-                    href={banners.sidebar.redirectUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <img
-                      src={`https://api.bharat19express.com/uploads/advertisements/${banners.sidebar.image}`}
-                      alt={banners.sidebar.title}
-                      className="img-fluid"
-                    />
-                  </a>
-                )}
-              </div>
             </div>
           </div>
+
+          <Link to="#" className="author-name-link">
+            <span>{news.author?.name || "Admin"}</span>
+
+            {news.author?.isVerified === true && (
+              <svg
+                className="verified-author-badge"
+                viewBox="0 0 24 24"
+                width="19"
+                height="19"
+                aria-label="Verified author"
+                role="img"
+                title="Verified author"
+              >
+                <path
+                  fill="currentColor"
+                  d="M12 1.5 14.8 3l3.2-.1 1.4 2.9 2.9 1.4-.1 3.2 1.5 2.8-1.5 2.8.1 3.2-2.9 1.4-1.4 2.9-3.2-.1-2.8 1.5-2.8-1.5-3.2.1-1.4-2.9-2.9-1.4.1-3.2L1.5 12l1.5-2.8-.1-3.2 2.9-1.4 1.4-2.9 3.2.1z"
+                />
+                <path
+                  d="m7.5 12.2 3 3 6-6"
+                  fill="none"
+                  stroke="#fff"
+                  strokeWidth="2.2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            )}
+          </Link>
+        </div>
+      </div>
+
+      <div className="author-social-icons">
+        <FacebookShareButton
+          url={shareUrl}
+          quote={shareTitle}
+          onClick={increaseShare}
+          hashtag="#hindustantvlive"
+          aria-label="Share on Facebook"
+        >
+          <FacebookIcon size={42} round />
+        </FacebookShareButton>
+
+        <TwitterShareButton
+          url={shareUrl}
+          title={shareTitle}
+          onClick={increaseShare}
+          aria-label="Share on X"
+        >
+          <TwitterIcon size={42} round />
+        </TwitterShareButton>
+
+        <WhatsappShareButton
+          url={shareUrl}
+          title={shareTitle}
+          onClick={increaseShare}
+          aria-label="Share on WhatsApp"
+        >
+          <WhatsappIcon size={42} round />
+        </WhatsappShareButton>
+
+        <TelegramShareButton
+          url={shareUrl}
+          title={shareTitle}
+          onClick={increaseShare}
+          aria-label="Share on Telegram"
+        >
+          <TelegramIcon size={42} round />
+        </TelegramShareButton>
+      </div>
+    </div>
+
+    <div className="space-40" />
+
+    {/* <img
+      src={
+        news.thumbnail
+          ? `${API}/uploads/images/${news.thumbnail}`
+          : `https://img.youtube.com/vi/${getYoutubeId(
+              news.youtubeUrl,
+            )}/hqdefault.jpg`
+      }
+      alt={news.title}
+    /> */}
+
+    <div className="news-thumbnail">
+  <img
+    src={
+      news.thumbnail
+        ? `${API}/uploads/images/${news.thumbnail}`
+        : `https://img.youtube.com/vi/${getYoutubeId(
+            news.youtubeUrl,
+          )}/hqdefault.jpg`
+    }
+    alt={news.title}
+  />
+
+  {news.thumbnailCaption && (
+    <p className="thumbnail-caption">
+      {news.thumbnailCaption}
+    </p>
+  )}
+</div>
+
+    <div
+      className="article-content mt-4"
+      dangerouslySetInnerHTML={{
+        __html: cleanContent,
+      }}
+    />
+
+{canEditNews && (
+  <div className="edit-news-wrapper">
+    <a
+      href={`https://admin.bharat19express.com/UpdateNews/${news._id}`}
+      className="edit-news-button"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      ✏️ Edit News
+    </a>
+  </div>
+)}
+
+    <div className="tags">
+      <ul className="inline">
+        <li className="tag_list">
+          <FontAwesome name="tag" /> {t("categories")}
+        </li>
+
+        {news.categories?.map((cat) => (
+          <li key={cat._id}>
+            <Link to={`/category/${cat._id}`}>{cat.name}</Link>
+          </li>
+        ))}
+      </ul>
+    </div>
+
+    <div className="space-40" />
+    <div className="border_black" />
+    <div className="space-40" />
+
+    <PostOnePagination newsId={news._id} />
+  </div>
+
+  <div className="col-md-6 col-lg-4">
+    <WidgetTab categoryId={news.categories?.[0]?._id} />
+
+    <FollowUs title="Follow Us" />
+    <WidgetTrendingNews />
+
+    <div className="banner2 mb30">
+      {banners.sidebar && (
+        <a
+          href={banners.sidebar.redirectUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <img
+            src={`https://api.bharat19express.com/uploads/advertisements/${banners.sidebar.image}`}
+            alt={banners.sidebar.title}
+            className="img-fluid"
+          />
+        </a>
+      )}
+    </div>
+  </div>
+</div>
 
         </div>
       </div>

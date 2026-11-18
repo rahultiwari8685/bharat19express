@@ -394,6 +394,11 @@ export const getAllDraftNews = async (req, res) => {
       type: 2,
     };
 
+    /*
+      |--------------------------------------------------------------------------
+      | Author Filter
+      |--------------------------------------------------------------------------
+      */
 
     if (author) {
       if (!mongoose.Types.ObjectId.isValid(author)) {
@@ -412,6 +417,11 @@ export const getAllDraftNews = async (req, res) => {
 
     const skip = (pageNumber - 1) * limitNumber;
 
+    /*
+      |--------------------------------------------------------------------------
+      | Get Drafts
+      |--------------------------------------------------------------------------
+      */
 
     const news = await News.find(query)
       .populate("author", "name email profileImage")
@@ -480,6 +490,11 @@ export const getAllNewsByCategory = async (req, res) => {
 
     const lang = getLanguage(req);
 
+    /*
+      |--------------------------------------------------------------------------
+      | Validate Category
+      |--------------------------------------------------------------------------
+      */
 
     if (!mongoose.Types.ObjectId.isValid(categoryId)) {
       return res.status(400).json({
@@ -1463,6 +1478,7 @@ export const searchNews = async (req, res) => {
       });
     }
 
+    // Escape special regex characters in the search keyword
     const escapedQuery = q.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 
     const searchRegex = {
