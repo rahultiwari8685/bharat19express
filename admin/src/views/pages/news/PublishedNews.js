@@ -42,7 +42,11 @@ const PublishedNews = () => {
 
   const loginInfo = JSON.parse(secureLocalStorage.getItem('logininfo') || '{}')
 
-  const userRole = loginInfo.role || ''
+  const postPermission = String(
+    loginInfo?.user?.post_permission ??
+    loginInfo?.post_permission ??
+    ''
+  ).trim()
 
   console.log('User role from storage:', userRole)
 
@@ -326,15 +330,19 @@ const PublishedNews = () => {
 
                   <CTableDataCell>{news.views || 0}</CTableDataCell>
 
+
                   <CTableDataCell>
-                    <CButton
-                      size="sm"
-                      color="primary"
-                      className="rounded-pill px-3 shadow-sm fw-semibold"
-                      onClick={() => handleEdit(news)}
-                    >
-                      <CIcon icon={cilPencil} /> Edit
-                    </CButton>{' '}
+                    {postPermission !== '1' && (
+                      <CButton
+                        size="sm"
+                        color="primary"
+                        className="rounded-pill px-3 shadow-sm fw-semibold"
+                        onClick={() => handleEdit(news)}
+                      >
+                        <CIcon icon={cilPencil} /> Edit
+                      </CButton>
+                    )}
+
                     {String(userRole) !== '3' && (
                       <CButton
                         size="sm"

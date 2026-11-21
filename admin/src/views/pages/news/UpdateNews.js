@@ -53,6 +53,12 @@ const UpdateNews = () => {
 
   const [loginInfo, setLoginInfo] = useState(null)
 
+  const postPermission = String(
+  loginInfo?.user?.post_permission ??
+  loginInfo?.post_permission ??
+  ''
+).trim()
+
   const [thumbnailPreview, setThumbnailPreview] = useState(null)
 
   const {
@@ -576,7 +582,31 @@ const UpdateNews = () => {
               ==================================================== */}
 
               <CRow className="mb-3 mt-2">
-                <CCol md={6}>
+
+                {postPermission !== '1' && (
+  <CCol md={6}>
+    <CFormSelect
+      label="Type"
+      {...register('type')}
+      value={formDataValues.type}
+      onChange={(event) =>
+        setValue('type', event.target.value, {
+          shouldDirty: true,
+        })
+      }
+    >
+      <option value="">Select Type</option>
+      <option value="1">Published</option>
+      <option value="2">Draft</option>
+      <option value="3">Scheduled</option>
+    </CFormSelect>
+
+    {errors.type && (
+      <small className="text-danger">{errors.type.message}</small>
+    )}
+  </CCol>
+)}
+                {/* <CCol md={6}>
                   <CFormSelect
                     label="Type"
                     {...register('type')}
@@ -597,7 +627,7 @@ const UpdateNews = () => {
                   </CFormSelect>
 
                   {errors.type && <small className="text-danger">{errors.type.message}</small>}
-                </CCol>
+                </CCol> */}
 
                 <CCol md={6}>
                   <CFormSelect
