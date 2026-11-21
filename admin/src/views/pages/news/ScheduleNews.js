@@ -46,13 +46,13 @@ const ScheduleNews = () => {
 
   const loginInfo = getLoginInfo() || {}
 
-const userRole = String(loginInfo?.role || '').trim()
+  const userRole = String(loginInfo?.role || '').trim()
 
-const postPermission = String(
-  loginInfo?.user?.post_permission ??
-  loginInfo?.post_permission ??
-  ''
-).trim()
+  const postPermission = String(
+    loginInfo?.user?.post_permission ??
+    loginInfo?.post_permission ??
+    ''
+  ).trim()
 
   const fetchNews = async () => {
     try {
@@ -312,30 +312,30 @@ const postPermission = String(
 
                       <CTableDataCell>{formatScheduledDate(news.scheduledAt)}</CTableDataCell>
 
-                   
-<CTableDataCell>
-  {postPermission !== '1' && (
-    <CButton
-      size="sm"
-      color="primary"
-      className="rounded-pill px-3 shadow-sm fw-semibold"
-      onClick={() => handleEdit(news)}
-    >
-      <CIcon icon={cilPencil} /> Edit
-    </CButton>
-  )}
 
-  {userRole === '1' && (
-    <CButton
-      size="sm"
-      color="danger"
-      className="rounded-pill px-3 shadow-sm fw-semibold"
-      onClick={() => handleDelete(news._id)}
-    >
-      <CIcon icon={cilTrash} /> Delete
-    </CButton>
-  )}
-</CTableDataCell>
+                      <CTableDataCell>
+                        {postPermission !== '1' && (
+                          <CButton
+                            size="sm"
+                            color="primary"
+                            className="rounded-pill px-3 shadow-sm fw-semibold"
+                            onClick={() => handleEdit(news)}
+                          >
+                            <CIcon icon={cilPencil} /> Edit
+                          </CButton>
+                        )}
+
+                        {userRole === '1' && (
+                          <CButton
+                            size="sm"
+                            color="danger"
+                            className="rounded-pill px-3 shadow-sm fw-semibold"
+                            onClick={() => handleDelete(news._id)}
+                          >
+                            <CIcon icon={cilTrash} /> Delete
+                          </CButton>
+                        )}
+                      </CTableDataCell>
 
                     </CTableRow>
                   ))
