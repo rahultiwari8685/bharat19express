@@ -349,7 +349,7 @@ function Post1() {
                 </div>
               )}
 
-              <div className="tags">
+              {/* <div className="tags">
                 <ul className="inline">
                   <li className="tag_list">
                     <FontAwesome name="tag" /> {t("categories")}
@@ -361,13 +361,13 @@ function Post1() {
                     </li>
                   ))}
                 </ul>
-              </div>
+              </div> */}
 
-              <div className="space-40" />
+              {/* <div className="space-40" />
               <div className="border_black" />
               <div className="space-40" />
 
-              <PostOnePagination newsId={news._id} />
+              <PostOnePagination newsId={news._id} /> */}
             </div>
 
             <div className="col-md-6 col-lg-4">
