@@ -160,12 +160,12 @@ export const editorNav = [
     ],
   },
 
-  {
-    component: CNavItem,
-    name: 'Category',
-    to: '/Category',
-    icon: <CIcon icon={cilTags} customClassName="nav-icon" />,
-  },
+  // {
+  //   component: CNavItem,
+  //   name: 'Category',
+  //   to: '/Category',
+  //   icon: <CIcon icon={cilTags} customClassName="nav-icon" />,
+  // },
   {
     component: CNavItem,
     name: 'Profile',
@@ -178,12 +178,12 @@ export const editorNav = [
     to: '/magazine',
     icon: <CIcon icon={cilNewspaper} customClassName="nav-icon" />,
   },
-  {
-    component: CNavItem,
-    name: 'Poll',
-    to: '/polls',
-    icon: <CIcon icon={cilNewspaper} customClassName="nav-icon" />,
-  },
+  // {
+  //   component: CNavItem,
+  //   name: 'Poll',
+  //   to: '/polls',
+  //   icon: <CIcon icon={cilNewspaper} customClassName="nav-icon" />,
+  // },
 ]
 export const correspondenceNav = [
   {
