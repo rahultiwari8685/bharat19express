@@ -326,7 +326,7 @@ const WidgetTab = ({ categoryId, className, dark }) => {
       const language = i18n.resolvedLanguage || "en";
 
       const res = await fetch(
-        `${API}/api/news/category/${categoryId}?limit=5&lang=${language}`,
+        `${API}/api/news/category/${categoryId}?limit=8&lang=${language}`,
       );
 
       const data = await res.json();
@@ -349,7 +349,7 @@ const WidgetTab = ({ categoryId, className, dark }) => {
       const language = i18n.resolvedLanguage || "en";
 
       const res = await fetch(
-        `${API}/api/news/getAllNews?limit=5&lang=${language}`,
+        `${API}/api/news/getAllNews?limit=8&lang=${language}`,
       );
 
       const data = await res.json();
@@ -372,7 +372,7 @@ const WidgetTab = ({ categoryId, className, dark }) => {
       const language = i18n.resolvedLanguage || "en";
 
       const res = await fetch(
-        `${API}/api/news/popular?limit=5&lang=${language}`,
+        `${API}/api/news/popular?limit=8&lang=${language}`,
       );
 
       const data = await res.json();
