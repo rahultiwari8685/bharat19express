@@ -244,7 +244,7 @@ function Category() {
         </div>
       </div>
 
-      <div className="space-20" />
+      {/* <div className="space-70" /> */}
 
       <BannerSection />
     </>
