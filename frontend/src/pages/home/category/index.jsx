@@ -159,7 +159,7 @@ function Category() {
       const language = i18n.resolvedLanguage || "en";
 
       const res = await fetch(
-        `${API}/api/news/category/${categoryId}?page=1&limit=20&lang=${language}`,
+        `${API}/api/news/category/${categoryId}?page=1&limit=22&lang=${language}`,
       );
 
       const data = await res.json();
