@@ -5,7 +5,7 @@ import News from "../models/News.js";
 import { sendNotification } from "../services/sendNotification.js";
 import NotificationToken from "../models/NotificationToken.js";
 import { TranslationServiceClient } from "@google-cloud/translate";
-
+import NewsView from "../models/NewsView.js";
 const SUPPORTED_LANGUAGES = ["en", "hi", "ur", "bn", "mr"];
 
 const TRANSLATION_TARGETS = ["en", "ur", "bn", "mr"];
@@ -119,9 +119,9 @@ const generateGoogleTranslations = async ({ title, subtitle, content }) => {
 
       console.log(
         `Translation completed: hi -> ${target} | ` +
-          `title=${Boolean(translations[target].title)} | ` +
-          `subtitle=${Boolean(translations[target].subtitle)} | ` +
-          `content=${Boolean(translations[target].content)}`,
+        `title=${Boolean(translations[target].title)} | ` +
+        `subtitle=${Boolean(translations[target].subtitle)} | ` +
+        `content=${Boolean(translations[target].content)}`,
       );
     } catch (error) {
       console.error(`Google Translation failed for ${target}:`);
@@ -169,7 +169,7 @@ export const createNews = async (req, res) => {
       slug,
       type,
       scheduledAt,
-       thumbnailCaption,
+      thumbnailCaption,
     } = req.body;
 
     let categories = [];
@@ -263,8 +263,8 @@ export const createNews = async (req, res) => {
 
       ...(slug && slug.trim()
         ? {
-            slug: slug.trim(),
-          }
+          slug: slug.trim(),
+        }
         : {}),
 
       videoType: video_type,
@@ -394,11 +394,6 @@ export const getAllDraftNews = async (req, res) => {
       type: 2,
     };
 
-    /*
-      |--------------------------------------------------------------------------
-      | Author Filter
-      |--------------------------------------------------------------------------
-      */
 
     if (author) {
       if (!mongoose.Types.ObjectId.isValid(author)) {
@@ -417,11 +412,6 @@ export const getAllDraftNews = async (req, res) => {
 
     const skip = (pageNumber - 1) * limitNumber;
 
-    /*
-      |--------------------------------------------------------------------------
-      | Get Drafts
-      |--------------------------------------------------------------------------
-      */
 
     const news = await News.find(query)
       .populate("author", "name email profileImage")
@@ -489,12 +479,6 @@ export const getAllNewsByCategory = async (req, res) => {
     const { page = 1, limit = 6 } = req.query;
 
     const lang = getLanguage(req);
-
-    /*
-      |--------------------------------------------------------------------------
-      | Validate Category
-      |--------------------------------------------------------------------------
-      */
 
     if (!mongoose.Types.ObjectId.isValid(categoryId)) {
       return res.status(400).json({
@@ -640,7 +624,7 @@ export const updateNews = async (req, res) => {
       slug,
       type,
       scheduledAt,
-        thumbnailCaption,
+      thumbnailCaption,
     } = req.body;
 
     if (!mongoose.Types.ObjectId.isValid(id)) {
@@ -964,8 +948,8 @@ export const autoSaveNews = async (req, res) => {
 
         ...(slug && slug.trim()
           ? {
-              slug: slug.trim(),
-            }
+            slug: slug.trim(),
+          }
           : {}),
 
         categories: parsedCategories,
@@ -1007,26 +991,146 @@ export const autoSaveNews = async (req, res) => {
   }
 };
 
+// export const increaseView = async (req, res) => {
+//   try {
+//     const { id } = req.params;
+
+//     await News.findByIdAndUpdate(id, {
+//       $inc: {
+//         views: 1,
+//       },
+//     });
+
+//     return res.json({
+//       status: true,
+//     });
+//   } catch (error) {
+//     return res.status(500).json({
+//       status: false,
+//       message: error.message,
+//     });
+//   }
+// };
+
+
 export const increaseView = async (req, res) => {
   try {
     const { id } = req.params;
 
-    await News.findByIdAndUpdate(id, {
-      $inc: {
-        views: 1,
+    const news = await News.findByIdAndUpdate(
+      id,
+      {
+        $inc: { views: 1 },
       },
+      { new: true }
+    );
+
+    if (!news) {
+      return res.status(404).json({
+        status: false,
+        message: "News not found",
+      });
+    }
+
+    // Save this individual view with its timestamp
+    await NewsView.create({
+      newsId: news._id,
+      viewedAt: new Date(),
     });
 
     return res.json({
       status: true,
+      message: "View counted successfully",
     });
   } catch (error) {
+    console.error("Increase View Error:", error);
+
     return res.status(500).json({
       status: false,
       message: error.message,
     });
   }
 };
+
+
+
+export const getMostViewedLast24Hours = async (req, res) => {
+  try {
+    const limit = Math.min(
+      Math.max(parseInt(req.query.limit) || 7, 1),
+      50
+    );
+
+    const last24Hours = new Date(Date.now() - 24 * 60 * 60 * 1000);
+
+    const mostViewedNews = await NewsView.aggregate([
+      {
+        $match: {
+          viewedAt: { $gte: last24Hours },
+        },
+      },
+      {
+        $group: {
+          _id: "$newsId",
+          recentViews: { $sum: 1 },
+        },
+      },
+      {
+        $lookup: {
+          from: "news",
+          localField: "_id",
+          foreignField: "_id",
+          as: "news",
+        },
+      },
+      {
+        $unwind: "$news",
+      },
+      {
+        $match: {
+          "news.type": 1,
+        },
+      },
+      {
+        $sort: {
+          recentViews: -1,
+        },
+      },
+      {
+        $limit: limit,
+      },
+      {
+        $project: {
+          _id: "$news._id",
+          title: "$news.title",
+          subtitle: "$news.subtitle",
+          slug: "$news.slug",
+          thumbnail: "$news.thumbnail",
+          views: "$news.views",
+          recentViews: 1,
+          createdAt: "$news.createdAt",
+        },
+      },
+    ]);
+
+    return res.status(200).json({
+      status: true,
+      period: "last_24_hours",
+      total: mostViewedNews.length,
+      data: mostViewedNews,
+    });
+  } catch (error) {
+    console.error("Get Most Viewed Last 24 Hours Error:", error);
+
+    return res.status(500).json({
+      status: false,
+      message: error.message,
+      data: [],
+    });
+  }
+};
+
+
 
 export const getTrendingNews = async (req, res) => {
   try {

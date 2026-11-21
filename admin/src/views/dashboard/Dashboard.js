@@ -94,6 +94,7 @@ const formatNumber = (value) => Number(value || 0).toLocaleString('en-IN')
 
 const Dashboard = () => {
   const [news, setNews] = useState([])
+  const [mostViewedLast24Hours, setMostViewedLast24Hours] = useState([])
   const [categories, setCategories] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
@@ -110,21 +111,49 @@ const Dashboard = () => {
         const loginData = typeof loginInfo === 'string' ? JSON.parse(loginInfo) : loginInfo
         const token = loginData?.token
 
-        const [newsResponse, categoryResponse] = await Promise.all([
-          fetch(`${setting.api}/api/news/getAllNews`, {
-            headers: token ? { Authorization: `Bearer ${token}` } : {},
-          }),
-          fetch(`${setting.api}/api/categories/getAllCategory`),
-        ])
+        // const [newsResponse, categoryResponse] = await Promise.all([
+        //   fetch(`${setting.api}/api/news/getAllNews`, {
+        //     headers: token ? { Authorization: `Bearer ${token}` } : {},
+        //   }),
+        //   fetch(`${setting.api}/api/categories/getAllCategory`),
+        // ])
 
-        if (!newsResponse.ok || !categoryResponse.ok) {
-          throw new Error('Unable to load dashboard data.')
-        }
+        const [newsResponse, categoryResponse, mostViewedResponse] =
+  await Promise.all([
+    fetch(`${setting.api}/api/news/getAllNews`, {
+      headers: token ? { Authorization: `Bearer ${token}` } : {},
+    }),
 
-        const [newsResult, categoryResult] = await Promise.all([
-          newsResponse.json(),
-          categoryResponse.json(),
-        ])
+    fetch(`${setting.api}/api/categories/getAllCategory`),
+
+    fetch(`${setting.api}/api/news/mostViewedLast24Hours?limit=7`, {
+      headers: token ? { Authorization: `Bearer ${token}` } : {},
+    }),
+  ])
+
+  if (
+  !newsResponse.ok ||
+  !categoryResponse.ok ||
+  !mostViewedResponse.ok
+) {
+  throw new Error('Unable to load dashboard data.')
+}
+
+        // if (!newsResponse.ok || !categoryResponse.ok) {
+        //   throw new Error('Unable to load dashboard data.')
+        // }
+
+        // const [newsResult, categoryResult] = await Promise.all([
+        //   newsResponse.json(),
+        //   categoryResponse.json(),
+        // ])
+
+        const [newsResult, categoryResult, mostViewedResult] =
+  await Promise.all([
+    newsResponse.json(),
+    categoryResponse.json(),
+    mostViewedResponse.json(),
+  ])
 
         if (newsResult.status === false) {
           throw new Error(newsResult.message || 'Unable to load news.')
@@ -134,10 +163,27 @@ const Dashboard = () => {
           throw new Error(categoryResult.message || 'Unable to load categories.')
         }
 
-        if (!cancelled) {
-          setNews(Array.isArray(newsResult.data) ? newsResult.data : [])
-          setCategories(Array.isArray(categoryResult.data) ? categoryResult.data : [])
-        }
+        // if (!cancelled) {
+        //   setNews(Array.isArray(newsResult.data) ? newsResult.data : [])
+        //   setCategories(Array.isArray(categoryResult.data) ? categoryResult.data : [])
+        // }
+
+if (!cancelled) {
+  setNews(Array.isArray(newsResult.data) ? newsResult.data : [])
+
+  setCategories(
+    Array.isArray(categoryResult.data) ? categoryResult.data : []
+  )
+
+  setMostViewedLast24Hours(
+    mostViewedResult.status && Array.isArray(mostViewedResult.data)
+      ? mostViewedResult.data
+      : []
+  )
+}
+
+
+
       } catch (err) {
         console.error('Dashboard Error:', err)
         if (!cancelled) setError(err.message || 'Something went wrong.')
@@ -491,11 +537,58 @@ const Dashboard = () => {
               {panelHeading(
                 cilNewspaper,
                 'Most Viewed News',
-                'Top published articles ranked by total views',
+             'Top published articles ranked by views in the last 24 hours',
                 COLORS.blue,
               )}
 
-              {analytics.mostViewedNews.some((item) => getViews(item) > 0) ? (
+
+{mostViewedLast24Hours.length > 0 ? (
+  <div style={{ height: 310, width: '100%', minWidth: 0 }}>
+    <CChartBar
+      data={{
+        labels: mostViewedLast24Hours.map((item) => {
+          const title = getTitle(item)
+          return title.length > 34
+            ? `${title.slice(0, 34)}…`
+            : title
+        }),
+        datasets: [
+          {
+            label: 'Views in last 24 hours',
+            data: mostViewedLast24Hours.map(
+              (item) => Number(item.recentViews || 0)
+            ),
+            backgroundColor: [
+              '#3B82F6',
+              '#06B6D4',
+              '#8B5CF6',
+              '#F59E0B',
+              '#64748B',
+              '#10B981',
+              '#F43F5E',
+            ],
+            borderRadius: 7,
+            barThickness: 23,
+          },
+        ],
+      }}
+      options={horizontalChartOptions}
+    />
+  </div>
+) : (
+  <div className="text-center text-body-secondary py-5">
+    <CIcon icon={cilNewspaper} size="3xl" className="mb-3" />
+    <p className="fw-semibold mb-1">
+      No views recorded in the last 24 hours
+    </p>
+    <small>
+      Articles will appear here as new views are recorded.
+    </small>
+  </div>
+)}
+
+
+              {/* {analytics.mostViewedNews.some((item) => getViews(item) > 0) ? (
                 <div style={{ height: 310, width: '100%', minWidth: 0 }}>
                   <CChartBar
                     data={{
@@ -530,7 +623,7 @@ const Dashboard = () => {
                   <p className="fw-semibold mb-1">No view analytics available</p>
                   <small>Configure view tracking in the backend to rank articles.</small>
                 </div>
-              )}
+              )} */}
             </CCardBody>
           </CCard>
         </CCol>

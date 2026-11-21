@@ -24,6 +24,7 @@ import {
   getAllDraftNews,
   searchNews,
   getScheduleNews,
+   getMostViewedLast24Hours,
 } from "../controllers/newsController.js";
 
 const router = express.Router();
@@ -60,4 +61,8 @@ router.get("/share/:slug", shareNews);
 router.get("/news/:slug", newsMeta);
 router.get("/:slug/meta", newsMeta);
 router.get("/search", searchNews);
+router.get(
+  "/mostViewedLast24Hours",
+  getMostViewedLast24Hours
+);
 export default router;
