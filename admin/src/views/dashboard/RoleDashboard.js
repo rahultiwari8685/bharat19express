@@ -6,7 +6,6 @@ import {
   CCardBody,
   CCol,
   CRow,
-  CButton,
 } from '@coreui/react'
 import secureLocalStorage from 'react-secure-storage'
 
@@ -74,14 +73,12 @@ const userName =
                   {item.description}
                 </p>
 
-                <CButton
-                  component={Link}
-                  to={item.to}
-                  color="primary"
-                  size="sm"
-                >
-                  Open {item.name}
-                </CButton>
+              <Link
+  to={item.to}
+  className="btn btn-primary btn-sm"
+>
+  Open {item.name}
+</Link>
               </CCardBody>
             </CCard>
           </CCol>
