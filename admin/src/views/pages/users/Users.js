@@ -49,7 +49,7 @@ const schema = yup.object().shape({
 
 const Users = () => {
   const [userList, setUserList] = useState([])
-
+const [totalUsers, setTotalUsers] = useState(0)
   const [editingUser, setEditingUser] = useState(null)
   const [visible, setVisible] = useState(false)
   const [saving, setSaving] = useState(false)
@@ -92,81 +92,44 @@ const Users = () => {
     }
   }, [editingUser, reset])
 
-  const allUserList = async () => {
-    await fetch(setting.api + '/api/users/getAllUser', {
-      method: 'GET',
-      mode: 'cors',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: 'Bearer ' + JSON.parse(secureLocalStorage.getItem('logininfo')).token,
-      },
-    })
-      .then((response) => response.json())
-      .then((u) => {
-        if (u.status == false) {
-          // secureLocalStorage.clear();
-          navigate('/login')
-        } else {
-          setUserList(Array.isArray(u.data) ? u.data : [])
-          setCurrentPage(1)
-        }
-      })
+
+const allUserList = async (page = currentPage) => {
+  try {
+    const loginInfo = JSON.parse(
+      secureLocalStorage.getItem('logininfo') || '{}'
+    )
+
+    const response = await fetch(
+      `${setting.api}/api/users/getAllUser?page=${page}&limit=${itemsPerPage}`,
+      {
+        method: 'GET',
+        mode: 'cors',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + (loginInfo.token || ''),
+        },
+      }
+    )
+
+    const result = await response.json()
+
+    if (!response.ok || result.success !== true) {
+      throw new Error(result.message || 'Failed to fetch users')
+    }
+
+    setUserList(result.data || [])
+    setTotalUsers(result.totalUsers || 0)
+    setCurrentPage(result.page || page)
+
+  } catch (error) {
+    console.error('Fetch Users Error:', error)
   }
+}
 
-  useEffect(() => {
-    allUserList()
-  }, [])
+useEffect(() => {
+  allUserList(currentPage)
+}, [currentPage])
 
-  // const saveUser = async (data) => {
-  //   const formData = new FormData()
-  //   formData.append('name', data.name)
-  //   formData.append('bio', data.bio)
-  //   formData.append('email', data.email)
-  //   formData.append('phone', data.phone)
-  //   formData.append('password', data.password)
-  //   formData.append('role', data.role)
-  //   formData.append('post_permission', data.post_permission)
-  //   formData.append('user_status', data.user_status)
-
-  //   if (data.image?.[0]) {
-  //     formData.append('profileImage', data.image[0])
-  //   }
-
-  //   let endpoint = '/api/users/saveUser'
-  //   let headers = {}
-
-  //   if (editingUser) {
-  //     endpoint = '/api/users/updateUser'
-  //     formData.append('id', editingUser._id)
-
-  //     headers = {
-  //       Authorization: 'Bearer ' + JSON.parse(secureLocalStorage.getItem('logininfo')).token,
-  //     }
-  //   }
-
-  //   try {
-  //     const res = await fetch(setting.api + endpoint, {
-  //       method: 'POST',
-  //       body: formData,
-  //       mode: 'cors',
-  //       headers,
-  //     })
-
-  //     const result = await res.json()
-  //     console.log('User API response:', result)
-
-  //     if (result.status === true) {
-  //       allUserList()
-  //       reset()
-  //       setEditingUser(null)
-  //       setVisible(false)
-  //     } else {
-  //       alert(result.message || 'Failed to save user')
-  //     }
-  //   } catch (error) {
-  //     console.error('Error saving user:', error)
-  //   }
-  // }
 
   const saveUser = async (data) => {
     if (saving) return
@@ -216,7 +179,8 @@ const Users = () => {
       const result = await res.json()
 
       if (res.ok && (result.success === true || result.status === true)) {
-        await allUserList()
+      setCurrentPage(1)
+await allUserList(1)
         reset()
         setEditingUser(null)
         setVisible(false)
@@ -297,7 +261,16 @@ const Users = () => {
         return
       }
 
-      await allUserList()
+     const nextPage =
+  userList.length === 1 && currentPage > 1
+    ? currentPage - 1
+    : currentPage
+
+if (nextPage !== currentPage) {
+  setCurrentPage(nextPage)
+} else {
+  await allUserList(currentPage)
+}
     } catch (error) {
       console.error('Error deleting user:', error)
       alert('Something went wrong while deleting the user')
@@ -306,14 +279,9 @@ const Users = () => {
     }
   }
 
-  const totalPages = Math.ceil(userList.length / itemsPerPage)
-
-  const startIndex = (currentPage - 1) * itemsPerPage
-
-  const paginatedItems = userList.slice(
-    startIndex,
-    startIndex + itemsPerPage,
-  )
+ const totalPages = Math.ceil(totalUsers / itemsPerPage)
+const startIndex = (currentPage - 1) * itemsPerPage
+const paginatedItems = userList
 
   return (
     <div>
@@ -439,52 +407,49 @@ const Users = () => {
             </CTableBody>
           </CTable>
 
-          {totalPages > 1 && (
-            <div className="d-flex justify-content-between align-items-center mt-3 flex-wrap gap-2">
+     
+{totalPages > 0 && (
+  <div className="d-flex justify-content-between align-items-center mt-3 flex-wrap gap-2">
 
-              <div>
-                Showing {startIndex + 1} to{' '}
-                {Math.min(startIndex + itemsPerPage, userList.length)} of{' '}
-                {userList.length} users
-              </div>
+    <span>
+      Showing {startIndex + 1} to{' '}
+      {Math.min(startIndex + userList.length, totalUsers)} of {totalUsers} users
+    </span>
 
-              <CPagination className="mb-0">
+    <CPagination className="mb-0">
+      <CPaginationItem
+        disabled={currentPage === 1}
+        onClick={() =>
+          setCurrentPage((prev) => Math.max(1, prev - 1))
+        }
+      >
+        Previous
+      </CPaginationItem>
 
-                <CPaginationItem
-                  component="button"
-                  type="button"
-                  disabled={currentPage === 1}
-                  onClick={() => setCurrentPage((prev) => Math.max(1, prev - 1))}
-                >
-                  Previous
-                </CPaginationItem>
+      {Array.from({ length: totalPages }, (_, index) => index + 1).map(
+        (page) => (
+          <CPaginationItem
+            key={page}
+            active={currentPage === page}
+            onClick={() => setCurrentPage(page)}
+          >
+            {page}
+          </CPaginationItem>
+        )
+      )}
 
-                {Array.from({ length: totalPages }, (_, idx) => idx + 1).map((page) => (
-                  <CPaginationItem
-                    key={page}
-                    component="button"
-                    type="button"
-                    active={currentPage === page}
-                    onClick={() => setCurrentPage(page)}
-                  >
-                    {page}
-                  </CPaginationItem>
-                ))}
+      <CPaginationItem
+        disabled={currentPage === totalPages}
+        onClick={() =>
+          setCurrentPage((prev) => Math.min(totalPages, prev + 1))
+        }
+      >
+        Next
+      </CPaginationItem>
+    </CPagination>
+  </div>
+)}
 
-                <CPaginationItem
-                  component="button"
-                  type="button"
-                  disabled={currentPage === totalPages}
-                  onClick={() =>
-                    setCurrentPage((prev) => Math.min(totalPages, prev + 1))
-                  }
-                >
-                  Next
-                </CPaginationItem>
-
-              </CPagination>
-            </div>
-          )}
         </CCardBody>
       </CCard>
 

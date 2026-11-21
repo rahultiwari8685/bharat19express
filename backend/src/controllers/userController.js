@@ -65,30 +65,44 @@ export const saveUser = async (req, res) => {
   }
 };
 
+
 export const getAllUsers = async (req, res) => {
   try {
     const page = Math.max(parseInt(req.query.page) || 1, 1);
-    const limit = Math.min(parseInt(req.query.limit) || 10, 50);
+    const limit = Math.min(Math.max(parseInt(req.query.limit) || 10, 1), 50);
 
-    const users = await User.find()
-      .select("-password")
-      .sort({ createdAt: -1 })
-      .skip((page - 1) * limit)
-      .limit(limit);
+    const skip = (page - 1) * limit;
 
-    res.status(200).json({
+    // Fetch users and total count together
+    const [users, totalUsers] = await Promise.all([
+      User.find()
+        .select("-password")
+        .sort({ createdAt: -1 })
+        .skip(skip)
+        .limit(limit),
+
+      User.countDocuments(),
+    ]);
+
+    return res.status(200).json({
       success: true,
       page,
+      limit,
       count: users.length,
+      totalUsers,
+      totalPages: Math.ceil(totalUsers / limit),
       data: users,
     });
   } catch (error) {
-    res.status(500).json({
+    console.error("Get All Users Error:", error);
+
+    return res.status(500).json({
       success: false,
       error: error.message,
     });
   }
 };
+
 
 export const updateUser = async (req, res) => {
   try {
@@ -177,71 +191,6 @@ export const updateUser = async (req, res) => {
   }
 };
 
-// export const updateUser = async (req, res) => {
-//   try {
-//     const {
-//       id,
-//       name,
-//       email,
-//       phone,
-//       password,
-//       role,
-//       post_permission,
-//       user_status,
-//     } = req.body;
-
-//     if (!id || !mongoose.Types.ObjectId.isValid(id)) {
-//       return res.status(400).json({
-//         success: false,
-//         message: "Valid user ID is required",
-//       });
-//     }
-
-//     const existingUser = await User.findById(id);
-//     if (!existingUser) {
-//       return res.status(404).json({
-//         success: false,
-//         message: "User not found",
-//       });
-//     }
-
-//     const updateData = {
-//       name,
-//       email,
-//       phone,
-//       password,
-//       role,
-//       post_permission,
-//       user_status,
-//     };
-
-//     // ✅ Hash password if updated
-//     if (password) {
-//       updateData.password = await bcrypt.hash(password, 10);
-//     }
-
-//     // ✅ File update
-//     if (req.file) {
-//       updateData.profileImage = req.file.filename;
-//     }
-
-//     const updatedUser = await User.findByIdAndUpdate(id, updateData, {
-//       new: true,
-//     }).select("-password");
-
-//     res.status(200).json({
-//       success: true,
-//       message: "User updated successfully",
-//       data: updatedUser,
-//     });
-//   } catch (error) {
-//     res.status(500).json({
-//       success: false,
-//       error: error.message,
-//     });
-//   }
-// };
-
 export const getUserDetailsById = async (req, res) => {
   try {
     const { id } = req.params;
@@ -282,12 +231,6 @@ export const deleteUser = async (req, res) => {
   try {
     const { _id } = req.params;
 
-    // if (!req.user || req.user.role !== "admin") {
-    //   return res.status(403).json({
-    //     success: false,
-    //     message: "Unauthorized",
-    //   });
-    // }
 
     if (!_id || !mongoose.Types.ObjectId.isValid(_id)) {
       return res.status(400).json({
