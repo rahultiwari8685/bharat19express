@@ -92,7 +92,7 @@ const isSameDay = (a, b) =>
 
 const formatNumber = (value) => Number(value || 0).toLocaleString('en-IN')
 
-const Dashboard = () => {
+const AdminDashboard = () => {
   const [news, setNews] = useState([])
   const [mostViewedLast24Hours, setMostViewedLast24Hours] = useState([])
   const [categories, setCategories] = useState([])
@@ -108,14 +108,21 @@ const Dashboard = () => {
         setLoading(true)
         setError('')
 
-      const loginInfo = secureLocalStorage.getItem('logininfo')
+        const loginInfo = secureLocalStorage.getItem('logininfo')
 
-const loginData =
-  typeof loginInfo === 'string' ? JSON.parse(loginInfo) : loginInfo
+        const loginData =
+          typeof loginInfo === 'string' ? JSON.parse(loginInfo) : loginInfo
 
-const token = loginData?.token
+        const token = loginData?.token
 
-setAdminName(loginData?.user?.name || 'Admin')
+      setAdminName(
+  loginData?.user?.name ||
+  loginData?.user?.fullName ||
+  loginData?.name ||
+  loginData?.fullName ||
+  loginData?.username ||
+  'Admin'
+)
 
         // const [newsResponse, categoryResponse] = await Promise.all([
         //   fetch(`${setting.api}/api/news/getAllNews`, {
@@ -125,25 +132,25 @@ setAdminName(loginData?.user?.name || 'Admin')
         // ])
 
         const [newsResponse, categoryResponse, mostViewedResponse] =
-  await Promise.all([
-    fetch(`${setting.api}/api/news/getAllNews`, {
-      headers: token ? { Authorization: `Bearer ${token}` } : {},
-    }),
+          await Promise.all([
+            fetch(`${setting.api}/api/news/getAllNews`, {
+              headers: token ? { Authorization: `Bearer ${token}` } : {},
+            }),
 
-    fetch(`${setting.api}/api/categories/getAllCategory`),
+            fetch(`${setting.api}/api/categories/getAllCategory`),
 
-    fetch(`${setting.api}/api/news/mostViewedLast24Hours?limit=7`, {
-      headers: token ? { Authorization: `Bearer ${token}` } : {},
-    }),
-  ])
+            fetch(`${setting.api}/api/news/mostViewedLast24Hours?limit=7`, {
+              headers: token ? { Authorization: `Bearer ${token}` } : {},
+            }),
+          ])
 
-  if (
-  !newsResponse.ok ||
-  !categoryResponse.ok ||
-  !mostViewedResponse.ok
-) {
-  throw new Error('Unable to load dashboard data.')
-}
+        if (
+          !newsResponse.ok ||
+          !categoryResponse.ok ||
+          !mostViewedResponse.ok
+        ) {
+          throw new Error('Unable to load dashboard data.')
+        }
 
         // if (!newsResponse.ok || !categoryResponse.ok) {
         //   throw new Error('Unable to load dashboard data.')
@@ -155,11 +162,11 @@ setAdminName(loginData?.user?.name || 'Admin')
         // ])
 
         const [newsResult, categoryResult, mostViewedResult] =
-  await Promise.all([
-    newsResponse.json(),
-    categoryResponse.json(),
-    mostViewedResponse.json(),
-  ])
+          await Promise.all([
+            newsResponse.json(),
+            categoryResponse.json(),
+            mostViewedResponse.json(),
+          ])
 
         if (newsResult.status === false) {
           throw new Error(newsResult.message || 'Unable to load news.')
@@ -174,19 +181,19 @@ setAdminName(loginData?.user?.name || 'Admin')
         //   setCategories(Array.isArray(categoryResult.data) ? categoryResult.data : [])
         // }
 
-if (!cancelled) {
-  setNews(Array.isArray(newsResult.data) ? newsResult.data : [])
+        if (!cancelled) {
+          setNews(Array.isArray(newsResult.data) ? newsResult.data : [])
 
-  setCategories(
-    Array.isArray(categoryResult.data) ? categoryResult.data : []
-  )
+          setCategories(
+            Array.isArray(categoryResult.data) ? categoryResult.data : []
+          )
 
-  setMostViewedLast24Hours(
-    mostViewedResult.status && Array.isArray(mostViewedResult.data)
-      ? mostViewedResult.data
-      : []
-  )
-}
+          setMostViewedLast24Hours(
+            mostViewedResult.status && Array.isArray(mostViewedResult.data)
+              ? mostViewedResult.data
+              : []
+          )
+        }
 
 
 
@@ -411,12 +418,12 @@ if (!cancelled) {
           <div className="small mb-2" style={{ color: '#bfdbfe' }}>
             BHARAT 19 EXPRESS · ADMIN PANEL
           </div>
-       <h2 className="fw-bold mb-2">
-  Welcome Back,{' '}
-  <span style={{ color: '#fb7185' }}>
-    {adminName}!
-  </span>
-</h2>
+          <h2 className="fw-bold mb-2">
+            Welcome Back,{' '}
+            <span style={{ color: '#fb7185' }}>
+              {adminName}!
+            </span>
+          </h2>
           <p className="mb-0" style={{ color: '#dbeafe' }}>
             Here&apos;s what&apos;s happening with your news portal today.
           </p>
@@ -546,55 +553,55 @@ if (!cancelled) {
               {panelHeading(
                 cilNewspaper,
                 'Most Viewed News',
-             'Top published articles ranked by views in the last 24 hours',
+                'Top published articles ranked by views in the last 24 hours',
                 COLORS.blue,
               )}
 
 
-{mostViewedLast24Hours.length > 0 ? (
-  <div style={{ height: 310, width: '100%', minWidth: 0 }}>
-    <CChartBar
-      data={{
-        labels: mostViewedLast24Hours.map((item) => {
-          const title = getTitle(item)
-          return title.length > 34
-            ? `${title.slice(0, 34)}…`
-            : title
-        }),
-        datasets: [
-          {
-            label: 'Views in last 24 hours',
-            data: mostViewedLast24Hours.map(
-              (item) => Number(item.recentViews || 0)
-            ),
-            backgroundColor: [
-              '#3B82F6',
-              '#06B6D4',
-              '#8B5CF6',
-              '#F59E0B',
-              '#64748B',
-              '#10B981',
-              '#F43F5E',
-            ],
-            borderRadius: 7,
-            barThickness: 23,
-          },
-        ],
-      }}
-      options={horizontalChartOptions}
-    />
-  </div>
-) : (
-  <div className="text-center text-body-secondary py-5">
-    <CIcon icon={cilNewspaper} size="3xl" className="mb-3" />
-    <p className="fw-semibold mb-1">
-      No views recorded in the last 24 hours
-    </p>
-    <small>
-      Articles will appear here as new views are recorded.
-    </small>
-  </div>
-)}
+              {mostViewedLast24Hours.length > 0 ? (
+                <div style={{ height: 310, width: '100%', minWidth: 0 }}>
+                  <CChartBar
+                    data={{
+                      labels: mostViewedLast24Hours.map((item) => {
+                        const title = getTitle(item)
+                        return title.length > 34
+                          ? `${title.slice(0, 34)}…`
+                          : title
+                      }),
+                      datasets: [
+                        {
+                          label: 'Views in last 24 hours',
+                          data: mostViewedLast24Hours.map(
+                            (item) => Number(item.recentViews || 0)
+                          ),
+                          backgroundColor: [
+                            '#3B82F6',
+                            '#06B6D4',
+                            '#8B5CF6',
+                            '#F59E0B',
+                            '#64748B',
+                            '#10B981',
+                            '#F43F5E',
+                          ],
+                          borderRadius: 7,
+                          barThickness: 23,
+                        },
+                      ],
+                    }}
+                    options={horizontalChartOptions}
+                  />
+                </div>
+              ) : (
+                <div className="text-center text-body-secondary py-5">
+                  <CIcon icon={cilNewspaper} size="3xl" className="mb-3" />
+                  <p className="fw-semibold mb-1">
+                    No views recorded in the last 24 hours
+                  </p>
+                  <small>
+                    Articles will appear here as new views are recorded.
+                  </small>
+                </div>
+              )}
 
 
               {/* {analytics.mostViewedNews.some((item) => getViews(item) > 0) ? (
@@ -904,4 +911,4 @@ if (!cancelled) {
   )
 }
 
-export default Dashboard
+export default AdminDashboard

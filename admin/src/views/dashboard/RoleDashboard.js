@@ -24,10 +24,12 @@ const RoleDashboard = ({ title, description, links = [] }) => {
     console.error('Login info error:', error)
   }
 
-  const userName =
-    loginData?.user?.name ||
-    loginData?.name ||
-    'User'
+ const userName =
+  loginData?.user?.name ||
+  loginData?.name ||
+  loginData?.username ||
+  loginData?.userName ||
+  'User'
 
   return (
     <div className="container-fluid p-3 p-md-4">
