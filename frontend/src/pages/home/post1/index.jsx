@@ -7,18 +7,17 @@ import {
   FacebookShareButton,
   TwitterShareButton,
   WhatsappShareButton,
-  TelegramShareButton,
   LinkedinShareButton,
   RedditShareButton,
   EmailShareButton,
   FacebookIcon,
   TwitterIcon,
   WhatsappIcon,
-  TelegramIcon,
   LinkedinIcon,
   RedditIcon,
   EmailIcon,
 } from "react-share";
+import { FaInstagram } from "react-icons/fa";
 import WidgetTab from "../../../component/WidgetTab";
 import WidgetTrendingNews from "../../../component/WidgetTrendingNews";
 import NewsLetter from "../../../component/NewsLetter";
@@ -182,6 +181,28 @@ function Post1() {
     }
   };
 
+  const handleInstagramShare = async () => {
+    // Open Instagram
+    window.open(
+      "https://www.instagram.com/",
+      "_blank",
+      "noopener,noreferrer"
+    );
+
+    try {
+      await navigator.clipboard.writeText(
+        `${shareTitle}\n${shareUrl}`
+      );
+
+      await increaseShare();
+
+      alert("News link copied! You can now share it on Instagram.");
+    } catch (error) {
+      console.error("Instagram share error:", error);
+      alert("Unable to copy news link. Please copy it manually.");
+    }
+  };
+
   const increaseView = async (id) => {
     try {
       await fetch(`${API}/api/news/view/${id}`, {
@@ -295,20 +316,32 @@ function Post1() {
                     <WhatsappIcon size={42} round />
                   </WhatsappShareButton>
 
-                  <TelegramShareButton
-                    url={shareUrl}
-                    title={shareTitle}
-                    onClick={increaseShare}
-                    aria-label="Share on Telegram"
+                  <button
+                    type="button"
+                    onClick={handleInstagramShare}
+                    aria-label="Share on Instagram"
+                    title="Share on Instagram"
+                    style={{
+                      width: 42,
+                      height: 42,
+                      borderRadius: "50%",
+                      display: "inline-flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      border: "none",
+                      background: "linear-gradient(45deg, #feda75, #fa7e1e, #d62976, #962fbf, #4f5bd5)",
+                      color: "#fff",
+                      cursor: "pointer",
+                    }}
                   >
-                    <TelegramIcon size={42} round />
-                  </TelegramShareButton>
+                    <FaInstagram size={25} />
+                  </button>
                 </div>
               </div>
 
               <div className="space-40" />
 
-    
+
 
               <div className="news-thumbnail">
                 <img
@@ -374,7 +407,7 @@ function Post1() {
               <WidgetTab categoryId={news.categories?.[0]?._id} />
 
               <FollowUs title="Follow Us" />
-                <div className="banner2 mb30">
+              <div className="banner2 mb30">
                 {banners.sidebar && (
                   <a
                     href={banners.sidebar.redirectUrl}
@@ -391,7 +424,7 @@ function Post1() {
               </div>
               <WidgetTrendingNews />
 
-            
+
             </div>
           </div>
 
