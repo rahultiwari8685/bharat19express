@@ -115,14 +115,14 @@ const AdminDashboard = () => {
 
         const token = loginData?.token
 
-      setAdminName(
-  loginData?.user?.name ||
-  loginData?.user?.fullName ||
-  loginData?.name ||
-  loginData?.fullName ||
-  loginData?.username ||
-  'Admin'
-)
+        setAdminName(
+          loginData?.user?.name ||
+          loginData?.user?.fullName ||
+          loginData?.name ||
+          loginData?.fullName ||
+          loginData?.username ||
+          'Admin'
+        )
 
         // const [newsResponse, categoryResponse] = await Promise.all([
         //   fetch(`${setting.api}/api/news/getAllNews`, {
@@ -246,7 +246,7 @@ const AdminDashboard = () => {
         (a, b) =>
           (getValidDate(b.createdAt)?.getTime() || 0) - (getValidDate(a.createdAt)?.getTime() || 0),
       )
-      .slice(0, 6)
+      .slice(0, 3)
 
     const lastSevenDays = Array.from({ length: 7 }, (_, index) => {
       const date = new Date()

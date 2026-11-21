@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import toast from 'react-hot-toast'
 import {
   CCard,
   CCardBody,
@@ -32,7 +33,28 @@ const DraftNews = () => {
   const [currentPage, setCurrentPage] = useState(1)
   const itemsPerPage = 30
 
-  const userRole = JSON.parse(secureLocalStorage.getItem('logininfo')).role
+  // const userRole = JSON.parse(secureLocalStorage.getItem('logininfo')).role
+
+  const storedLoginInfo = secureLocalStorage.getItem('logininfo')
+
+let loginInfo = {}
+
+try {
+  loginInfo =
+    typeof storedLoginInfo === 'string'
+      ? JSON.parse(storedLoginInfo)
+      : storedLoginInfo || {}
+} catch (error) {
+  console.error('Login information error:', error)
+}
+
+const userRole = String(loginInfo?.role || '').trim()
+
+const postPermission = String(
+  loginInfo?.user?.post_permission ??
+  loginInfo?.post_permission ??
+  ''
+).trim()
 
   console.log('User role from storage:', userRole)
 
@@ -201,24 +223,31 @@ const DraftNews = () => {
                     })}
                   </CTableDataCell>
 
-                  <CTableDataCell>
-                    <CButton
-                      size="sm"
-                      color="primary"
-                      className="rounded-pill px-3 shadow-sm fw-semibold"
-                      onClick={() => handleEdit(news)}
-                    >
-                      <CIcon icon={cilPencil} /> Edit
-                    </CButton>{' '}
-                    <CButton
-                      size="sm"
-                      color="danger"
-                      className="rounded-pill px-3 shadow-sm fw-semibold"
-                      onClick={() => handleDelete(news._id)}
-                    >
-                      <CIcon icon={cilTrash} /> Delete
-                    </CButton>
-                  </CTableDataCell>
+                
+<CTableDataCell>
+  {postPermission !== '1' && (
+    <CButton
+      size="sm"
+      color="primary"
+      className="rounded-pill px-3 shadow-sm fw-semibold"
+      onClick={() => handleEdit(news)}
+    >
+      <CIcon icon={cilPencil} /> Edit
+    </CButton>
+  )}
+
+  {userRole === '1' && (
+    <CButton
+      size="sm"
+      color="danger"
+      className="rounded-pill px-3 shadow-sm fw-semibold"
+      onClick={() => handleDelete(news._id)}
+    >
+      <CIcon icon={cilTrash} /> Delete
+    </CButton>
+  )}
+</CTableDataCell>
+
                 </CTableRow>
               )
             })}
