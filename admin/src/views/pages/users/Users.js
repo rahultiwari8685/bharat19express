@@ -107,7 +107,8 @@ const Users = () => {
           // secureLocalStorage.clear();
           navigate('/login')
         } else {
-          setUserList(u.data)
+          setUserList(Array.isArray(u.data) ? u.data : [])
+          setCurrentPage(1)
         }
       })
   }
@@ -306,9 +307,12 @@ const Users = () => {
   }
 
   const totalPages = Math.ceil(userList.length / itemsPerPage)
+
+  const startIndex = (currentPage - 1) * itemsPerPage
+
   const paginatedItems = userList.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage,
+    startIndex,
+    startIndex + itemsPerPage,
   )
 
   return (
@@ -435,19 +439,52 @@ const Users = () => {
             </CTableBody>
           </CTable>
 
-          <div className="d-flex justify-content-end mt-3">
-            <CPagination align="end">
-              {[...Array(totalPages)].map((_, idx) => (
+          {totalPages > 1 && (
+            <div className="d-flex justify-content-between align-items-center mt-3 flex-wrap gap-2">
+
+              <div>
+                Showing {startIndex + 1} to{' '}
+                {Math.min(startIndex + itemsPerPage, userList.length)} of{' '}
+                {userList.length} users
+              </div>
+
+              <CPagination className="mb-0">
+
                 <CPaginationItem
-                  key={idx + 1}
-                  active={currentPage === idx + 1}
-                  onClick={() => setCurrentPage(idx + 1)}
+                  component="button"
+                  type="button"
+                  disabled={currentPage === 1}
+                  onClick={() => setCurrentPage((prev) => Math.max(1, prev - 1))}
                 >
-                  {idx + 1}
+                  Previous
                 </CPaginationItem>
-              ))}
-            </CPagination>
-          </div>
+
+                {Array.from({ length: totalPages }, (_, idx) => idx + 1).map((page) => (
+                  <CPaginationItem
+                    key={page}
+                    component="button"
+                    type="button"
+                    active={currentPage === page}
+                    onClick={() => setCurrentPage(page)}
+                  >
+                    {page}
+                  </CPaginationItem>
+                ))}
+
+                <CPaginationItem
+                  component="button"
+                  type="button"
+                  disabled={currentPage === totalPages}
+                  onClick={() =>
+                    setCurrentPage((prev) => Math.min(totalPages, prev + 1))
+                  }
+                >
+                  Next
+                </CPaginationItem>
+
+              </CPagination>
+            </div>
+          )}
         </CCardBody>
       </CCard>
 
