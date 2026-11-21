@@ -96,6 +96,7 @@ const Dashboard = () => {
   const [news, setNews] = useState([])
   const [mostViewedLast24Hours, setMostViewedLast24Hours] = useState([])
   const [categories, setCategories] = useState([])
+  const [adminName, setAdminName] = useState('Admin')
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
 
@@ -107,9 +108,14 @@ const Dashboard = () => {
         setLoading(true)
         setError('')
 
-        const loginInfo = secureLocalStorage.getItem('logininfo')
-        const loginData = typeof loginInfo === 'string' ? JSON.parse(loginInfo) : loginInfo
-        const token = loginData?.token
+      const loginInfo = secureLocalStorage.getItem('logininfo')
+
+const loginData =
+  typeof loginInfo === 'string' ? JSON.parse(loginInfo) : loginInfo
+
+const token = loginData?.token
+
+setAdminName(loginData?.user?.name || 'Admin')
 
         // const [newsResponse, categoryResponse] = await Promise.all([
         //   fetch(`${setting.api}/api/news/getAllNews`, {
@@ -405,9 +411,12 @@ if (!cancelled) {
           <div className="small mb-2" style={{ color: '#bfdbfe' }}>
             BHARAT 19 EXPRESS · ADMIN PANEL
           </div>
-          <h2 className="fw-bold mb-2">
-            Welcome Back, <span style={{ color: '#fb7185' }}>Admin!</span>
-          </h2>
+       <h2 className="fw-bold mb-2">
+  Welcome Back,{' '}
+  <span style={{ color: '#fb7185' }}>
+    {adminName}!
+  </span>
+</h2>
           <p className="mb-0" style={{ color: '#dbeafe' }}>
             Here&apos;s what&apos;s happening with your news portal today.
           </p>
