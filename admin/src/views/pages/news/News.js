@@ -283,7 +283,15 @@ const News = () => {
 
   const author = loginInfo?.user?.id
 
-  const userRole = String(loginInfo?.role ?? loginInfo?.user?.role ?? '')
+const userRole = String(
+  loginInfo?.role ?? loginInfo?.user?.role ?? ''
+)
+
+const postPermission = String(
+  loginInfo?.user?.post_permission ??
+  loginInfo?.post_permission ??
+  ''
+).trim()
 
   const saveNews = async (data) => {
     if (loading) return
@@ -834,7 +842,7 @@ const News = () => {
                     )}
                   </CButton>
 
-                  {userRole !== '3' && (
+                 {postPermission !== '1' && (
                     <CButton
                       color="info"
                       type="button"
@@ -874,7 +882,7 @@ const News = () => {
                     )}
                   </CButton> */}
 
-                  {userRole !== '3' && (
+               {postPermission !== '1' && (
                     <CButton
                       color="primary"
                       type="button"
