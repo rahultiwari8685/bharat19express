@@ -1,12 +1,12 @@
 
 import React from 'react'
 import secureLocalStorage from 'react-secure-storage'
+
 import DefaultDashboard from './DefaultDashboard'
 import AdminDashboard from './AdminDashboard'
 import EditorDashboard from './EditorDashboard'
 import CorrespondenceDashboard from './CorrespondenceDashboard'
 import SubscriberDashboard from './SubscriberDashboard'
-import RoleDashboard from './RoleDashboard'
 
 const Dashboard = () => {
   const loginInfo = secureLocalStorage.getItem('logininfo')
@@ -23,10 +23,14 @@ const Dashboard = () => {
   }
 
   const role = String(
-  loginData?.role || loginData?.user?.role || ''
-)
-    .trim()
-    .toLowerCase()
+    loginData?.role ||
+    loginData?.user?.role ||
+    ''
+  ).trim().toLowerCase()
+
+  // TEMPORARY DEBUG: Check actual login role
+  console.log('LOGIN DATA:', loginData)
+  console.log('USER ROLE:', role)
 
   switch (role) {
     case 'admin':
@@ -42,7 +46,7 @@ const Dashboard = () => {
       return <SubscriberDashboard />
 
     default:
-  return <DefaultDashboard />
+      return <DefaultDashboard />
   }
 }
 

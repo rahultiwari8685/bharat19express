@@ -24,9 +24,11 @@ const RoleDashboard = ({ title, description, links = [] }) => {
     console.error('Login info error:', error)
   }
 
- const userName =
+const userName =
   loginData?.user?.name ||
+  loginData?.user?.fullName ||
   loginData?.name ||
+  loginData?.fullName ||
   loginData?.username ||
   loginData?.userName ||
   'User'
