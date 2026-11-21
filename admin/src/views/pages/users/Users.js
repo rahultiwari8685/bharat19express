@@ -49,7 +49,7 @@ const schema = yup.object().shape({
 
 const Users = () => {
   const [userList, setUserList] = useState([])
-const [totalUsers, setTotalUsers] = useState(0)
+  const [totalUsers, setTotalUsers] = useState(0)
   const [editingUser, setEditingUser] = useState(null)
   const [visible, setVisible] = useState(false)
   const [saving, setSaving] = useState(false)
@@ -93,42 +93,42 @@ const [totalUsers, setTotalUsers] = useState(0)
   }, [editingUser, reset])
 
 
-const allUserList = async (page = currentPage) => {
-  try {
-    const loginInfo = JSON.parse(
-      secureLocalStorage.getItem('logininfo') || '{}'
-    )
+  const allUserList = async (page = currentPage) => {
+    try {
+      const loginInfo = JSON.parse(
+        secureLocalStorage.getItem('logininfo') || '{}'
+      )
 
-    const response = await fetch(
-      `${setting.api}/api/users/getAllUser?page=${page}&limit=${itemsPerPage}`,
-      {
-        method: 'GET',
-        mode: 'cors',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: 'Bearer ' + (loginInfo.token || ''),
-        },
+      const response = await fetch(
+        `${setting.api}/api/users/getAllUser?page=${page}&limit=${itemsPerPage}`,
+        {
+          method: 'GET',
+          mode: 'cors',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + (loginInfo.token || ''),
+          },
+        }
+      )
+
+      const result = await response.json()
+
+      if (!response.ok || result.success !== true) {
+        throw new Error(result.message || 'Failed to fetch users')
       }
-    )
 
-    const result = await response.json()
+      setUserList(result.data || [])
+      setTotalUsers(result.totalUsers || 0)
+      setCurrentPage(result.page || page)
 
-    if (!response.ok || result.success !== true) {
-      throw new Error(result.message || 'Failed to fetch users')
+    } catch (error) {
+      console.error('Fetch Users Error:', error)
     }
-
-    setUserList(result.data || [])
-    setTotalUsers(result.totalUsers || 0)
-    setCurrentPage(result.page || page)
-
-  } catch (error) {
-    console.error('Fetch Users Error:', error)
   }
-}
 
-useEffect(() => {
-  allUserList(currentPage)
-}, [currentPage])
+  useEffect(() => {
+    allUserList(currentPage)
+  }, [currentPage])
 
 
   const saveUser = async (data) => {
@@ -179,8 +179,8 @@ useEffect(() => {
       const result = await res.json()
 
       if (res.ok && (result.success === true || result.status === true)) {
-      setCurrentPage(1)
-await allUserList(1)
+        setCurrentPage(1)
+        await allUserList(1)
         reset()
         setEditingUser(null)
         setVisible(false)
@@ -261,16 +261,16 @@ await allUserList(1)
         return
       }
 
-     const nextPage =
-  userList.length === 1 && currentPage > 1
-    ? currentPage - 1
-    : currentPage
+      const nextPage =
+        userList.length === 1 && currentPage > 1
+          ? currentPage - 1
+          : currentPage
 
-if (nextPage !== currentPage) {
-  setCurrentPage(nextPage)
-} else {
-  await allUserList(currentPage)
-}
+      if (nextPage !== currentPage) {
+        setCurrentPage(nextPage)
+      } else {
+        await allUserList(currentPage)
+      }
     } catch (error) {
       console.error('Error deleting user:', error)
       alert('Something went wrong while deleting the user')
@@ -279,9 +279,9 @@ if (nextPage !== currentPage) {
     }
   }
 
- const totalPages = Math.ceil(totalUsers / itemsPerPage)
-const startIndex = (currentPage - 1) * itemsPerPage
-const paginatedItems = userList
+  const totalPages = Math.ceil(totalUsers / itemsPerPage)
+  const startIndex = (currentPage - 1) * itemsPerPage
+  const paginatedItems = userList
 
   return (
     <div>
@@ -407,48 +407,48 @@ const paginatedItems = userList
             </CTableBody>
           </CTable>
 
-     
-{totalPages > 0 && (
-  <div className="d-flex justify-content-between align-items-center mt-3 flex-wrap gap-2">
 
-    <span>
-      Showing {startIndex + 1} to{' '}
-      {Math.min(startIndex + userList.length, totalUsers)} of {totalUsers} users
-    </span>
+          {totalPages > 0 && (
+            <div className="d-flex justify-content-between align-items-center mt-3 flex-wrap gap-2">
 
-    <CPagination className="mb-0">
-      <CPaginationItem
-        disabled={currentPage === 1}
-        onClick={() =>
-          setCurrentPage((prev) => Math.max(1, prev - 1))
-        }
-      >
-        Previous
-      </CPaginationItem>
+              <span>
+                Showing {startIndex + 1} to{' '}
+                {Math.min(startIndex + userList.length, totalUsers)} of {totalUsers} users
+              </span>
 
-      {Array.from({ length: totalPages }, (_, index) => index + 1).map(
-        (page) => (
-          <CPaginationItem
-            key={page}
-            active={currentPage === page}
-            onClick={() => setCurrentPage(page)}
-          >
-            {page}
-          </CPaginationItem>
-        )
-      )}
+              <CPagination className="mb-0">
+                <CPaginationItem
+                  disabled={currentPage === 1}
+                  onClick={() =>
+                    setCurrentPage((prev) => Math.max(1, prev - 1))
+                  }
+                >
+                  Previous
+                </CPaginationItem>
 
-      <CPaginationItem
-        disabled={currentPage === totalPages}
-        onClick={() =>
-          setCurrentPage((prev) => Math.min(totalPages, prev + 1))
-        }
-      >
-        Next
-      </CPaginationItem>
-    </CPagination>
-  </div>
-)}
+                {Array.from({ length: totalPages }, (_, index) => index + 1).map(
+                  (page) => (
+                    <CPaginationItem
+                      key={page}
+                      active={currentPage === page}
+                      onClick={() => setCurrentPage(page)}
+                    >
+                      {page}
+                    </CPaginationItem>
+                  )
+                )}
+
+                <CPaginationItem
+                  disabled={currentPage === totalPages}
+                  onClick={() =>
+                    setCurrentPage((prev) => Math.min(totalPages, prev + 1))
+                  }
+                >
+                  Next
+                </CPaginationItem>
+              </CPagination>
+            </div>
+          )}
 
         </CCardBody>
       </CCard>
