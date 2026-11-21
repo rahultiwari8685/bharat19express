@@ -40,9 +40,11 @@ const PublishedNews = () => {
 
   const [categoryList, setCategoryList] = useState([])
 
+    const loginInfo = JSON.parse(secureLocalStorage.getItem('logininfo') || '{}')
+
   const userRole = loginInfo.role || ''
 
-  const loginInfo = JSON.parse(secureLocalStorage.getItem('logininfo') || '{}')
+
 
   const postPermission = String(
     loginInfo?.user?.post_permission ??
