@@ -180,27 +180,62 @@ function Post1() {
     }
   };
 
-  const handleInstagramShare = async () => {
-    // Open Instagram
-    window.open(
-      "https://www.instagram.com/",
-      "_blank",
-      "noopener,noreferrer"
+
+const handleInstagramShare = async () => {
+  // Open Instagram in a new tab
+  const instagramWindow = window.open(
+    "https://www.instagram.com/",
+    "_blank"
+  );
+
+  try {
+    const shareText = `${shareTitle}\n${shareUrl}`;
+
+    // Copy news title and URL
+    await navigator.clipboard.writeText(shareText);
+
+    // Increase share count
+    await increaseShare();
+
+    alert(
+      "News title and link copied successfully! Paste them into Instagram."
     );
 
-    try {
-      await navigator.clipboard.writeText(
-        `${shareTitle}\n${shareUrl}`
-      );
-
-      await increaseShare();
-
-      alert("News link copied! You can now share it on Instagram.");
-    } catch (error) {
-      console.error("Instagram share error:", error);
-      alert("Unable to copy news link. Please copy it manually.");
+    // Keep Instagram open
+    if (!instagramWindow) {
+      window.location.href = "https://www.instagram.com/";
     }
-  };
+  } catch (error) {
+    console.error("Instagram share error:", error);
+
+    alert(
+      "Unable to copy automatically. Please copy the news link manually."
+    );
+  }
+};
+
+
+  // const handleInstagramShare = async () => {
+  //   // Open Instagram
+  //   window.open(
+  //     "https://www.instagram.com/",
+  //     "_blank",
+  //     "noopener,noreferrer"
+  //   );
+
+  //   try {
+  //     await navigator.clipboard.writeText(
+  //       `${shareTitle}\n${shareUrl}`
+  //     );
+
+  //     await increaseShare();
+
+  //     alert("News link copied! You can now share it on Instagram.");
+  //   } catch (error) {
+  //     console.error("Instagram share error:", error);
+  //     alert("Unable to copy news link. Please copy it manually.");
+  //   }
+  // };
 
   const increaseView = async (id) => {
     try {
