@@ -45,6 +45,21 @@ const schema = yup.object().shape({
 const Magazine = () => {
   const [magazineList, setMagazineList] = useState([])
 
+  const storedLoginInfo = secureLocalStorage.getItem('logininfo')
+
+let loginInfo = {}
+
+try {
+  loginInfo =
+    typeof storedLoginInfo === 'string'
+      ? JSON.parse(storedLoginInfo)
+      : storedLoginInfo || {}
+} catch (error) {
+  console.error('Login info error:', error)
+}
+
+const userRole = String(loginInfo?.role || '').trim()
+
   const [editingMagazine, setEditingMagazine] = useState(null)
   const [visible, setVisible] = useState(false)
 
@@ -314,17 +329,11 @@ const Magazine = () => {
             <CTableHead color="dark">
               <CTableRow>
                 <CTableHeaderCell>#</CTableHeaderCell>
-
                 <CTableHeaderCell>Cover</CTableHeaderCell>
-
                 <CTableHeaderCell>Title</CTableHeaderCell>
-
                 <CTableHeaderCell>Category</CTableHeaderCell>
-
                 <CTableHeaderCell>Issue Date</CTableHeaderCell>
-
                 <CTableHeaderCell>Featured</CTableHeaderCell>
-
                 <CTableHeaderCell>Status</CTableHeaderCell>
                 <CTableHeaderCell>Download</CTableHeaderCell>
                 <CTableHeaderCell>Action</CTableHeaderCell>
@@ -338,8 +347,6 @@ const Magazine = () => {
                 return (
                   <CTableRow key={magazine._id}>
                     <CTableDataCell>{actualIndex + 1}</CTableDataCell>
-
-                    {/* COVER */}
 
                     <CTableDataCell>
                       {magazine.coverImage ? (
@@ -378,8 +385,6 @@ const Magazine = () => {
                         : '-'}
                     </CTableDataCell>
 
-                    {/* FEATURED */}
-
                     <CTableDataCell>
                       <span
                         className={`badge ${
@@ -389,8 +394,6 @@ const Magazine = () => {
                         {magazine.featured ? 'Featured' : 'No'}
                       </span>
                     </CTableDataCell>
-
-                    {/* STATUS */}
 
                     <CTableDataCell>
                       <span className={`badge ${magazine.status ? 'bg-success' : 'bg-dark'}`}>
@@ -415,7 +418,6 @@ const Magazine = () => {
                       )}
                     </CTableDataCell>
 
-                    {/* ACTION */}
 
                     <CTableDataCell>
                       <CButton
@@ -452,8 +454,6 @@ const Magazine = () => {
               })}
             </CTableBody>
           </CTable>
-
-          {/* PAGINATION */}
 
           {totalPages > 0 && (
             <div className="d-flex justify-content-end mt-3">

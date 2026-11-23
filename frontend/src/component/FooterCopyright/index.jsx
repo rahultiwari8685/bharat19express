@@ -104,7 +104,7 @@ const FooterCopyright = () => {
       {t("allRightsReserved", "All Rights Reserved")}
     </p>
 
-    <p style={{ color: "#ffffff", margin: 0 }}>
+    {/* <p style={{ color: "#ffffff", margin: 0 }}>
       {t("developedBy", "Developed By")}:{" "}
       <a
         href="https://techaiindia.com/"
@@ -118,7 +118,7 @@ const FooterCopyright = () => {
       >
         TechAiIndia
       </a>
-    </p>
+    </p> */}
   </div>
 </div>
 
