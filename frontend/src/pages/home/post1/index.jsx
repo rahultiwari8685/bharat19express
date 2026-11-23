@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-
 import { Link, useParams } from "react-router-dom";
 import BreadCrumb from "../../../component/BreadCrumb";
 import FontAwesome from "../../../component/uiStyle/FontAwesome";
@@ -340,8 +339,6 @@ function Post1() {
               </div>
 
               <div className="space-40" />
-
-
 
               <div className="news-thumbnail">
                 <img
