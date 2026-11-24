@@ -255,10 +255,10 @@ const FooterAreaTwo = () => {
               </div>
             </div>
 
-            <div className="space-30" />
-            <div className="space-30" /> 
+            {/* <div className="space-30" />
+            <div className="space-30" />  */}
 
-             <div className="download_btn">
+             {/* <div className="download_btn">
               <div className="space-15" />
 
               <div className="border_black" />
@@ -297,7 +297,7 @@ const FooterAreaTwo = () => {
                   </div>
                 </div>
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>
