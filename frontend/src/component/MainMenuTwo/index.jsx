@@ -120,7 +120,7 @@ return (
           <div className="row justify-content-between">
             <nav
               className="navbar navbar-expand-lg col-lg-11 align-self-center"
-              style={{ paddingTop: "4px", paddingBottom: "4px" }}
+              // style={{ paddingTop: "4px", paddingBottom: "4px" }}
             >
               <div className="site-nav-inner">
                 <button
