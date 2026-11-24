@@ -703,6 +703,7 @@ const handleInstagramShare = async () => {
 .article-content{
     font-size:20px;
     line-height:1.9;
+    justify-content:right;
     color:#222;
 }
 
