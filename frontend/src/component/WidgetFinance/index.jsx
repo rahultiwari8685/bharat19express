@@ -215,7 +215,7 @@ const WidgetFinance = () => {
           : "";
 
         return (
-          <div key={item._id} className="single_post  type18">
+          <div key={item._id} className="single_post mb20 type18">
             {/* IMAGE */}
             <div className="post_img">
               <div className="img_wrap">
