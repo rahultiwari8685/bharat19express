@@ -58,7 +58,7 @@ const Whatsnew = ({ className, title }) => {
   return (
     <div
       className={`${
-        className ? className : "white_bg padding20 border-radious5 sm-mt30"
+        className ? className : "white_bg  border-radious5 sm-mt30"
       }`}
     >
      
@@ -143,13 +143,13 @@ const Whatsnew = ({ className, title }) => {
                     </div>
 
                     {/* SEPARATOR */}
-                    {/* {i + 1 < posts.length && (
+                    {i + 1 < posts.length && (
                       <>
                         <div className="space-5" />
                         <div className="border_black" />
                         <div className="space-15" />
                       </>
-                    )} */}
+                    )}
                   </div>
                 </div>
               );
