@@ -165,7 +165,7 @@ const International = () => {
                   </div>
                 </div>
               </div>
-
+  <div className="space-10" />
               {/* VIEWS / LIKES / SHARE */}
               <ul className="mt20 like_cm">
                 <li>
