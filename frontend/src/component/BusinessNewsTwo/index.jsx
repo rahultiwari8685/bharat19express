@@ -383,9 +383,9 @@ const BusinessNewsTwo = () => {
       })}
 
       {/* SHOW MORE */}
-      <Link to="/category/trending" className="showmore">
+      {/* <Link to="/category/trending" className="showmore">
         {t("showMore", "Show more")}
-      </Link>
+      </Link> */}
     </div>
   );
 };
