@@ -1007,7 +1007,7 @@ const PostGalleryTwo = () => {
                 ) : (
                   <>
                     <div className="d-flex justify-content-between align-items-center mb-3">
-                      <h4
+                      {/* <h4
                         style={{
                           margin: 0,
                           fontSize: "20px",
@@ -1015,7 +1015,17 @@ const PostGalleryTwo = () => {
                         }}
                       >
                         {t("uttarPradesh", "Uttar Pradesh")}
-                      </h4>
+                      </h4> */}
+
+                      <div className="single_post_text">
+  <h4>
+    <Link to={newsUrl}>
+      {item.title?.length > 65
+        ? `${item.title.substring(0, 65)}...`
+        : item.title}
+    </Link>
+  </h4>
+</div>
                     </div>
 
                     {latestNewsLoading ? (
@@ -1079,12 +1089,12 @@ const PostGalleryTwo = () => {
                                 <h4
                                   style={{
                                     margin: 0,
-                                    fontSize: "14px",
-                                    lineHeight: "1.5",
-                                    fontWeight: "400",
-                                    minHeight: "75px",
-                                    display: "flex",
-                                    alignItems: "center",
+                                    // fontSize: "14px",
+                                    // lineHeight: "1.5",
+                                    // fontWeight: "400",
+                                    // minHeight: "75px",
+                                    // display: "flex",
+                                    // alignItems: "center",
                                   }}
                                 >
                                   <Link
