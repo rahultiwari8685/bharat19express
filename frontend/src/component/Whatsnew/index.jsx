@@ -58,7 +58,7 @@ const Whatsnew = ({ className, title }) => {
   return (
     <div
       className={`${
-        className ? className : "white_bg padding10 border-radious5 sm-mt30"
+        className ? className : "white_bg padding12 border-radious5 sm-mt30"
       }`}
     >
      
