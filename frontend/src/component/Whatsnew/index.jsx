@@ -61,7 +61,7 @@ const Whatsnew = ({ className, title }) => {
         className ? className : "white_bg padding20 border-radious5 sm-mt30"
       }`}
     >
-      {/* HEADING */}
+     
       <h2 className="widget-title">{title || t("whatsNew", "What's New")}</h2>
 
       <div className="popular_carousel multipleRowCarousel nav_style1">
