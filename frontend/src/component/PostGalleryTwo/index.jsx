@@ -822,11 +822,11 @@ const PostGalleryTwo = () => {
                             </Link>
                           </h4>
 
-                          <div className="meta4">
+                          {/* <div className="meta4">
                             <Link to={categoryUrl}>
                               {category?.name || "News"}
                             </Link>
-                          </div>
+                          </div> */}
 
                           {i + 1 < textNews.length && (
                             <>
@@ -1068,12 +1068,12 @@ const PostGalleryTwo = () => {
                                   style={{
                                     margin: "0 0 4px",
                                     fontSize: "10px",
-                                    fontWeight: "700",
+                                    fontWeight: "400",
                                     color: "#e31e24",
                                     textTransform: "uppercase",
                                   }}
                                 >
-                                  {category?.name || "News"}
+                                  {/* {category?.name || "News"} */}
                                 </p>
 
                                 <h5
