@@ -200,7 +200,7 @@ const WidgetFinance = () => {
   if (!worldNews.length) return null;
 
   return (
-    <div className="finance mb30 white_bg border-radious5 padding20 sm-mt30">
+    <div className="finance mb20 white_bg border-radious5 padding20 sm-mt30">
       {/* LANGUAGE-WISE HEADING */}
       <div className="heading">
         <h3 className="widget-title">{t("world", "World")}</h3>
