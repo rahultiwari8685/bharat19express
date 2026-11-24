@@ -350,7 +350,7 @@ const handleInstagramShare = async () => {
                     <WhatsappIcon size={42} round />
                   </WhatsappShareButton>
 
-                  <button
+                  {/* <button
                     type="button"
                     onClick={handleInstagramShare}
                     aria-label="Share on Instagram"
@@ -369,7 +369,7 @@ const handleInstagramShare = async () => {
                     }}
                   >
                     <FaInstagram size={25} />
-                  </button>
+                  </button> */}
                 </div>
               </div>
 

@@ -120,8 +120,8 @@ const LogoArea = ({ className, dark }) => {
                     src={`https://api.bharat19express.com/uploads/images/${siteSetting.headerLogo}`}
                     alt={siteSetting.siteName}
                     style={{
-                      width: "220px",
-                      height: "100px",
+                      width: "400px",
+                      height: "85px",
                       objectFit: "contain",
                     }}
                   />
@@ -145,7 +145,7 @@ const LogoArea = ({ className, dark }) => {
                     alt={banner.title}
                     style={{
                       width: "728px",
-                      height: "80px",
+                      height: "85px",
                       objectFit: "cover",
                     }}
                   />
