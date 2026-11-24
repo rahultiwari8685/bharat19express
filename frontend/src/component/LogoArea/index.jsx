@@ -112,8 +112,9 @@ const LogoArea = ({ className, dark }) => {
       <div className={`logo_area ${className || ""}`}>
         <div className="container">
           <div className="row">
-            <div className="col-lg-4 align-self-center">
-              <div className="logo">
+           <div className="col-lg-4 align-self-center">
+  <div className="logo" style={{ width: "100%" }}>
+             
                 <Link to="/">
                   {siteSetting?.headerLogo ? (
                     // <img
