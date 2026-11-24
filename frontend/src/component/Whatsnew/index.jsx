@@ -143,13 +143,13 @@ const Whatsnew = ({ className, title }) => {
                     </div>
 
                     {/* SEPARATOR */}
-                    {i + 1 < posts.length && (
+                    {/* {i + 1 < posts.length && (
                       <>
                         <div className="space-5" />
                         <div className="border_black" />
                         <div className="space-15" />
                       </>
-                    )}
+                    )} */}
                   </div>
                 </div>
               );
