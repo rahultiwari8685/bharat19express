@@ -764,6 +764,12 @@ const PostGalleryTwo = () => {
             </div>
 
             <div className="d-none d-xl-block col-xl-3">
+               <div
+                className="white_bg padding15 border-radious5 sm-mt10"
+                style={{
+                  border: "1px solid #e5e5e5",
+                }}
+              >
                <div className="d-flex justify-content-between align-items-center mb-3">
                       <h4
                         style={{
@@ -897,7 +903,7 @@ const PostGalleryTwo = () => {
                     ) : (
                       <p className="mb-0">No latest news available.</p>
                     )}
-                
+               </div>
               
             </div>
 
