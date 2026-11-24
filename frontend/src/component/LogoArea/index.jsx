@@ -106,57 +106,69 @@ const LogoArea = ({ className, dark }) => {
   };
 
   return (
-  <>
-    <style>{logoAreaResponsiveCSS}</style>
+    <>
+      <style>{logoAreaResponsiveCSS}</style>
 
-    <div className={`logo_area ${className || ""}`}>
-      <div className="container">
-        <div className="row">
-          <div className="col-lg-4 align-self-center">
-            <div className="logo">
-              <Link to="/">
-                {siteSetting?.headerLogo ? (
-                  <img
-                    src={`https://api.bharat19express.com/uploads/images/${siteSetting.headerLogo}`}
-                    alt={siteSetting.siteName}
-                    style={{
-                      width: "400px",
-                      height: "85px",
-                      objectFit: "contain",
-                    }}
-                  />
-                ) : (
-                  <h3>Bharat 19 Express</h3>
-                )}
-              </Link>
+      <div className={`logo_area ${className || ""}`}>
+        <div className="container">
+          <div className="row">
+            <div className="col-lg-4 align-self-center">
+              <div className="logo">
+                <Link to="/">
+                  {siteSetting?.headerLogo ? (
+                    // <img
+                    //   src={`https://api.bharat19express.com/uploads/images/${siteSetting.headerLogo}`}
+                    //   alt={siteSetting.siteName}
+                    //   style={{
+                    //     width: "400px",
+                    //     height: "85px",
+                    //     objectFit: "contain",
+                    //   }}
+                    // />
+
+                    <img
+                      src={`https://api.bharat19express.com/uploads/images/${siteSetting.headerLogo}`}
+                      alt={siteSetting.siteName}
+                      style={{
+                        width: "100%",
+                        height: "85px",
+                        objectFit: "contain",
+                        objectPosition: "left center",
+                        display: "block",
+                      }}
+                    />
+                  ) : (
+                    <h3>Bharat 19 Express</h3>
+                  )}
+                </Link>
+              </div>
             </div>
-          </div>
 
-          <div className="col-lg-8 align-self-center">
-            <div className="banner1">
-              {banner && (
-                <a
-                  href={banner.redirectUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <img
-                    src={`https://api.bharat19express.com/uploads/advertisements/${banner.image}`}
-                    alt={banner.title}
-                    style={{
-                      width: "728px",
-                      height: "85px",
-                      objectFit: "cover",
-                    }}
-                  />
-                </a>
-              )}
+            <div className="col-lg-8 align-self-center">
+              <div className="banner1">
+                {banner && (
+                  <a
+                    href={banner.redirectUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <img
+                      src={`https://api.bharat19express.com/uploads/advertisements/${banner.image}`}
+                      alt={banner.title}
+                      style={{
+                        width: "728px",
+                        height: "85px",
+                        objectFit: "cover",
+                      }}
+                    />
+                  </a>
+                )}
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-  </>
+    </>
   );
 };
 
