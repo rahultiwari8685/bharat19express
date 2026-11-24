@@ -764,85 +764,141 @@ const PostGalleryTwo = () => {
             </div>
 
             <div className="d-none d-xl-block col-xl-3">
-              <div className="white_bg padding15 border-radious5 sm-mt30">
-                <div className="d-flex justify-content-between align-items-center mb-3">
-                  <h4
-                    style={{
-                      margin: 0,
-                      fontSize: "20px",
-                      fontWeight: "700",
-                    }}
-                  >
-                    {t("nationalNews", "National News")}
-                  </h4>
-                </div>
-                {textNews.length > 0 ? (
-                  textNews.map((item, i) => {
-                    const newsUrl = `/news/${item.slug}`;
-
-                    const category = item.categories?.[0];
-
-                    const categoryUrl = category?.slug
-                      ? `/category/${category.slug}`
-                      : "#";
-
-                    const image = item.thumbnail
-                      ? `${API}/uploads/images/${item.thumbnail}`
-                      : col21;
-
-                    return (
-                      <div
-                        key={item._id}
-                        className="single_post type14 widgets_small"
+               <div className="d-flex justify-content-between align-items-center mb-3">
+                      <h4
+                        style={{
+                          margin: 0,
+                          fontSize: "20px",
+                          fontWeight: "700",
+                        }}
                       >
-                        {/* IMAGE */}
-                        <div className="post_img">
-                          <div className="img_wrap">
-                            <Link to={newsUrl}>
-                              <img
-                                src={image}
-                                alt={item.title}
+                        {t("uttarPradesh", "Uttar Pradesh")}
+                      </h4>
+                    </div>
+
+                    {latestNewsLoading ? (
+                      <p className="mb-0">Loading latest news...</p>
+                    ) : textNews.length > 0 ? (
+                      textNews.map((item, index) => {
+                        const newsUrl = `/news/${item.slug}`;
+
+                        const image = item.thumbnail
+                          ? `${API}/uploads/images/${item.thumbnail}`
+                          : col21;
+
+                        const category = item.categories?.[0];
+
+                        return (
+                          <div key={item._id || index}>
+                            <div
+                              style={{
+                                display: "flex",
+                                gap: "10px",
+                                alignItems: "center",
+                              }}
+                            >
+                              {/* IMAGE */}
+
+                              <div
                                 style={{
-                                  width: "100%",
+                                  width: "75px",
                                   height: "75px",
-                                  objectFit: "cover",
+                                  flexShrink: 0,
+                                  overflow: "hidden",
+                                  borderRadius: "5px",
                                 }}
-                              />
-                            </Link>
+                              >
+                                <Link to={newsUrl}>
+                                  <img
+                                    src={image}
+                                    alt={item.title || "Latest News"}
+                                    style={{
+                                      width: "100%",
+                                      height: "100%",
+                                      objectFit: "cover",
+                                    }}
+                                  />
+                                </Link>
+                              </div>
+
+                              <div>
+                                <p
+                                  style={{
+                                    margin: "0 0 4px",
+                                    fontSize: "10px",
+                                    fontWeight: "400",
+                                    color: "#e31e24",
+                                    textTransform: "uppercase",
+                                  }}
+                                >
+                                  {/* {category?.name || "News"} */}
+                                </p>
+
+                                <h4
+                                  style={{
+                                    margin: 0,
+                                    fontSize: "14px",
+                                    lineHeight: "1.5",
+                                    fontWeight: "400",
+                                    minHeight: "75px",
+                                    display: "flex",
+                                    alignItems: "center",
+                                  }}
+                                >
+                                  <Link
+                                    to={newsUrl}
+                                    style={{
+                                      color: "#222",
+                                      textDecoration: "none",
+                                      fontWeight: "400",
+                                    }}
+                                  >
+                                    {item.title?.length > 70
+                                      ? `${item.title.substring(0, 70)}...`
+                                      : item.title}
+                                  </Link>
+                                </h4>
+
+                                {/* <h5
+                                  style={{
+                                    margin: 0,
+                                    fontSize: "13px",
+                                    lineHeight: "1.4",
+                                    fontWeight: "700",
+                                  }}
+                                >
+                                  <Link
+                                    to={newsUrl}
+                                    style={{
+                                      color: "#222",
+                                      textDecoration: "none",
+                                    }}
+                                  >
+                                    {item.title?.length > 70
+                                      ? `${item.title.substring(0, 70)}...`
+                                      : item.title}
+                                  </Link>
+                                </h5> */}
+                              </div>
+                            </div>
+
+                            {/* SEPARATOR */}
+
+                            {index + 1 < latestNews.length && (
+                              <>
+                                <div className="space-10" />
+                                <div className="border_black" />
+                                <div className="space-10" />
+                              </>
+                            )}
                           </div>
-                        </div>
-
-                        {/* CONTENT */}
-                        <div className="single_post_text">
-                          <h4>
-                            <Link to={newsUrl}>
-                              {item.title?.length > 65
-                                ? `${item.title.substring(0, 65)}...`
-                                : item.title}
-                            </Link>
-                          </h4>
-
-                          {/* <div className="meta4">
-                            <Link to={categoryUrl}>
-                              {category?.name || "News"}
-                            </Link>
-                          </div> */}
-
-                          {i + 1 < textNews.length && (
-                            <>
-                              <div className="space-5" />
-                              <div className="border_black" />
-                              <div className="space-15" />
-                            </>
-                          )}
-                        </div>
-                      </div>
-                    );
-                  })
-                ) : (
-                  <p>Loading news...</p>
-                )}
-              </div>
+                        );
+                      })
+                    ) : (
+                      <p className="mb-0">No latest news available.</p>
+                    )}
+                
+              
             </div>
 
             <div className="d-none d-lg-block col-lg-4 col-xl-3">
