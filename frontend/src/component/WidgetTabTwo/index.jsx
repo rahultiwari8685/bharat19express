@@ -536,7 +536,7 @@ const WidgetTabPane = ({ arr, a_id, id, dark }) => {
                   <h4>
                     <Link to={newsUrl}>
                       {item.title?.length > 80
-                        ? `${item.title.substring(0, 80)}...`
+                        ? `${item.title.substring(0, 70)}...`
                         : item.title}
                     </Link>
                   </h4>
