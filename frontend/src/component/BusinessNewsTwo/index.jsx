@@ -223,7 +223,7 @@ const BusinessNewsTwo = () => {
       const language = i18n.resolvedLanguage || "en";
 
       const res = await fetch(
-        `https://api.bharat19express.com/api/news/popular?limit=6&lang=${language}`,
+        `https://api.bharat19express.com/api/news/popular?limit=7&lang=${language}`,
       );
 
       if (!res.ok) {
@@ -242,7 +242,7 @@ const BusinessNewsTwo = () => {
             (a, b) =>
               new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
           )
-          .slice(0, 6);
+          .slice(0, 7);
 
         setBusinessNews(news);
       } else {

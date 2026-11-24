@@ -242,7 +242,7 @@ const Sports = () => {
             (a, b) =>
               new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
           )
-          .slice(0, 7);
+          .slice(0, 6);
 
         setSports(news);
       } else {

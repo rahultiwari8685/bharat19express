@@ -572,9 +572,6 @@ WidgetTabPane.propTypes = {
   dark: ProtoTypes.bool,
 };
 
-/* =========================================================
-   MAIN WIDGET
-========================================================= */
 
 const WidgetTabTwo = ({ categoryId, className, dark }) => {
   const { i18n, t } = useTranslation();
@@ -587,9 +584,6 @@ const WidgetTabTwo = ({ categoryId, className, dark }) => {
 
   const [loading, setLoading] = useState(false);
 
-  /* =========================================================
-     LANGUAGE CHANGE
-  ========================================================= */
 
   useEffect(() => {
     getLatest();
@@ -602,16 +596,13 @@ const WidgetTabTwo = ({ categoryId, className, dark }) => {
     }
   }, [categoryId, i18n.resolvedLanguage]);
 
-  /* =========================================================
-     RELATED NEWS
-  ========================================================= */
 
   const getRelated = async () => {
     try {
       const language = i18n.resolvedLanguage || "en";
 
       const res = await fetch(
-        `${API}/api/news/category/${categoryId}?limit=3&lang=${language}`,
+        `${API}/api/news/category/${categoryId}?limit=4&lang=${language}`,
       );
 
       const data = await res.json();
@@ -634,9 +625,6 @@ const WidgetTabTwo = ({ categoryId, className, dark }) => {
     }
   };
 
-  /* =========================================================
-     LATEST NEWS
-  ========================================================= */
 
   const getLatest = async () => {
     try {
@@ -645,7 +633,7 @@ const WidgetTabTwo = ({ categoryId, className, dark }) => {
       const language = i18n.resolvedLanguage || "en";
 
       const res = await fetch(
-        `${API}/api/news/getAllNews?limit=3&lang=${language}`,
+        `${API}/api/news/getAllNews?limit=4&lang=${language}`,
       );
 
       const data = await res.json();
@@ -675,16 +663,13 @@ const WidgetTabTwo = ({ categoryId, className, dark }) => {
     }
   };
 
-  /* =========================================================
-     POPULAR NEWS
-  ========================================================= */
 
   const getPopular = async () => {
     try {
       const language = i18n.resolvedLanguage || "en";
 
       const res = await fetch(
-        `${API}/api/news/popular?limit=3&lang=${language}`,
+        `${API}/api/news/popular?limit=4&lang=${language}`,
       );
 
       const data = await res.json();
@@ -708,9 +693,6 @@ const WidgetTabTwo = ({ categoryId, className, dark }) => {
     }
   };
 
-  /* =========================================================
-     TAB TOGGLE
-  ========================================================= */
 
   const toggle = (tab) => {
     if (activeTab !== tab) {
