@@ -804,7 +804,7 @@ const PostGalleryTwo = () => {
                                 alt={item.title}
                                 style={{
                                   width: "100%",
-                                  height: "100px",
+                                  height: "75px",
                                   objectFit: "cover",
                                 }}
                               />
@@ -1044,7 +1044,7 @@ const PostGalleryTwo = () => {
                               <div
                                 style={{
                                   width: "75px",
-                                  height: "60px",
+                                  height: "75px",
                                   flexShrink: 0,
                                   overflow: "hidden",
                                   borderRadius: "5px",
@@ -1076,7 +1076,32 @@ const PostGalleryTwo = () => {
                                   {/* {category?.name || "News"} */}
                                 </p>
 
-                                <h5
+                                <h4
+                                  style={{
+                                    margin: 0,
+                                    fontSize: "14px",
+                                    lineHeight: "1.5",
+                                    fontWeight: "400",
+                                    minHeight: "75px",
+                                    display: "flex",
+                                    alignItems: "center",
+                                  }}
+                                >
+                                  <Link
+                                    to={newsUrl}
+                                    style={{
+                                      color: "#222",
+                                      textDecoration: "none",
+                                      fontWeight: "400",
+                                    }}
+                                  >
+                                    {item.title?.length > 70
+                                      ? `${item.title.substring(0, 70)}...`
+                                      : item.title}
+                                  </Link>
+                                </h4>
+
+                                {/* <h5
                                   style={{
                                     margin: 0,
                                     fontSize: "13px",
@@ -1095,7 +1120,7 @@ const PostGalleryTwo = () => {
                                       ? `${item.title.substring(0, 70)}...`
                                       : item.title}
                                   </Link>
-                                </h5>
+                                </h5> */}
                               </div>
                             </div>
 
