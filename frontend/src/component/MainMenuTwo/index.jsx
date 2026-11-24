@@ -6,6 +6,54 @@ import { useTranslation } from "react-i18next";
 
 
 const mainMenuResponsiveCSS = `
+
+
+  /* Desktop navigation height and alignment */
+  .main-menu .main-nav > .row {
+    min-height: 48px;
+    align-items: center;
+  }
+
+  .main-menu .main-nav nav.navbar {
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    min-height: 48px;
+  }
+
+  .main-menu .nav.navbar-nav {
+    min-height: 48px;
+    align-items: center !important;
+  }
+
+  .main-menu .nav.navbar-nav > li {
+    display: flex;
+    align-items: center;
+    height: 48px;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .main-menu .nav.navbar-nav > li > a,
+  .main-menu .nav.navbar-nav > li > a.menu-dropdown {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center;
+    height: 40px;
+    padding: 0 10px !important;
+    line-height: 1 !important;
+    box-sizing: border-box;
+    white-space: nowrap;
+  }
+
+  .main-menu .date3,
+  .main-menu .date3 a {
+    height: 48px;
+    display: flex;
+    align-items: center;
+  }
+
+
+
   @media (max-width: 767px) {
     .main-menu > .main-nav {
       width: 100%;
@@ -110,216 +158,218 @@ const MainMenuTwo = () => {
   const visibleMenus = parentMenus.slice(0, 8);
   const moreMenus = parentMenus.slice(10);
 
-return (
-  <>
-    <style>{mainMenuResponsiveCSS}</style>
+  return (
+    <>
+      <style>{mainMenuResponsiveCSS}</style>
 
-    <div className="container">
-      <div className="main-menu">
-        <div className="main-nav clearfix is-ts-sticky">
-          <div className="row justify-content-between">
-            <nav
-              className="navbar navbar-expand-lg col-lg-11 align-self-center"
+      <div className="container">
+        <div className="main-menu">
+          <div className="main-nav clearfix is-ts-sticky">
+            <div className="row justify-content-between">
+              <nav
+                className="navbar navbar-expand-lg col-lg-11 align-self-center"
               // style={{ paddingTop: "4px", paddingBottom: "4px" }}
-            >
-              <div className="site-nav-inner">
-                <button
-                  className="navbar-toggler"
-                  onClick={() => setSideShow(true)}
-                >
-                  <FontAwesome name="bars" />
-                </button>
-
-                <div
-                  id="navbarSupportedContent"
-                  className="collapse navbar-collapse navbar-responsive-collapse"
-                >
-                  <ul
-                    className="nav navbar-nav"
-                    id="scroll"
-                    style={{ alignItems: "center", minHeight: "42px" }}
+              >
+                <div className="site-nav-inner">
+                  <button
+                    className="navbar-toggler"
+                    onClick={() => setSideShow(true)}
                   >
-                    <li
-                      className="nav-item"
-                      style={{
-                        margin: 0,
-                        padding: 0,
-                        listStyle: "none",
-                      }}
+                    <FontAwesome name="bars" />
+                  </button>
+
+                  <div
+                    id="navbarSupportedContent"
+                    className="collapse navbar-collapse navbar-responsive-collapse"
+                  >
+                    <ul
+                      className="nav navbar-nav"
+                      id="scroll"
+                      style={{ alignItems: "center", minHeight: "42px" }}
                     >
-                      <NavLink
-                        to="/"
-                        end
-                        style={({ isActive }) => ({
-                          display: "inline-flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          gap: "5px",
-                          padding: "5px 10px",
-                          backgroundColor: isActive ? "#e31e24" : "transparent",
-                          color: "#fff",
-                          borderRadius: "4px",
-                          fontSize: "14px",
-                          fontWeight: 700,
-                          lineHeight: 1.2,
-                          textDecoration: "none",
-                          whiteSpace: "nowrap",
-                        })}
+                      <li
+                        className="nav-item"
+                        style={{
+                          margin: 0,
+                          padding: 0,
+                          listStyle: "none",
+                        }}
                       >
-                        <FontAwesome name="home" />
-                        <span>{t("home")}</span>
-                      </NavLink>
-                    </li>
-
-                    {visibleMenus.map((parent) => {
-                      const children = getChildren(parent._id);
-
-                      return (
-                        <li
-                          key={parent._id}
-                          className={`nav-item ${
-                            children.length > 0 ? "dropdown" : ""
-                          }`}
+                        <NavLink
+                          to="/"
+                          end
+                          style={({ isActive }) => ({
+                            display: "inline-flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            gap: "5px",
+                            height: "40px",
+                            padding: "0 10px",
+                            lineHeight: 1,
+                            boxSizing: "border-box",
+                            backgroundColor: isActive ? "#e31e24" : "transparent",
+                            color: "#fff",
+                            borderRadius: "4px",
+                            fontSize: "14px",
+                            fontWeight: 700,
+                            // lineHeight: 1.2,
+                            textDecoration: "none",
+                            whiteSpace: "nowrap",
+                          })}
                         >
-                          {children.length > 0 ? (
-                            <>
+                          <FontAwesome name="home" />
+                          <span>{t("home")}</span>
+                        </NavLink>
+                      </li>
+
+                      {visibleMenus.map((parent) => {
+                        const children = getChildren(parent._id);
+
+                        return (
+                          <li
+                            key={parent._id}
+                            className={`nav-item ${children.length > 0 ? "dropdown" : ""
+                              }`}
+                          >
+                            {children.length > 0 ? (
+                              <>
+                                <NavLink
+                                  to={`/category/${parent._id}`}
+                                  className="menu-dropdown"
+                                >
+                                  {/* {parent.name} */}
+                                  {getCategoryName(parent)}
+                                  <FontAwesome name="angle-down" />
+                                </NavLink>
+
+                                {/* Child Categories */}
+                                <ul className="dropdown-menu" role="menu">
+                                  {children.map((child) => (
+                                    <li key={child._id}>
+                                      <NavLink to={`/category/${child._id}`}>
+                                        {/* {child.name} */}
+                                        {getCategoryName(child)}
+                                      </NavLink>
+                                    </li>
+                                  ))}
+                                </ul>
+                              </>
+                            ) : (
                               <NavLink
                                 to={`/category/${parent._id}`}
                                 className="menu-dropdown"
                               >
                                 {/* {parent.name} */}
                                 {getCategoryName(parent)}
-                                <FontAwesome name="angle-down" />
                               </NavLink>
+                            )}
+                          </li>
+                        );
+                      })}
 
-                              {/* Child Categories */}
-                              <ul className="dropdown-menu" role="menu">
-                                {children.map((child) => (
-                                  <li key={child._id}>
-                                    <NavLink to={`/category/${child._id}`}>
-                                      {/* {child.name} */}
-                                      {getCategoryName(child)}
-                                    </NavLink>
-                                  </li>
-                                ))}
-                              </ul>
-                            </>
-                          ) : (
-                            <NavLink
-                              to={`/category/${parent._id}`}
-                              className="menu-dropdown"
-                            >
-                              {/* {parent.name} */}
-                              {getCategoryName(parent)}
-                            </NavLink>
-                          )}
+                      {/* MORE */}
+                      {moreMenus.length > 0 && (
+                        <li className="nav-item dropdown">
+                          <NavLink
+                            to="#"
+                            onClick={(e) => e.preventDefault()}
+                            className="menu-dropdown"
+                          >
+                            {t("more")}
+                            <FontAwesome name="angle-down" />
+                          </NavLink>
+
+                          <ul className="dropdown-menu" role="menu">
+                            {moreMenus.map((parent) => {
+                              const children = getChildren(parent._id);
+
+                              return (
+                                <li
+                                  key={parent._id}
+                                  className={
+                                    children.length > 0 ? "dropdown-submenu" : ""
+                                  }
+                                >
+                                  <NavLink to={`/category/${parent._id}`}>
+                                    {parent.name}
+                                  </NavLink>
+
+                                  {/* Children inside More */}
+                                  {children.length > 0 && (
+                                    <ul className="dropdown-menu">
+                                      {children.map((child) => (
+                                        <li key={child._id}>
+                                          <NavLink to={`/category/${child._id}`}>
+                                            {/* {child.name} */}
+                                            {getCategoryName(child)}
+                                          </NavLink>
+                                        </li>
+                                      ))}
+                                    </ul>
+                                  )}
+                                </li>
+                              );
+                            })}
+                          </ul>
                         </li>
-                      );
-                    })}
+                      )}
+                      <li
+                        className="nav-item"
+                        style={{
+                          marginLeft: "10px",
+                        }}
+                      ></li>
+                    </ul>
+                  </div>
 
-                    {/* MORE */}
-                    {moreMenus.length > 0 && (
-                      <li className="nav-item dropdown">
-                        <NavLink
-                          to="#"
-                          onClick={(e) => e.preventDefault()}
-                          className="menu-dropdown"
-                        >
-                          {t("more")}
-                          <FontAwesome name="angle-down" />
-                        </NavLink>
-
-                        <ul className="dropdown-menu" role="menu">
-                          {moreMenus.map((parent) => {
-                            const children = getChildren(parent._id);
-
-                            return (
-                              <li
-                                key={parent._id}
-                                className={
-                                  children.length > 0 ? "dropdown-submenu" : ""
-                                }
-                              >
-                                <NavLink to={`/category/${parent._id}`}>
-                                  {parent.name}
-                                </NavLink>
-
-                                {/* Children inside More */}
-                                {children.length > 0 && (
-                                  <ul className="dropdown-menu">
-                                    {children.map((child) => (
-                                      <li key={child._id}>
-                                        <NavLink to={`/category/${child._id}`}>
-                                          {/* {child.name} */}
-                                          {getCategoryName(child)}
-                                        </NavLink>
-                                      </li>
-                                    ))}
-                                  </ul>
-                                )}
-                              </li>
-                            );
-                          })}
-                        </ul>
-                      </li>
-                    )}
-                    <li
-                      className="nav-item"
-                      style={{
-                        marginLeft: "10px",
-                      }}
-                    ></li>
-                  </ul>
+                  <SidebarMenu
+                    className="themeBlue"
+                    sideShow={sideShow}
+                    setSideShow={setSideShow}
+                    menus={menuItems}
+                  />
                 </div>
-
-                <SidebarMenu
-                  className="themeBlue"
-                  sideShow={sideShow}
-                  setSideShow={setSideShow}
-                  menus={menuItems}
-                />
-              </div>
-            </nav>
-            <div
-              className="col-lg-1 text-right align-self-center"
-              style={{
-                background: "transparent",
-              }}
-            >
+              </nav>
               <div
-                className="date3"
+                className="col-lg-1 text-right align-self-center"
                 style={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "flex-end",
-                  gap: "12px",
                   background: "transparent",
                 }}
               >
-                <NavLink
-                  to="/search"
-                  aria-label="Search news"
-                  title="Search"
+                <div
+                  className="date3"
                   style={{
-                    display: "inline-flex",
+                    display: "flex",
                     alignItems: "center",
-                    justifyContent: "center",
-                    width: "42px",
-                    height: "34px",
-                    color: "#fff",
-                    fontSize: "17px",
-                    textDecoration: "none",
+                    justifyContent: "flex-end",
+                    gap: "12px",
+                    background: "transparent",
                   }}
                 >
-                  <FontAwesome name="search" />
-                </NavLink>
+                  <NavLink
+                    to="/search"
+                    aria-label="Search news"
+                    title="Search"
+                    style={{
+                      display: "inline-flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      width: "42px",
+                      height: "34px",
+                      color: "#fff",
+                      fontSize: "17px",
+                      textDecoration: "none",
+                    }}
+                  >
+                    <FontAwesome name="search" />
+                  </NavLink>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-  </>
+    </>
   );
 };
 
