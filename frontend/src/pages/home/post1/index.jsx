@@ -700,11 +700,27 @@ const handleInstagramShare = async () => {
     transform:scale(1.1);
 }
 
-.article-content{
-    font-size:20px;
-    line-height:1.9;
-    justify-content:right;
-    color:#222;
+.article-content {
+    font-size: 20px;
+    line-height: 1.9;
+    color: #222;
+    text-align: justify;
+    text-justify: inter-word;
+}
+
+.article-content p {
+    font-size: 20px;
+    line-height: 1.9;
+    margin-bottom: 20px;
+    text-align: justify;
+    text-justify: inter-word;
+}
+
+.article-content h1,
+.article-content h2,
+.article-content h3,
+.article-content h4 {
+    text-align: left;
 }
 
 .article-content p{
