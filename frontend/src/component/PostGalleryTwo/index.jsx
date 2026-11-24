@@ -764,108 +764,106 @@ const PostGalleryTwo = () => {
             </div>
 
             <div className="d-none d-xl-block col-xl-3">
-               <div
-                className="white_bg padding15 border-radious5 sm-mt10"
-                style={{
-                  border: "1px solid #e5e5e5",
-                }}
+              <div
+                className="white_bg padding15 border-radious5 sm-mt30"
+                style={{ height: "100%" }}
               >
-               <div className="d-flex justify-content-between align-items-center mb-3">
-                      <h4
-                        style={{
-                          margin: 0,
-                          fontSize: "20px",
-                          fontWeight: "700",
-                        }}
-                      >
-                         {t("nationalNews", "National News")}
-                      </h4>
-                    </div>
+                <div className="d-flex justify-content-between align-items-center mb-3">
+                  <h4
+                    style={{
+                      margin: 0,
+                      fontSize: "20px",
+                      fontWeight: "700",
+                    }}
+                  >
+                    {t("nationalNews", "National News")}
+                  </h4>
+                </div>
 
-                    {latestNewsLoading ? (
-                      <p className="mb-0">Loading latest news...</p>
-                    ) : textNews.length > 0 ? (
-                      textNews.map((item, index) => {
-                        const newsUrl = `/news/${item.slug}`;
+                {latestNewsLoading ? (
+                  <p className="mb-0">Loading latest news...</p>
+                ) : textNews.length > 0 ? (
+                  textNews.map((item, index) => {
+                    const newsUrl = `/news/${item.slug}`;
 
-                        const image = item.thumbnail
-                          ? `${API}/uploads/images/${item.thumbnail}`
-                          : col21;
+                    const image = item.thumbnail
+                      ? `${API}/uploads/images/${item.thumbnail}`
+                      : col21;
 
-                        const category = item.categories?.[0];
+                    const category = item.categories?.[0];
 
-                        return (
-                          <div key={item._id || index}>
-                            <div
+                    return (
+                      <div key={item._id || index}>
+                        <div
+                          style={{
+                            display: "flex",
+                            gap: "10px",
+                            alignItems: "center",
+                          }}
+                        >
+                          {/* IMAGE */}
+
+                          <div
+                            style={{
+                              width: "75px",
+                              height: "75px",
+                              flexShrink: 0,
+                              overflow: "hidden",
+                              borderRadius: "5px",
+                            }}
+                          >
+                            <Link to={newsUrl}>
+                              <img
+                                src={image}
+                                alt={item.title || "Latest News"}
+                                style={{
+                                  width: "100%",
+                                  height: "100%",
+                                  objectFit: "cover",
+                                }}
+                              />
+                            </Link>
+                          </div>
+
+                          <div>
+                            <p
                               style={{
+                                margin: "0 0 4px",
+                                fontSize: "10px",
+                                fontWeight: "400",
+                                color: "#e31e24",
+                                textTransform: "uppercase",
+                              }}
+                            >
+                              {/* {category?.name || "News"} */}
+                            </p>
+
+                            <h4
+                              style={{
+                                margin: 0,
+                                fontSize: "14px",
+                                lineHeight: "1.5",
+                                fontWeight: "400",
+                                minHeight: "75px",
                                 display: "flex",
-                                gap: "10px",
                                 alignItems: "center",
                               }}
                             >
-                              {/* IMAGE */}
-
-                              <div
+                              <Link
+                                to={newsUrl}
                                 style={{
-                                  width: "75px",
-                                  height: "75px",
-                                  flexShrink: 0,
-                                  overflow: "hidden",
-                                  borderRadius: "5px",
+                                  color: "#222",
+                                  textDecoration: "none",
+                                  fontWeight: "400",
                                 }}
                               >
-                                <Link to={newsUrl}>
-                                  <img
-                                    src={image}
-                                    alt={item.title || "Latest News"}
-                                    style={{
-                                      width: "100%",
-                                      height: "100%",
-                                      objectFit: "cover",
-                                    }}
-                                  />
-                                </Link>
-                              </div>
+                                {item.title?.length > 70
+                                  ? `${item.title.substring(0, 70)}...`
+                                  : item.title}
+                              </Link>
+                            </h4>
 
-                              <div>
-                                <p
-                                  style={{
-                                    margin: "0 0 4px",
-                                    fontSize: "10px",
-                                    fontWeight: "400",
-                                    color: "#e31e24",
-                                    textTransform: "uppercase",
-                                  }}
-                                >
-                                  {/* {category?.name || "News"} */}
-                                </p>
-
-                                <h4
-                                  style={{
-                                    margin: 0,
-                                    fontSize: "14px",
-                                    lineHeight: "1.5",
-                                    fontWeight: "400",
-                                    minHeight: "75px",
-                                    display: "flex",
-                                    alignItems: "center",
-                                  }}
-                                >
-                                  <Link
-                                    to={newsUrl}
-                                    style={{
-                                      color: "#222",
-                                      textDecoration: "none",
-                                      fontWeight: "400",
-                                    }}
-                                  >
-                                    {item.title?.length > 70
-                                      ? `${item.title.substring(0, 70)}...`
-                                      : item.title}
-                                  </Link>
-                                </h4>
-
-                                {/* <h5
+                            {/* <h5
                                   style={{
                                     margin: 0,
                                     fontSize: "13px",
@@ -885,26 +883,26 @@ const PostGalleryTwo = () => {
                                       : item.title}
                                   </Link>
                                 </h5> */}
-                              </div>
-                            </div>
-
-                            {/* SEPARATOR */}
-
-                            {index + 1 < latestNews.length && (
-                              <>
-                                <div className="space-10" />
-                                <div className="border_black" />
-                                <div className="space-10" />
-                              </>
-                            )}
                           </div>
-                        );
-                      })
-                    ) : (
-                      <p className="mb-0">No latest news available.</p>
-                    )}
-               </div>
-              
+                        </div>
+
+                        {/* SEPARATOR */}
+
+                        {index + 1 < latestNews.length && (
+                          <>
+                            <div className="space-10" />
+                            <div className="border_black" />
+                            <div className="space-10" />
+                          </>
+                        )}
+                      </div>
+                    );
+                  })
+                ) : (
+                  <p className="mb-0">No latest news available.</p>
+                )}
+              </div>
+
             </div>
 
             <div className="d-none d-lg-block col-lg-4 col-xl-3">
@@ -912,6 +910,7 @@ const PostGalleryTwo = () => {
                 className="white_bg padding15 border-radious5 sm-mt10"
                 style={{
                   border: "1px solid #e5e5e5",
+                  height: "100%",
                 }}
               >
                 {pollLoading ? (
