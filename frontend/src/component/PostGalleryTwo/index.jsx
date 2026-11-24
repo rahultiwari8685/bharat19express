@@ -571,7 +571,7 @@ const PostGalleryTwo = () => {
                                         </span>
 
                                         {/* DATE */}
-                                        <span
+                                        {/* <span
                                           style={{
                                             display: "inline-flex",
                                             alignItems: "center",
@@ -594,7 +594,7 @@ const PostGalleryTwo = () => {
                                                 year: "numeric",
                                               })
                                             : ""}
-                                        </span>
+                                        </span> */}
                                       </div>
                                       {/* TITLE */}
                                       {/* <h2
