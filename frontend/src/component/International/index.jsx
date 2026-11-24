@@ -152,7 +152,7 @@ const International = () => {
                 <div className="col-8 align-self-center">
                   <p>{getDescription(item)}</p>
                 </div>
-
+  <div className="space-10" />
                 {/* IMAGE */}
                 <div className="col-4 align-self-center">
                   <div className="img_wrap">
