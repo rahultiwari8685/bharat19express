@@ -3,22 +3,131 @@ import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 
 
+// const logoAreaResponsiveCSS = `
+//   .logo_area .logo img {
+//     max-width: 100%;
+//     height: auto;
+//     object-fit: contain;
+//   }
+
+//   .logo_area .banner1 img {
+//     max-width: 100%;
+//     height: auto;
+//     object-fit: contain;
+//   }
+
+//   @media (max-width: 767px) {
+//     .logo_area {
+//       padding: 15px 0 !important;
+//     }
+
+//     .logo_area .container > .row {
+//       display: flex;
+//       flex-direction: column;
+//       align-items: center;
+//     }
+
+//     .logo_area .col-lg-4,
+//     .logo_area .col-lg-8 {
+//       width: 100%;
+//       max-width: 100%;
+//       text-align: center;
+//     }
+
+//     .logo_area .logo {
+//       text-align: center;
+//       margin: 0 auto;
+//     }
+
+//     .logo_area .logo img {
+//       width: 220px !important;
+//       max-width: 90%;
+//       height: 100px !important;
+//     }
+
+//     .logo_area .banner1 {
+//       margin-top: 10px;
+//       text-align: center;
+//     }
+
+//     .logo_area .banner1 img {
+//       width: 100% !important;
+//       max-width: 100%;
+//       height: auto !important;
+//     }
+//   }
+// `;
+
+
 const logoAreaResponsiveCSS = `
-  .logo_area .logo img {
+  .logo_area {
+    width: 100%;
+    padding: 10px 0 !important;
+  }
+
+  .logo_area .container {
+    width: 100%;
     max-width: 100%;
-    height: auto;
-    object-fit: contain;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+
+  .logo_area .row {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    --bs-gutter-x: 0 !important;
+    align-items: center;
+  }
+
+  .logo_area .col-lg-4,
+  .logo_area .col-lg-8 {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+
+  .logo_area .logo {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+  }
+
+  .logo_area .logo a {
+    display: block;
+    width: 100%;
+  }
+
+  .logo_area .logo img {
+    display: block;
+    width: 100% !important;
+    max-width: 100% !important;
+    height: 100px !important;
+    object-fit: cover !important;
+    object-position: center;
+  }
+
+  .logo_area .banner1 {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+  }
+
+  .logo_area .banner1 a {
+    display: block;
+    width: 100%;
   }
 
   .logo_area .banner1 img {
-    max-width: 100%;
-    height: auto;
-    object-fit: contain;
+    display: block;
+    width: 100% !important;
+    max-width: 100% !important;
+    height: 100px !important;
+    object-fit: fill;
   }
 
   @media (max-width: 767px) {
     .logo_area {
-      padding: 15px 0 !important;
+      padding: 10px 0 !important;
     }
 
     .logo_area .container > .row {
@@ -31,32 +140,32 @@ const logoAreaResponsiveCSS = `
     .logo_area .col-lg-8 {
       width: 100%;
       max-width: 100%;
-      text-align: center;
     }
 
     .logo_area .logo {
       text-align: center;
-      margin: 0 auto;
     }
 
     .logo_area .logo img {
-      width: 220px !important;
-      max-width: 90%;
-      height: 100px !important;
+      width: 100% !important;
+      height: auto !important;
+      max-height: 110px;
+      object-fit: contain !important;
     }
 
     .logo_area .banner1 {
       margin-top: 10px;
-      text-align: center;
     }
 
     .logo_area .banner1 img {
       width: 100% !important;
-      max-width: 100%;
       height: auto !important;
+      object-fit: contain;
     }
   }
 `;
+
+
 
 const LogoArea = ({ className, dark }) => {
   const [banner, setBanner] = useState(null);
@@ -127,17 +236,22 @@ const LogoArea = ({ className, dark }) => {
                     //   }}
                     // />
 
+                    // <img
+                    //   src={`https://api.bharat19express.com/uploads/images/${siteSetting.headerLogo}`}
+                    //   alt={siteSetting.siteName}
+                    //   style={{
+                    //     width: "100%",
+                    //     height: "85px",
+                    //     objectFit: "contain",
+                    //     objectPosition: "left center",
+                    //     display: "block",
+                    //   }}
+                    // />
+
                     <img
-                      src={`https://api.bharat19express.com/uploads/images/${siteSetting.headerLogo}`}
-                      alt={siteSetting.siteName}
-                      style={{
-                        width: "100%",
-                        height: "85px",
-                        objectFit: "contain",
-                        objectPosition: "left center",
-                        display: "block",
-                      }}
-                    />
+  src={`https://api.bharat19express.com/uploads/images/${siteSetting.headerLogo}`}
+  alt={siteSetting.siteName || "Bharat 19 Express"}
+/>
                   ) : (
                     <h3>Bharat 19 Express</h3>
                   )}
