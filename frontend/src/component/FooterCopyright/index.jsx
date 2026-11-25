@@ -27,40 +27,41 @@ const FooterCopyright = () => {
         backgroundColor: "#8B0000",
         color: "#ffffff",
         padding: "15px 0",
+        fontWeight: 700,
       }}
     >
       <div className="container">
         <div className="row">
-        
 
-<div className="col-lg-6 align-self-center">
-  <div
-    className="d-flex align-items-center flex-wrap"
-    style={{ gap: "25px" }}
-  >
-    <p style={{ color: "#ffffff", margin: 0 }}>
-      &copy; {new Date().getFullYear()}{" "}
-      {t("copyright", "Copyright")},{" "}
-      {t("allRightsReserved", "All Rights Reserved")}
-    </p>
 
-    {/* <p style={{ color: "#ffffff", margin: 0 }}>
-      {t("developedBy", "Developed By")}:{" "}
-      <a
-        href="https://techaiindia.com/"
-        target="_blank"
-        rel="noopener noreferrer"
-        style={{
-          color: "#ffffff",
-          textDecoration: "none",
-          fontWeight: 600,
-        }}
-      >
-        TechAiIndia
-      </a>
-    </p> */}
-  </div>
-</div>
+          <div className="col-lg-6 align-self-center">
+            <div
+              className="d-flex align-items-center flex-wrap"
+              style={{ gap: "25px" }}
+            >
+              <p style={{ color: "#ffffff", margin: 0 }}>
+                &copy; {new Date().getFullYear()}{" "}
+                {t("copyright", "Copyright")},{" "}
+                {t("allRightsReserved", "All Rights Reserved")}
+              </p>
+
+              <p style={{ color: "#ffffff", margin: 0 }}>
+                {t("developedBy", "Developed By")}:{" "}
+                <a
+                  href="https://techaiindia.com/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    color: "#ffffff",
+                    textDecoration: "none",
+                    fontWeight: 600,
+                  }}
+                >
+                  TechAiIndia
+                </a>
+              </p>
+            </div>
+          </div>
 
 
 

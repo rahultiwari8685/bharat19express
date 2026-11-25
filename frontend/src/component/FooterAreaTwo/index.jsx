@@ -232,7 +232,7 @@ const FooterAreaTwo = () => {
                 )}
               </div>
 
-              <div className="single_contact3">
+              <div className="single_contact3 mb30">
                 <h6>{t("letsChat", "Let's Chat")}</h6>
 
                 {emails.length > 0 ? (
@@ -246,8 +246,6 @@ const FooterAreaTwo = () => {
                 ) : (
                   <span>-</span>
                 )}
-                 <div className="space-20" />
-                  <div className="space-20" />
               </div>
 
               <div className="single_contact3">
