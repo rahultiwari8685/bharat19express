@@ -169,16 +169,16 @@ const FooterAreaTwo = () => {
 
   const phoneNumbers = settings?.phone
     ? settings.phone
-        .split(",")
-        .map((phone) => phone.trim())
-        .filter(Boolean)
+      .split(",")
+      .map((phone) => phone.trim())
+      .filter(Boolean)
     : [];
 
   const emails = settings?.email
     ? settings.email
-        .split(",")
-        .map((email) => email.trim())
-        .filter(Boolean)
+      .split(",")
+      .map((email) => email.trim())
+      .filter(Boolean)
     : [];
 
   return (
@@ -186,21 +186,46 @@ const FooterAreaTwo = () => {
       <div className="container">
         <div className="row">
           <div className="col-md-6 col-lg-4">
-            <div className="single_footer3 mb10">
+            <div
+              className="single_footer3"
+              style={{ margin: 0, padding: 0 }}
+            >
               {/* LOGO */}
-              <div className="logo">
-                <Link to="/">
+              <div
+                className="logo"
+                style={{
+                  margin: 0,
+                  padding: 0,
+                  lineHeight: 0,
+                }}
+              >
+                <Link
+                  to="/"
+                  style={{
+                    display: "inline-block",
+                    margin: 0,
+                    padding: 0,
+                  }}
+                >
                   {footerLogo ? (
                     <img
                       src={footerLogo}
                       alt={settings?.siteName || "Bharat 19 Express"}
+                      style={{
+                        display: "block",
+                        width: "250px",
+                        maxWidth: "100%",
+                        height: "auto",
+                        margin: 0,
+                        padding: 0,
+                      }}
                     />
                   ) : (
-                    <h3>{settings?.siteName || "Bharat 19 Express"}</h3>
+                    <h3 style={{ margin: 0 }}>
+                      {settings?.siteName || "Bharat 19 Express"}
+                    </h3>
                   )}
                 </Link>
-
-                <div className="space-20" />
               </div>
 
               {/* DESCRIPTION */}
@@ -215,15 +240,27 @@ const FooterAreaTwo = () => {
           </div>
 
           <div className="col-lg-8 col-md-6">
-            <div className="contacts3">
-              <div className="single_contact3">
+            <div
+              className="contacts3"
+              style={{
+                display: "flex",
+                alignItems: "flex-start",
+                justifyContent: "space-between",
+                gap: "20px",
+                flexWrap: "nowrap",
+              }}
+            >
+              {/* CALL */}
+              <div
+                className="single_contact3"
+                style={{ flex: "1", minWidth: 0, margin: 0 }}
+              >
                 <h6>{t("letsTalk", "Let's Talk")}</h6>
 
                 {phoneNumbers.length > 0 ? (
                   phoneNumbers.map((phone, index) => (
                     <React.Fragment key={index}>
                       <a href={`tel:${phone}`}>{phone}</a>
-
                       {index < phoneNumbers.length - 1 && <br />}
                     </React.Fragment>
                   ))
@@ -232,15 +269,18 @@ const FooterAreaTwo = () => {
                 )}
               </div>
 
-              <div className="single_contact3 mt30">
+              {/* CHAT */}
+              <div
+                className="single_contact3"
+                style={{ flex: "1", minWidth: 0, margin: 0 }}
+              >
                 <h6>{t("letsChat", "Let's Chat")}</h6>
 
                 {emails.length > 0 ? (
                   emails.map((email, index) => (
                     <React.Fragment key={index}>
                       <a href={`mailto:${email}`}>{email}</a>
-
-                      <br />
+                      {index < emails.length - 1 && <br />}
                     </React.Fragment>
                   ))
                 ) : (
@@ -248,17 +288,23 @@ const FooterAreaTwo = () => {
                 )}
               </div>
 
-              <div className="single_contact3">
+              {/* HEADQUARTERS */}
+              <div
+                className="single_contact3"
+                style={{ flex: "1.3", minWidth: 0, margin: 0 }}
+              >
                 <h6>{t("headquarters", "Headquarters")}</h6>
 
-                <p>{settings?.address || "-"}</p>
+                <p style={{ margin: 0 }}>
+                  {settings?.address || "-"}
+                </p>
               </div>
             </div>
 
             {/* <div className="space-30" />
             <div className="space-30" />  */}
 
-             {/* <div className="download_btn">
+            {/* <div className="download_btn">
               <div className="space-15" />
 
               <div className="border_black" />
