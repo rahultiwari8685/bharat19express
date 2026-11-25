@@ -182,7 +182,16 @@ const FooterAreaTwo = () => {
     : [];
 
   return (
-    <div className="footer footer_area3 white_bg">
+    // <div className="footer footer_area3 white_bg">
+    <div
+      className="footer footer_area3 white_bg"
+      style={{
+        paddingTop: "20px",
+        paddingBottom: "0px",
+        marginTop: 0,
+        marginBottom: 0,
+      }}
+    >
       <div className="container">
         <div className="row">
           <div className="col-md-6 col-lg-4">
