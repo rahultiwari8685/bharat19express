@@ -472,6 +472,7 @@ const TopBarTwo = () => {
                   color: "#fff",
                   textDecoration: "none",
                   fontSize: "14px",
+                  fontWeight: "700",
                   whiteSpace: "nowrap",
                 }}
               // style={{
@@ -505,6 +506,7 @@ const TopBarTwo = () => {
                   color: "#fff",
                   textDecoration: "none",
                   fontSize: "14px",
+                  fontWeight: "700",
                   whiteSpace: "nowrap",
                 }}
               // style={{
@@ -537,6 +539,7 @@ const TopBarTwo = () => {
                   color: "#fff",
                   textDecoration: "none",
                   fontSize: "14px",
+                  fontWeight: "700",
                   whiteSpace: "nowrap",
                 }}
               // style={{
