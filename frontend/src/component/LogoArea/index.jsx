@@ -21,11 +21,24 @@ const logoAreaResponsiveCSS = `
       padding: 15px 0 !important;
     }
 
-    .logo_area .container > .row {
+   .logo_area .container-fluid > .row {
       display: flex;
       flex-direction: column;
       align-items: center;
     }
+
+    .logo_area .banner1 {
+  width: 100%;
+}
+
+.logo_area .banner1 a {
+  display: block;
+  width: 100%;
+}
+
+.logo_area .banner1 img {
+  width: 100% !important;
+}
 
     .logo_area .col-lg-4,
     .logo_area .col-lg-8 {
@@ -110,8 +123,8 @@ const LogoArea = ({ className, dark }) => {
       <style>{logoAreaResponsiveCSS}</style>
 
       <div className={`logo_area ${className || ""}`}>
-        <div className="container">
-          <div className="row">
+        <div className="container-fluid px-0">
+          <div className="row mx-0 align-items-center">
             <div className="col-lg-4">
               <div className="logo">
                 <Link to="/">
@@ -133,9 +146,8 @@ const LogoArea = ({ className, dark }) => {
                 </Link>
               </div>
             </div>
-
-            <div className="col-lg-8">
-              <div className="banner1">
+            <div className="col-lg-8 px-3">
+              <div className="banner1" style={{ width: "100%" }}>
                 {banner && (
                   <a
                     href={banner.redirectUrl}
@@ -145,10 +157,17 @@ const LogoArea = ({ className, dark }) => {
                     <img
                       src={`https://api.bharat19express.com/uploads/advertisements/${banner.image}`}
                       alt={banner.title}
+                      // style={{
+                      //   width: "728px",
+                      //   height: "85px",
+                      //   objectFit: "cover",
+                      // }}
+
                       style={{
-                        width: "728px",
+                        width: "100%",
                         height: "85px",
-                        objectFit: "cover",
+                        objectFit: "fill",
+                        display: "block",
                       }}
                     />
                   </a>
