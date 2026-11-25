@@ -112,20 +112,10 @@ const LogoArea = ({ className, dark }) => {
       <div className={`logo_area ${className || ""}`}>
         <div className="container">
           <div className="row">
-            <div className="col-lg-4 align-self-center">
+            <div className="col-lg-4">
               <div className="logo">
                 <Link to="/">
                   {siteSetting?.headerLogo ? (
-                    // <img
-                    //   src={`https://api.bharat19express.com/uploads/images/${siteSetting.headerLogo}`}
-                    //   alt={siteSetting.siteName}
-                    //   style={{
-                    //     width: "400px",
-                    //     height: "85px",
-                    //     objectFit: "contain",
-                    //   }}
-                    // />
-
                     <img
                       src={`https://api.bharat19express.com/uploads/images/${siteSetting.headerLogo}`}
                       alt={siteSetting.siteName}
@@ -144,7 +134,7 @@ const LogoArea = ({ className, dark }) => {
               </div>
             </div>
 
-            <div className="col-lg-8 align-self-center">
+            <div className="col-lg-8">
               <div className="banner1">
                 {banner && (
                   <a
