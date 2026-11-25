@@ -264,7 +264,7 @@ const FooterAreaTwo = () => {
                 className="single_contact3"
                 style={{ flex: "1", minWidth: 0, margin: 0 }}
               >
-                <h6>{t("letsTalk", "Let's Talk")}</h6>
+                <h6 style={{ fontWeight: "700" }}>{t("letsTalk", "Let's Talk")}</h6>
 
                 {phoneNumbers.length > 0 ? (
                   phoneNumbers.map((phone, index) => (
@@ -283,7 +283,7 @@ const FooterAreaTwo = () => {
                 className="single_contact3"
                 style={{ flex: "1", minWidth: 0, margin: 0 }}
               >
-                <h6>{t("letsChat", "Let's Chat")}</h6>
+                <h6 style={{ fontWeight: "700" }}>{t("letsChat", "Let's Chat")}</h6>
 
                 {emails.length > 0 ? (
                   emails.map((email, index) => (
@@ -302,7 +302,7 @@ const FooterAreaTwo = () => {
                 className="single_contact3"
                 style={{ flex: "1.3", minWidth: 0, margin: 0 }}
               >
-                <h6>{t("headquarters", "Headquarters")}</h6>
+                <h6 style={{ fontWeight: "700" }}>{t("headquarters", "Headquarters")}</h6>
 
                 <p style={{ margin: 0 }}>
                   {settings?.address || "-"}
