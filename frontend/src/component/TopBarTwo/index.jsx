@@ -138,8 +138,6 @@ const TopBarTwo = () => {
     };
 
     fetchWeatherAndAQI();
-
-    // Refresh every 10 minutes.
     const intervalId = setInterval(fetchWeatherAndAQI, 10 * 60 * 1000);
 
     return () => {
@@ -270,7 +268,7 @@ const TopBarTwo = () => {
               boxSizing: "border-box",
             }}
           >
-            {/* LEFT: Date, weather and AQI */}
+
             <div
               className="topbar-left"
               style={{
@@ -405,20 +403,7 @@ const TopBarTwo = () => {
               <span style={{ opacity: 0.8 }}>|</span>
 
 
-              {/* <span
-  style={{ whiteSpace: "nowrap" }}
-  title={
-    weather
-      ? getWeatherDescription(weather.weather_code)
-      : "Loading weather"
-  }
->
-  <FontAwesome name="map-marker" /> {t("lucknow", "लखनऊ")}{" "}
-  {weather?.temperature_2m != null
-    ? `${Math.round(weather.temperature_2m)}°C`
-    : "--°C"}
 
-</span> */}
 
               <span
                 style={{ whiteSpace: "nowrap" }}
@@ -479,22 +464,32 @@ const TopBarTwo = () => {
             >
               <NavLink
                 to="/epaper"
+
                 style={{
                   display: "inline-flex",
                   alignItems: "center",
-                  justifyContent: "center",
-                  gap: "6px",
-                  minHeight: "34px",
-                  padding: "0 13px",
-                  borderRadius: "5px",
-                  background: "#ffffff",
-                  color: "#000000",
-                  border: "1px solid #dddddd",
-                  fontSize: "12px",
-                  fontWeight: "800",
+                  gap: "5px",
+                  color: "#fff",
                   textDecoration: "none",
+                  fontSize: "14px",
                   whiteSpace: "nowrap",
                 }}
+              // style={{
+              //   display: "inline-flex",
+              //   alignItems: "center",
+              //   justifyContent: "center",
+              //   gap: "6px",
+              //   minHeight: "34px",
+              //   padding: "0 13px",
+              //   borderRadius: "5px",
+              //   background: "#ffffff",
+              //   color: "#000000",
+              //   border: "1px solid #dddddd",
+              //   fontSize: "12px",
+              //   fontWeight: "800",
+              //   textDecoration: "none",
+              //   whiteSpace: "nowrap",
+              // }}
               >
                 <FontAwesome name="newspaper-o" />
                 <span>{t("epaper", "Epaper")}</span>
@@ -502,21 +497,31 @@ const TopBarTwo = () => {
 
               <NavLink
                 to="/gallery"
+
                 style={{
                   display: "inline-flex",
                   alignItems: "center",
-                  justifyContent: "center",
-                  gap: "6px",
-                  minHeight: "34px",
-                  padding: "0 13px",
-                  borderRadius: "5px",
-                  background: "#130d0d",
+                  gap: "5px",
                   color: "#fff",
-                  fontSize: "12px",
-                  fontWeight: "800",
                   textDecoration: "none",
+                  fontSize: "14px",
                   whiteSpace: "nowrap",
                 }}
+              // style={{
+              //   display: "inline-flex",
+              //   alignItems: "center",
+              //   justifyContent: "center",
+              //   gap: "6px",
+              //   minHeight: "34px",
+              //   padding: "0 13px",
+              //   borderRadius: "5px",
+              //   background: "#130d0d",
+              //   color: "#fff",
+              //   fontSize: "12px",
+              //   fontWeight: "800",
+              //   textDecoration: "none",
+              //   whiteSpace: "nowrap",
+              // }}
               >
                 <FontAwesome name="newspaper-o" />
                 <span>{t("gallery", "Gallery")}</span>
@@ -524,22 +529,32 @@ const TopBarTwo = () => {
 
               <NavLink
                 to="/register"
+
                 style={{
                   display: "inline-flex",
                   alignItems: "center",
-                  justifyContent: "center",
-                  gap: "6px",
-                  minHeight: "34px",
-                  padding: "0 13px",
-                  borderRadius: "5px",
-                  background: "#ffffff",
-                  color: "#000000",
-                  border: "1px solid #dddddd",
-                  fontSize: "12px",
-                  fontWeight: "800",
+                  gap: "5px",
+                  color: "#fff",
                   textDecoration: "none",
+                  fontSize: "14px",
                   whiteSpace: "nowrap",
                 }}
+              // style={{
+              //   display: "inline-flex",
+              //   alignItems: "center",
+              //   justifyContent: "center",
+              //   gap: "6px",
+              //   minHeight: "34px",
+              //   padding: "0 13px",
+              //   borderRadius: "5px",
+              //   background: "#ffffff",
+              //   color: "#000000",
+              //   border: "1px solid #dddddd",
+              //   fontSize: "12px",
+              //   fontWeight: "800",
+              //   textDecoration: "none",
+              //   whiteSpace: "nowrap",
+              // }}
               >
                 <FontAwesome name="newspaper-o" />
                 <span>{t("subscribe", "Subscribe")}</span>
