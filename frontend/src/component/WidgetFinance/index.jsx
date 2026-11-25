@@ -270,6 +270,7 @@ const WidgetFinance = () => {
                     : item.subtitle
                   : ""}
               </p>
+                <div className="space-10" />
 
               {/* META */}
               <ul className="mt20 like_cm">

@@ -60,7 +60,7 @@ const res = await fetch(
   return (
     <div
       className={`${
-        className ? className : "white_bg padding30 border-radious5 sm-mt30"
+        className ? className : "white_bg padding20 border-radious5 sm-mt30"
       }`}
     >
      
