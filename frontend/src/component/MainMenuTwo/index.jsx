@@ -280,7 +280,8 @@ const getMenu = async () => {
                                 className="menu-dropdown"
                               >
                                 {/* {parent.name} */}
-                                {getCategoryName(parent)}
+                                {/* {getCategoryName(parent)} */}
+                                  {child.name}
                               </NavLink>
                             )}
                           </li>
