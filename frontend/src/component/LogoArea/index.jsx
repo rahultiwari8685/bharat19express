@@ -16,6 +16,29 @@ const logoAreaResponsiveCSS = `
     object-fit: contain;
   }
 
+  .logo_area,
+.logo_area .container-fluid {
+  width: 100%;
+  max-width: 100%;
+}
+
+.logo_area .row {
+  width: 100%;
+}
+
+.logo_area .banner1,
+.logo_area .banner1 a {
+  display: block;
+  width: 100%;
+}
+
+.logo_area .banner1 img {
+  width: 100% !important;
+  max-width: none !important;
+  height: 85px !important;
+  object-fit: fill !important;
+}
+
   @media (max-width: 767px) {
     .logo_area {
       padding: 15px 0 !important;
@@ -125,7 +148,7 @@ const LogoArea = ({ className, dark }) => {
       <div className={`logo_area ${className || ""}`}>
         <div className="container-fluid px-0">
           <div className="row mx-0 align-items-center">
-            <div className="col-lg-4">
+            <div className="col-lg-3 col-md-4 px-3">
               <div className="logo">
                 <Link to="/">
                   {siteSetting?.headerLogo ? (
@@ -146,7 +169,7 @@ const LogoArea = ({ className, dark }) => {
                 </Link>
               </div>
             </div>
-            <div className="col-lg-8 px-3">
+            <div className="col-lg-9 col-md-8 px-3">
               <div className="banner1" style={{ width: "100%" }}>
                 {banner && (
                   <a
@@ -165,6 +188,7 @@ const LogoArea = ({ className, dark }) => {
 
                       style={{
                         width: "100%",
+                        maxWidth: "none",
                         height: "85px",
                         objectFit: "fill",
                         display: "block",
