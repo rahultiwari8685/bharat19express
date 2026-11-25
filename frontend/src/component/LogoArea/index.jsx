@@ -29,8 +29,34 @@ const logoAreaResponsiveCSS = `
 .logo_area .container {
   width: 100%;
   max-width: 1080px;
-  margin-left: auto;
-  margin-right: auto;
+  margin: 0 auto;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.logo_area .row {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.logo_area .row > [class*="col-"] {
+  padding-left: 10px;
+  padding-right: 10px;
+  min-width: 0;
+}
+
+.logo_area .banner1,
+.logo_area .banner1 a {
+  width: 100%;
+  display: block;
+}
+
+.logo_area .banner1 img {
+  width: 100%;
+  max-width: 100%;
+  height: 85px;
+  display: block;
+  object-fit: fill;
 }
 
 .logo_area .banner1,
@@ -189,7 +215,7 @@ const LogoArea = ({ className, dark }) => {
                 </Link>
               </div>
             </div>
-        <div className="col-lg-9 col-md-8">
+     <div className="col-lg-9 col-md-8">
               <div className="banner1" style={{ width: "100%" }}>
                 {banner && (
                   <a
