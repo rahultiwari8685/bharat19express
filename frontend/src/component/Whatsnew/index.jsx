@@ -24,7 +24,7 @@ const Whatsnew = ({ className, title }) => {
       const language = i18n.resolvedLanguage || "en";
 
       const res = await fetch(
-        `${API}/api/news/getAllNews?limit=8&lang=${language}`,
+        `${API}/api/news/getAllNews?limit=10&lang=${language}`,
       );
 
       const data = await res.json();
@@ -41,7 +41,7 @@ const Whatsnew = ({ className, title }) => {
             (a, b) =>
               new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
           )
-          .slice(0, 15);
+          .slice(0, 10);
 
         setPosts(news);
       } else {
