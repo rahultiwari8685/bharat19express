@@ -33,7 +33,6 @@ const schema = yup.object().shape({
   name: yup.string().required('Name is required'),
   bio: yup.string().required('Bio is required'),
   email: yup.string().required('Phone is required'),
-  // password: yup.string().required('Enter HSN Code'),
   password: yup.string().when('$isEditing', {
     is: true,
     then: (schema) => schema.notRequired(),
@@ -54,6 +53,9 @@ const Users = () => {
   const [visible, setVisible] = useState(false)
   const [saving, setSaving] = useState(false)
   const [deletingId, setDeletingId] = useState(null)
+
+  const [imagePreview, setImagePreview] = useState(null)
+
   const [currentPage, setCurrentPage] = useState(1)
   const itemsPerPage = 10
 
@@ -81,6 +83,7 @@ const Users = () => {
         email: editingUser.email || '',
         phone: editingUser.phone || '',
         password: '',
+        bio: editingUser.bio || '',
         role: editingUser.role || '',
         post_permission: editingUser.post_permission || '',
         user_status: editingUser.user_status || '',
@@ -130,6 +133,20 @@ const Users = () => {
     allUserList(currentPage)
   }, [currentPage])
 
+
+  useEffect(() => {
+    const selectedImage = watch('image')?.[0]
+
+    if (!selectedImage) {
+      setImagePreview(null)
+      return
+    }
+
+    const previewUrl = URL.createObjectURL(selectedImage)
+    setImagePreview(previewUrl)
+
+    return () => URL.revokeObjectURL(previewUrl)
+  }, [watch('image')?.[0]])
 
   const saveUser = async (data) => {
     if (saving) return
@@ -208,34 +225,6 @@ const Users = () => {
       deleteUser(id)
     }
   }
-
-  // const deleteUser = async (id) => {
-  //   try {
-  //     const loginInfo = JSON.parse(secureLocalStorage.getItem('logininfo') || '{}')
-
-  //     const token = loginInfo?.token || ''
-
-  //     const response = await fetch(`${setting.api}/api/users/deleteUser/${id}`, {
-  //       method: 'POST',
-  //       mode: 'cors',
-  //       headers: {
-  //         Authorization: 'Bearer ' + token,
-  //         'Content-Type': 'application/json',
-  //       },
-  //     })
-
-  //     const result = await response.json()
-
-  //     if (!response.ok) {
-  //       console.error('Delete failed:', result)
-  //     } else {
-  //       console.log('User deleted:', result)
-  //       allUserList() // refresh
-  //     }
-  //   } catch (err) {
-  //     console.error('Error deleting user:', err)
-  //   }
-  // }
 
   const deleteUser = async (id) => {
     if (deletingId !== null) return
@@ -567,13 +556,32 @@ const Users = () => {
             </CRow>
 
             <CRow className="mb-3">
-              <CCol md={6}>
+              <CCol md={12}>
                 <CFormInput
                   type="file"
                   label="Profile Image"
                   accept="image/*"
                   {...register('image')}
                 />
+
+                {imagePreview && (
+                  <div className="mt-3">
+                    <label className="form-label fw-semibold">Image Preview</label>
+                    <div>
+                      <img
+                        src={imagePreview}
+                        alt="Profile Preview"
+                        style={{
+                          width: "120px",
+                          height: "120px",
+                          objectFit: "cover",
+                          borderRadius: "10px",
+                          border: "1px solid #ddd",
+                        }}
+                      />
+                    </div>
+                  </div>
+                )}
               </CCol>
             </CRow>
 
