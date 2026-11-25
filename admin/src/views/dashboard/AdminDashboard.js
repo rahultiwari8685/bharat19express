@@ -124,12 +124,6 @@ const AdminDashboard = () => {
           'Admin'
         )
 
-        // const [newsResponse, categoryResponse] = await Promise.all([
-        //   fetch(`${setting.api}/api/news/getAllNews`, {
-        //     headers: token ? { Authorization: `Bearer ${token}` } : {},
-        //   }),
-        //   fetch(`${setting.api}/api/categories/getAllCategory`),
-        // ])
 
         const [newsResponse, categoryResponse, mostViewedResponse] =
           await Promise.all([
@@ -152,15 +146,6 @@ const AdminDashboard = () => {
           throw new Error('Unable to load dashboard data.')
         }
 
-        // if (!newsResponse.ok || !categoryResponse.ok) {
-        //   throw new Error('Unable to load dashboard data.')
-        // }
-
-        // const [newsResult, categoryResult] = await Promise.all([
-        //   newsResponse.json(),
-        //   categoryResponse.json(),
-        // ])
-
         const [newsResult, categoryResult, mostViewedResult] =
           await Promise.all([
             newsResponse.json(),
@@ -176,10 +161,6 @@ const AdminDashboard = () => {
           throw new Error(categoryResult.message || 'Unable to load categories.')
         }
 
-        // if (!cancelled) {
-        //   setNews(Array.isArray(newsResult.data) ? newsResult.data : [])
-        //   setCategories(Array.isArray(categoryResult.data) ? categoryResult.data : [])
-        // }
 
         if (!cancelled) {
           setNews(Array.isArray(newsResult.data) ? newsResult.data : [])
@@ -331,28 +312,66 @@ const AdminDashboard = () => {
 
   const maxStat = Math.max(...stats.map((item) => item.count), 1)
 
-  const horizontalChartOptions = {
-    indexAxis: 'y',
-    responsive: true,
-    maintainAspectRatio: false,
-    plugins: {
-      legend: { display: false },
+  // const horizontalChartOptions = {
+  //   indexAxis: 'y',
+  //   responsive: true,
+  //   maintainAspectRatio: false,
+  //   plugins: {
+  //     legend: { display: false },
+  //   },
+  //   scales: {
+  //     x: {
+  //       beginAtZero: true,
+  //       grid: { color: '#edf1f7' },
+  //       ticks: { precision: 0 },
+  //     },
+  //     y: {
+  //       grid: { display: false },
+  //       ticks: {
+  //         color: '#475569',
+  //         font: { size: 11 },
+  //       },
+  //     },
+  //   },
+  // }
+
+  const verticalChartOptions = {
+  responsive: true,
+  maintainAspectRatio: false,
+  plugins: {
+    legend: {
+      display: false,
     },
-    scales: {
-      x: {
-        beginAtZero: true,
-        grid: { color: '#edf1f7' },
-        ticks: { precision: 0 },
+    tooltip: {
+      enabled: true,
+    },
+  },
+  scales: {
+    x: {
+      grid: {
+        display: false,
       },
-      y: {
-        grid: { display: false },
-        ticks: {
-          color: '#475569',
-          font: { size: 11 },
+      ticks: {
+        color: '#475569',
+        font: {
+          size: 10,
         },
+        maxRotation: 45,
+        minRotation: 25,
       },
     },
-  }
+    y: {
+      beginAtZero: true,
+      grid: {
+        color: '#edf1f7',
+      },
+      ticks: {
+        precision: 0,
+        color: '#475569',
+      },
+    },
+  },
+}
 
   const panelHeading = (icon, title, subtitle, color) => (
     <div className="d-flex align-items-center gap-3 mb-4">
@@ -401,7 +420,6 @@ const AdminDashboard = () => {
         boxSizing: 'border-box',
       }}
     >
-      {/* Welcome banner */}
       <div
         className="d-flex flex-wrap align-items-center justify-content-between gap-3 p-4 mb-4"
         style={{
@@ -470,7 +488,6 @@ const AdminDashboard = () => {
         </div>
       )}
 
-      {/* Colorful summary cards */}
       <CRow className="g-3 mb-4">
         {stats.map((item) => (
           <CCol xs={12} sm={6} lg={4} xxl={2} key={item.title}>
@@ -545,7 +562,6 @@ const AdminDashboard = () => {
         ))}
       </CRow>
 
-      {/* Most viewed and today's authors */}
       <CRow className="g-4 mb-4">
         <CCol xs={12} xl={7}>
           <CCard className="h-100" style={cardStyle}>
@@ -557,9 +573,8 @@ const AdminDashboard = () => {
                 COLORS.blue,
               )}
 
-
               {mostViewedLast24Hours.length > 0 ? (
-                <div style={{ height: 310, width: '100%', minWidth: 0 }}>
+              <div style={{ height: 380, width: '100%', minWidth: 0 }}>
                   <CChartBar
                     data={{
                       labels: mostViewedLast24Hours.map((item) => {
@@ -588,7 +603,7 @@ const AdminDashboard = () => {
                         },
                       ],
                     }}
-                    options={horizontalChartOptions}
+                  options={verticalChartOptions}
                   />
                 </div>
               ) : (
@@ -758,7 +773,6 @@ const AdminDashboard = () => {
         </CCol>
       </CRow>
 
-      {/* Publishing activity and recent news */}
       <CRow className="g-4">
         <CCol xs={12} xl={7}>
           <CCard className="h-100" style={cardStyle}>

@@ -33,7 +33,7 @@ const CorrespondenceDashboard = () => {
 
   return (
     <RoleDashboard
-      title="Correspondence Dashboard"
+      title="Correspondence"
       description="Manage your news submissions and publishing work."
       links={links}
     />

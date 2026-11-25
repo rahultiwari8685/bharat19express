@@ -23,14 +23,14 @@ const RoleDashboard = ({ title, description, links = [] }) => {
     console.error('Login info error:', error)
   }
 
-const userName =
-  loginData?.user?.name ||
-  loginData?.user?.fullName ||
-  loginData?.name ||
-  loginData?.fullName ||
-  loginData?.username ||
-  loginData?.userName ||
-  'User'
+  const userName =
+    loginData?.user?.name ||
+    loginData?.user?.fullName ||
+    loginData?.name ||
+    loginData?.fullName ||
+    loginData?.username ||
+    loginData?.userName ||
+    'User'
 
   return (
     <div className="container-fluid p-3 p-md-4">
@@ -73,12 +73,12 @@ const userName =
                   {item.description}
                 </p>
 
-              <Link
-  to={item.to}
-  className="btn btn-primary btn-sm"
->
-  Open {item.name}
-</Link>
+                <Link
+                  to={item.to}
+                  className="btn btn-primary btn-sm"
+                >
+                  Open {item.name}
+                </Link>
               </CCardBody>
             </CCard>
           </CCol>

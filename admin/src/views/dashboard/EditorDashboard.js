@@ -38,7 +38,7 @@ const EditorDashboard = () => {
 
   return (
     <RoleDashboard
-      title="Editor Dashboard"
+      title="Editor"
       description="Manage news content, drafts and publishing activities."
       links={links}
     />
