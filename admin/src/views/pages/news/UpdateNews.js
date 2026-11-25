@@ -54,10 +54,10 @@ const UpdateNews = () => {
   const [loginInfo, setLoginInfo] = useState(null)
 
   const postPermission = String(
-  loginInfo?.user?.post_permission ??
-  loginInfo?.post_permission ??
-  ''
-).trim()
+    loginInfo?.user?.post_permission ??
+    loginInfo?.post_permission ??
+    ''
+  ).trim()
 
   const [thumbnailPreview, setThumbnailPreview] = useState(null)
 
@@ -81,7 +81,7 @@ const UpdateNews = () => {
       youtubeUrl: '',
       videoFile: null,
       thumbnail: null,
-        thumbnailCaption: '',
+      thumbnailCaption: '',
     },
   })
 
@@ -246,7 +246,7 @@ const UpdateNews = () => {
         videoFile: null,
 
         thumbnail: null,
-         thumbnailCaption: selected.thumbnailCaption || '',
+        thumbnailCaption: selected.thumbnailCaption || '',
       })
 
       /*
@@ -326,74 +326,29 @@ const UpdateNews = () => {
     try {
       const formData = new FormData()
 
-      /*
-       * News ID
-       */
-
       formData.append('id', id)
-
-      /*
-       * Hindi source title
-       */
 
       formData.append('title', data.title || '')
 
-      /*
-       * Hindi source subtitle
-       */
-
       formData.append('sub_title', data.subtitle || '')
-
-      /*
-       * News type
-       */
 
       formData.append('video_type', data.videoType || '')
 
-      /*
-       * Status
-       */
-
       formData.append('type', data.type || '')
 
-      /*
-       * Slug
-       */
-
       formData.append('slug', data.slug || '')
-
-      /*
-       * Categories
-       */
 
       formData.append('categories', JSON.stringify(data.categories || []))
       formData.append('thumbnailCaption', data.thumbnailCaption || '')
 
-      /*
-       * Hindi content
-       */
 
       if (data.videoType === '2') {
         formData.append('content', content || '')
       }
 
-      /*
-       * YouTube URL
-       */
-
       if (data.videoType === '1') {
         formData.append('youtube_url', data.youtubeUrl || '')
       }
-
-      /*
-       * Hindi translation object.
-       *
-       * This tells the backend that Hindi
-       * is the source language.
-       *
-       * Backend will regenerate the other
-       * languages using Google Translate.
-       */
 
       formData.append(
         'translations',
@@ -408,17 +363,11 @@ const UpdateNews = () => {
         }),
       )
 
-      /*
-       * New thumbnail
-       */
 
       if (data.thumbnail?.[0]) {
         formData.append('thumbnail', data.thumbnail[0])
       }
 
-      /*
-       * Update API
-       */
 
       const response = await fetch(`${setting.api}/api/news/updateNews`, {
         method: 'POST',
@@ -440,15 +389,9 @@ const UpdateNews = () => {
         return
       }
 
-      /*
-       * Success
-       */
 
       toast.success('News Updated Successfully!')
 
-      /*
-       * Navigate back.
-       */
 
       navigate('/PublishedNews')
     } catch (error) {
@@ -533,10 +476,6 @@ const UpdateNews = () => {
                 </CCol>
               </CRow>
 
-              {/* ===================================================
-                  CATEGORIES
-              ==================================================== */}
-
               <CRow className="mb-3">
                 <CCol md={12}>
                   <p className="mb-2">Select Categories</p>
@@ -545,9 +484,9 @@ const UpdateNews = () => {
                     <CDropdownToggle color="secondary">
                       {formDataValues.categories?.length > 0
                         ? categoriesList
-                            .filter((category) => formDataValues.categories.includes(category._id))
-                            .map((category) => category.name)
-                            .join(', ')
+                          .filter((category) => formDataValues.categories.includes(category._id))
+                          .map((category) => category.name)
+                          .join(', ')
                         : 'Select Categories'}
                     </CDropdownToggle>
 
@@ -577,35 +516,32 @@ const UpdateNews = () => {
                 </CCol>
               </CRow>
 
-              {/* ===================================================
-                  NEWS STATUS / NEWS TYPE
-              ==================================================== */}
 
               <CRow className="mb-3 mt-2">
 
                 {postPermission !== '1' && (
-  <CCol md={6}>
-    <CFormSelect
-      label="Type"
-      {...register('type')}
-      value={formDataValues.type}
-      onChange={(event) =>
-        setValue('type', event.target.value, {
-          shouldDirty: true,
-        })
-      }
-    >
-      <option value="">Select Type</option>
-      <option value="1">Published</option>
-      <option value="2">Draft</option>
-      <option value="3">Scheduled</option>
-    </CFormSelect>
+                  <CCol md={6}>
+                    <CFormSelect
+                      label="Type"
+                      {...register('type')}
+                      value={formDataValues.type}
+                      onChange={(event) =>
+                        setValue('type', event.target.value, {
+                          shouldDirty: true,
+                        })
+                      }
+                    >
+                      <option value="">Select Type</option>
+                      <option value="1">Published</option>
+                      <option value="2">Draft</option>
+                      <option value="3">Scheduled</option>
+                    </CFormSelect>
 
-    {errors.type && (
-      <small className="text-danger">{errors.type.message}</small>
-    )}
-  </CCol>
-)}
+                    {errors.type && (
+                      <small className="text-danger">{errors.type.message}</small>
+                    )}
+                  </CCol>
+                )}
                 {/* <CCol md={6}>
                   <CFormSelect
                     label="Type"
@@ -654,10 +590,6 @@ const UpdateNews = () => {
                 </CCol>
               </CRow>
 
-              {/* ===================================================
-                  YOUTUBE URL
-              ==================================================== */}
-
               {formDataValues.videoType === '1' && (
                 <CFormInput
                   type="url"
@@ -668,10 +600,7 @@ const UpdateNews = () => {
                 />
               )}
 
-              {/* ===================================================
-                  HINDI CONTENT
-              ==================================================== */}
-
+        
               {formDataValues.videoType === '2' && (
                 <>
                   <div className="mb-4">
@@ -741,9 +670,6 @@ const UpdateNews = () => {
                     />
                   </div>
 
-                  {/* =================================================
-                      THUMBNAIL
-                  ================================================== */}
 
                   <CCol md={12} className="mb-4">
                     <CFormInput
@@ -753,12 +679,12 @@ const UpdateNews = () => {
                       {...register('thumbnail')}
                     />
                     <CFormInput
-  type="text"
-  label="Thumbnail Caption"
-  placeholder="Enter image caption"
-  className="mt-3"
-  {...register('thumbnailCaption')}
-/>
+                      type="text"
+                      label="Thumbnail Caption"
+                      placeholder="Enter image caption"
+                      className="mt-3"
+                      {...register('thumbnailCaption')}
+                    />
 
                     {/* New thumbnail */}
 

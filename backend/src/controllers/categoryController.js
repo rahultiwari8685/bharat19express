@@ -134,18 +134,6 @@ const generateCategoryTranslations = async (name) => {
   return translations;
 };
 
-// const applyCategoryTranslation = (category, lang = "en") => {
-//   const item =
-//     typeof category.toObject === "function"
-//       ? category.toObject()
-//       : { ...category };
-
-//   const translatedName = item.translations?.[lang]?.name?.trim();
-
-//   item.name = translatedName || item.name;
-
-//   return item;
-// };
 
 const applyCategoryTranslation = (category, lang = "en") => {
   const item =
@@ -153,11 +141,9 @@ const applyCategoryTranslation = (category, lang = "en") => {
       ? category.toObject()
       : { ...category };
 
-  // First try database translation
   let translatedName = item.translations?.[lang]?.name?.trim();
 
-  // If Urdu translation doesn't exist in old records,
-  // use our predefined translation.
+
   if (!translatedName && lang !== "en") {
     const englishName =
       item.translations?.en?.name?.trim() || item.name?.trim();
@@ -169,10 +155,20 @@ const applyCategoryTranslation = (category, lang = "en") => {
     }
   }
 
-  // Final fallback
+
   item.name = translatedName || item.translations?.en?.name || item.name;
 
   return item;
+};
+
+const generateSafeCategorySlug = (name, fallback) => {
+  const generatedSlug = slugify(name || "", {
+    lower: true,
+    strict: true,
+    trim: true,
+  });
+
+  return generatedSlug || fallback;
 };
 
 export const createCategory = async (req, res) => {
@@ -200,11 +196,10 @@ export const createCategory = async (req, res) => {
 
     const parsedTranslations = await generateCategoryTranslations(name);
 
-    const slug = slugify(name, {
-      lower: true,
-      strict: true,
-      trim: true,
-    });
+    const slug = generateSafeCategorySlug(
+      name,
+      `category-${Date.now()}`
+    );
 
     const category = await Category.create({
       name,
@@ -216,9 +211,9 @@ export const createCategory = async (req, res) => {
 
       showInMenu:
         showInMenu === "1" ||
-        showInMenu === 1 ||
-        showInMenu === true ||
-        showInMenu === "true"
+          showInMenu === 1 ||
+          showInMenu === true ||
+          showInMenu === "true"
           ? "1"
           : "0",
 
@@ -282,9 +277,9 @@ export const updateCategory = async (req, res) => {
 
       showInMenu:
         showInMenu === "1" ||
-        showInMenu === 1 ||
-        showInMenu === true ||
-        showInMenu === "true"
+          showInMenu === 1 ||
+          showInMenu === true ||
+          showInMenu === "true"
           ? "1"
           : "0",
 
@@ -294,14 +289,25 @@ export const updateCategory = async (req, res) => {
       meta_desc: meta_desc || "",
     };
 
+    // if (name && name.trim()) {
+    //   updateData.name = name.trim();
+
+    //   updateData.slug = slugify(name.trim(), {
+    //     lower: true,
+    //     strict: true,
+    //     trim: true,
+    //   });
+
+    //   updateData.translations = await generateCategoryTranslations(name.trim());
+    // }
+
     if (name && name.trim()) {
       updateData.name = name.trim();
 
-      updateData.slug = slugify(name.trim(), {
-        lower: true,
-        strict: true,
-        trim: true,
-      });
+      updateData.slug = generateSafeCategorySlug(
+        name.trim(),
+        `category-${id}`
+      );
 
       updateData.translations = await generateCategoryTranslations(name.trim());
     }
