@@ -335,15 +335,36 @@ const AdminDashboard = () => {
   //   },
   // }
 
-  const verticalChartOptions = {
+const verticalChartOptions = {
   responsive: true,
   maintainAspectRatio: false,
+  layout: {
+    padding: {
+      top: 15,
+      right: 15,
+      bottom: 5,
+      left: 5,
+    },
+  },
   plugins: {
     legend: {
       display: false,
     },
     tooltip: {
-      enabled: true,
+      backgroundColor: '#172033',
+      titleColor: '#ffffff',
+      bodyColor: '#ffffff',
+      padding: 12,
+      cornerRadius: 8,
+      displayColors: true,
+      callbacks: {
+        title: (items) => {
+          const index = items[0]?.dataIndex
+          return getTitle(mostViewedLast24Hours[index] || {})
+        },
+        label: (context) =>
+          `Views: ${Number(context.raw || 0).toLocaleString('en-IN')}`,
+      },
     },
   },
   scales: {
@@ -351,23 +372,31 @@ const AdminDashboard = () => {
       grid: {
         display: false,
       },
+      border: {
+        display: false,
+      },
       ticks: {
-        color: '#475569',
+        color: '#64748b',
         font: {
-          size: 10,
+          size: 11,
+          weight: '600',
         },
-        maxRotation: 45,
-        minRotation: 25,
       },
     },
     y: {
       beginAtZero: true,
+      border: {
+        display: false,
+      },
       grid: {
         color: '#edf1f7',
+        drawTicks: false,
       },
       ticks: {
+        color: '#64748b',
         precision: 0,
-        color: '#475569',
+        padding: 10,
+        stepSize: 1,
       },
     },
   },
@@ -575,36 +604,45 @@ const AdminDashboard = () => {
 
               {mostViewedLast24Hours.length > 0 ? (
               <div style={{ height: 380, width: '100%', minWidth: 0 }}>
-                  <CChartBar
-                    data={{
-                      labels: mostViewedLast24Hours.map((item) => {
-                        const title = getTitle(item)
-                        return title.length > 34
-                          ? `${title.slice(0, 34)}…`
-                          : title
-                      }),
-                      datasets: [
-                        {
-                          label: 'Views in last 24 hours',
-                          data: mostViewedLast24Hours.map(
-                            (item) => Number(item.recentViews || 0)
-                          ),
-                          backgroundColor: [
-                            '#3B82F6',
-                            '#06B6D4',
-                            '#8B5CF6',
-                            '#F59E0B',
-                            '#64748B',
-                            '#10B981',
-                            '#F43F5E',
-                          ],
-                          borderRadius: 7,
-                          barThickness: 23,
-                        },
-                      ],
-                    }}
-                  options={verticalChartOptions}
-                  />
+                 <div
+  style={{
+    height: 350,
+    width: '100%',
+    minWidth: 0,
+    position: 'relative',
+  }}
+>
+  <CChartBar
+    data={{
+      labels: mostViewedLast24Hours.map(
+        (_, index) => `News ${index + 1}`
+      ),
+      datasets: [
+        {
+          label: 'Views',
+          data: mostViewedLast24Hours.map(
+            (item) => Number(item.recentViews || 0)
+          ),
+          backgroundColor: [
+            '#3B82F6',
+            '#06B6D4',
+            '#8B5CF6',
+            '#F59E0B',
+            '#64748B',
+            '#10B981',
+            '#F43F5E',
+          ],
+          borderRadius: 8,
+          borderSkipped: false,
+          maxBarThickness: 42,
+          categoryPercentage: 0.65,
+          barPercentage: 0.75,
+        },
+      ],
+    }}
+    options={verticalChartOptions}
+  />
+</div>
                 </div>
               ) : (
                 <div className="text-center text-body-secondary py-5">
@@ -660,7 +698,7 @@ const AdminDashboard = () => {
         </CCol>
 
         <CCol xs={12} xl={5}>
-          <CCard className="h-100" style={cardStyle}>
+        <CCard style={cardStyle}>
             <CCardBody className="p-3 p-md-4">
               <div className="d-flex justify-content-between align-items-start gap-2">
                 {panelHeading(
