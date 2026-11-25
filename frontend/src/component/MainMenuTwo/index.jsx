@@ -265,7 +265,7 @@ const MainMenuTwo = () => {
                                       <NavLink to={`/category/${child._id}`}>
                                         {/* {child.name} */}
                                         {/* {getCategoryName(child)} */}
-                                        {child.name}
+                                        {parent.name}
                                       </NavLink>
                                     </li>
                                   ))}
@@ -278,7 +278,7 @@ const MainMenuTwo = () => {
                               >
                                 {/* {parent.name} */}
                                 {/* {getCategoryName(parent)} */}
-                                {child.name}
+                                {parent.name}
                               </NavLink>
                             )}
                           </li>
@@ -319,7 +319,7 @@ const MainMenuTwo = () => {
                                         <li key={child._id}>
                                           <NavLink to={`/category/${child._id}`}>
                                             {/* {child.name} */}
-                                            {child.name}
+                                            {parent.name}
                                           </NavLink>
                                         </li>
                                       ))}
