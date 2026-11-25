@@ -23,9 +23,11 @@ const Whatsnew = ({ className, title }) => {
 
       const language = i18n.resolvedLanguage || "en";
 
-      const res = await fetch(
-        `${API}/api/news/getAllNews?limit=10&lang=${language}`,
-      );
+   const ENTERTAINMENT_CATEGORY_ID = "6ad3103a81cf05d73a1f0c83";
+
+const res = await fetch(
+  `${API}/api/news/category/${ENTERTAINMENT_CATEGORY_ID}?limit=50&lang=${language}`,
+);
 
       const data = await res.json();
 
@@ -41,7 +43,7 @@ const Whatsnew = ({ className, title }) => {
             (a, b) =>
               new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
           )
-          .slice(0, 10);
+          .slice(0, 8);
 
         setPosts(news);
       } else {
@@ -58,7 +60,7 @@ const Whatsnew = ({ className, title }) => {
   return (
     <div
       className={`${
-        className ? className : "white_bg padding10 border-radious5 sm-mt30"
+        className ? className : "white_bg padding30 border-radious5 sm-mt30"
       }`}
     >
      
