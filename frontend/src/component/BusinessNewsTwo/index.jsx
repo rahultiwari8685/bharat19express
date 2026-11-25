@@ -364,10 +364,10 @@ const BusinessNewsTwo = () => {
               )}
 
               {/* READ MORE */}
-              {/* <Link to={newsUrl} className="readmore3">
+              <Link to={newsUrl} className="readmore3">
                 {t("readMore", "Read more")}
                 <img src={arrow3} alt="arrow3" />
-              </Link> */}
+              </Link>
 
               {/* SEPARATOR */}
               {i + 1 < businessNews.length && (
