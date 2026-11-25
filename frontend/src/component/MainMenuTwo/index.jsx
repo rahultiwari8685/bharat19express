@@ -135,8 +135,8 @@ const MainMenuTwo = () => {
   // }, [i18n.resolvedLanguage]);
 
   useEffect(() => {
-  getMenu();
-}, []);
+    getMenu();
+  }, []);
 
   // const getMenu = async () => {
   //   try {
@@ -153,18 +153,18 @@ const MainMenuTwo = () => {
   //   }
   // };
 
-const getMenu = async () => {
-  try {
-    const res = await fetch(`${API}/api/categories/menu`);
-    const data = await res.json();
+  const getMenu = async () => {
+    try {
+      const res = await fetch(`${API}/api/categories/menu`);
+      const data = await res.json();
 
-    if (data.success) {
-      setMenuItems(data.data || []);
+      if (data.success) {
+        setMenuItems(data.data || []);
+      }
+    } catch (error) {
+      console.error("Menu Error:", error);
     }
-  } catch (error) {
-    console.error("Menu Error:", error);
-  }
-};
+  };
 
 
   const parentMenus = menuItems.filter((item) => item.parentCategory === null);
@@ -255,10 +255,7 @@ const getMenu = async () => {
                                   to={`/category/${parent._id}`}
                                   className="menu-dropdown"
                                 >
-                                  {/* {parent.name} */}
-                                  {/* {getCategoryName(parent)} */}
                                   {parent.name}
-                                  <FontAwesome name="angle-down" />
                                 </NavLink>
 
                                 {/* Child Categories */}
@@ -281,7 +278,7 @@ const getMenu = async () => {
                               >
                                 {/* {parent.name} */}
                                 {/* {getCategoryName(parent)} */}
-                                  {child.name}
+                                {child.name}
                               </NavLink>
                             )}
                           </li>
@@ -322,7 +319,7 @@ const getMenu = async () => {
                                         <li key={child._id}>
                                           <NavLink to={`/category/${child._id}`}>
                                             {/* {child.name} */}
-                                          {child.name}
+                                            {child.name}
                                           </NavLink>
                                         </li>
                                       ))}
