@@ -326,29 +326,74 @@ const UpdateNews = () => {
     try {
       const formData = new FormData()
 
+      /*
+       * News ID
+       */
+
       formData.append('id', id)
+
+      /*
+       * Hindi source title
+       */
 
       formData.append('title', data.title || '')
 
+      /*
+       * Hindi source subtitle
+       */
+
       formData.append('sub_title', data.subtitle || '')
+
+      /*
+       * News type
+       */
 
       formData.append('video_type', data.videoType || '')
 
+      /*
+       * Status
+       */
+
       formData.append('type', data.type || '')
 
+      /*
+       * Slug
+       */
+
       formData.append('slug', data.slug || '')
+
+      /*
+       * Categories
+       */
 
       formData.append('categories', JSON.stringify(data.categories || []))
       formData.append('thumbnailCaption', data.thumbnailCaption || '')
 
+      /*
+       * Hindi content
+       */
 
       if (data.videoType === '2') {
         formData.append('content', content || '')
       }
 
+      /*
+       * YouTube URL
+       */
+
       if (data.videoType === '1') {
         formData.append('youtube_url', data.youtubeUrl || '')
       }
+
+      /*
+       * Hindi translation object.
+       *
+       * This tells the backend that Hindi
+       * is the source language.
+       *
+       * Backend will regenerate the other
+       * languages using Google Translate.
+       */
 
       formData.append(
         'translations',
@@ -363,11 +408,17 @@ const UpdateNews = () => {
         }),
       )
 
+      /*
+       * New thumbnail
+       */
 
       if (data.thumbnail?.[0]) {
         formData.append('thumbnail', data.thumbnail[0])
       }
 
+      /*
+       * Update API
+       */
 
       const response = await fetch(`${setting.api}/api/news/updateNews`, {
         method: 'POST',
@@ -389,9 +440,15 @@ const UpdateNews = () => {
         return
       }
 
+      /*
+       * Success
+       */
 
       toast.success('News Updated Successfully!')
 
+      /*
+       * Navigate back.
+       */
 
       navigate('/PublishedNews')
     } catch (error) {
@@ -476,6 +533,10 @@ const UpdateNews = () => {
                 </CCol>
               </CRow>
 
+              {/* ===================================================
+                  CATEGORIES
+              ==================================================== */}
+
               <CRow className="mb-3">
                 <CCol md={12}>
                   <p className="mb-2">Select Categories</p>
@@ -516,6 +577,9 @@ const UpdateNews = () => {
                 </CCol>
               </CRow>
 
+              {/* ===================================================
+                  NEWS STATUS / NEWS TYPE
+              ==================================================== */}
 
               <CRow className="mb-3 mt-2">
 
@@ -590,6 +654,10 @@ const UpdateNews = () => {
                 </CCol>
               </CRow>
 
+              {/* ===================================================
+                  YOUTUBE URL
+              ==================================================== */}
+
               {formDataValues.videoType === '1' && (
                 <CFormInput
                   type="url"
@@ -600,7 +668,10 @@ const UpdateNews = () => {
                 />
               )}
 
-        
+              {/* ===================================================
+                  HINDI CONTENT
+              ==================================================== */}
+
               {formDataValues.videoType === '2' && (
                 <>
                   <div className="mb-4">
@@ -670,6 +741,9 @@ const UpdateNews = () => {
                     />
                   </div>
 
+                  {/* =================================================
+                      THUMBNAIL
+                  ================================================== */}
 
                   <CCol md={12} className="mb-4">
                     <CFormInput

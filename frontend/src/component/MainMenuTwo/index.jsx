@@ -119,35 +119,53 @@ const MainMenuTwo = () => {
   const [menuItems, setMenuItems] = useState([]);
   const [sideShow, setSideShow] = useState(false);
 
-  const getCategoryName = (category) => {
-    const lang = i18n.resolvedLanguage || "en";
+  // const getCategoryName = (category) => {
+  //   const lang = i18n.resolvedLanguage || "en";
 
-    return (
-      category?.translations?.[lang]?.name ||
-      category?.translations?.en?.name ||
-      category?.name ||
-      ""
-    );
-  };
+  //   return (
+  //     category?.translations?.[lang]?.name ||
+  //     category?.translations?.en?.name ||
+  //     category?.name ||
+  //     ""
+  //   );
+  // };
+
+  // useEffect(() => {
+  //   getMenu();
+  // }, [i18n.resolvedLanguage]);
 
   useEffect(() => {
-    getMenu();
-  }, [i18n.resolvedLanguage]);
+  getMenu();
+}, []);
 
-  const getMenu = async () => {
-    try {
-      const language = i18n.resolvedLanguage || "en";
+  // const getMenu = async () => {
+  //   try {
+  //     const language = i18n.resolvedLanguage || "en";
 
-      const res = await fetch(`${API}/api/categories/menu?lang=${language}`);
-      const data = await res.json();
+  //     const res = await fetch(`${API}/api/categories/menu?lang=${language}`);
+  //     const data = await res.json();
 
-      if (data.success) {
-        setMenuItems(data.data || []);
-      }
-    } catch (error) {
-      console.error("Menu Error:", error);
+  //     if (data.success) {
+  //       setMenuItems(data.data || []);
+  //     }
+  //   } catch (error) {
+  //     console.error("Menu Error:", error);
+  //   }
+  // };
+
+const getMenu = async () => {
+  try {
+    const res = await fetch(`${API}/api/categories/menu`);
+    const data = await res.json();
+
+    if (data.success) {
+      setMenuItems(data.data || []);
     }
-  };
+  } catch (error) {
+    console.error("Menu Error:", error);
+  }
+};
+
 
   const parentMenus = menuItems.filter((item) => item.parentCategory === null);
 
@@ -238,7 +256,8 @@ const MainMenuTwo = () => {
                                   className="menu-dropdown"
                                 >
                                   {/* {parent.name} */}
-                                  {getCategoryName(parent)}
+                                  {/* {getCategoryName(parent)} */}
+                                  {parent.name}
                                   <FontAwesome name="angle-down" />
                                 </NavLink>
 
@@ -248,7 +267,8 @@ const MainMenuTwo = () => {
                                     <li key={child._id}>
                                       <NavLink to={`/category/${child._id}`}>
                                         {/* {child.name} */}
-                                        {getCategoryName(child)}
+                                        {/* {getCategoryName(child)} */}
+                                        {child.name}
                                       </NavLink>
                                     </li>
                                   ))}
@@ -301,7 +321,7 @@ const MainMenuTwo = () => {
                                         <li key={child._id}>
                                           <NavLink to={`/category/${child._id}`}>
                                             {/* {child.name} */}
-                                            {getCategoryName(child)}
+                                          {child.name}
                                           </NavLink>
                                         </li>
                                       ))}
