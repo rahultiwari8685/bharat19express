@@ -41,6 +41,8 @@ const advertisementSchema = new mongoose.Schema(
         "homepage_middle",
         "homepage_bottom",
         "sidebar",
+        "sidebar_left",
+        "sidebar_right",
         "article_top",
         "article_middle",
         "article_bottom",

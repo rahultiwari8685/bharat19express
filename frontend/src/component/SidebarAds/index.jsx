@@ -228,7 +228,8 @@ const API_URL = "https://api.bharat19express.com";
 const IMAGE_BASE_URL = `${API_URL}/uploads/advertisements/`;
 
 const SidebarAds = () => {
-    const [sidebarAd, setSidebarAd] = useState(null);
+  const [leftSidebarAd, setLeftSidebarAd] = useState(null);
+const [rightSidebarAd, setRightSidebarAd] = useState(null);
 
     // Fetch sidebar advertisement
     useEffect(() => {
@@ -246,21 +247,26 @@ const SidebarAds = () => {
                 const result = await response.json();
 
                 if (result.success && Array.isArray(result.data)) {
-                    const ads = result.data
-                        .filter(
-                            (ad) =>
-                                ad.status === true &&
-                                ad.position === "sidebar" &&
-                                ad.type === "image" &&
-                                ad.image
-                        )
-                        .sort(
-                            (a, b) =>
-                                Number(a.priority || 0) -
-                                Number(b.priority || 0)
-                        );
+                  const ads = result.data.filter(
+    (ad) =>
+        ad.status === true &&
+        ad.type === "image" &&
+        ad.image
+);
 
-                    setSidebarAd(ads[0] || null);
+const sortByPriority = (a, b) =>
+    Number(a.priority || 0) - Number(b.priority || 0);
+
+const leftAd = ads
+    .filter((ad) => ad.position === "sidebar_left")
+    .sort(sortByPriority)[0] || null;
+
+const rightAd = ads
+    .filter((ad) => ad.position === "sidebar_right")
+    .sort(sortByPriority)[0] || null;
+
+setLeftSidebarAd(leftAd);
+setRightSidebarAd(rightAd);
                 }
             } catch (error) {
                 console.error("Sidebar Advertisement Error:", error);

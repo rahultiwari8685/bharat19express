@@ -65,6 +65,9 @@ const Advertisement = () => {
 
     sidebar: { width: 390, height: 312 },
 
+    sidebar_left: { width: 180, height: 1080 },
+sidebar_right: { width: 180, height: 1080 },
+
     footer: { width: 1200, height: 200 },
 
     popup: { width: 600, height: 600 },
@@ -141,8 +144,8 @@ const Advertisement = () => {
           reject(
             new Error(
               `Invalid image dimensions.\n` +
-                `Required: ${required.width} × ${required.height}px\n` +
-                `Selected: ${width} × ${height}px`,
+              `Required: ${required.width} × ${required.height}px\n` +
+              `Selected: ${width} × ${height}px`,
             ),
           )
           return
@@ -232,8 +235,8 @@ const Advertisement = () => {
 
       alert(
         error.response?.data?.message ||
-          error.message ||
-          'Something went wrong while saving advertisement',
+        error.message ||
+        'Something went wrong while saving advertisement',
       )
     } finally {
       setSaving(false)
@@ -610,6 +613,9 @@ const Advertisement = () => {
                   <option value="article_middle">Article Middle</option>
                   <option value="article_bottom">Article Bottom</option>
                   <option value="sidebar">Sidebar</option>
+               
+<option value="sidebar_left">Sidebar Left (180 × 1080)</option>
+<option value="sidebar_right">Sidebar Right (180 × 1080)</option>
                   <option value="footer">Footer</option>
                   <option value="popup">Popup</option>
                 </CFormSelect>
