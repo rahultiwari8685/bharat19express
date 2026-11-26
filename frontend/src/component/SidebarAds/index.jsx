@@ -26,7 +26,7 @@ const SidebarAds = () => {
             .filter(
               (ad) =>
                 ad.status === true &&
-                ad.position === "homepage_top" &&
+                ad.position === "sidebar" &&
                 ad.type === "image" &&
                 ad.image
             )
@@ -52,110 +52,114 @@ const SidebarAds = () => {
     ? sidebarAd.image
     : `${IMAGE_BASE_URL}${sidebarAd.image}`;
 
-  const AdContent = () => (
+  const AdImage = () => (
     <img
       src={imageUrl}
       alt={sidebarAd.title || "Advertisement"}
-      className="sidebar-ad-image"
+      className="b19-sidebar-ad-image"
     />
   );
 
   return (
     <>
       <style>{`
-        .sticky-sidebar-ad {
+        .b19-sidebar-ad {
           position: fixed;
           top: 150px;
           width: 160px;
-          height: 600px;
-          z-index: 999;
+          height: calc(100vh - 170px);
+          max-height: 750px;
+          min-height: 400px;
+          z-index: 20;
           background: #fff;
           overflow: hidden;
           text-align: center;
+          box-sizing: border-box;
         }
 
-        .sticky-sidebar-left {
-          left: calc(50% - 540px - 170px);
+        /* Keep ads outside the central website content */
+        .b19-sidebar-left {
+          left: max(12px, calc((100vw - 1840px) / 2));
         }
 
-        .sticky-sidebar-right {
-          right: calc(50% - 540px - 170px);
+        .b19-sidebar-right {
+          right: max(12px, calc((100vw - 1840px) / 2));
         }
 
-        .sidebar-ad-label {
+        .b19-sidebar-label {
           height: 20px;
+          line-height: 20px;
           font-size: 10px;
           color: #999;
-          text-align: center;
-          padding: 3px;
+          background: #fff;
         }
 
-        .sidebar-ad-image {
-          width: 160px;
-          height: 580px;
-          object-fit: contain;
-          display: block;
-        }
-
-        .sticky-sidebar-ad a {
+        .b19-sidebar-ad-link {
           display: block;
           width: 100%;
-          height: 580px;
+          height: calc(100% - 20px);
         }
 
-        @media (max-width: 1439px) {
-          .sticky-sidebar-ad {
+        .b19-sidebar-ad-image {
+          display: block;
+          width: 100%;
+          height: calc(100% - 20px);
+          object-fit: cover;
+          object-position: center;
+        }
+
+        .b19-sidebar-ad-link .b19-sidebar-ad-image {
+          height: 100%;
+        }
+
+        @media (max-width: 1365px) {
+          .b19-sidebar-ad {
             display: none;
           }
         }
 
-        @media (max-height: 750px) and (min-width: 1440px) {
-          .sticky-sidebar-ad {
-            top: 100px;
-            height: 500px;
-          }
-
-          .sidebar-ad-image {
-            height: 480px;
-          }
-
-          .sticky-sidebar-ad a {
-            height: 480px;
+        @media (max-height: 550px) {
+          .b19-sidebar-ad {
+            top: 90px;
+            height: calc(100vh - 100px);
+            min-height: 0;
           }
         }
       `}</style>
 
-     
-      <div className="sticky-sidebar-ad sticky-sidebar-left">
-        <div className="sidebar-ad-label">ADVERTISEMENT</div>
+      {/* LEFT SIDEBAR */}
+      <div className="b19-sidebar-ad b19-sidebar-left">
+        <div className="b19-sidebar-label">ADVERTISEMENT</div>
 
         {sidebarAd.redirectUrl ? (
           <a
             href={sidebarAd.redirectUrl}
             target="_blank"
             rel="noopener noreferrer sponsored"
+            className="b19-sidebar-ad-link"
           >
-            <AdContent />
+            <AdImage />
           </a>
         ) : (
-          <AdContent />
+          <AdImage />
         )}
       </div>
 
-     
-      <div className="sticky-sidebar-ad sticky-sidebar-right">
-        <div className="sidebar-ad-label">ADVERTISEMENT</div>
+      {/* RIGHT SIDEBAR */}
+      <div className="b19-sidebar-ad b19-sidebar-right">
+        <div className="b19-sidebar-label">ADVERTISEMENT</div>
 
         {sidebarAd.redirectUrl ? (
           <a
             href={sidebarAd.redirectUrl}
             target="_blank"
             rel="noopener noreferrer sponsored"
+            className="b19-sidebar-ad-link"
           >
-            <AdContent />
+            <AdImage />
           </a>
         ) : (
-          <AdContent />
+          <AdImage />
         )}
       </div>
     </>
