@@ -67,7 +67,6 @@ const SidebarAds = () => {
 
 
 
-/* Sticky sidebar advertisements */
 .b19-sidebar-ad {
   position: fixed;
   top: 0;
@@ -81,7 +80,7 @@ const SidebarAds = () => {
   text-align: center;
 }
 
-/* Website width: 1180px, gap: 25px */
+/* Default desktop positioning */
 .b19-sidebar-left {
   left: calc(50% - 590px - 165px);
 }
@@ -95,7 +94,6 @@ const SidebarAds = () => {
   line-height: 20px;
   font-size: 10px;
   color: #999;
-  background: #fff;
 }
 
 .b19-sidebar-ad-link {
@@ -109,17 +107,46 @@ const SidebarAds = () => {
   width: 100%;
   height: calc(100% - 20px);
   object-fit: fill;
-  object-position: center;
 }
 
 .b19-sidebar-ad-link .b19-sidebar-ad-image {
   height: 100%;
 }
 
-/* Hide ads on smaller screens */
-@media screen and (max-width: 1600px) {
+/* Hide below 1300px */
+@media screen and (max-width: 1299px) {
   .b19-sidebar-ad {
     display: none !important;
+  }
+}
+
+/* 1300px to 1599px */
+@media screen and (min-width: 1300px) and (max-width: 1599px) {
+  .b19-sidebar-ad {
+    width: 100px;
+  }
+
+  .b19-sidebar-left {
+    left: 5px;
+  }
+
+  .b19-sidebar-right {
+    right: 5px;
+  }
+}
+
+/* 1600px to 1799px */
+@media screen and (min-width: 1600px) and (max-width: 1799px) {
+  .b19-sidebar-ad {
+    width: 140px;
+  }
+
+  .b19-sidebar-left {
+    left: calc(50% - 590px - 165px);
+  }
+
+  .b19-sidebar-right {
+    right: calc(50% - 590px - 165px);
   }
 }
 
@@ -138,7 +165,7 @@ const SidebarAds = () => {
   }
 }
 
-/* Extra-large desktop */
+/* Extra large desktop */
 @media screen and (min-width: 2200px) {
   .b19-sidebar-ad {
     width: 180px;
@@ -152,6 +179,8 @@ const SidebarAds = () => {
     right: calc(50% - 590px - 205px);
   }
 }
+
+
 
 
 
