@@ -204,7 +204,7 @@ const Epaper = () => {
             style={{
               display: "flex",
               alignItems: "center",
-              justifyContent: "center", 
+              justifyContent: "center",
               gap: "8px",
               marginBottom: "32px",
               paddingBottom: "15px",
@@ -376,7 +376,7 @@ const Epaper = () => {
 
                     {/* TYPE */}
 
-                    <span
+                    {/* <span
                       style={{
                         position: "absolute",
                         top: "14px",
@@ -391,11 +391,11 @@ const Epaper = () => {
                       }}
                     >
                       {item.category}
-                    </span>
+                    </span> */}
 
                     {/* FEATURED */}
 
-                    {item.featured && (
+                    {/* {item.featured && (
                       <span
                         style={{
                           position: "absolute",
@@ -412,16 +412,16 @@ const Epaper = () => {
                       >
                         Featured
                       </span>
-                    )}
+                    )} */}
                   </div>
 
 
-                  <div
+                  {/* <div
                     style={{
                       padding: "20px",
                     }}
                   >
-                    {/* DATE */}
+                
 
                     <div
                       style={{
@@ -434,7 +434,7 @@ const Epaper = () => {
                       {formatDate(item.issueDate || item.createdAt)}
                     </div>
 
-                    {/* TITLE */}
+                 
 
                     <h2
                       style={{
@@ -448,7 +448,7 @@ const Epaper = () => {
                       {item.title}
                     </h2>
 
-                    {/* DESCRIPTION */}
+                
 
                     {item.description && (
                       <p
@@ -488,7 +488,7 @@ const Epaper = () => {
                         {item.category}
                       </span>
 
-                      {/* PDF BUTTON */}
+                   
 
                       {item.pdfFile && (
                         <button
@@ -524,7 +524,119 @@ const Epaper = () => {
 
                      
                     </div>
+                  </div> */}
+
+
+                  <div
+                    style={{
+                      padding: "20px",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "space-between",
+                      gap: "20px",
+                    }}
+                  >
+                    {/* LEFT COLUMN: DATE, TITLE, DESCRIPTION */}
+                    <div
+                      style={{
+                        flex: "1",
+                        minWidth: 0,
+                      }}
+                    >
+                      {/* DATE */}
+                      <div
+                        style={{
+                          marginBottom: "8px",
+                          color: "#e31e24",
+                          fontSize: "12px",
+                          fontWeight: "700",
+                        }}
+                      >
+                        {formatDate(item.issueDate || item.createdAt)}
+                      </div>
+
+                      {/* TITLE */}
+                      <h2
+                        style={{
+                          margin: "0 0 10px",
+                          color: "#161616",
+                          fontSize: "20px",
+                          lineHeight: "1.35",
+                          fontWeight: "750",
+                        }}
+                      >
+                        {item.title}
+                      </h2>
+
+                      {/* DESCRIPTION */}
+                      {item.description && (
+                        <p
+                          style={{
+                            margin: "0 0 12px",
+                            color: "#777",
+                            fontSize: "13px",
+                            lineHeight: "1.7",
+                          }}
+                        >
+                          {item.description.length > 115
+                            ? `${item.description.substring(0, 115)}...`
+                            : item.description}
+                        </p>
+                      )}
+
+                      {/* CATEGORY */}
+                      <span
+                        style={{
+                          color: "#777",
+                          fontSize: "12px",
+                          fontWeight: "600",
+                          textTransform: "capitalize",
+                        }}
+                      >
+                        {item.category}
+                      </span>
+                    </div>
+
+                    {/* RIGHT COLUMN: READ BUTTON */}
+                    {item.pdfFile && (
+                      <div
+                        style={{
+                          flexShrink: 0,
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                        }}
+                      >
+                        <button
+                          type="button"
+                          onClick={() => navigate(`/epaper/read/${item._id}`)}
+                          style={{
+                            display: "inline-flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            gap: "7px",
+                            minHeight: "42px",
+                            padding: "0 18px",
+                            border: "none",
+                            borderRadius: "6px",
+                            background: "#151515",
+                            color: "#fff",
+                            fontSize: "13px",
+                            fontWeight: "700",
+                            cursor: "pointer",
+                            whiteSpace: "nowrap",
+                          }}
+                        >
+                          Read Epaper
+                          <span style={{ fontSize: "17px" }}>→</span>
+                        </button>
+                      </div>
+                    )}
                   </div>
+
+
+
+
                 </article>
               ))}
             </div>
