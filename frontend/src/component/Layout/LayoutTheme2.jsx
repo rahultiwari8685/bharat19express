@@ -48,7 +48,7 @@ import BreakingNews from "../BreakingNews";
 const API_URL = "https://api.bharat19express.com";
 
 // Update this path if your backend uses a different image folder.
-const IMAGE_BASE_URL = `${API_URL}/uploads/`;
+const IMAGE_BASE_URL = `${API_URL}/uploads/advertisements/`;
 
 const LayoutTheme2 = ({ children }) => {
   const [sidebarAd, setSidebarAd] = useState(null);
