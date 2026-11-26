@@ -335,72 +335,72 @@ const AdminDashboard = () => {
   //   },
   // }
 
-const verticalChartOptions = {
-  responsive: true,
-  maintainAspectRatio: false,
-  layout: {
-    padding: {
-      top: 15,
-      right: 15,
-      bottom: 5,
-      left: 5,
-    },
-  },
-  plugins: {
-    legend: {
-      display: false,
-    },
-    tooltip: {
-      backgroundColor: '#172033',
-      titleColor: '#ffffff',
-      bodyColor: '#ffffff',
-      padding: 12,
-      cornerRadius: 8,
-      displayColors: true,
-      callbacks: {
-        title: (items) => {
-          const index = items[0]?.dataIndex
-          return getTitle(mostViewedLast24Hours[index] || {})
-        },
-        label: (context) =>
-          `Views: ${Number(context.raw || 0).toLocaleString('en-IN')}`,
+  const verticalChartOptions = {
+    responsive: true,
+    maintainAspectRatio: false,
+    layout: {
+      padding: {
+        top: 15,
+        right: 15,
+        bottom: 5,
+        left: 5,
       },
     },
-  },
-  scales: {
-    x: {
-      grid: {
+    plugins: {
+      legend: {
         display: false,
       },
-      border: {
-        display: false,
-      },
-      ticks: {
-        color: '#64748b',
-        font: {
-          size: 11,
-          weight: '600',
+      tooltip: {
+        backgroundColor: '#172033',
+        titleColor: '#ffffff',
+        bodyColor: '#ffffff',
+        padding: 12,
+        cornerRadius: 8,
+        displayColors: true,
+        callbacks: {
+          title: (items) => {
+            const index = items[0]?.dataIndex
+            return getTitle(mostViewedLast24Hours[index] || {})
+          },
+          label: (context) =>
+            `Views: ${Number(context.raw || 0).toLocaleString('en-IN')}`,
         },
       },
     },
-    y: {
-      beginAtZero: true,
-      border: {
-        display: false,
+    scales: {
+      x: {
+        grid: {
+          display: false,
+        },
+        border: {
+          display: false,
+        },
+        ticks: {
+          color: '#64748b',
+          font: {
+            size: 11,
+            weight: '600',
+          },
+        },
       },
-      grid: {
-        color: '#edf1f7',
-        drawTicks: false,
-      },
-      ticks: {
-        color: '#64748b',
-        precision: 0,
-        padding: 10,
-        stepSize: 1,
+      y: {
+        beginAtZero: true,
+        border: {
+          display: false,
+        },
+        grid: {
+          color: '#edf1f7',
+          drawTicks: false,
+        },
+        ticks: {
+          color: '#64748b',
+          precision: 0,
+          padding: 10,
+          stepSize: 1,
+        },
       },
     },
-  },
-}
+  }
 
   const panelHeading = (icon, title, subtitle, color) => (
     <div className="d-flex align-items-center gap-3 mb-4">
@@ -603,46 +603,46 @@ const verticalChartOptions = {
               )}
 
               {mostViewedLast24Hours.length > 0 ? (
-              <div style={{ height: 380, width: '100%', minWidth: 0 }}>
-                 <div
-  style={{
-    height: 350,
-    width: '100%',
-    minWidth: 0,
-    position: 'relative',
-  }}
->
-  <CChartBar
-    data={{
-      labels: mostViewedLast24Hours.map(
-        (_, index) => `News ${index + 1}`
-      ),
-      datasets: [
-        {
-          label: 'Views',
-          data: mostViewedLast24Hours.map(
-            (item) => Number(item.recentViews || 0)
-          ),
-          backgroundColor: [
-            '#3B82F6',
-            '#06B6D4',
-            '#8B5CF6',
-            '#F59E0B',
-            '#64748B',
-            '#10B981',
-            '#F43F5E',
-          ],
-          borderRadius: 8,
-          borderSkipped: false,
-          maxBarThickness: 42,
-          categoryPercentage: 0.65,
-          barPercentage: 0.75,
-        },
-      ],
-    }}
-    options={verticalChartOptions}
-  />
-</div>
+                <div style={{ height: 380, width: '100%', minWidth: 0 }}>
+                  <div
+                    style={{
+                      height: 350,
+                      width: '100%',
+                      minWidth: 0,
+                      position: 'relative',
+                    }}
+                  >
+                    <CChartBar
+                      data={{
+                        labels: mostViewedLast24Hours.map(
+                          (_, index) => `News ${index + 1}`
+                        ),
+                        datasets: [
+                          {
+                            label: 'Views',
+                            data: mostViewedLast24Hours.map(
+                              (item) => Number(item.recentViews || 0)
+                            ),
+                            backgroundColor: [
+                              '#3B82F6',
+                              '#06B6D4',
+                              '#8B5CF6',
+                              '#F59E0B',
+                              '#64748B',
+                              '#10B981',
+                              '#F43F5E',
+                            ],
+                            borderRadius: 8,
+                            borderSkipped: false,
+                            maxBarThickness: 42,
+                            categoryPercentage: 0.65,
+                            barPercentage: 0.75,
+                          },
+                        ],
+                      }}
+                      options={verticalChartOptions}
+                    />
+                  </div>
                 </div>
               ) : (
                 <div className="text-center text-body-secondary py-5">
@@ -698,7 +698,7 @@ const verticalChartOptions = {
         </CCol>
 
         <CCol xs={12} xl={5}>
-        <CCard style={cardStyle}>
+          <CCard style={cardStyle}>
             <CCardBody className="p-3 p-md-4">
               <div className="d-flex justify-content-between align-items-start gap-2">
                 {panelHeading(

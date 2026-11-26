@@ -1,15 +1,8 @@
 
 import React from 'react'
-import { Link } from 'react-router-dom'
-import {
-  CCard,
-  CCardBody,
-  CCol,
-  CRow,
-} from '@coreui/react'
 import secureLocalStorage from 'react-secure-storage'
 
-const RoleDashboard = ({ title, description, links = [] }) => {
+const RoleDashboard = ({ title, description }) => {
   const loginInfo = secureLocalStorage.getItem('logininfo')
 
   let loginData = {}
@@ -44,7 +37,10 @@ const RoleDashboard = ({ title, description, links = [] }) => {
           boxShadow: '0 12px 28px rgba(30,64,175,0.16)',
         }}
       >
-        <div className="small mb-2" style={{ color: '#bfdbfe' }}>
+        <div
+          className="small mb-2"
+          style={{ color: '#bfdbfe' }}
+        >
           BHARAT 19 EXPRESS · {title.toUpperCase()}
         </div>
 
@@ -60,30 +56,7 @@ const RoleDashboard = ({ title, description, links = [] }) => {
         </p>
       </div>
 
-      <h5 className="fw-bold mb-3">Quick Access</h5>
-
-      <CRow className="g-3">
-        {links.map((item) => (
-          <CCol xs={12} sm={6} lg={4} key={item.to}>
-            <CCard className="h-100 border-0 shadow-sm">
-              <CCardBody className="p-4">
-                <h5 className="fw-bold">{item.name}</h5>
-
-                <p className="text-body-secondary small">
-                  {item.description}
-                </p>
-
-                <Link
-                  to={item.to}
-                  className="btn btn-primary btn-sm"
-                >
-                  Open {item.name}
-                </Link>
-              </CCardBody>
-            </CCard>
-          </CCol>
-        ))}
-      </CRow>
+      {/* Dashboard graphs will be added here */}
     </div>
   )
 }

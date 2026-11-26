@@ -1013,15 +1013,91 @@ export const autoSaveNews = async (req, res) => {
 // };
 
 
+// export const increaseView = async (req, res) => {
+//   try {
+//     const { id } = req.params;
+
+//     const news = await News.findByIdAndUpdate(
+//       id,
+//       {
+//         $inc: { views: 1 },
+//       },
+//       { new: true }
+//     );
+
+//     if (!news) {
+//       return res.status(404).json({
+//         status: false,
+//         message: "News not found",
+//       });
+//     }
+
+//     // Save this individual view with its timestamp
+//     await NewsView.create({
+//       newsId: news._id,
+//       viewedAt: new Date(),
+//     });
+
+//     return res.json({
+//       status: true,
+//       message: "View counted successfully",
+//     });
+//   } catch (error) {
+//     console.error("Increase View Error:", error);
+
+//     return res.status(500).json({
+//       status: false,
+//       message: error.message,
+//     });
+//   }
+// };
+
+
+// export const increaseView = async (req, res) => {
+//   try {
+//     const { id } = req.params;
+
+//     const news = await News.findByIdAndUpdate(
+//       id,
+//       { $inc: { views: 1 } },
+//       { new: true }
+//     );
+
+//     if (!news) {
+//       return res.status(404).json({
+//         status: false,
+//         message: "News not found",
+//       });
+//     }
+
+//     await NewsView.create({
+//       newsId: news._id,
+//       viewerId: req.userId || null,
+//       viewedAt: new Date(),
+//     });
+
+//     return res.json({
+//       status: true,
+//       message: "View counted successfully",
+//     });
+//   } catch (error) {
+//     console.error("Increase View Error:", error);
+
+//     return res.status(500).json({
+//       status: false,
+//       message: "Unable to count view",
+//     });
+//   }
+// };
+
+
 export const increaseView = async (req, res) => {
   try {
     const { id } = req.params;
 
     const news = await News.findByIdAndUpdate(
       id,
-      {
-        $inc: { views: 1 },
-      },
+      { $inc: { views: 1 } },
       { new: true }
     );
 
@@ -1032,9 +1108,10 @@ export const increaseView = async (req, res) => {
       });
     }
 
-    // Save this individual view with its timestamp
     await NewsView.create({
       newsId: news._id,
+      viewerId: req.viewerId || null,
+      viewerType: req.viewerType || "anonymous",
       viewedAt: new Date(),
     });
 
@@ -1047,11 +1124,10 @@ export const increaseView = async (req, res) => {
 
     return res.status(500).json({
       status: false,
-      message: error.message,
+      message: "Unable to count view",
     });
   }
 };
-
 
 
 export const getMostViewedLast24Hours = async (req, res) => {

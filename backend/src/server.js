@@ -27,6 +27,7 @@ import pollRoutes from "./routes/pollRoutes.js";
 import youtubeRoutes from "./routes/youtubeRoutes.js";
 import { checkLiveStatus } from "./services/youtubeService.js";
 import galleryRoutes from "./routes/gallery.js";
+import dashboardRoutes from "./routes/dashboardRoutes.js";
 const app = express();
 
 const __filename = fileURLToPath(import.meta.url);
@@ -105,7 +106,7 @@ app.use("/", sitemapRoutes);
 app.use("/api/magazines", magazineRoutes);
 app.use("/api/polls", pollRoutes);
 app.use("/api/youtube", youtubeRoutes);
-
+app.use("/api/dashboard", dashboardRoutes);
 app.use("/uploads", express.static(path.join(__dirname, "../uploads")));
 
 app.use("/api/gallery", galleryRoutes);

@@ -26,6 +26,7 @@ import {
   getScheduleNews,
    getMostViewedLast24Hours,
 } from "../controllers/newsController.js";
+import { optionalViewAuth } from "../middlewares/authMiddleware.js";
 
 const router = express.Router();
 
@@ -51,7 +52,7 @@ router.get("/getAllNewsByAuthorId/:authorId", getAllNewsByAuthorId);
 router.post("/auto-save", upload.single("thumbnail"), autoSaveNews);
 router.get("/live", getLiveStatus);
 router.get("/trending", getTrendingNews);
-
+router.post("/view/:id", optionalViewAuth, increaseView);
 router.get("/popular", getPopularNews);
 router.get("/videos", getVideoNews);
 router.get("/most-shared", getMostSharedNews);

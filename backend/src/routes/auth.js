@@ -27,12 +27,12 @@ router.post("/login", async (req, res) => {
       message: "Login success",
       token,
       role: user.role,
-    user: {
-  id: user._id,
-  email: user.email,
-  name: user.name,
-  post_permission: user.post_permission,
-},
+      user: {
+        id: user._id,
+        email: user.email,
+        name: user.name,
+        post_permission: user.post_permission,
+      },
     });
   } catch (error) {
     res.status(500).json({ error });
