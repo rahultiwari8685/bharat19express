@@ -26,7 +26,7 @@ const SidebarAds = () => {
             .filter(
               (ad) =>
                 ad.status === true &&
-                ad.position === "sidebar" &&
+                ad.position === "homepage_top" &&
                 ad.type === "image" &&
                 ad.image
             )
