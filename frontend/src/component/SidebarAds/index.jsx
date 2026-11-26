@@ -62,6 +62,9 @@ const SidebarAds = () => {
 
     return (
         <>
+
+
+
             <style>{`
   .b19-sidebar-ad {
     position: fixed;
@@ -108,17 +111,17 @@ const SidebarAds = () => {
     height: 100%;
   }
 
-  /* Hide below 1200px */
-  @media screen and (max-width: 1199px) {
+  /* Hide below 1000px */
+  @media screen and (max-width: 999px) {
     .b19-sidebar-ad {
       display: none !important;
     }
   }
 
-  /* 1200px to 1599px */
-  @media screen and (min-width: 1200px) and (max-width: 1599px) {
+  /* 1000px to 1599px */
+  @media screen and (min-width: 1000px) and (max-width: 1599px) {
     .b19-sidebar-ad {
-      width: 65px;
+      width: 55px;
     }
 
     .b19-sidebar-left {
@@ -175,6 +178,7 @@ const SidebarAds = () => {
     }
   }
 `}</style>
+
 
             {/* LEFT SIDEBAR */}
             <div className="b19-sidebar-ad b19-sidebar-left">
