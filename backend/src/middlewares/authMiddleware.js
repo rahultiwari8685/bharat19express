@@ -80,9 +80,6 @@ import jwt from "jsonwebtoken";
 import User from "../models/User.js";
 import Customer from "../models/Customer.js";
 
-// ==========================================
-// 1. VERIFY SUBSCRIBER / CUSTOMER
-// ==========================================
 
 export const verifySubscriber = async (req, res, next) => {
   try {
@@ -134,10 +131,6 @@ export const verifySubscriber = async (req, res, next) => {
 };
 
 
-// ==========================================
-// 2. VERIFY ADMIN / EDITOR / CORRESPONDENCE
-// ==========================================
-
 export const verifyUser = async (req, res, next) => {
   try {
     const authHeader = req.headers.authorization;
@@ -170,7 +163,8 @@ export const verifyUser = async (req, res, next) => {
       });
     }
 
-    if (user.user_status !== "active") {
+    // Database: user_status = "1" means Active
+    if (String(user.user_status) !== "1") {
       return res.status(403).json({
         success: false,
         message: "User account is not active",
@@ -181,6 +175,7 @@ export const verifyUser = async (req, res, next) => {
     req.userId = user._id;
 
     next();
+
   } catch (error) {
     console.error("User Auth Error:", error.message);
 
@@ -191,11 +186,59 @@ export const verifyUser = async (req, res, next) => {
   }
 };
 
+// export const verifyUser = async (req, res, next) => {
+//   try {
+//     const authHeader = req.headers.authorization;
 
-// ==========================================
-// 3. OPTIONAL VIEW AUTH
-// Guest + Subscriber + Admin + Editor + Correspondence
-// ==========================================
+//     if (!authHeader?.startsWith("Bearer ")) {
+//       return res.status(401).json({
+//         success: false,
+//         message: "Authorization token missing",
+//       });
+//     }
+
+//     const token = authHeader.split(" ")[1];
+//     const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+//     if (!decoded.userId) {
+//       return res.status(401).json({
+//         success: false,
+//         message: "Invalid user token",
+//       });
+//     }
+
+//     const user = await User.findById(decoded.userId).select(
+//       "_id name email role post_permission user_status"
+//     );
+
+//     if (!user) {
+//       return res.status(401).json({
+//         success: false,
+//         message: "User not found",
+//       });
+//     }
+
+//     if (user.user_status !== "active") {
+//       return res.status(403).json({
+//         success: false,
+//         message: "User account is not active",
+//       });
+//     }
+
+//     req.user = user;
+//     req.userId = user._id;
+
+//     next();
+//   } catch (error) {
+//     console.error("User Auth Error:", error.message);
+
+//     return res.status(401).json({
+//       success: false,
+//       message: "Invalid or expired token",
+//     });
+//   }
+// };
+
 
 export const optionalViewAuth = async (req, res, next) => {
   try {
