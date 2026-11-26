@@ -133,7 +133,7 @@ const CorrespondenceDashboard = () => {
         </CCardBody>
       </CCard>
 
-      {/* Statistics */}
+   
       <CRow className="mb-4">
         {stats.map((item, index) => (
           <CCol sm={6} xl={3} key={index} className="mb-3">
@@ -165,7 +165,7 @@ const CorrespondenceDashboard = () => {
         ))}
       </CRow>
 
-      {/* Charts */}
+   
       <CRow className="mb-4">
         <CCol lg={6} className="mb-3">
           <CCard className="h-100 border-0 shadow-sm">
@@ -256,7 +256,7 @@ const CorrespondenceDashboard = () => {
         </CCol>
       </CRow>
 
-      {/* Recent News */}
+     
       <CCard className="border-0 shadow-sm mb-4">
         <CCardBody>
           <h5 className="mb-3">My Recent News</h5>
