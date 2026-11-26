@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 
 const API_URL = "https://api.bharat19express.com";
-const IMAGE_BASE_URL = `${API_URL}/uploads/`;
+const IMAGE_BASE_URL = `${API_URL}/uploads/advertisements/`;
 
 const SidebarAds = () => {
   const [sidebarAd, setSidebarAd] = useState(null);

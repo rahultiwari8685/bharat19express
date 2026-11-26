@@ -53,7 +53,7 @@ const IMAGE_BASE_URL = `${API_URL}/uploads/`;
 const LayoutTheme2 = ({ children }) => {
   const [sidebarAd, setSidebarAd] = useState(null);
 
-  // Fetch Sidebar Advertisement
+
   useEffect(() => {
     const fetchSidebarAd = async () => {
       try {
