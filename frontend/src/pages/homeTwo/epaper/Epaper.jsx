@@ -4,7 +4,7 @@ const API = "https://api.bharat19express.com";
 
 const Epaper = () => {
   const [epapers, setEpapers] = useState([]);
-  const [filter, setFilter] = useState("all");
+  const [filter, setFilter] = useState("newspaper");
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   useEffect(() => {
@@ -83,9 +83,6 @@ const Epaper = () => {
 
   return (
     <>
-      {/* =================================================
-          EPAPER PAGE
-      ================================================= */}
 
       <div
         style={{
@@ -101,11 +98,8 @@ const Epaper = () => {
             margin: "0 auto",
           }}
         >
-          {/* =================================================
-              HEADER
-          ================================================= */}
 
-          <div
+          {/* <div
             style={{
               display: "flex",
               justifyContent: "space-between",
@@ -115,7 +109,7 @@ const Epaper = () => {
               flexWrap: "wrap",
             }}
           >
-            {/* LEFT */}
+           
 
             <div
               style={{
@@ -160,9 +154,6 @@ const Epaper = () => {
               </p>
             </div>
 
-            {/* =================================================
-                DROPDOWN
-            ================================================= */}
 
             <div
               style={{
@@ -206,16 +197,14 @@ const Epaper = () => {
                 <option value="magazine">Magazine</option>
               </select>
             </div>
-          </div>
+          </div> */}
 
-          {/* =================================================
-              FILTER BUTTONS
-          ================================================= */}
 
           <div
             style={{
               display: "flex",
               alignItems: "center",
+              justifyContent: "center", 
               gap: "8px",
               marginBottom: "32px",
               paddingBottom: "15px",
@@ -224,10 +213,10 @@ const Epaper = () => {
             }}
           >
             {[
-              {
-                value: "all",
-                label: "All Epaper",
-              },
+              // {
+              //   value: "all",
+              //   label: "All Epaper",
+              // },
               {
                 value: "newspaper",
                 label: "Newspaper",
@@ -268,9 +257,6 @@ const Epaper = () => {
             ))}
           </div>
 
-          {/* =================================================
-              LOADING
-          ================================================= */}
 
           {loading && (
             <div
@@ -304,10 +290,6 @@ const Epaper = () => {
               </p>
             </div>
           )}
-
-          {/* =================================================
-              EMPTY
-          ================================================= */}
 
           {!loading && epapers.length === 0 && (
             <div
@@ -350,10 +332,6 @@ const Epaper = () => {
             </div>
           )}
 
-          {/* =================================================
-              EPAPER GRID
-          ================================================= */}
-
           {!loading && filteredEpapers.length > 0 && (
             <div
               style={{
@@ -374,9 +352,6 @@ const Epaper = () => {
                     transition: "all .3s ease",
                   }}
                 >
-                  {/* =================================================
-                        IMAGE
-                    ================================================= */}
 
                   <div
                     style={{
@@ -440,9 +415,6 @@ const Epaper = () => {
                     )}
                   </div>
 
-                  {/* =================================================
-                        CONTENT
-                    ================================================= */}
 
                   <div
                     style={{
@@ -494,9 +466,6 @@ const Epaper = () => {
                       </p>
                     )}
 
-                    {/* =================================================
-                          FOOTER
-                      ================================================= */}
 
                     <div
                       style={{
@@ -553,37 +522,7 @@ const Epaper = () => {
                         </button>
                       )}
 
-                      {/* {item.pdfFile && (
-                        <a
-                          href={getPdfUrl(item)}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          style={{
-                            display: "inline-flex",
-                            alignItems: "center",
-                            justifyContent: "center",
-                            gap: "7px",
-                            minHeight: "36px",
-                            padding: "0 14px",
-                            borderRadius: "5px",
-                            background: "#151515",
-                            color: "#fff",
-                            fontSize: "12px",
-                            fontWeight: "700",
-                            textDecoration: "none",
-                            whiteSpace: "nowrap",
-                          }}
-                        >
-                          Read Epaper
-                          <span
-                            style={{
-                              fontSize: "16px",
-                            }}
-                          >
-                            →
-                          </span>
-                        </a>
-                      )} */}
+                     
                     </div>
                   </div>
                 </article>
@@ -593,9 +532,6 @@ const Epaper = () => {
         </div>
       </div>
 
-      {/* =================================================
-          ANIMATION
-      ================================================= */}
 
       <style>
         {`
