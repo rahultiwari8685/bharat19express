@@ -270,52 +270,43 @@ const SidebarAds = () => {
         fetchSidebarAds();
     }, []);
 
-    // Stop sidebar advertisements before footer
-    useEffect(() => {
-        const updateSidebarAds = () => {
-            const ads = document.querySelectorAll(".b19-sidebar-ad");
 
-            // Find footer element
-            const footer = document.querySelector(
-                "footer, .footer_area, .footer-area, .footer-area-two, .footer_section, .footer-section, #footer"
-            );
+useEffect(() => {
+    const updateSidebarAds = () => {
+        const ads = document.querySelectorAll(".b19-sidebar-ad");
 
-            if (!footer) {
-                ads.forEach((ad) => {
-                    ad.style.height = "100vh";
-                });
-                return;
-            }
+        // Exact footer wrapper
+        const footer = document.getElementById("b19-footer-boundary");
 
-            const footerTop = footer.getBoundingClientRect().top;
-            const viewportHeight = window.innerHeight;
+        if (!footer) return;
 
-            // Default advertisement height
-            let availableHeight = viewportHeight;
+        const footerTop = footer.getBoundingClientRect().top;
 
-            // Reduce height when footer enters viewport
-            if (footerTop < viewportHeight) {
-                availableHeight = Math.max(0, footerTop);
-            }
+        // Available space above footer
+        const availableHeight = Math.max(
+            0,
+            Math.min(window.innerHeight, footerTop)
+        );
 
-            ads.forEach((ad) => {
-                ad.style.height = `${availableHeight}px`;
-            });
-        };
-
-        updateSidebarAds();
-
-        window.addEventListener("scroll", updateSidebarAds, {
-            passive: true,
+        ads.forEach((ad) => {
+            ad.style.height = `${availableHeight}px`;
         });
+    };
 
-        window.addEventListener("resize", updateSidebarAds);
+    updateSidebarAds();
 
-        return () => {
-            window.removeEventListener("scroll", updateSidebarAds);
-            window.removeEventListener("resize", updateSidebarAds);
-        };
-    }, [sidebarAd]);
+    window.addEventListener("scroll", updateSidebarAds, {
+        passive: true,
+    });
+
+    window.addEventListener("resize", updateSidebarAds);
+
+    return () => {
+        window.removeEventListener("scroll", updateSidebarAds);
+        window.removeEventListener("resize", updateSidebarAds);
+    };
+}, [sidebarAd]);
+
 
     if (!sidebarAd) return null;
 
