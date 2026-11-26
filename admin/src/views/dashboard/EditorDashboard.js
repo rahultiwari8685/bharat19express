@@ -13,7 +13,7 @@ import { CChartBar, CChartLine } from '@coreui/react-chartjs'
 import {
   cilNewspaper,
   cilPencil,
-  cilEye,
+  cilInfo,
   cilChartLine,
   cilCalendar,
 } from '@coreui/icons'
@@ -179,7 +179,7 @@ const EditorDashboard = () => {
       title: 'Total Views',
       count: dashboard.totalViews,
       detail: 'Views on your published news',
-      icon: cilEye,
+      icon: cilInfo,
       color: COLORS.purple,
       gradient: GRADIENTS.purple,
     },
@@ -390,7 +390,7 @@ const EditorDashboard = () => {
           <CCard className="h-100" style={cardStyle}>
             <CCardBody className="p-3 p-md-4">
               {panelHeading(
-                cilEye,
+                cilInfo,
                 'Most Viewed News',
                 'Your top articles by views in the last 24 hours',
                 COLORS.blue,
