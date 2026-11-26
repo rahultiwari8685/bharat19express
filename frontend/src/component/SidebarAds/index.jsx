@@ -90,13 +90,12 @@ const SidebarAds = () => {
           padding: 3px;
         }
 
-      .sidebar-ad-image {
-  width: 160px;
-  height: 600px;
-  display: block;
-  object-fit: cover;
-  object-position: center;
-}
+        .sidebar-ad-image {
+          width: 160px;
+          height: 580px;
+          object-fit: contain;
+          display: block;
+        }
 
         .sticky-sidebar-ad a {
           display: block;
@@ -126,7 +125,7 @@ const SidebarAds = () => {
         }
       `}</style>
 
-      {/* LEFT SIDEBAR AD */}
+     
       <div className="sticky-sidebar-ad sticky-sidebar-left">
         <div className="sidebar-ad-label">ADVERTISEMENT</div>
 
@@ -143,7 +142,7 @@ const SidebarAds = () => {
         )}
       </div>
 
-      {/* RIGHT SIDEBAR AD */}
+     
       <div className="sticky-sidebar-ad sticky-sidebar-right">
         <div className="sidebar-ad-label">ADVERTISEMENT</div>
 
