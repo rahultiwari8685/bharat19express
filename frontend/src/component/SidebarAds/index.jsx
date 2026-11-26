@@ -5,165 +5,205 @@ const API_URL = "https://api.bharat19express.com";
 const IMAGE_BASE_URL = `${API_URL}/uploads/advertisements/`;
 
 const SidebarAds = () => {
-  const [sidebarAd, setSidebarAd] = useState(null);
+    const [sidebarAd, setSidebarAd] = useState(null);
 
-  useEffect(() => {
-    const fetchSidebarAds = async () => {
-      try {
-        const response = await fetch(
-          `${API_URL}/api/advertisements`,
-          { cache: "no-store" }
-        );
+    useEffect(() => {
+        const fetchSidebarAds = async () => {
+            try {
+                const response = await fetch(
+                    `${API_URL}/api/advertisements`,
+                    { cache: "no-store" }
+                );
 
-        if (!response.ok) {
-          throw new Error("Failed to fetch advertisements");
-        }
+                if (!response.ok) {
+                    throw new Error("Failed to fetch advertisements");
+                }
 
-        const result = await response.json();
+                const result = await response.json();
 
-        if (result.success && Array.isArray(result.data)) {
-          const ads = result.data
-            .filter(
-              (ad) =>
-                ad.status === true &&
-                ad.position === "sidebar" &&
-                ad.type === "image" &&
-                ad.image
-            )
-            .sort(
-              (a, b) =>
-                Number(a.priority || 0) -
-                Number(b.priority || 0)
-            );
+                if (result.success && Array.isArray(result.data)) {
+                    const ads = result.data
+                        .filter(
+                            (ad) =>
+                                ad.status === true &&
+                                ad.position === "sidebar" &&
+                                ad.type === "image" &&
+                                ad.image
+                        )
+                        .sort(
+                            (a, b) =>
+                                Number(a.priority || 0) -
+                                Number(b.priority || 0)
+                        );
 
-          setSidebarAd(ads[0] || null);
-        }
-      } catch (error) {
-        console.error("Sidebar Advertisement Error:", error);
-      }
-    };
+                    setSidebarAd(ads[0] || null);
+                }
+            } catch (error) {
+                console.error("Sidebar Advertisement Error:", error);
+            }
+        };
 
-    fetchSidebarAds();
-  }, []);
+        fetchSidebarAds();
+    }, []);
 
-  if (!sidebarAd) return null;
+    if (!sidebarAd) return null;
 
-  const imageUrl = sidebarAd.image.startsWith("http")
-    ? sidebarAd.image
-    : `${IMAGE_BASE_URL}${sidebarAd.image}`;
+    const imageUrl = sidebarAd.image.startsWith("http")
+        ? sidebarAd.image
+        : `${IMAGE_BASE_URL}${sidebarAd.image}`;
 
-  const AdImage = () => (
-    <img
-      src={imageUrl}
-      alt={sidebarAd.title || "Advertisement"}
-      className="b19-sidebar-ad-image"
-    />
-  );
+    const AdImage = () => (
+        <img
+            src={imageUrl}
+            alt={sidebarAd.title || "Advertisement"}
+            className="b19-sidebar-ad-image"
+        />
+    );
 
-  return (
-    <>
-      <style>{`
-        .b19-sidebar-ad {
-          position: fixed;
-          top: 150px;
-          width: 160px;
-          height: calc(100vh - 170px);
-          max-height: 750px;
-          min-height: 400px;
-          z-index: 20;
-          background: #fff;
-          overflow: hidden;
-          text-align: center;
-          box-sizing: border-box;
-        }
+    return (
+        <>
+            <style>{`
+        
 
-        /* Keep ads outside the central website content */
-        .b19-sidebar-left {
-          left: max(12px, calc((100vw - 1840px) / 2));
-        }
+/* Sticky sidebar advertisements */
+.b19-sidebar-ad {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  width: 140px;
+  height: 100vh;
+  z-index: 5;
+  background: #fff;
+  overflow: hidden;
+  box-sizing: border-box;
+  text-align: center;
+}
 
-        .b19-sidebar-right {
-          right: max(12px, calc((100vw - 1840px) / 2));
-        }
+/*
+  Responsive positioning:
+  Assumed website maximum width: 1180px
+  Gap between website and ad: 12px
+*/
+.b19-sidebar-left {
+  left: calc(50% - 590px - 152px);
+}
 
-        .b19-sidebar-label {
-          height: 20px;
-          line-height: 20px;
-          font-size: 10px;
-          color: #999;
-          background: #fff;
-        }
+.b19-sidebar-right {
+  right: calc(50% - 590px - 152px);
+}
 
-        .b19-sidebar-ad-link {
-          display: block;
-          width: 100%;
-          height: calc(100% - 20px);
-        }
+/* Advertisement label */
+.b19-sidebar-label {
+  height: 20px;
+  line-height: 20px;
+  font-size: 10px;
+  color: #999;
+  background: #fff;
+}
 
-        .b19-sidebar-ad-image {
-          display: block;
-          width: 100%;
-          height: calc(100% - 20px);
-          object-fit: cover;
-          object-position: center;
-        }
+/* Advertisement link */
+.b19-sidebar-ad-link {
+  display: block;
+  width: 100%;
+  height: calc(100% - 20px);
+}
 
-        .b19-sidebar-ad-link .b19-sidebar-ad-image {
-          height: 100%;
-        }
+/* Advertisement image */
+.b19-sidebar-ad-image {
+  display: block;
+  width: 100%;
+  height: calc(100% - 20px);
+  object-fit: fill;
+  object-position: center;
+}
 
-        @media (max-width: 1365px) {
-          .b19-sidebar-ad {
-            display: none;
-          }
-        }
+.b19-sidebar-ad-link .b19-sidebar-ad-image {
+  height: 100%;
+}
 
-        @media (max-height: 550px) {
-          .b19-sidebar-ad {
-            top: 90px;
-            height: calc(100vh - 100px);
-            min-height: 0;
-          }
-        }
+/*
+  Hide ads when screen width is insufficient.
+  This prevents overlap with the website.
+*/
+@media screen and (max-width: 1600px) {
+  .b19-sidebar-ad {
+    display: none !important;
+  }
+}
+
+/* Large desktop */
+@media screen and (min-width: 1800px) {
+  .b19-sidebar-ad {
+    width: 160px;
+  }
+
+  .b19-sidebar-left {
+    left: calc(50% - 590px - 172px);
+  }
+
+  .b19-sidebar-right {
+    right: calc(50% - 590px - 172px);
+  }
+}
+
+/* Very large desktop */
+@media screen and (min-width: 2200px) {
+  .b19-sidebar-ad {
+    width: 180px;
+  }
+
+  .b19-sidebar-left {
+    left: calc(50% - 590px - 192px);
+  }
+
+  .b19-sidebar-right {
+    right: calc(50% - 590px - 192px);
+  }
+}
+
+
+
+
+
       `}</style>
 
-      {/* LEFT SIDEBAR */}
-      <div className="b19-sidebar-ad b19-sidebar-left">
-        <div className="b19-sidebar-label">ADVERTISEMENT</div>
+            {/* LEFT SIDEBAR */}
+            <div className="b19-sidebar-ad b19-sidebar-left">
+                <div className="b19-sidebar-label">ADVERTISEMENT</div>
 
-        {sidebarAd.redirectUrl ? (
-          <a
-            href={sidebarAd.redirectUrl}
-            target="_blank"
-            rel="noopener noreferrer sponsored"
-            className="b19-sidebar-ad-link"
-          >
-            <AdImage />
-          </a>
-        ) : (
-          <AdImage />
-        )}
-      </div>
+                {sidebarAd.redirectUrl ? (
+                    <a
+                        href={sidebarAd.redirectUrl}
+                        target="_blank"
+                        rel="noopener noreferrer sponsored"
+                        className="b19-sidebar-ad-link"
+                    >
+                        <AdImage />
+                    </a>
+                ) : (
+                    <AdImage />
+                )}
+            </div>
 
-      {/* RIGHT SIDEBAR */}
-      <div className="b19-sidebar-ad b19-sidebar-right">
-        <div className="b19-sidebar-label">ADVERTISEMENT</div>
+            {/* RIGHT SIDEBAR */}
+            <div className="b19-sidebar-ad b19-sidebar-right">
+                <div className="b19-sidebar-label">ADVERTISEMENT</div>
 
-        {sidebarAd.redirectUrl ? (
-          <a
-            href={sidebarAd.redirectUrl}
-            target="_blank"
-            rel="noopener noreferrer sponsored"
-            className="b19-sidebar-ad-link"
-          >
-            <AdImage />
-          </a>
-        ) : (
-          <AdImage />
-        )}
-      </div>
-    </>
-  );
+                {sidebarAd.redirectUrl ? (
+                    <a
+                        href={sidebarAd.redirectUrl}
+                        target="_blank"
+                        rel="noopener noreferrer sponsored"
+                        className="b19-sidebar-ad-link"
+                    >
+                        <AdImage />
+                    </a>
+                ) : (
+                    <AdImage />
+                )}
+            </div>
+        </>
+    );
 };
 
 export default SidebarAds;

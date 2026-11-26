@@ -66,7 +66,7 @@ const LayoutTheme2 = ({ children }) => {
     <div className="theme-3 theme3_bg">
 
       {/* Sticky Left and Right Sidebar Advertisements */}
-      {/* <SidebarAds /> */}
+      <SidebarAds />
 
       {/* Scroll to Top */}
       <ScrollTopButton />
