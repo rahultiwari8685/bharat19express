@@ -67,8 +67,8 @@ const SidebarAds = () => {
           position: fixed;
           top: 150px;
           width: 160px;
-          height: calc(100vh - 170px);
-          max-height: 850px;
+          height: calc(100vh - 20px);
+          max-height: 750px;
           min-height: 400px;
           z-index: 20;
           background: #fff;
