@@ -19,7 +19,7 @@ import { CChartBar } from '@coreui/react-chartjs'
 import CIcon from '@coreui/icons-react'
 import {
   cilNewspaper,
-  cilEye,
+  cilInfo,
   cilClock,
   cilChart,
 } from '@coreui/icons'
@@ -82,7 +82,7 @@ const SubscriberDashboard = () => {
     {
       title: 'Total News Viewed',
       value: dashboard.totalViews,
-      icon: cilEye,
+      icon: cilInfo,
       color: 'primary',
     },
     {
