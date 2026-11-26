@@ -20,9 +20,8 @@ import { CChartBar, CChartLine } from '@coreui/react-chartjs'
 import CIcon from '@coreui/icons-react'
 import {
   cilNewspaper,
-  cilPencil,
-  cilFolderOpen,
-  cilUser,
+  cilClock,
+  cilChart,
 } from '@coreui/icons'
 
 import setting from '../../setting.json'
@@ -141,12 +140,12 @@ const RoleDashboard = ({ title = 'Dashboard', description = 'Manage your activit
   const isSubscriber = role === '4'
 
   const subscriberStats = [
-    {
-      title: 'Total News Viewed',
-      value: dashboard.totalViews ?? 0,
-      icon: cilNewspaper,
-      color: 'primary',
-    },
+ {
+  title: 'Total News Viewed',
+  value: dashboard.totalViews,
+  icon: cilNewspaper,
+  color: 'primary',
+},
     {
       title: "Today's Views",
       value: dashboard.todayViews ?? 0,
