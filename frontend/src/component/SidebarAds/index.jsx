@@ -90,12 +90,13 @@ const SidebarAds = () => {
           padding: 3px;
         }
 
-        .sidebar-ad-image {
-          width: 160px;
-          height: 580px;
-          object-fit: contain;
-          display: block;
-        }
+      .sidebar-ad-image {
+  width: 160px;
+  height: 600px;
+  display: block;
+  object-fit: cover;
+  object-position: center;
+}
 
         .sticky-sidebar-ad a {
           display: block;
