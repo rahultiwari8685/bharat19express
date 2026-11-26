@@ -10,10 +10,9 @@ const SidebarAds = () => {
   useEffect(() => {
     const fetchSidebarAds = async () => {
       try {
-        const response = await fetch(
-          `${API_URL}/api/advertisements`,
-          { cache: "no-store" }
-        );
+        const response = await fetch(`${API_URL}/api/advertisements`, {
+          cache: "no-store",
+        });
 
         if (!response.ok) {
           throw new Error("Failed to fetch advertisements");
@@ -32,8 +31,7 @@ const SidebarAds = () => {
             )
             .sort(
               (a, b) =>
-                Number(a.priority || 0) -
-                Number(b.priority || 0)
+                Number(a.priority || 0) - Number(b.priority || 0)
             );
 
           setSidebarAd(ads[0] || null);
@@ -60,30 +58,48 @@ const SidebarAds = () => {
     />
   );
 
+  const AdContent = () =>
+    sidebarAd.redirectUrl ? (
+      <a
+        href={sidebarAd.redirectUrl}
+        target="_blank"
+        rel="noopener noreferrer sponsored"
+        className="b19-sidebar-ad-link"
+      >
+        <AdImage />
+      </a>
+    ) : (
+      <AdImage />
+    );
+
   return (
     <>
       <style>{`
         .b19-sidebar-ad {
           position: fixed;
-          top: 150px;
+          top: 0;
+          bottom: 0;
           width: 160px;
-          height: calc(100vh - 20px);
-          max-height: 750px;
-          min-height: 400px;
-          z-index: 20;
+          height: 100vh;
+          z-index: 10;
           background: #fff;
           overflow: hidden;
-          text-align: center;
           box-sizing: border-box;
+          text-align: center;
         }
 
-        /* Keep ads outside the central website content */
+        /*
+          Central website layout: 1080px
+          Advertisement width: 160px
+          Gap: 8px
+        */
+
         .b19-sidebar-left {
-          left: max(12px, calc((100vw - 1840px) / 2));
+          left: calc(50% - 548px - 160px);
         }
 
         .b19-sidebar-right {
-          right: max(12px, calc((100vw - 1840px) / 2));
+          right: calc(50% - 548px - 160px);
         }
 
         .b19-sidebar-label {
@@ -104,7 +120,7 @@ const SidebarAds = () => {
           display: block;
           width: 100%;
           height: calc(100% - 20px);
-          object-fit: cover;
+          object-fit: fill;
           object-position: center;
         }
 
@@ -112,55 +128,24 @@ const SidebarAds = () => {
           height: 100%;
         }
 
-        @media (max-width: 1365px) {
+        /* Hide when there is insufficient space */
+        @media (max-width: 1439px) {
           .b19-sidebar-ad {
             display: none;
           }
         }
-
-        @media (max-height: 550px) {
-          .b19-sidebar-ad {
-            top: 90px;
-            height: calc(100vh - 100px);
-            min-height: 0;
-          }
-        }
       `}</style>
 
-      {/* LEFT SIDEBAR */}
+      {/* Left Advertisement */}
       <div className="b19-sidebar-ad b19-sidebar-left">
         <div className="b19-sidebar-label">ADVERTISEMENT</div>
-
-        {sidebarAd.redirectUrl ? (
-          <a
-            href={sidebarAd.redirectUrl}
-            target="_blank"
-            rel="noopener noreferrer sponsored"
-            className="b19-sidebar-ad-link"
-          >
-            <AdImage />
-          </a>
-        ) : (
-          <AdImage />
-        )}
+        <AdContent />
       </div>
 
-      {/* RIGHT SIDEBAR */}
+      {/* Right Advertisement */}
       <div className="b19-sidebar-ad b19-sidebar-right">
         <div className="b19-sidebar-label">ADVERTISEMENT</div>
-
-        {sidebarAd.redirectUrl ? (
-          <a
-            href={sidebarAd.redirectUrl}
-            target="_blank"
-            rel="noopener noreferrer sponsored"
-            className="b19-sidebar-ad-link"
-          >
-            <AdImage />
-          </a>
-        ) : (
-          <AdImage />
-        )}
+        <AdContent />
       </div>
     </>
   );
