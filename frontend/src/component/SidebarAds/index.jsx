@@ -65,6 +65,8 @@ const SidebarAds = () => {
             <style>{`
         
 
+
+
 /* Sticky sidebar advertisements */
 .b19-sidebar-ad {
   position: fixed;
@@ -79,20 +81,15 @@ const SidebarAds = () => {
   text-align: center;
 }
 
-/*
-  Responsive positioning:
-  Assumed website maximum width: 1180px
-  Gap between website and ad: 12px
-*/
+/* Website width: 1180px, gap: 25px */
 .b19-sidebar-left {
-  left: calc(50% - 590px - 152px);
+  left: calc(50% - 590px - 165px);
 }
 
 .b19-sidebar-right {
-  right: calc(50% - 590px - 152px);
+  right: calc(50% - 590px - 165px);
 }
 
-/* Advertisement label */
 .b19-sidebar-label {
   height: 20px;
   line-height: 20px;
@@ -101,14 +98,12 @@ const SidebarAds = () => {
   background: #fff;
 }
 
-/* Advertisement link */
 .b19-sidebar-ad-link {
   display: block;
   width: 100%;
   height: calc(100% - 20px);
 }
 
-/* Advertisement image */
 .b19-sidebar-ad-image {
   display: block;
   width: 100%;
@@ -121,10 +116,7 @@ const SidebarAds = () => {
   height: 100%;
 }
 
-/*
-  Hide ads when screen width is insufficient.
-  This prevents overlap with the website.
-*/
+/* Hide ads on smaller screens */
 @media screen and (max-width: 1600px) {
   .b19-sidebar-ad {
     display: none !important;
@@ -138,26 +130,26 @@ const SidebarAds = () => {
   }
 
   .b19-sidebar-left {
-    left: calc(50% - 590px - 172px);
+    left: calc(50% - 590px - 185px);
   }
 
   .b19-sidebar-right {
-    right: calc(50% - 590px - 172px);
+    right: calc(50% - 590px - 185px);
   }
 }
 
-/* Very large desktop */
+/* Extra-large desktop */
 @media screen and (min-width: 2200px) {
   .b19-sidebar-ad {
     width: 180px;
   }
 
   .b19-sidebar-left {
-    left: calc(50% - 590px - 192px);
+    left: calc(50% - 590px - 205px);
   }
 
   .b19-sidebar-right {
-    right: calc(50% - 590px - 192px);
+    right: calc(50% - 590px - 205px);
   }
 }
 
