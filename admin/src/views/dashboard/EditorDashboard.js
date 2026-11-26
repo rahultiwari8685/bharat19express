@@ -452,7 +452,7 @@ const EditorDashboard = () => {
                 </div>
               ) : (
                 <div className="text-center text-body-secondary py-5">
-                  <CIcon icon={cilEye} size="3xl" className="mb-3" />
+                  <CIcon icon={cilInfo} size="3xl" className="mb-3" />
                   <p className="fw-semibold mb-1">
                     No views recorded in the last 24 hours
                   </p>
