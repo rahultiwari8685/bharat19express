@@ -132,7 +132,7 @@ export default function Gallery() {
           --bm-border: #e5e7eb;
           max-width: 1320px;
           margin: 0 auto;
-          padding: 34px 22px 64px;
+          padding: 40px 22px 64px;
           color: var(--bm-text);
           font-family: Inter, system-ui, -apple-system, sans-serif;
         }
