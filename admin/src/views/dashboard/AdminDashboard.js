@@ -133,7 +133,7 @@ const AdminDashboard = () => {
 
             fetch(`${setting.api}/api/categories/getAllCategory`),
 
-            fetch(`${setting.api}/api/news/mostViewedLast24Hours?limit=5`, {
+            fetch(`${setting.api}/api/news/mostViewedLast24Hours?limit=7`, {
               headers: token ? { Authorization: `Bearer ${token}` } : {},
             }),
           ])
@@ -171,13 +171,7 @@ const AdminDashboard = () => {
 
           setMostViewedLast24Hours(
             mostViewedResult.status && Array.isArray(mostViewedResult.data)
-              ? [...mostViewedResult.data]
-                .sort(
-                  (a, b) =>
-                    Number(b.recentViews || 0) -
-                    Number(a.recentViews || 0)
-                )
-                .slice(0, 5)
+              ? mostViewedResult.data
               : []
           )
         }
@@ -214,7 +208,7 @@ const AdminDashboard = () => {
       return created && isSameDay(created, today)
     })
 
-    const mostViewedNews = [...publishedNews].sort((a, b) => getViews(b) - getViews(a)).slice(0, 5)
+    const mostViewedNews = [...publishedNews].sort((a, b) => getViews(b) - getViews(a)).slice(0, 7)
 
     const authorsToday = Object.entries(
       todaysPublishedNews.reduce((result, item) => {
@@ -318,16 +312,38 @@ const AdminDashboard = () => {
 
   const maxStat = Math.max(...stats.map((item) => item.count), 1)
 
+  // const horizontalChartOptions = {
+  //   indexAxis: 'y',
+  //   responsive: true,
+  //   maintainAspectRatio: false,
+  //   plugins: {
+  //     legend: { display: false },
+  //   },
+  //   scales: {
+  //     x: {
+  //       beginAtZero: true,
+  //       grid: { color: '#edf1f7' },
+  //       ticks: { precision: 0 },
+  //     },
+  //     y: {
+  //       grid: { display: false },
+  //       ticks: {
+  //         color: '#475569',
+  //         font: { size: 11 },
+  //       },
+  //     },
+  //   },
+  // }
 
   const verticalChartOptions = {
     responsive: true,
     maintainAspectRatio: false,
     layout: {
       padding: {
-        top: 15,
-        right: 15,
-        bottom: 5,
-        left: 5,
+        top: 20,
+        right: 35,
+        bottom: 10,
+        left: 35,
       },
     },
     plugins: {
@@ -341,10 +357,16 @@ const AdminDashboard = () => {
         padding: 12,
         cornerRadius: 8,
         displayColors: true,
+
+        position: 'nearest',
+        xAlign: 'auto',
+        yAlign: 'center',
+        caretPadding: 12,
+
         callbacks: {
           title: (items) => {
-            const index = items[0]?.dataIndex
-            return getTitle(mostViewedLast24Hours[index] || {})
+            const index = items[0]?.dataIndex;
+            return getTitle(mostViewedLast24Hours[index] || {});
           },
           label: (context) =>
             `Views: ${Number(context.raw || 0).toLocaleString('en-IN')}`,
@@ -613,6 +635,8 @@ const AdminDashboard = () => {
                               '#8B5CF6',
                               '#F59E0B',
                               '#64748B',
+                              '#10B981',
+                              '#F43F5E',
                             ],
                             borderRadius: 8,
                             borderSkipped: false,
@@ -638,6 +662,43 @@ const AdminDashboard = () => {
                 </div>
               )}
 
+
+              {/* {analytics.mostViewedNews.some((item) => getViews(item) > 0) ? (
+                <div style={{ height: 310, width: '100%', minWidth: 0 }}>
+                  <CChartBar
+                    data={{
+                      labels: analytics.mostViewedNews.map((item) => {
+                        const title = getTitle(item)
+                        return title.length > 34 ? `${title.slice(0, 34)}…` : title
+                      }),
+                      datasets: [
+                        {
+                          label: 'Views',
+                          data: analytics.mostViewedNews.map(getViews),
+                          backgroundColor: [
+                            '#3B82F6',
+                            '#06B6D4',
+                            '#8B5CF6',
+                            '#F59E0B',
+                            '#64748B',
+                            '#10B981',
+                            '#F43F5E',
+                          ],
+                          borderRadius: 7,
+                          barThickness: 23,
+                        },
+                      ],
+                    }}
+                    options={horizontalChartOptions}
+                  />
+                </div>
+              ) : (
+                <div className="text-center text-body-secondary py-5">
+                  <CIcon icon={cilNewspaper} size="3xl" className="mb-3" />
+                  <p className="fw-semibold mb-1">No view analytics available</p>
+                  <small>Configure view tracking in the backend to rank articles.</small>
+                </div>
+              )} */}
             </CCardBody>
           </CCard>
         </CCol>
