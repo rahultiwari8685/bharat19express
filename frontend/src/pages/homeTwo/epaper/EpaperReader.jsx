@@ -382,37 +382,48 @@ const styles = {
     flexShrink: 0,
   },
 
-  headerInner: {
-    maxWidth: "1400px",
-    width: "100%",
-    minHeight: "70px",
-    margin: "0 auto",
-    padding: "10px 20px",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "space-between",
-    gap: "15px",
-  },
 
-  backBtn: {
-    border: "none",
-    background: "transparent",
-    color: "#fff",
-    fontSize: "14px",
-    fontWeight: "700",
-    cursor: "pointer",
-    display: "flex",
-    alignItems: "center",
-    gap: "7px",
-    padding: "10px",
-    whiteSpace: "nowrap",
-  },
+headerInner: {
+  width: "100%",
+  minHeight: "70px",
+  margin: "0 auto",
+  padding: "10px 20px",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  position: "relative",
+  boxSizing: "border-box",
+},
 
-  titleArea: {
-    flex: 1,
-    textAlign: "center",
-    minWidth: 0,
-  },
+
+
+backBtn: {
+  position: "absolute",
+  left: "20px",
+  top: "50%",
+  transform: "translateY(-50%)",
+  border: "none",
+  background: "transparent",
+  color: "#fff",
+  fontSize: "14px",
+  fontWeight: "700",
+  cursor: "pointer",
+  display: "flex",
+  alignItems: "center",
+  gap: "7px",
+  padding: "10px",
+  whiteSpace: "nowrap",
+  zIndex: 2,
+},
+
+
+ 
+titleArea: {
+  width: "60%",
+  textAlign: "center",
+  minWidth: 0,
+},
+
 
   category: {
     color: "#e31e24",
@@ -433,20 +444,27 @@ const styles = {
     textOverflow: "ellipsis",
   },
 
-  downloadBtn: {
-    border: "none",
-    borderRadius: "5px",
-    background: "#e31e24",
-    color: "#fff",
-    padding: "10px 14px",
-    fontSize: "12px",
-    fontWeight: "700",
-    cursor: "pointer",
-    display: "flex",
-    alignItems: "center",
-    gap: "6px",
-    whiteSpace: "nowrap",
-  },
+
+downloadBtn: {
+  position: "absolute",
+  right: "20px",
+  top: "50%",
+  transform: "translateY(-50%)",
+  border: "none",
+  borderRadius: "5px",
+  background: "#e31e24",
+  color: "#fff",
+  padding: "10px 14px",
+  fontSize: "12px",
+  fontWeight: "700",
+  cursor: "pointer",
+  display: "flex",
+  alignItems: "center",
+  gap: "6px",
+  whiteSpace: "nowrap",
+  zIndex: 2,
+},
+
 
   toolbar: {
     background: "#252525",
