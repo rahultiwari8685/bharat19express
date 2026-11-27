@@ -66,7 +66,7 @@ const Advertisement = () => {
     sidebar: { width: 390, height: 312 },
 
     sidebar_left: { width: 180, height: 1080 },
-sidebar_right: { width: 180, height: 1080 },
+    sidebar_right: { width: 180, height: 1080 },
 
     footer: { width: 1200, height: 200 },
 
@@ -169,7 +169,6 @@ sidebar_right: { width: 180, height: 1080 },
     try {
       const file = data.image?.[0]
 
-      // Validate the image before uploading
       if (file) {
         const MAX_SIZE = 2 * 1024 * 1024 // 2 MB
 
@@ -184,7 +183,6 @@ sidebar_right: { width: 180, height: 1080 },
         return
       }
 
-      // Upload starts only after validation succeeds
       setSaving(true)
       setUploadProgress(0)
 
@@ -244,125 +242,13 @@ sidebar_right: { width: 180, height: 1080 },
     }
   }
 
-  // const saveAdvertisement = async (data) => {
-  //   if (saving) return
-
-  //   setSaving(true)
-  //   setUploadProgress(0)
-
-  //   try {
-  //     const formData = new FormData()
-
-  //     formData.append('title', data.title)
-  //     formData.append('position', data.position)
-  //     formData.append('priority', data.priority)
-  //     formData.append('redirectUrl', data.redirectUrl || '')
-  //     formData.append('status', data.status)
-
-  //     if (data.image?.[0]) {
-  //       formData.append('image', data.image[0])
-  //     }
-
-  //     const token = JSON.parse(secureLocalStorage.getItem('logininfo') || '{}')?.token
-
-  //     const endpoint = editingAdvertisement
-  //       ? `/api/advertisements/update/${editingAdvertisement._id}`
-  //       : '/api/advertisements/create'
-
-  //     const response = await axios({
-  //       url: setting.api + endpoint,
-  //       method: editingAdvertisement ? 'PUT' : 'POST',
-  //       headers: {
-  //         Authorization: `Bearer ${token}`,
-  //       },
-  //       data: formData,
-  //       onUploadProgress: (event) => {
-  //         if (event.total) {
-  //           const percent = Math.round((event.loaded * 100) / event.total)
-  //           setUploadProgress(percent)
-  //         }
-  //       },
-  //     })
-
-  //     const result = response.data
-
-  //     if (result.success) {
-  //       await getAdvertisements()
-  //       setVisible(false)
-  //       reset()
-  //       setPreview('')
-  //       setEditingAdvertisement(null)
-  //     } else {
-  //       alert(result.message || 'Failed to save advertisement')
-  //     }
-  //   } catch (error) {
-  //     console.error('Error saving advertisement:', error)
-  //     alert(error.response?.data?.message || 'Something went wrong while saving advertisement')
-  //   } finally {
-  //     setSaving(false)
-  //     setUploadProgress(0)
-  //   }
-  // }
-
-  // const saveAdvertisement = async (data) => {
-  //   const formData = new FormData()
-
-  //   formData.append('title', data.title)
-  //   formData.append('position', data.position)
-  //   formData.append('priority', data.priority)
-  //   formData.append('redirectUrl', data.redirectUrl)
-  //   formData.append('status', data.status)
-
-  //   if (data.image?.[0]) {
-  //     formData.append('image', data.image[0])
-  //   }
-
-  //   const token = JSON.parse(secureLocalStorage.getItem('logininfo'))?.token
-
-  //   let endpoint = '/api/advertisements/create'
-
-  //   if (editingAdvertisement) {
-  //     endpoint = `/api/advertisements/update/${editingAdvertisement._id}`
-  //   }
-
-  //   const res = await fetch(setting.api + endpoint, {
-  //     method: editingAdvertisement ? 'PUT' : 'POST',
-  //     headers: {
-  //       Authorization: `Bearer ${token}`,
-  //     },
-  //     body: formData,
-  //   })
-
-  //   const result = await res.json()
-
-  //   if (result.success) {
-  //     getAdvertisements()
-  //     setVisible(false)
-  //     reset()
-  //     setPreview('')
-  //     setEditingAdvertisement(null)
-  //   }
-  // }
+ 
 
   const handleEdit = (item) => {
     setEditingAdvertisement(item)
     setVisible(true)
   }
 
-  // const handleDelete = async (id) => {
-  //   if (!window.confirm('Delete Advertisement?')) return
-
-  //   const token = JSON.parse(secureLocalStorage.getItem('logininfo'))?.token
-
-  //   await fetch(`${setting.api}/api/advertisements/delete/${id}`, {
-  //     method: 'DELETE',
-  //     headers: {
-  //       Authorization: `Bearer ${token}`,
-  //     },
-  //   })
-
-  //   getAdvertisements()
-  // }
 
   const handleDelete = async (id) => {
     if (deletingId !== null) return
@@ -613,9 +499,9 @@ sidebar_right: { width: 180, height: 1080 },
                   <option value="article_middle">Article Middle</option>
                   <option value="article_bottom">Article Bottom</option>
                   <option value="sidebar">Sidebar</option>
-               
-<option value="sidebar_left">Sidebar Left (180 × 1080)</option>
-<option value="sidebar_right">Sidebar Right (180 × 1080)</option>
+
+                  <option value="sidebar_left">Sidebar Left (180 × 1080)</option>
+                  <option value="sidebar_right">Sidebar Right (180 × 1080)</option>
                   <option value="footer">Footer</option>
                   <option value="popup">Popup</option>
                 </CFormSelect>

@@ -226,6 +226,10 @@ export const createNews = async (req, res) => {
     //   title,
     //   subtitle: sub_titconsole.log("Generating automatic translations...");
 
+  
+    console.log("========================================");
+    console.log("Generating automatic translations...");
+
     let translations = {};
 
     try {
@@ -240,13 +244,10 @@ export const createNews = async (req, res) => {
       // Allow news creation even if translation fails
       translations = {};
     }
-    (le,
-      //   content,
-      // });
 
-      console.log("Automatic translations completed."));
-
+    console.log("Automatic translations completed.");
     console.log("========================================");
+
 
     const createdNews = await News.create({
       title: title || "",
