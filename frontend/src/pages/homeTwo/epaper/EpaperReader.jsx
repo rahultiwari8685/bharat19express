@@ -438,7 +438,7 @@ const styles = {
     borderRadius: "5px",
     background: "#e31e24",
     color: "#fff",
-    padding: "10px 140px",
+    padding: "100px",
     fontSize: "12px",
     fontWeight: "700",
     cursor: "pointer",
