@@ -527,7 +527,7 @@ const Epaper = () => {
                   </div> */}
 
 
-                  <div
+                  {/* <div
                     style={{
                       padding: "20px",
                       display: "flex",
@@ -536,14 +536,14 @@ const Epaper = () => {
                       gap: "20px",
                     }}
                   >
-                    {/* LEFT COLUMN: DATE, TITLE, DESCRIPTION */}
+                  
                     <div
                       style={{
                         flex: "1",
                         minWidth: 0,
                       }}
                     >
-                      {/* DATE */}
+               
                       <div
                         style={{
                           marginBottom: "8px",
@@ -555,7 +555,7 @@ const Epaper = () => {
                         {formatDate(item.issueDate || item.createdAt)}
                       </div>
 
-                      {/* TITLE */}
+                   
                       <h2
                         style={{
                           margin: "0 0 10px",
@@ -568,7 +568,6 @@ const Epaper = () => {
                         {item.title}
                       </h2>
 
-                      {/* DESCRIPTION */}
                       {item.description && (
                         <p
                           style={{
@@ -584,7 +583,7 @@ const Epaper = () => {
                         </p>
                       )}
 
-                      {/* CATEGORY */}
+                    
                       <span
                         style={{
                           color: "#777",
@@ -597,7 +596,6 @@ const Epaper = () => {
                       </span>
                     </div>
 
-                    {/* RIGHT COLUMN: READ BUTTON */}
                     {item.pdfFile && (
                       <div
                         style={{
@@ -632,8 +630,102 @@ const Epaper = () => {
                         </button>
                       </div>
                     )}
-                  </div>
+                  </div> */}
 
+
+                  <div style={{ padding: "20px" }}>
+
+                    {/* DATE LEFT + READ BUTTON RIGHT */}
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "space-between",
+                        gap: "12px",
+                        marginBottom: "14px",
+                      }}
+                    >
+                      <div
+                        style={{
+                          color: "#e31e24",
+                          fontSize: "12px",
+                          fontWeight: "700",
+                        }}
+                      >
+                        {formatDate(item.issueDate || item.createdAt)}
+                      </div>
+
+                      {item.pdfFile && (
+                        <button
+                          type="button"
+                          onClick={() => navigate(`/epaper/read/${item._id}`)}
+                          style={{
+                            display: "inline-flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            gap: "7px",
+                            minHeight: "38px",
+                            padding: "0 16px",
+                            border: "none",
+                            borderRadius: "6px",
+                            background: "#151515",
+                            color: "#fff",
+                            fontSize: "12px",
+                            fontWeight: "700",
+                            cursor: "pointer",
+                            whiteSpace: "nowrap",
+                            flexShrink: 0,
+                          }}
+                        >
+                          Read Epaper
+                          <span style={{ fontSize: "16px" }}>→</span>
+                        </button>
+                      )}
+                    </div>
+
+                    {/* FULL WIDTH TITLE */}
+                    <h2
+                      style={{
+                        margin: "0 0 10px",
+                        color: "#161616",
+                        fontSize: "20px",
+                        lineHeight: "1.35",
+                        fontWeight: "750",
+                        width: "100%",
+                      }}
+                    >
+                      {item.title}
+                    </h2>
+
+                    {/* DESCRIPTION */}
+                    {item.description && (
+                      <p
+                        style={{
+                          margin: "0 0 12px",
+                          color: "#777",
+                          fontSize: "13px",
+                          lineHeight: "1.7",
+                        }}
+                      >
+                        {item.description.length > 115
+                          ? `${item.description.substring(0, 115)}...`
+                          : item.description}
+                      </p>
+                    )}
+
+                    {/* CATEGORY */}
+                    <span
+                      style={{
+                        color: "#777",
+                        fontSize: "12px",
+                        fontWeight: "600",
+                        textTransform: "capitalize",
+                      }}
+                    >
+                      {item.category}
+                    </span>
+
+                  </div>
 
 
 
