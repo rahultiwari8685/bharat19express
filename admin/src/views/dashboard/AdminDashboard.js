@@ -208,7 +208,7 @@ const AdminDashboard = () => {
       return created && isSameDay(created, today)
     })
 
-    const mostViewedNews = [...publishedNews].sort((a, b) => getViews(b) - getViews(a)).slice(0, 7)
+    const mostViewedNews = [...publishedNews].sort((a, b) => getViews(b) - getViews(a)).slice(0, 5)
 
     const authorsToday = Object.entries(
       todaysPublishedNews.reduce((result, item) => {
@@ -312,28 +312,6 @@ const AdminDashboard = () => {
 
   const maxStat = Math.max(...stats.map((item) => item.count), 1)
 
-  // const horizontalChartOptions = {
-  //   indexAxis: 'y',
-  //   responsive: true,
-  //   maintainAspectRatio: false,
-  //   plugins: {
-  //     legend: { display: false },
-  //   },
-  //   scales: {
-  //     x: {
-  //       beginAtZero: true,
-  //       grid: { color: '#edf1f7' },
-  //       ticks: { precision: 0 },
-  //     },
-  //     y: {
-  //       grid: { display: false },
-  //       ticks: {
-  //         color: '#475569',
-  //         font: { size: 11 },
-  //       },
-  //     },
-  //   },
-  // }
 
   const verticalChartOptions = {
     responsive: true,
@@ -656,43 +634,6 @@ const AdminDashboard = () => {
                 </div>
               )}
 
-
-              {/* {analytics.mostViewedNews.some((item) => getViews(item) > 0) ? (
-                <div style={{ height: 310, width: '100%', minWidth: 0 }}>
-                  <CChartBar
-                    data={{
-                      labels: analytics.mostViewedNews.map((item) => {
-                        const title = getTitle(item)
-                        return title.length > 34 ? `${title.slice(0, 34)}…` : title
-                      }),
-                      datasets: [
-                        {
-                          label: 'Views',
-                          data: analytics.mostViewedNews.map(getViews),
-                          backgroundColor: [
-                            '#3B82F6',
-                            '#06B6D4',
-                            '#8B5CF6',
-                            '#F59E0B',
-                            '#64748B',
-                            '#10B981',
-                            '#F43F5E',
-                          ],
-                          borderRadius: 7,
-                          barThickness: 23,
-                        },
-                      ],
-                    }}
-                    options={horizontalChartOptions}
-                  />
-                </div>
-              ) : (
-                <div className="text-center text-body-secondary py-5">
-                  <CIcon icon={cilNewspaper} size="3xl" className="mb-3" />
-                  <p className="fw-semibold mb-1">No view analytics available</p>
-                  <small>Configure view tracking in the backend to rank articles.</small>
-                </div>
-              )} */}
             </CCardBody>
           </CCard>
         </CCol>
