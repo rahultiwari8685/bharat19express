@@ -133,7 +133,7 @@ const AdminDashboard = () => {
 
             fetch(`${setting.api}/api/categories/getAllCategory`),
 
-            fetch(`${setting.api}/api/news/mostViewedLast24Hours?limit=7`, {
+            fetch(`${setting.api}/api/news/mostViewedLast24Hours?limit=5`, {
               headers: token ? { Authorization: `Bearer ${token}` } : {},
             }),
           ])
@@ -171,7 +171,13 @@ const AdminDashboard = () => {
 
           setMostViewedLast24Hours(
             mostViewedResult.status && Array.isArray(mostViewedResult.data)
-              ? mostViewedResult.data
+              ? [...mostViewedResult.data]
+                .sort(
+                  (a, b) =>
+                    Number(b.recentViews || 0) -
+                    Number(a.recentViews || 0)
+                )
+                .slice(0, 5)
               : []
           )
         }
@@ -607,8 +613,6 @@ const AdminDashboard = () => {
                               '#8B5CF6',
                               '#F59E0B',
                               '#64748B',
-                              '#10B981',
-                              '#F43F5E',
                             ],
                             borderRadius: 8,
                             borderSkipped: false,
