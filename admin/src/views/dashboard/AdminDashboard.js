@@ -350,28 +350,64 @@ const AdminDashboard = () => {
       legend: {
         display: false,
       },
-      tooltip: {
-        backgroundColor: '#172033',
-        titleColor: '#ffffff',
-        bodyColor: '#ffffff',
-        padding: 12,
-        cornerRadius: 8,
-        displayColors: true,
+   tooltip: {
+    enabled: true,
+    position: 'nearest',
+    xAlign: 'auto',
+    yAlign: 'center',
+    caretPadding: 10,
+    padding: 12,
+    boxPadding: 5,
+    backgroundColor: '#172033',
+    titleColor: '#ffffff',
+    bodyColor: '#ffffff',
+    titleFont: {
+        size: 12,
+        weight: 'bold',
+    },
+    bodyFont: {
+        size: 12,
+    },
+    cornerRadius: 8,
+    displayColors: true,
 
-        position: 'nearest',
-        xAlign: 'auto',
-        yAlign: 'center',
-        caretPadding: 12,
+ callbacks: {
+    title: (items) => {
+        const index = items[0]?.dataIndex;
 
-        callbacks: {
-          title: (items) => {
-            const index = items[0]?.dataIndex;
-            return getTitle(mostViewedLast24Hours[index] || {});
-          },
-          label: (context) =>
-            `Views: ${Number(context.raw || 0).toLocaleString('en-IN')}`,
-        },
-      },
+        const title = getTitle(
+            mostViewedLast24Hours[index] || {}
+        );
+
+        // Wrap long news titles into multiple lines
+        const words = title.split(/\s+/);
+        const lines = [];
+        let currentLine = '';
+
+        words.forEach((word) => {
+            const testLine = currentLine
+                ? `${currentLine} ${word}`
+                : word;
+
+            if (testLine.length > 28 && currentLine) {
+                lines.push(currentLine);
+                currentLine = word;
+            } else {
+                currentLine = testLine;
+            }
+        });
+
+        if (currentLine) {
+            lines.push(currentLine);
+        }
+
+        return lines;
+    },
+
+    label: (context) =>
+        `Views: ${Number(context.raw || 0).toLocaleString('en-IN')}`,
+},
+},
     },
     scales: {
       x: {
