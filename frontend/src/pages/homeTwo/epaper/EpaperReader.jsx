@@ -404,7 +404,7 @@ const styles = {
     display: "flex",
     alignItems: "center",
     gap: "7px",
-    padding: "10px",
+    padding: "100px",
     whiteSpace: "nowrap",
   },
 
