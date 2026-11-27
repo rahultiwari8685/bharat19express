@@ -633,7 +633,7 @@ const Epaper = () => {
                   </div> */}
 
 
-                  <div style={{ padding: "20px" }}>
+                  <div style={{ padding: "10px" }}>
 
                     {/* DATE LEFT + READ BUTTON RIGHT */}
                     <div
@@ -698,7 +698,7 @@ const Epaper = () => {
                     </h2>
 
                     {/* DESCRIPTION */}
-                    {item.description && (
+                    {/* {item.description && (
                       <p
                         style={{
                           margin: "0 0 12px",
@@ -711,7 +711,7 @@ const Epaper = () => {
                           ? `${item.description.substring(0, 115)}...`
                           : item.description}
                       </p>
-                    )}
+                    )} */}
 
                     {/* CATEGORY */}
                     <span
